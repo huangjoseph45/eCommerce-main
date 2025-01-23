@@ -27,7 +27,6 @@ const validateFields = (fields, res) => {
 const findUserByEmail = async (email, res) => {
   const user = await User.findOne({ email });
   if (!user) {
-    res.status(200).json({ message: "User Was Not Found" });
     return null;
   }
   return user;
@@ -37,6 +36,11 @@ const findUserByEmail = async (email, res) => {
  * Helper function to create and save a session.
  */
 const createSession = (req, res, user) => {
+  if (!user || !user._id || !user.email) {
+    console.error("Invalid user data provided for session creation.");
+    return res.error({ status: 400, message: "Invalid user data" });
+  }
+
   const sessionUser = {
     userId: user._id.toString(),
     email: user.email,
@@ -44,17 +48,15 @@ const createSession = (req, res, user) => {
     userAgent: req.get("User-Agent"),
   };
   req.session.user = sessionUser;
+  console.log(req.session);
+
   req.session.save((err) => {
     if (err) {
       console.error("Session save error:", err);
-      return res.status(500).json({ error: "Session save failed" });
+      return res.error({ status: 500, message: "Session save failed" });
     }
-
-    return res.status(200).json({
-      message: "User Successfully Verified",
-      userId: user._id,
-    });
   });
+  return res.send(req.session.user);
 };
 
 /**
@@ -68,8 +70,8 @@ const checkUser = async (req, res) => {
     if (
       !validateFields(
         [
-          { name: "Email", value: email },
-          { name: "Password", value: password },
+          { name: "email", value: email },
+          { name: "password", value: password },
         ],
         res
       )
@@ -125,8 +127,8 @@ const newUser = async (req, res) => {
     if (
       !validateFields(
         [
-          { name: "Email", value: email },
-          { name: "Password", value: password },
+          { name: "email", value: email },
+          { name: "password", value: password },
         ],
         res
       )
@@ -134,18 +136,20 @@ const newUser = async (req, res) => {
       return;
 
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await findUserByEmail(email, res);
     if (existingUser) {
       return res.status(409).json({ error: "Email already exists" });
     }
 
     // Encrypt password and create new user
     const hashedPassword = await EncryptPassword(password);
-    const new_user = new User({ email, password: hashedPassword, cart });
-    const savedUser = await new_user.save();
+    const new_user = await User.create({
+      email,
+      password: hashedPassword,
+    });
 
     // Create and save session
-    createSession(req, res, savedUser);
+    createSession(req, res, new_user);
   } catch (error) {
     console.error("Error in newUser:", error);
     return res.status(500).json({
@@ -162,16 +166,7 @@ const setData = async (req, res) => {
     const { userId, email } = req.session.user;
 
     // Validate session data
-    if (
-      !validateFields(
-        [
-          { name: "Email", value: email },
-          { name: "User ID", value: userId },
-        ],
-        res
-      )
-    )
-      return;
+    if (!validateFields([{ name: "email", value: email }], res)) return;
 
     // Find user and verify session
     const user = await User.findOne({ email });
@@ -192,6 +187,9 @@ const setData = async (req, res) => {
       age: user.age,
       email: user.email,
       cart: user.cart,
+      creationDate: user.createdAt,
+      balance: user.totalBalance,
+      address: user.address,
     });
   } catch (error) {
     console.error(`Error in setData: ${error.message}`, error);
@@ -208,11 +206,10 @@ const handleLogout = (req, res) => {
     req.session.destroy((err) => {
       if (err) {
         console.error(err);
-        return res.status(500).send("Internal server error");
       }
 
       // Redirect to the login page or homepage after logout
-      res.redirect("/login");
+      res.status(200).redirect("/");
     });
   } catch (error) {
     console.error(`Error in setData: ${error.message}`, error);

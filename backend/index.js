@@ -45,8 +45,10 @@ app.use(
 
 app.use("/api/users", userRoutes);
 
+app.use("/", (req, res) => {
+  res.send("Welcome");
+});
+
 // Start server
 const PORT = 2000;
-app.listen(PORT, () =>
-  console.log(`Server running on http://localhost:${PORT}`)
-);
+app.listen(PORT, () => console.log(`Server running on Port ${PORT}`));

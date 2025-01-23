@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 // Define your schema
 const userSchema = new mongoose.Schema({
-  firstName: { type: String, default: "", required: true },
-  lastName: { type: String, default: "", required: true },
+  firstName: { type: String, default: "" },
+  lastName: { type: String, default: "" },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, unique: true },
   age: { type: Number, default: 18 },
@@ -11,13 +11,12 @@ const userSchema = new mongoose.Schema({
   address: { type: String, default: "" },
   totalBalance: { type: Number, default: 0 },
   loginHistory: {
-    type: Array,
-    default: [Date.now],
+    type: [Date],
+    default: () => [new Date()],
   },
   createdAt: { type: Date, default: Date.now },
   cart: {
     type: Array,
-    default: [],
   },
 });
 

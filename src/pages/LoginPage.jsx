@@ -31,7 +31,7 @@ const LoginPage = () => {
     data["cart"] = userInfo;
 
     try {
-      handleLogout();
+      await handleLogout();
 
       const validatedEmail = validateEmail(data.email);
       const validatedPassword = validatePassword(data.password);
@@ -97,24 +97,10 @@ const LoginPage = () => {
         onSubmit={handleSubmit}
         className="flex flex-col m-auto w-[25rem] gap-1 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[100%]"
       >
-        <div className="flex flex-1">
-          <p
-            onClick={() => setModeSignIn(true)}
-            className={`cursor-pointer w-1/2 m-auto text-left text-2xl ${
-              isModeSignIn ? "text-slate-900" : "text-gray-400"
-            }`}
-          >
-            Sign In
-          </p>
-          <p
-            onClick={() => setModeSignIn(false)}
-            className={`cursor-pointer w-1/2 m-auto text-right text-2xl ${
-              !isModeSignIn ? "text-slate-900" : "text-gray-400"
-            }`}
-          >
-            Create Account
-          </p>
-        </div>
+        <SelectSignIn
+          setModeSignIn={setModeSignIn}
+          isModeSignIn={isModeSignIn}
+        />
         <hr className="w-full border-t border-slate-900 mb-4" />
         <input
           type="text"
@@ -192,3 +178,26 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
+function SelectSignIn({ setModeSignIn, isModeSignIn }) {
+  return (
+    <div className="flex flex-1">
+      <p
+        onClick={() => setModeSignIn(true)}
+        className={`cursor-pointer w-1/2 m-auto text-left text-2xl ${
+          isModeSignIn ? "text-slate-900" : "text-gray-400"
+        }`}
+      >
+        Sign In
+      </p>
+      <p
+        onClick={() => setModeSignIn(false)}
+        className={`cursor-pointer w-1/2 m-auto text-right text-2xl ${
+          !isModeSignIn ? "text-slate-900" : "text-gray-400"
+        }`}
+      >
+        Create Account
+      </p>
+    </div>
+  );
+}

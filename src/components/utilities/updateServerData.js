@@ -5,8 +5,6 @@ const updateServerData = async ({ userInfo }) => {
     return false;
   }
   try {
-    console.log("HI");
-
     const response = await fetch("http://localhost:2000/api/users/update", {
       method: "POST",
       credentials: "include",
