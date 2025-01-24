@@ -219,13 +219,14 @@ const handleLogout = (req, res) => {
 
 const handleDataUpdate = async (req, res) => {
   try {
-    const { firstName, lastName, email, cart, age } = req.body;
+    const { firstName, lastName, email, cart, age, address } = req.body;
     const update = {
       firstName,
       lastName,
       email,
       cart,
       age,
+      address,
     };
     const updatedUser = await User.findOneAndUpdate(
       { email: email },

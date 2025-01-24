@@ -1,5 +1,7 @@
 // getDataFromServer.js
-const getDataFromServer = async ({ setUserInfo }) => {
+import _ from "lodash";
+
+const getDataFromServer = async ({ setUserInfo, userInfo }) => {
   try {
     const dataResponse = await fetch(
       "http://localhost:2000/api/users/set-data",
@@ -17,8 +19,7 @@ const getDataFromServer = async ({ setUserInfo }) => {
     }
 
     const json = await dataResponse.json();
-
-    setUserInfo(json);
+    if (!_.isEqual(json, userInfo)) setUserInfo(json);
 
     return json;
   } catch (error) {

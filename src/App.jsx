@@ -12,6 +12,7 @@ import NoPage from "./pages/NoPage";
 import ProductPage from "./pages/ProductPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
+import isEmpty from "./components/utilities/isEmpty";
 
 const products = [
   {
@@ -44,21 +45,20 @@ function App() {
 
   const debouncedUpdateServerData = debounce((updatedUserInfo) => {
     updateServerData({ userInfo: updatedUserInfo });
-  }, 500); // Adjust the delay as needed
+  }, 500);
 
   // Startup function to check authentication and fetch data
   const startup = async () => {
     const cookies = document.cookie;
-    console.log(cookies);
     if (cookies.includes("sessionId")) {
       try {
-        const serverData = await getDataFromServer({ setUserInfo });
-
         setIsLoggedIn(true);
+        const serverData = await getDataFromServer({ setUserInfo, userInfo });
       } catch (error) {
         console.error("Error fetching server data:", error);
-        // Optionally handle the error, e.g., redirect to login
       }
+    } else {
+      setIsLoggedIn(false);
     }
   };
 

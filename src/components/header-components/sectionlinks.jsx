@@ -4,7 +4,6 @@ import { useState } from "react";
 
 const SectionLinks = (sections) => {
   const [hoverId, setHoverId] = useState(null);
-
   const sectionElements = sections.map((element, index) => {
     return (
       <div

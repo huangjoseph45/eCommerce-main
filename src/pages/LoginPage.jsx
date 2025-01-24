@@ -75,6 +75,7 @@ const LoginPage = () => {
 
       const result = await response.text();
       console.log(result);
+      console.log(userInfo);
       nav("/");
     } catch (error) {
       console.error("Error submitting form:", error);
