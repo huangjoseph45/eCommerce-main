@@ -7,6 +7,7 @@ const {
   ComparePassword,
 } = require("../models/encrypt-password");
 const { request } = require("express");
+const { add } = require("lodash");
 
 /**
  * Helper function to validate required fields.
@@ -25,7 +26,7 @@ const validateFields = (fields, res) => {
  * Helper function to find a user by email.
  */
 const findUserByEmail = async (email, res) => {
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select("+password");
   if (!user) {
     return null;
   }
@@ -179,17 +180,19 @@ const setData = async (req, res) => {
     req.session.user.ip = req.ip;
     req.session.user.userAgent = req.get("User-Agent");
 
+    console.log(user.address);
+
     // Respond with user data
     return res.status(200).json({
+      email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
-      password: user.password,
       age: user.age,
-      email: user.email,
       cart: user.cart,
       creationDate: user.createdAt,
       balance: user.totalBalance,
       address: user.address,
+      phoneNumber: user.phoneNumber,
     });
   } catch (error) {
     console.error(`Error in setData: ${error.message}`, error);
@@ -219,15 +222,21 @@ const handleLogout = (req, res) => {
 
 const handleDataUpdate = async (req, res) => {
   try {
-    const { firstName, lastName, email, cart, age, address } = req.body;
+    const { firstName, lastName, email, cart, age, address, phoneNumber } =
+      req.body;
+    if (address?.zipCode && address?.zipCode.length !== 5) {
+      return res.status(400).json({ message: "Invalid package" });
+    }
+
     const update = {
       firstName,
       lastName,
-      email,
       cart,
       age,
       address,
+      phoneNumber,
     };
+
     const updatedUser = await User.findOneAndUpdate(
       { email: email },
       { $set: update },
@@ -240,6 +249,62 @@ const handleDataUpdate = async (req, res) => {
     console.error(`Error in setData: ${error.message}`, error);
     return res.status(500).json({ error: error.message });
   }
+};
+
+const updateSensitiveData = async (req, res) => {
+  const {
+    oldEmail = "",
+    email = "",
+    oldPassword = "",
+    password = "",
+  } = req.body;
+  if (email || oldEmail) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Invalid email format." });
+    }
+  }
+
+  const userId = req.session.user.userId;
+
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(401).json({ message: "Invalid user ID." });
+  }
+
+  const user = await User.findById(userId).select("+password");
+
+  if (email && oldEmail) {
+    const isEmailValid = user.email.localeCompare(email) === 0;
+
+    if (!isEmailValid) {
+      return res.status(403).json({ message: "Invalid email" });
+    }
+    User.updateOne(
+      { _id: userId },
+      { $set: { email: email } },
+      { runValidators: true }
+    );
+  }
+
+  if (password && oldPassword) {
+    const isPasswordValid = ComparePassword(oldPassword, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(402).json({ message: "Invalid password" });
+    }
+
+    const hashedPassword = await EncryptPassword(password);
+
+    await User.updateOne(
+      { _id: userId },
+      { $set: { password: hashedPassword } },
+      { runValidators: true }
+    );
+  }
+
+  return res
+    .status(200)
+    .json({ message: "Sensitive Data Has Been Updated", password: password });
 };
 
 /**
@@ -259,4 +324,5 @@ module.exports = {
   verifySession,
   handleLogout,
   handleDataUpdate,
+  updateSensitiveData,
 };

@@ -12,7 +12,6 @@ import NoPage from "./pages/NoPage";
 import ProductPage from "./pages/ProductPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
-import isEmpty from "./components/utilities/isEmpty";
 
 const products = [
   {
@@ -75,6 +74,7 @@ function App() {
     // Cleanup the debounced function on unmount
     return () => {
       debouncedUpdateServerData.cancel();
+      if (!isLoggedIn) setIsLoggedIn(true);
     };
   }, [userInfo]);
 

@@ -21,12 +21,12 @@ const ProductImage = ({ product }) => {
 
   return (
     <>
-      <div className="w-full h-[40rem] lg:w-[40rem] lg:h-[40rem] 2xl:w-[55rem] 2xl:h-[65rem]">
+      <div className="w-full h-[35rem] xs:h-[40rem] lg:w-[40rem] lg:h-[40rem] 2xl:w-[55rem] 2xl:h-[65rem]">
         <img
           src={imgSrc}
           alt={product?.id || "Product Image"}
           loading="lazy"
-          className="object-contain w-full h-full object-top"
+          className="object-contain w-fit h-fit max-h-full object-top lg:rounded-lg border mx-auto"
         />
       </div>
     </>

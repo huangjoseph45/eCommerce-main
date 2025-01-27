@@ -10,11 +10,11 @@ const ProfileButton = () => {
   const [showDropdown, setShowDropdown] = useState(false);
 
   const clickedFunc = () => {
-    console.log(isLoggedIn);
-    if (isLoggedIn) {
-      nav("/profile");
-    } else {
+    const cookies = document.cookie;
+    if (!cookies.includes("sessionId")) {
       nav("/login");
+    } else {
+      nav("/profile");
     }
   };
 

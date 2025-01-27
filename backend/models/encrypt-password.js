@@ -6,26 +6,33 @@ const bcrypt = require("bcryptjs");
  * @return {Promise<String>} - The password hash.
  */
 const EncryptPassword = async (password) => {
+  if (!password || typeof password !== "string") {
+    throw new Error("Invalid password provided");
+  }
+
   try {
-    // 1. Generate salt
     const salt = await bcrypt.genSalt(10);
-
-    // 2. Hash password using the generated salt
-    const hash = await bcrypt.hash(password, salt);
-
-    // 3. Return the hashed password
-    return hash;
+    return await bcrypt.hash(password, salt);
   } catch (error) {
     console.error("Cannot encrypt password:", error);
-    // You can decide what to return or throw in case of error
     throw new Error("Password encryption failed");
   }
 };
 
 const ComparePassword = async (password, hashedPassword) => {
-  const comparison = await bcrypt.compare(password, hashedPassword);
+  if (!password || !hashedPassword) {
+    throw new Error("Invalid inputs for password comparison");
+  }
 
-  return comparison;
+  try {
+    const comparison = await bcrypt.compare(password, hashedPassword);
+
+    console.log(comparison);
+    return comparison;
+  } catch (error) {
+    console.error("Error comparing passwords:", error);
+    throw new Error("Password comparison failed");
+  }
 };
 
 module.exports = {

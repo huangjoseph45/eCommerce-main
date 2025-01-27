@@ -58,10 +58,10 @@ const SizesDropdown = ({ product, defaultSelector = "Select" }) => {
       >
         <div
           onClick={showFunc}
-          className="handle group flex items-center justify-center bg-white w-fit m-auto px-4 py-2 cursor-pointer hover:bg-slate-800 box-border border-2 border-slate-800"
+          className="handle group flex items-center justify-center bg-white w-fit m-auto px-4 py-2 cursor-pointer hover:bg-slate-800 box-border border-2 border-slate-800 rounded-md"
         >
           <p
-            className={`text-xl text-black group-hover:text-white select-none ${
+            className={`text-xl text-black group-hover:text-white select-none transition-all duration-300 ${
               selected !== defaultSelector && "uppercase"
             }`}
           >

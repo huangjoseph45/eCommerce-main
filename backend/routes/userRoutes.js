@@ -7,6 +7,7 @@ const {
   verifySession,
   handleLogout,
   handleDataUpdate,
+  updateSensitiveData,
 } = require("../controllers/userController.js");
 
 router.post("/signin", checkUser);
@@ -18,5 +19,7 @@ router.post("/logout", handleLogout);
 router.get("/set-data", verifySession, setData);
 
 router.post("/update", handleDataUpdate);
+
+router.post("/update-sensitive-data", verifySession, updateSensitiveData);
 
 module.exports = router;

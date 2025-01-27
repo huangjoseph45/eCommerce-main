@@ -1,11 +1,38 @@
+import { useContext, useEffect, useState } from "react";
 import LogoutButton from "../logoutButton";
+import debounce from "lodash.debounce";
+import { ShowProfileContext } from "../utilities/ProductContext";
+import { AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 
-const SettingsSectionsList = ({ sections }) => {
-  const accountSections = sections.map((section) => {
+const SettingsSectionsList = ({ sections, setSection }) => {
+  const { showProfileHeaders, setShowProfileHeaders } =
+    useContext(ShowProfileContext);
+
+  useEffect(() => {
+    const checkSize = debounce(() => {
+      const windowWidth = window.innerWidth;
+      if (windowWidth >= 1024) {
+        setShowProfileHeaders(true);
+      }
+    }, 100);
+
+    window.addEventListener("resize", checkSize);
+
+    return () => window.removeEventListener("resize", checkSize);
+  });
+
+  const accountSections = sections.map((section, index) => {
     return (
       <li
         key={section}
-        className="list-none cursor-pointer text-lg hover:text-xl h-14 transition-all duration-100 flex items-center  w-full"
+        className="list-none cursor-pointer text-3xl lg:hover:text-xl hover:text-[1.9srem] hover:font-semibold h-14 transition-all duration-100 flex items-center w-full justify-center lg:justify-start lg:text-lg"
+        onClick={() => {
+          setSection(index);
+          if (window.innerWidth < 1024) {
+            setShowProfileHeaders(false);
+          }
+        }}
       >
         {section}
       </li>
@@ -14,9 +41,24 @@ const SettingsSectionsList = ({ sections }) => {
 
   console.log(accountSections);
   return (
-    <div className="flex flex-col w-1/4 p-4">
-      {accountSections} <LogoutButton />
-    </div>
+    <>
+      <AnimatePresence>
+        {showProfileHeaders && (
+          <motion.div
+            initial={{ opacity: 0.5, x: "-100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 1, x: "-100%" }}
+            transition={{
+              duration: 0.3,
+            }}
+            className="flex flex-col w-full lg:w-1/4 p-4 fixed  items-center lg:items-start bg-white z-30 h-full lg:h-fit"
+          >
+            {accountSections}
+            <LogoutButton />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
