@@ -10,6 +10,7 @@ import getDataFromServer from "../components/utilities/getDataFromServer";
 import CartSummary from "../components/cart-components/cartSummary";
 
 const CartPage = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
 
   const { userInfo, setUserInfo } = useContext(ProductContext);
@@ -17,15 +18,16 @@ const CartPage = () => {
 
   useEffect(() => {
     const getFromServer = async () => {
-      const serverData = await getDataFromServer({ setUserInfo, userInfo });
-      setCart(serverData.cart);
+      const serverData = await getDataFromServer({
+        setUserInfo,
+        userInfo,
+      }).then((data) => {
+        setIsLoading(false);
+        setCart(data.cart);
+      });
     };
     getFromServer();
   }, []);
-
-  useEffect(() => {
-    console.log(cart);
-  }, [cart]);
 
   return (
     <ProductsContext.Provider value={{ products, setProducts }}>
@@ -35,7 +37,7 @@ const CartPage = () => {
           <h1 className="text-2xl my-2 mt-4">Bag</h1>
           <CartItemList cart={cart} />
         </div>{" "}
-        {cart.length > 0 && <CartSummary />}
+        {cart.length > 0 && !isLoading && <CartSummary />}
       </div>
       <Footer />
     </ProductsContext.Provider>

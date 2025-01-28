@@ -13,7 +13,6 @@ const CartSummary = () => {
   useEffect(() => {
     if (userInfo.cart && products) {
       let cost = 0;
-      console.log(products);
       userInfo.cart.forEach((item) => {
         const productId = item.productId.split("-")[0];
         const product = products.find((product) => product.id === productId);

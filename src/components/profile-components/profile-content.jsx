@@ -18,12 +18,12 @@ const ProfileContent = ({ currentSection, fieldData }) => {
   const { userInfo } = useContext(ProductContext);
   const [clonedInfo, setClonedInfo] = useState(structuredClone(userInfo));
 
-  const [countries, setCountries] = useState(() => Country.getAllCountries());
+  const countries = useRef(useMemo(() => Country.getAllCountries(), []));
   const [states, setStates] = useState(() => State.getAllStates());
 
   useEffect(() => {
     if (clonedInfo?.address?.country) {
-      const country = countries.find(
+      const country = countries.current.find(
         (elem) =>
           elem.name.toLowerCase() === clonedInfo.address.country.toLowerCase()
       );
@@ -39,7 +39,7 @@ const ProfileContent = ({ currentSection, fieldData }) => {
         setStates([]); // Optionally reset states if country not found
       }
     }
-  }, [clonedInfo, countries]);
+  }, [clonedInfo, countries.current]);
 
   useEffect(() => {
     setClonedInfo(structuredClone(userInfo));
@@ -86,7 +86,7 @@ const ProfileContent = ({ currentSection, fieldData }) => {
         {field.type !== "static" && field.fieldName !== "password" ? (
           field.fieldName === "country" ? (
             <Select
-              options={countries}
+              options={countries.current}
               selectedValue={clonedInfo?.address?.country}
               onSelect={editUserInfo}
               field={field}

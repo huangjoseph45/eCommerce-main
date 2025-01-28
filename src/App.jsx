@@ -45,26 +45,29 @@ function App() {
 
   const debouncedUpdateServerData = debounce((updatedUserInfo) => {
     updateServerData({ userInfo: updatedUserInfo });
-  }, 500);
+  }, 50);
 
   // Startup function to check authentication and fetch data
   const startup = async () => {
-    const response = fetch(
-      "http://localhost:2000/api/products/create-product",
-      {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(products[0]),
-      }
-    );
-    console.log("HI");
-
     const cookies = document.cookie;
     if (cookies.includes("sessionId")) {
       try {
+        const [response, serverData] = await Promise.all([
+          fetch("http://localhost:2000/api/products/create-product", {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(products[0]),
+          }),
+          getDataFromServer({ setUserInfo, userInfo }),
+        ]);
+        if (!response.ok) {
+          throw new Error(`Product creation failed: ${response.statusText}`);
+        }
+        const createdProduct = await response.json();
+        console.log("Product created successfully:", createdProduct);
+
         setIsLoggedIn(true);
-        const serverData = await getDataFromServer({ setUserInfo, userInfo });
       } catch (error) {
         console.error("Error fetching server data:", error);
       }
@@ -104,10 +107,6 @@ function App() {
       />
     );
   });
-
-  useEffect(() => {
-    console.log(userInfo);
-  }, [userInfo]);
 
   return (
     <>

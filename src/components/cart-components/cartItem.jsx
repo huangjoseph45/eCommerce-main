@@ -27,7 +27,6 @@ const CartItem = memo(
 
     useEffect(() => {
       if (productId !== undefined && productId.includes("-")) {
-        console.log(productId);
         baseId.current = productId.split("-")[0];
       }
     }, [productId]);
@@ -48,7 +47,7 @@ const CartItem = memo(
                   onClick={() => nav("/" + stringURL)}
                   src={imageLink}
                   alt={productName}
-                  className="w-32 object-cover cursor-pointer"
+                  className="w-[16rem] object-cover cursor-pointer"
                 />
               )}{" "}
               <ProductQuantity

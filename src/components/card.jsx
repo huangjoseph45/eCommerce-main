@@ -35,7 +35,7 @@ const Card = ({
     <Link
       id={id}
       to={stringURL}
-      className="rounded-sm w-full h-fit flex flex-col gap-1 px-2 cursor-pointer box-border hover:outline hover:outline-slate-300 hover:outline-1 pb-2 relative z-0
+      className="rounded-sm w-full h-fit flex flex-col gap-1 px-2 cursor-pointer box-border pb-2 relative z-0
 "
       onMouseEnter={toggleShowArrows}
       onMouseLeave={toggleShowArrows}

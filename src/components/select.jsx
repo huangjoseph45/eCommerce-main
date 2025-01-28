@@ -6,11 +6,14 @@ import isEmpty from "./utilities/isEmpty";
 const Select = ({ options, selectedValue, onSelect, field }) => {
   const [showElements, setShowElements] = useState(false);
   const list = useRef([]);
+  console.log(options);
   list.current = useMemo(() => {
     return options.map((option) => option.name);
   }, [options]);
 
-  const [query, setQuery] = useState(selectedValue);
+  const [query, setQuery] = useState(
+    list.current.includes(selectedValue) ? selectedValue : ""
+  );
 
   useEffect(() => {
     if (!list.current.includes(selectedValue)) {
@@ -20,7 +23,7 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
 
   const [filteredList, setFilteredList] = useState(list.current);
 
-  const optionElements = useRef();
+  const [optionElements, setOptionElements] = useState([]);
 
   const label =
     String(field.fieldName).charAt(0).toUpperCase() +
@@ -75,10 +78,12 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
             console.warn("Encountered a non-string element:", element);
             return false;
           }
+
           if (typeof query !== "string") {
             console.warn("Encountered a non-string element:", query);
             return false;
           }
+          console.log(query);
           return element.toLowerCase().includes(query.toLowerCase());
         })
       );
@@ -88,13 +93,16 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
   }, [query, list.current]);
 
   useEffect(() => {
-    optionElements.current = filteredList.map((option) => {
-      return <SelectOption value={option} key={option} />;
-    });
-    if (optionElements.current.length === 0) {
-      optionElements.current = (
-        <SelectOption value={"No Results Found"} key={"NRF"} />
+    if (filteredList.length > 0) {
+      setOptionElements(
+        filteredList.map((option) => (
+          <SelectOption value={option} key={option} />
+        ))
       );
+    } else {
+      setOptionElements([
+        <SelectOption value="No Results Found" key="NRF" disabled />,
+      ]);
     }
   }, [filteredList]);
 
@@ -119,7 +127,7 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
           onFocus={() => setShowElements(true)}
           onBlur={() => {
             setShowElements(false);
-            setQuery(selectedValue);
+            setQuery(list.current.includes(selectedValue) ? selectedValue : "");
             if (
               list.current.filter((listItem) => {
                 return (
@@ -143,7 +151,7 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
               transition={{ duration: 0.2 }}
               className="absolute flex z-20 flex-col bg-white overflow-y-scroll h-fit max-h-[20rem] mt-4 p-2 w-full outline rounded-lg"
             >
-              {optionElements.current}
+              {optionElements}
             </motion.ul>
           )}{" "}
         </AnimatePresence>

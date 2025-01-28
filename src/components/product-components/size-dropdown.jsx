@@ -53,7 +53,7 @@ const SizesDropdown = ({ product, defaultSelector = "Select" }) => {
     <>
       <p className="text-lg mb-1">Size:</p>
       <div
-        className="flex flex-col  items-center justify-center w-fit relative border mb-6"
+        className="flex flex-col  items-center justify-center w-fit relative mb-6"
         ref={dropdownRef}
       >
         <div

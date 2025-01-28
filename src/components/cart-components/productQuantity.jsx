@@ -1,9 +1,11 @@
-import { useContext, useState, useRef, useEffect } from "react";
+import { useContext, useState, useRef, useEffect, useCallback } from "react";
 import { ProductContext } from "../utilities/ContextManager";
 
 const ProductQuantity = ({ quantity, productId, deleteFunc }) => {
   const { userInfo, setUserInfo } = useContext(ProductContext);
   const [value, setValue] = useState(quantity);
+  const inputRef = useRef(null);
+
   const handleChange = (e) => {
     const num = Number(e.target.value);
     if (!isNaN(num)) {
@@ -11,20 +13,24 @@ const ProductQuantity = ({ quantity, productId, deleteFunc }) => {
     }
   };
 
-  const submitForm = (e = null) => {
-    if (e.key === "Enter") {
-      setUserInfo({
-        ...userInfo,
-        cart: userInfo.cart.map((product) => {
-          return product.productId.split()[0] === productId
-            ? { ...product, quantity: value }
-            : product;
-        }),
-      });
-    } else {
-      return;
-    }
-  };
+  const submitForm = useCallback(
+    (e = null) => {
+      if (e.key === "Enter") {
+        setUserInfo({
+          ...userInfo,
+          cart: userInfo.cart.map((product) => {
+            return product.productId.split()[0] === productId
+              ? { ...product, quantity: value }
+              : product;
+          }),
+        });
+        inputRef.current.blur();
+      } else {
+        return;
+      }
+    },
+    [userInfo.cart, value]
+  );
 
   const handleClick = (modifier) => {
     if (value > 0 || modifier > 0)
@@ -46,66 +52,71 @@ const ProductQuantity = ({ quantity, productId, deleteFunc }) => {
     setUserInfo({
       ...userInfo,
       cart: userInfo.cart.filter((item) => {
-        console.log(item);
+        if (item.productId !== productId) console.log(item);
         return item.productId !== productId;
       }),
     });
+    console.log(productId);
     deleteFunc(productId);
   };
+
   return (
-    <div className="flex flex-row relative w-full rounded-full border">
-      <button
-        onClick={() => handleClick(-1)}
-        className=" relative text-xl  w-8 h-8 rounded-full hover:bg-gray-200 hover:bg-opacity-80 transition-all duration-100 z-1 text-center flex items-center justify-center"
-      >
-        <svg
-          aria-hidden="true"
-          focusable="false"
-          viewBox="0 0 24 24"
-          role="img"
-          width="24px"
-          height="24px"
-          fill="none"
+    <div className="flex flex-row w-full h-fit items-center justify-between">
+      <div className="flex flex-row relative w-fit rounded-full border gap-1">
+        <button
+          onClick={() => handleClick(-1)}
+          className=" relative text-xl  w-8 h-8 rounded-full hover:bg-gray-200 hover:bg-opacity-80 transition-all duration-100 z-1 text-center flex items-center justify-center"
         >
-          <path
-            stroke="currentColor"
-            strokeMiterlimit="10"
-            strokeWidth="1.5"
-            d="M18 12H6"
-          ></path>
-        </svg>
-      </button>
-      <input
-        type="text"
-        value={value}
-        className="w-8 h-8 text-center  rounded-none relative box-border flex-grow"
-        maxLength={2}
-        onChange={(e) => handleChange(e)}
-        onKeyDown={(e) => submitForm(e)}
-      />
-      <button
-        onClick={() => handleClick(1)}
-        className="relative text-xl  w-8 h-8 rounded-full hover:bg-gray-200 hover:bg-opacity-80 transition-all duration-100 z-1 flex items-center justify-center"
-      >
-        <svg
-          aria-hidden="true"
-          focusable="false"
-          viewBox="0 0 24 24"
-          role="img"
-          width="24px"
-          height="24px"
-          fill="none"
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            viewBox="0 0 24 24"
+            role="img"
+            width="24px"
+            height="24px"
+            fill="none"
+          >
+            <path
+              stroke="currentColor"
+              strokeMiterlimit="10"
+              strokeWidth="1.5"
+              d="M18 12H6"
+            ></path>
+          </svg>
+        </button>
+        <input
+          type="text"
+          ref={inputRef}
+          value={value}
+          className="w-12 h-8 text-center  rounded-none relative box-border flex-grow"
+          maxLength={2}
+          onChange={(e) => handleChange(e)}
+          onKeyDown={(e) => submitForm(e)}
+        />
+        <button
+          onClick={() => handleClick(1)}
+          className="relative text-xl  w-8 h-8 rounded-full hover:bg-gray-200 hover:bg-opacity-80 transition-all duration-100 z-1 flex items-center justify-center"
         >
-          <path
-            stroke="currentColor"
-            strokeMiterlimit="10"
-            strokeWidth="1.5"
-            d="M18 12H6m6 6V6"
-          ></path>
-        </svg>
-      </button>
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            viewBox="0 0 24 24"
+            role="img"
+            width="24px"
+            height="24px"
+            fill="none"
+          >
+            <path
+              stroke="currentColor"
+              strokeMiterlimit="10"
+              strokeWidth="1.5"
+              d="M18 12H6m6 6V6"
+            ></path>
+          </svg>
+        </button>
+      </div>
       <button
-        className="absolute left-full top-1/2 -translate-y-1/2 translate-x-2 hover:bg-gray-200 border border-gray-200 hover:bg-opacity-80 p-2 rounded-full box-border"
+        className=" hover:bg-gray-200 border border-gray-200 hover:bg-opacity-80 rounded-full box-border h-[2rem] w-[2rem] items-center flex justify-center"
         onClick={handleDelete}
       >
         <svg

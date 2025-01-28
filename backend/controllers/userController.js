@@ -206,7 +206,11 @@ const handleLogout = (req, res) => {
     req.session.destroy((err) => {
       if (err) {
         console.error(err);
+        return res.status(500).json({ message: "Unable to logout" });
       }
+      res.clearCookie("sessionId", {
+        path: "/", // Path must match your session cookie path
+      });
 
       // Redirect to the login page or homepage after logout
       res.status(200).redirect("/");
@@ -268,25 +272,28 @@ const updateSensitiveData = async (req, res) => {
     return res.status(401).json({ message: "Invalid user ID." });
   }
 
-  const user = await User.findById(userId).select("+password");
+  const foundUser = await User.findById(userId).select("+password");
 
   if (email && oldEmail) {
-    const isEmailValid = user.email.localeCompare(email) === 0;
+    const isEmailValid = foundUser.email.localeCompare(email) === 0;
 
     if (!isEmailValid) {
       return res.status(403).json({ message: "Invalid email" });
     }
-    User.updateOne(
+    await User.updateOne(
       { _id: userId },
       { $set: { email: email } },
       { runValidators: true }
     );
-  } else {
+  } else if (email) {
     return res.status(402).json({ message: "Invalid Email" });
   }
 
   if (password && oldPassword) {
-    const isPasswordValid = await ComparePassword(oldPassword, user.password);
+    const isPasswordValid = await ComparePassword(
+      oldPassword,
+      foundUser.password
+    );
     console.log(isPasswordValid);
 
     if (!isPasswordValid) {
@@ -295,16 +302,14 @@ const updateSensitiveData = async (req, res) => {
 
     const hashedPassword = await EncryptPassword(password);
 
-    const user = await User.updateOne(
+    await User.updateOne(
       { _id: userId },
       { $set: { password: hashedPassword } },
       { runValidators: true }
     );
-  } else {
+  } else if (password) {
     return res.status(402).json({ message: "Invalid password" });
   }
-
-  console.log(user);
 
   return res
     .status(200)

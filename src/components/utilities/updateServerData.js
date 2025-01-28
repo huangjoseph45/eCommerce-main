@@ -1,10 +1,15 @@
 import isEmpty from "./isEmpty";
 
+let count = 0;
+
 const updateServerData = async ({ userInfo }) => {
   if (isEmpty(userInfo) || isEmpty(userInfo.email)) {
     return false;
   }
   try {
+    count++;
+    console.log("UPDATE COUNT: " + count);
+
     const response = await fetch("http://localhost:2000/api/users/update", {
       method: "POST",
       credentials: "include",
