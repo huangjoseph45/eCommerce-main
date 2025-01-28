@@ -20,6 +20,7 @@ const PasswordField = () => {
   const resetField = () => {
     setIsSelected(false);
     setFieldValue({
+      oldField: "",
       primaryField: "",
       confirmationField: "",
     });
@@ -61,6 +62,8 @@ const PasswordField = () => {
       data = await response.json();
       console.log("Update Successful:", data);
       setMessage(data.message);
+      setIsSelected(false);
+      resetField();
     } catch (error) {
       console.error("Error: " + error);
       setMessage("Could Not Update Sensitive Information");

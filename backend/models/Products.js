@@ -1,3 +1,4 @@
+const { trim } = require("lodash");
 const mongoose = require("mongoose");
 
 // Define the Color Subschema
@@ -51,18 +52,23 @@ const productSchema = new mongoose.Schema(
       required: [true, "Product price is required"],
       min: [0, "Price cannot be negative"],
     },
-    sku: {
-      // Renamed from 'id' to 'sku' for clarity
+    id: {
       type: String,
-      required: [true, "SKU is required"],
-      unique: true,
+      required: true,
       trim: true,
-      uppercase: true,
-      match: [
-        /^[A-Z0-9\-]+$/,
-        "SKU can only contain uppercase letters, numbers, and hyphens",
-      ],
     },
+    // sku: {
+    //   // Renamed from 'id' to 'sku' for clarity
+    //   type: String,
+    //   required: [true, "SKU is required"],
+    //   unique: true,
+    //   trim: true,
+    //   uppercase: true,
+    //   match: [
+    //     /^[A-Z0-9\-]+$/,
+    //     "SKU can only contain uppercase letters, numbers, and hyphens",
+    //   ],
+    // },
     discount: {
       type: Number,
       default: 0,
@@ -100,7 +106,6 @@ function arrayLimit(val) {
 
 // Create Indexes
 productSchema.index({ productName: "text", description: "text" }); // For text search
-productSchema.index({ sku: 1 }); // Ensure SKU is indexed for uniqueness
 
 // Export the Product Model
 module.exports = mongoose.model("Product", productSchema);

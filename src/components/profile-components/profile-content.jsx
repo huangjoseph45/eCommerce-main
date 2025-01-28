@@ -87,14 +87,14 @@ const ProfileContent = ({ currentSection, fieldData }) => {
           field.fieldName === "country" ? (
             <Select
               options={countries}
-              selectedValue={clonedInfo.address.country}
+              selectedValue={clonedInfo?.address?.country}
               onSelect={editUserInfo}
               field={field}
             />
           ) : field.fieldName === "state" ? (
             <Select
               options={states}
-              selectedValue={clonedInfo.address.state}
+              selectedValue={clonedInfo.address?.state}
               onSelect={editUserInfo}
               field={field}
             />

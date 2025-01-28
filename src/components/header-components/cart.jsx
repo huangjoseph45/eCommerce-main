@@ -2,9 +2,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { useMemo, useContext, useEffect } from "react";
 import { ProductContext } from "../utilities/ProductContext";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const { userInfo, setUserInfo } = useContext(ProductContext);
+  const nav = useNavigate();
 
   useEffect(() => {
     if (!userInfo.cart) {
@@ -13,14 +15,23 @@ const Cart = () => {
   }, [userInfo, setUserInfo]);
 
   const numItems = useMemo(() => {
-    if (!userInfo.cart) return 0;
-    return userInfo.cart.reduce((total, item) => total + item.quantity, 0);
+    if (!userInfo.cart || userInfo.cart === undefined) return 0;
+    return userInfo.cart.reduce((total, item) => {
+      return item !== undefined ? total + item.quantity : 0;
+    }, 0);
   }, [userInfo.cart]);
+
+  const handleClick = () => {
+    const cookies = document.cookie;
+    if (cookies.includes("sessionId")) nav("/cart");
+    else nav("/login");
+  };
 
   return (
     <button
       className="flex items-center justify-center relative cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 rounded-full p-3 transition-all duration-300"
       aria-label="Cart"
+      onClick={handleClick}
     >
       <svg
         aria-hidden="true"

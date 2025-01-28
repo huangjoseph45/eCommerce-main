@@ -7,6 +7,7 @@ const MongoStore = require("connect-mongo");
 
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
+const productRoutes = require("./routes/productRoutes");
 
 const app = express();
 const MONGO_URI = process.env.MONGO_URI;
@@ -44,6 +45,7 @@ app.use(
 );
 
 app.use("/api/users", userRoutes);
+app.use("/api/products", productRoutes);
 
 app.use("/", (req, res) => {
   res.send("Welcome");

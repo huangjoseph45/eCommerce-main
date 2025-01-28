@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useMemo } from "react";
 import { motion } from "motion/react";
 import { AnimatePresence } from "motion/react";
+import isEmpty from "./utilities/isEmpty";
 
 const Select = ({ options, selectedValue, onSelect, field }) => {
   const [showElements, setShowElements] = useState(false);
@@ -28,7 +29,7 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
   const handleSelect = (value = null) => {
     if (
       !list.current.filter((listItem) => {
-        return listItem.toLowerCase().localeCompare(query.toLowerCase() === 0);
+        return listItem?.toLowerCase().localeCompare(query.toLowerCase() === 0);
       }).length > 0
     ) {
       return;
@@ -63,9 +64,21 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
   };
 
   useEffect(() => {
-    if (query !== "" && !list.current.includes(query)) {
+    if (
+      !isEmpty(query) &&
+      !list.current.includes(query) &&
+      !isEmpty(list.current)
+    ) {
       setFilteredList(
         list.current.filter((element) => {
+          if (typeof element !== "string") {
+            console.warn("Encountered a non-string element:", element);
+            return false;
+          }
+          if (typeof query !== "string") {
+            console.warn("Encountered a non-string element:", query);
+            return false;
+          }
           return element.toLowerCase().includes(query.toLowerCase());
         })
       );

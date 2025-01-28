@@ -6,8 +6,6 @@ const {
   EncryptPassword,
   ComparePassword,
 } = require("../models/encrypt-password");
-const { request } = require("express");
-const { add } = require("lodash");
 
 /**
  * Helper function to validate required fields.
@@ -49,7 +47,6 @@ const createSession = (req, res, user) => {
     userAgent: req.get("User-Agent"),
   };
   req.session.user = sessionUser;
-  console.log(req.session);
 
   req.session.save((err) => {
     if (err) {
@@ -287,7 +284,8 @@ const updateSensitiveData = async (req, res) => {
   }
 
   if (password && oldPassword) {
-    const isPasswordValid = ComparePassword(oldPassword, user.password);
+    const isPasswordValid = await ComparePassword(oldPassword, user.password);
+    console.log(isPasswordValid);
 
     if (!isPasswordValid) {
       return res.status(402).json({ message: "Invalid password" });

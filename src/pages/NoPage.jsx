@@ -1,15 +1,20 @@
-import { button } from "motion/react-client";
+import Header from "../components/header";
+import Footer from "../components/footer";
 import "../index.css";
 
 const NoPage = () => {
   return (
-    <a
-      className="text-6xl absolute left-1/2 top-[40%] -translate-x-1/2 -translate-y-1/2"
-      href="/"
-      rel="noopener noreferrer"
-    >
-      404 Page Not Found
-    </a>
+    <>
+      <Header> </Header>{" "}
+      <a
+        className="text-6xl flex items-center justify-center h-[20rem]"
+        href="/"
+        rel="noopener noreferrer"
+      >
+        404 Page Not Found
+      </a>
+      <Footer />
+    </>
   );
 };
 

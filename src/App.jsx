@@ -12,13 +12,14 @@ import NoPage from "./pages/NoPage";
 import ProductPage from "./pages/ProductPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
+import CartPage from "./pages/CartPage";
 
 const products = [
   {
     productName: "Fancy Polo",
     type: "Men's Clothing",
     price: 100,
-    id: "testfp-1",
+    id: "testfp1",
     discount: 10,
     colors: [
       {
@@ -48,6 +49,17 @@ function App() {
 
   // Startup function to check authentication and fetch data
   const startup = async () => {
+    const response = fetch(
+      "http://localhost:2000/api/products/create-product",
+      {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(products[0]),
+      }
+    );
+    console.log("HI");
+
     const cookies = document.cookie;
     if (cookies.includes("sessionId")) {
       try {
@@ -108,6 +120,8 @@ function App() {
             <Route path="*" element={<NoPage />} />
             <Route path="/login" element={<LoginPage />}></Route>
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/cart" element={<CartPage />} />
+
             {productLinks}
           </Routes>
         </BrowserRouter>

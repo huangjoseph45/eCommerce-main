@@ -20,7 +20,7 @@ const getDataFromServer = async ({ setUserInfo, userInfo }) => {
 
     const json = await dataResponse.json();
     if (!_.isEqual(json, userInfo)) setUserInfo(json);
-
+    console.log(json);
     return json;
   } catch (error) {
     console.error("Failed to fetch data from server:", error);

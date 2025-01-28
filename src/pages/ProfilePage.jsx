@@ -6,6 +6,7 @@ import SettingsSectionsList from "../components/profile-components/settings-sect
 import debounce from "lodash.debounce";
 import { useNavigate } from "react-router-dom";
 import { ShowProfileContext } from "../components/utilities/ProductContext.js";
+import Footer from "../components/footer.jsx";
 
 const ProfilePage = () => {
   const [showProfileHeaders, setShowProfileHeaders] = useState(true);
@@ -125,6 +126,7 @@ const ProfilePage = () => {
           fieldData={sectionData[currentSection]}
         />
       </div>
+      <Footer />
     </ShowProfileContext.Provider>
   );
 };
