@@ -75,6 +75,7 @@ const CartItemList = ({ cart }) => {
             color={product.color}
             type={product.type}
             size={product.size}
+            description={product.description}
           />
         );
       })}

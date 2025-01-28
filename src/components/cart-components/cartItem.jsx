@@ -1,6 +1,7 @@
 // CartItem.js
-import React, { memo, useState } from "react";
-import ProductQuantity from "./ProductQuantity";
+import React, { memo, useEffect, useState, useRef } from "react";
+import ProductQuantity from "./productQuantity";
+import { useNavigate } from "react-router-dom";
 
 const CartItem = memo(
   ({
@@ -13,12 +14,30 @@ const CartItem = memo(
     color,
     type,
     size,
+    description,
     deleteFunc,
   }) => {
+    const nav = useNavigate();
     const [isVisible, setIsVisible] = useState(true);
     const deleteItem = () => {
       setIsVisible(false);
     };
+
+    const baseId = useRef();
+
+    useEffect(() => {
+      if (productId !== undefined && productId.includes("-")) {
+        console.log(productId);
+        baseId.current = productId.split("-")[0];
+      }
+    }, [productId]);
+
+    const stringURL = (
+      encodeURIComponent(productName.replace(" ", "-")) +
+      "/" +
+      baseId.current
+    ).toLowerCase();
+
     return (
       isVisible && (
         <li className="list-none py-2">
@@ -26,9 +45,10 @@ const CartItem = memo(
             <div className="flex flex-col gap-2">
               {imageLink && (
                 <img
+                  onClick={() => nav("/" + stringURL)}
                   src={imageLink}
                   alt={productName}
-                  className="w-32 object-cover"
+                  className="w-32 object-cover cursor-pointer"
                 />
               )}{" "}
               <ProductQuantity
@@ -40,7 +60,12 @@ const CartItem = memo(
 
             <div className="w-full flex flex-col gap-1">
               <div className="flex flex-row w-full justify-between pr-4">
-                <h3 className="text-lg font-semibold">{productName}</h3>
+                <a
+                  onClick={() => nav("/" + stringURL)}
+                  className="text-lg font-semibold cursor-pointer"
+                >
+                  {productName}
+                </a>
                 <div className="flex flex-row gap-4">
                   {discount && (
                     <p className="text-gray-700 line-through">
