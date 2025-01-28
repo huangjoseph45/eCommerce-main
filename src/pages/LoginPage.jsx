@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import ErrorMessage from "../components/login-components/error-message";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
-import { ProductContext } from "../components/utilities/ProductContext";
+import { ProductContext } from "../components/utilities/ContextManager";
 import getDataFromServer from "../components/utilities/getDataFromServer";
 import { useNavigate } from "react-router-dom";
 import handleLogout from "../components/utilities/handleLogout";

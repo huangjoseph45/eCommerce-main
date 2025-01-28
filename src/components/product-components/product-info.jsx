@@ -2,7 +2,7 @@ import parsePrice from "../utilities/parsePrice";
 import { useState, useEffect, useContext } from "react";
 import AddToCart from "./add-to-cart-button";
 import SizesDropdown from "./size-dropdown";
-import { ProductInfoContext } from "../utilities/ProductContext";
+import { ProductInfoContext } from "../utilities/ContextManager";
 
 const ProductInfo = ({ product }) => {
   const { setProductInfo } = useContext(ProductInfoContext);

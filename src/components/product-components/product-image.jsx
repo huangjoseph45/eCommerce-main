@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { ProductInfoContext } from "../utilities/ProductContext";
+import { ProductInfoContext } from "../utilities/ContextManager";
 
 const ProductImage = ({ product }) => {
   const { productInfo } = useContext(ProductInfoContext);

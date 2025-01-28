@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import LogoutButton from "../logoutButton";
 import debounce from "lodash.debounce";
-import { ShowProfileContext } from "../utilities/ProductContext";
+import { ShowProfileContext } from "../utilities/ContextManager";
 import { AnimatePresence } from "motion/react";
 import { motion } from "motion/react";
 

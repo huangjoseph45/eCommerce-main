@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ProductContext } from "./utilities/ProductContext";
+import { ProductContext } from "./utilities/ContextManager";
 import handleLogout from "./utilities/handleLogout";
 import { useNavigate } from "react-router-dom";
 

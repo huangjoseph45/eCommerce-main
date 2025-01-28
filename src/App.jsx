@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import debounce from "lodash.debounce"; // Install lodash.debounce for debouncing server updates
 
-import { ProductContext } from "./components/utilities/ProductContext";
+import { ProductContext } from "./components/utilities/ContextManager";
 import getDataFromServer from "./components/utilities/getDataFromServer";
 import updateServerData from "./components/utilities/updateServerData";
 

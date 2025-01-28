@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import { ProductInfoContext } from "../utilities/ProductContext";
+import { ProductInfoContext } from "../utilities/ContextManager";
 
 const SizesDropdown = ({ product, defaultSelector = "Select" }) => {
   const [showElement, setShowElement] = useState(false);

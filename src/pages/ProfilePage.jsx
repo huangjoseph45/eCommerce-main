@@ -1,11 +1,11 @@
 import ProfileContent from "../components/profile-components/profile-content.jsx";
 import { createContext, useContext, useEffect, useState } from "react";
-import { ProductContext } from "../components/utilities/ProductContext.js";
+import { ProductContext } from "../components/utilities/ContextManager.js";
 import Header from "../components/header.jsx";
 import SettingsSectionsList from "../components/profile-components/settings-sections-list.jsx";
 import debounce from "lodash.debounce";
 import { useNavigate } from "react-router-dom";
-import { ShowProfileContext } from "../components/utilities/ProductContext.js";
+import { ShowProfileContext } from "../components/utilities/ContextManager.js";
 import Footer from "../components/footer.jsx";
 
 const ProfilePage = () => {

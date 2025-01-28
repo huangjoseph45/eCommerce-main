@@ -1,7 +1,7 @@
-import { useContext, useState, useRef } from "react";
-import { ProductContext } from "../utilities/ProductContext";
+import { useContext, useState, useRef, useEffect } from "react";
+import { ProductContext } from "../utilities/ContextManager";
 
-const ProductQuantity = ({ quantity, productId }) => {
+const ProductQuantity = ({ quantity, productId, deleteFunc }) => {
   const { userInfo, setUserInfo } = useContext(ProductContext);
   const [value, setValue] = useState(quantity);
   const handleChange = (e) => {
@@ -36,6 +36,7 @@ const ProductQuantity = ({ quantity, productId }) => {
             : product;
         }),
       });
+    setValue(value + modifier);
     if (value === 1 && modifier < 0) {
       handleDelete();
     }
@@ -49,8 +50,8 @@ const ProductQuantity = ({ quantity, productId }) => {
         return item.productId !== productId;
       }),
     });
+    deleteFunc(productId);
   };
-
   return (
     <div className="flex flex-row relative w-full rounded-full border">
       <button

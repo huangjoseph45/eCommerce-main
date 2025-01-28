@@ -1,6 +1,6 @@
 import Card from "./card";
 import { useState, useContext } from "react";
-import { ProductContext } from "./utilities/ProductContext";
+import { ProductContext } from "./utilities/ContextManager";
 
 const CardGrid = () => {
   const { products } = useContext(ProductContext);

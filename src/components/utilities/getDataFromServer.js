@@ -1,7 +1,7 @@
 // getDataFromServer.js
 import _ from "lodash";
 
-const getDataFromServer = async ({ setUserInfo, userInfo }) => {
+const getDataFromServer = async ({ setUserInfo = null, userInfo }) => {
   try {
     const dataResponse = await fetch(
       "http://localhost:2000/api/users/set-data",

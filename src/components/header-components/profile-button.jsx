@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
-import { ProductContext } from "../utilities/ProductContext";
+import { ProductContext } from "../utilities/ContextManager";
 
 const ProfileButton = () => {
   const nav = useNavigate();

@@ -3,7 +3,7 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import ProductImage from "../components/product-components/product-image";
 import ProductInfo from "../components/product-components/product-info";
-import { ProductInfoContext } from "../components/utilities/ProductContext";
+import { ProductInfoContext } from "../components/utilities/ContextManager";
 import { useState } from "react";
 
 const ProductPage = ({ product }) => {

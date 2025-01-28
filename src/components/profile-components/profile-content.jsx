@@ -2,7 +2,7 @@ import { useContext, useEffect, useState, useMemo, useRef } from "react";
 import {
   ProductContext,
   ShowProfileContext,
-} from "../utilities/ProductContext";
+} from "../utilities/ContextManager";
 import parseCamelCase from "../utilities/parseCamelCase";
 import SaveButton from "../saveButton";
 import PasswordField from "./password-field";

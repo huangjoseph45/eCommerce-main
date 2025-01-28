@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import returnProduct from "../utilities/returnProduct";
 import CartItem from "./cartItem";
 import LoadingCart from "./loadingCart";
+import { ProductsContext } from "../utilities/ContextManager";
 
 const CartItemList = ({ cart }) => {
-  const [products, setProducts] = useState([]);
+  const { products, setProducts } = useContext(ProductsContext);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -61,6 +62,7 @@ const CartItemList = ({ cart }) => {
           );
         }
         if (!cartItem) return;
+
         return (
           <CartItem
             key={cartItem.productId}

@@ -1,6 +1,6 @@
 import { useContext, useCallback } from "react";
-import { ProductInfoContext } from "../utilities/ProductContext";
-import { ProductContext } from "../utilities/ProductContext";
+import { ProductInfoContext } from "../utilities/ContextManager";
+import { ProductContext } from "../utilities/ContextManager";
 import isEmpty from "../utilities/isEmpty";
 
 const AddToCart = () => {

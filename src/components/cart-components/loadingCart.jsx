@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { ProductContext } from "../utilities/ProductContext";
+import { ProductContext } from "../utilities/ContextManager";
 import SquigglyText from "./squigglyText";
 
 const LoadingCart = () => {

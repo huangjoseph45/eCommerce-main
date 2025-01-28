@@ -281,6 +281,8 @@ const updateSensitiveData = async (req, res) => {
       { $set: { email: email } },
       { runValidators: true }
     );
+  } else {
+    return res.status(402).json({ message: "Invalid Email" });
   }
 
   if (password && oldPassword) {
@@ -293,12 +295,16 @@ const updateSensitiveData = async (req, res) => {
 
     const hashedPassword = await EncryptPassword(password);
 
-    await User.updateOne(
+    const user = await User.updateOne(
       { _id: userId },
       { $set: { password: hashedPassword } },
       { runValidators: true }
     );
+  } else {
+    return res.status(402).json({ message: "Invalid password" });
   }
+
+  console.log(user);
 
   return res
     .status(200)
