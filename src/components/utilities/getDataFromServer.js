@@ -1,5 +1,6 @@
 // getDataFromServer.js
 import _ from "lodash";
+import { useState } from "react";
 
 const getDataFromServer = async ({ setUserInfo = null, userInfo }) => {
   try {
@@ -29,3 +30,8 @@ const getDataFromServer = async ({ setUserInfo = null, userInfo }) => {
 };
 
 export default getDataFromServer;
+
+const useFetchServerData = () => {
+  const [isLoading, setLoading] = useState(false);
+  const [data, setData] = useState();
+};
