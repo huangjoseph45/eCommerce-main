@@ -10,12 +10,11 @@ import Select from "../select";
 import { Country, State, City } from "country-state-city";
 import { AnimatePresence, motion } from "motion/react";
 
-const ProfileContent = ({ currentSection, fieldData }) => {
+const ProfileContent = ({ currentSection, fieldData, userInfo, isLoading }) => {
   const { showProfileHeaders, setShowProfileHeaders } =
     useContext(ShowProfileContext);
 
   const [isChanged, setIsChanged] = useState(false);
-  const { userInfo } = useContext(ProductContext);
   const [clonedInfo, setClonedInfo] = useState(structuredClone(userInfo));
 
   const countries = useRef(useMemo(() => Country.getAllCountries(), []));
@@ -68,8 +67,8 @@ const ProfileContent = ({ currentSection, fieldData }) => {
   const fields = fieldData.map((field) => {
     let regularText = field.fieldName;
     let textValue;
-    if (field.isDate) {
-      textValue = new Date(clonedInfo.creationDate).toDateString();
+    if (field && field.isDate) {
+      textValue = new Date(clonedInfo?.creationDate).toDateString();
       regularText = parseCamelCase(field.fieldName);
     } else {
       regularText = parseCamelCase(field.fieldName);
@@ -78,56 +77,83 @@ const ProfileContent = ({ currentSection, fieldData }) => {
       else textValue = clonedInfo?.[field.fieldName];
     }
 
+    if (field.fieldName === "country") {
+      return (
+        <li
+          key={field.fieldName}
+          className="flex flex-row gap-3 p-2 items-center relative w-full"
+        >
+          <Select
+            options={countries.current}
+            selectedValue={clonedInfo?.address?.country}
+            onSelect={editUserInfo}
+            field={field}
+          />
+        </li>
+      );
+    }
+
+    if (field.fieldName === "state") {
+      return (
+        <li
+          key={field.fieldName}
+          className="flex flex-row gap-3 p-2 items-center relative w-full"
+        >
+          <Select
+            options={states}
+            selectedValue={clonedInfo.address?.state}
+            onSelect={editUserInfo}
+            field={field}
+          />
+        </li>
+      );
+    }
+
+    if (field.type === "password") {
+      return (
+        <li
+          key={field.fieldName}
+          className="flex flex-row gap-3 p-2 items-center relative w-full"
+        >
+          <PasswordField />
+        </li>
+      );
+    }
+
+    if (field.type === "input") {
+      return (
+        <li
+          key={field.fieldName}
+          className="flex flex-row gap-3 p-2 items-center relative w-full"
+        >
+          <label className="absolute top-0 left-[.9rem] bg-white px-1 text-xs flex gap-[0.1rem]">
+            {regularText}{" "}
+            {field.isRequired && <p className="text-red-600">*</p>}
+          </label>
+          <input
+            type="text"
+            defaultValue={textValue}
+            className="outline outline-gray-600 p-3 rounded-lg w-full"
+            onChange={(e) => editUserInfo(e, field)}
+            maxLength={field.fieldName === "zipCode" ? 5 : 50}
+          />
+        </li>
+      );
+    }
+
     return (
       <li
         key={field.fieldName}
         className="flex flex-row gap-3 p-2 items-center relative w-full"
       >
-        {field.type !== "static" && field.fieldName !== "password" ? (
-          field.fieldName === "country" ? (
-            <Select
-              options={countries.current}
-              selectedValue={clonedInfo?.address?.country}
-              onSelect={editUserInfo}
-              field={field}
-            />
-          ) : field.fieldName === "state" ? (
-            <Select
-              options={states}
-              selectedValue={clonedInfo.address?.state}
-              onSelect={editUserInfo}
-              field={field}
-            />
-          ) : (
-            <>
-              <label className="absolute top-0 left-[.9rem] bg-white px-1 text-xs flex gap-[0.1rem]">
-                {regularText}{" "}
-                {field.isRequired && <p className="text-red-600">*</p>}
-              </label>
-              <input
-                type="text"
-                defaultValue={textValue}
-                className="outline outline-gray-600 p-3 rounded-lg w-full"
-                onChange={(e) => editUserInfo(e, field)}
-                maxLength={field.fieldName === "zipCode" ? 5 : 50}
-              />
-            </>
-          )
-        ) : field.type === "password" ? (
-          <PasswordField />
-        ) : (
-          <div className="flex flex-col">
-            <label
-              htmlFor={field.fieldName}
-              className="capitalize font-semibold"
-            >
-              {regularText}
-            </label>
-            <p className=" p-3 rounded-lg w-full" name={field.fieldName}>
-              {textValue}
-            </p>
-          </div>
-        )}
+        <div className="flex flex-col">
+          <label htmlFor={field.fieldName} className="capitalize font-semibold">
+            {regularText}
+          </label>
+          <p className=" p-3 rounded-lg w-full" name={field.fieldName}>
+            {textValue}
+          </p>
+        </div>
       </li>
     );
   });

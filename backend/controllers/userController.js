@@ -6,6 +6,7 @@ const {
   EncryptPassword,
   ComparePassword,
 } = require("../models/encrypt-password");
+const { m } = require("motion/react");
 
 /**
  * Helper function to validate required fields.
@@ -159,38 +160,65 @@ const newUser = async (req, res) => {
 /**
  * Handler to set user data.
  */
-const setData = async (req, res) => {
+const fetchData = async (req, res) => {
   try {
     const { userId, email } = req.session.user;
 
+    const queries = req.body || null;
     // Validate session data
     if (!validateFields([{ name: "email", value: email }], res)) return;
 
     // Find user and verify session
-    const user = await User.findOne({ email });
+    const user = await User.findOne(
+      { email },
+      "email firstName lastName age cart createdAt totalBalance address phoneNumber"
+    );
     if (!user || user._id.toString() !== userId) {
       req.session.destroy();
-      return res.status(400).json({ error: "Invalid sessionId" });
+      return res.status(401).json({ error: "Unauthorized: Invalid session" });
     }
 
     // Regenerate session
     req.session.user.ip = req.ip;
     req.session.user.userAgent = req.get("User-Agent");
 
-    console.log(user.address);
+    const validQueries = [
+      "email",
+      "firstName",
+      "lastName",
+      "age",
+      "cart",
+      "creationDate",
+      "balance",
+      "address",
+      "phoneNumber",
+    ];
 
-    // Respond with user data
-    return res.status(200).json({
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      age: user.age,
-      cart: user.cart,
-      creationDate: user.createdAt,
-      balance: user.totalBalance,
-      address: user.address,
-      phoneNumber: user.phoneNumber,
-    });
+    let matched;
+    if (queries && Array.isArray(queries) && queries.length > 0) {
+      const validMatchedQueries = queries.filter((query) =>
+        validQueries.includes(query)
+      );
+
+      matched = validMatchedQueries.reduce((acc, query) => {
+        acc[query] = user[query === "balance" ? "totalBalance" : query];
+        return acc;
+      }, {});
+    } else {
+      matched = {
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        age: user.age,
+        cart: user.cart,
+        creationDate: user.createdAt,
+        balance: user.totalBalance,
+        address: user.address,
+        phoneNumber: user.phoneNumber,
+      };
+    }
+
+    return res.status(200).json(matched);
   } catch (error) {
     console.error(`Error in setData: ${error.message}`, error);
     return res.status(500).json({ error: error.message });
@@ -294,7 +322,6 @@ const updateSensitiveData = async (req, res) => {
       oldPassword,
       foundUser.password
     );
-    console.log(isPasswordValid);
 
     if (!isPasswordValid) {
       return res.status(402).json({ message: "Invalid password" });
@@ -329,7 +356,7 @@ const verifySession = (req, res, next) => {
 module.exports = {
   checkUser,
   newUser,
-  setData,
+  fetchData,
   verifySession,
   handleLogout,
   handleDataUpdate,

@@ -5,8 +5,12 @@ import Cart from "./header-components/cart";
 import ProfileButton from "./header-components/profile-button";
 import Sidebar from "./header-components/sidebar";
 import { useLocation } from "react-router-dom";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
+
+import useFetchServerData from "../components/utilities/getDataFromServer";
+
+import { ProductContext } from "../components/utilities/ContextManager";
 
 const opacityVariants = {
   visible: { opacity: 1 },
@@ -17,6 +21,12 @@ const Header = () => {
   const [isVisible, setVisible] = useState(true);
   const location = useLocation();
   const timeoutRef = useRef(null);
+  const { setUserInfo, isLoggedIn, setIsLoggedIn } = useContext(ProductContext);
+
+  const { isLoading, data, refetch } = useFetchServerData({
+    queries: ["cart"],
+    auth: { isLoggedIn },
+  });
 
   useEffect(() => {
     const resizeEvent = () => {
@@ -52,9 +62,31 @@ const Header = () => {
     }
   };
 
+  useEffect(() => {
+    console.log("updated data");
+    console.log(data);
+    if (data) {
+      setUserInfo(data);
+    }
+  }, [data, isLoggedIn]);
+
+  useEffect(() => {
+    if (!isLoading && data && isLoggedIn) {
+      const cookies = document.cookie;
+
+      if (cookies.includes("sessionId")) {
+        setIsLoggedIn(true);
+        refetch();
+      } else {
+        setIsLoggedIn(false);
+        setUserInfo({});
+      }
+    }
+  }, [isLoggedIn]);
+
   return (
     <motion.div
-      className={`sticky top-0 bg-white h-[10vh] flex px-4 py-2 flex-row justify-between max-h-24 z-40 ${
+      className={`sticky top-0 bg-white h-[8vh] flex px-4 py-2 flex-row justify-between max-h-24 z-40  border-b ${
         isVisible ? "opacity-1" : "opacity-0"
       }`}
       onMouseEnter={mouseEnter}

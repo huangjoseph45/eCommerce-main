@@ -22,7 +22,7 @@ const LoginPage = () => {
   });
   const [showTooltip, setShowTooltip] = useState(false);
 
-  const { userInfo, setUserInfo } = useContext(ProductContext);
+  const { userInfo, setUserInfo, setIsLoggedIn } = useContext(ProductContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -71,11 +71,9 @@ const LoginPage = () => {
         return;
       }
 
-      getDataFromServer({ setUserInfo });
-
       const result = await response.text();
       console.log(result);
-      console.log(userInfo);
+      setIsLoggedIn(true);
       nav("/");
     } catch (error) {
       console.error("Error submitting form:", error);

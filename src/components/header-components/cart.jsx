@@ -1,25 +1,26 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import { useMemo, useContext, useEffect } from "react";
+import { useMemo, useContext, useEffect, useState } from "react";
 import { ProductContext } from "../utilities/ContextManager";
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const { userInfo, setUserInfo } = useContext(ProductContext);
+  const { userInfo } = useContext(ProductContext);
+  const [numItems, setNumItems] = useState(0);
   const nav = useNavigate();
+  console.log(userInfo);
 
   useEffect(() => {
-    if (!userInfo.cart) {
-      setUserInfo({ ...userInfo, cart: [] });
-    }
-  }, [userInfo, setUserInfo]);
+    if (userInfo?.cart && Array.isArray(userInfo.cart)) {
+      const num = userInfo.cart.reduce((total, item) => {
+        return item !== undefined && typeof item.quantity === "number"
+          ? total + item.quantity
+          : total;
+      }, 0);
 
-  const numItems = useMemo(() => {
-    if (!userInfo.cart || userInfo.cart === undefined) return 0;
-    return userInfo.cart.reduce((total, item) => {
-      return item !== undefined ? total + item.quantity : 0;
-    }, 0);
-  }, [userInfo.cart]);
+      setNumItems(num);
+    }
+  }, [userInfo]);
 
   const handleClick = () => {
     const cookies = document.cookie;

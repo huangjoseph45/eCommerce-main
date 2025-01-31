@@ -29,7 +29,6 @@ const CartItemList = ({ cart }) => {
         setLoading(false);
       }
     };
-
     if (cart && cart.length > 0) {
       fetchProducts();
     } else {

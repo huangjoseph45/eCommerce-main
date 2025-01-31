@@ -3,7 +3,7 @@ const router = express.Router();
 const {
   checkUser,
   newUser,
-  setData,
+  fetchData,
   verifySession,
   handleLogout,
   handleDataUpdate,
@@ -16,9 +16,9 @@ router.post("/createuser", newUser);
 
 router.post("/logout", handleLogout);
 
-router.get("/set-data", verifySession, setData);
+router.post("/fetch-data", verifySession, fetchData);
 
-router.post("/update", handleDataUpdate);
+router.post("/update", verifySession, handleDataUpdate);
 
 router.post("/update-sensitive-data", verifySession, updateSensitiveData);
 

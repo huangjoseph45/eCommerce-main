@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import debounce from "lodash.debounce"; // Install lodash.debounce for debouncing server updates
 
 import { ProductContext } from "./components/utilities/ContextManager";
-import getDataFromServer from "./components/utilities/getDataFromServer";
+import useFetchServerData from "./components/utilities/getDataFromServer";
 import updateServerData from "./components/utilities/updateServerData";
 
 import Shopping from "./pages/Shopping";
@@ -13,6 +13,8 @@ import ProductPage from "./pages/ProductPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import CartPage from "./pages/CartPage";
+import { isEmpty } from "lodash";
+import { useLocation } from "react-router-dom";
 
 const products = [
   {
@@ -47,49 +49,12 @@ function App() {
     updateServerData({ userInfo: updatedUserInfo });
   }, 50);
 
-  // Startup function to check authentication and fetch data
-  const startup = async () => {
-    const cookies = document.cookie;
-    if (cookies.includes("sessionId")) {
-      try {
-        const [response, serverData] = await Promise.all([
-          fetch("http://localhost:2000/api/products/create-product", {
-            method: "POST",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(products[0]),
-          }),
-          getDataFromServer({ setUserInfo, userInfo }),
-        ]);
-        if (!response.ok) {
-          throw new Error(`Product creation failed: ${response.statusText}`);
-        }
-        const createdProduct = await response.json();
-        console.log("Product created successfully:", createdProduct);
-
-        setIsLoggedIn(true);
-      } catch (error) {
-        console.error("Error fetching server data:", error);
-      }
-    } else {
-      setIsLoggedIn(false);
-    }
-  };
-
-  // Run startup on component mount
   useEffect(() => {
-    startup();
-  }, []);
-
-  // Effect to handle updates to userInfo
-  useEffect(() => {
-    // Update server data whenever userInfo changes
     debouncedUpdateServerData(userInfo);
+    console.log(userInfo);
 
-    // Cleanup the debounced function on unmount
     return () => {
       debouncedUpdateServerData.cancel();
-      if (!isLoggedIn) setIsLoggedIn(true);
     };
   }, [userInfo]);
 
@@ -111,7 +76,7 @@ function App() {
   return (
     <>
       <ProductContext.Provider
-        value={{ products, isLoggedIn, userInfo, setUserInfo }}
+        value={{ products, isLoggedIn, userInfo, setUserInfo, setIsLoggedIn }}
       >
         <BrowserRouter>
           <Routes>

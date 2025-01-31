@@ -7,11 +7,28 @@ import debounce from "lodash.debounce";
 import { useNavigate } from "react-router-dom";
 import { ShowProfileContext } from "../components/utilities/ContextManager.js";
 import Footer from "../components/footer.jsx";
+import useFetchServerData from "../components/utilities/getDataFromServer.js";
 
 const ProfilePage = () => {
   const [showProfileHeaders, setShowProfileHeaders] = useState(true);
-  const { userInfo, isLoggedIn } = useContext(ProductContext);
   const [currentSection, setCurrentSection] = useState(0);
+  const [userInfo, setUserInfo] = useState();
+  const { isLoggedIn } = useContext(ProductContext);
+
+  const fetchFields = [
+    "email",
+    "firstName",
+    "lastName",
+    "age",
+    "creationDate",
+    "address",
+    "phoneNumber",
+  ];
+
+  const { isLoading, data, refetch } = useFetchServerData({
+    queries: fetchFields,
+    auth: { isLoggedIn },
+  });
 
   const nav = useNavigate();
 
@@ -110,12 +127,16 @@ const ProfilePage = () => {
     return () => window.removeEventListener("resize", checkWindowWidth);
   }, []);
 
-  console.log(userInfo);
+  useEffect(() => {
+    setUserInfo(data);
+  }, [data]);
+
   return (
     <ShowProfileContext.Provider
       value={{ showProfileHeaders, setShowProfileHeaders }}
     >
       <Header></Header>
+
       <div className="flex flex-row pt-4  border-t-[.1rem] lg:border-t-0 border-t-black">
         <SettingsSectionsList
           sections={accountSections}
@@ -124,6 +145,8 @@ const ProfilePage = () => {
         <ProfileContent
           currentSection={accountSections[currentSection]}
           fieldData={sectionData[currentSection]}
+          userInfo={userInfo}
+          isLoading={isLoading}
         />
       </div>
       <Footer />

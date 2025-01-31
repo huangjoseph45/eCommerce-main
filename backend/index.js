@@ -27,6 +27,7 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(
   session({
     store: MongoStore.create({ mongoUrl: MONGO_URI }),

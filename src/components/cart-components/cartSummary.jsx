@@ -11,7 +11,7 @@ const CartSummary = () => {
   const [shippingPrice, setShippingPrice] = useState(0);
 
   useEffect(() => {
-    if (userInfo.cart && products) {
+    if (userInfo && userInfo !== undefined && userInfo.cart && products) {
       let cost = 0;
       userInfo.cart.forEach((item) => {
         const productId = item.productId.split("-")[0];
@@ -21,7 +21,7 @@ const CartSummary = () => {
       });
       setSubtotalCost(cost.toFixed(2));
     }
-  }, [products, userInfo.cart]);
+  }, [products, userInfo?.cart]);
 
   return (
     userInfo &&

@@ -39,7 +39,6 @@ const SettingsSectionsList = ({ sections, setSection }) => {
     );
   });
 
-  console.log(accountSections);
   return (
     <>
       <AnimatePresence>

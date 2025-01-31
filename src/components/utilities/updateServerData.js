@@ -3,7 +3,8 @@ import isEmpty from "./isEmpty";
 let count = 0;
 
 const updateServerData = async ({ userInfo }) => {
-  if (isEmpty(userInfo) || isEmpty(userInfo.email)) {
+  if (isEmpty(userInfo)) {
+    console.log(userInfo);
     return false;
   }
   try {
