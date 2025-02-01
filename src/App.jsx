@@ -4,8 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import debounce from "lodash.debounce"; // Install lodash.debounce for debouncing server updates
 
 import { ProductContext } from "./components/utilities/ContextManager";
-import useFetchServerData from "./components/utilities/getDataFromServer";
-import updateServerData from "./components/utilities/updateServerData";
+import useUpdateServerData from "./components/utilities/updateServerData";
 
 import Shopping from "./pages/Shopping";
 import NoPage from "./pages/NoPage";
@@ -13,8 +12,6 @@ import ProductPage from "./pages/ProductPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import CartPage from "./pages/CartPage";
-import { isEmpty } from "lodash";
-import { useLocation } from "react-router-dom";
 
 const products = [
   {
@@ -44,18 +41,12 @@ const products = [
 function App() {
   const [userInfo, setUserInfo] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const debouncedUpdateServerData = debounce((updatedUserInfo) => {
-    updateServerData({ userInfo: updatedUserInfo });
-  }, 50);
+  const { isLoading, response, errorCode, refetch } = useUpdateServerData({
+    dataToUpdate: null,
+  });
 
   useEffect(() => {
-    debouncedUpdateServerData(userInfo);
-    console.log(userInfo);
-
-    return () => {
-      debouncedUpdateServerData.cancel();
-    };
+    refetch(userInfo);
   }, [userInfo]);
 
   const productLinks = products.map((product) => {

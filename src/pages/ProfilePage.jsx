@@ -20,7 +20,7 @@ const ProfilePage = () => {
     "firstName",
     "lastName",
     "age",
-    "creationDate",
+    "createdAt",
     "address",
     "phoneNumber",
   ];
@@ -46,7 +46,7 @@ const ProfilePage = () => {
     { fieldName: "lastName", type: "input", isRequired: false },
     { fieldName: "age", type: "input", isRequired: false },
     {
-      fieldName: "creationDate",
+      fieldName: "createdAt",
       type: "static",
 
       isRequired: false,
@@ -145,7 +145,7 @@ const ProfilePage = () => {
         <ProfileContent
           currentSection={accountSections[currentSection]}
           fieldData={sectionData[currentSection]}
-          userInfo={userInfo}
+          fetchedUserData={userInfo}
           isLoading={isLoading}
         />
       </div>

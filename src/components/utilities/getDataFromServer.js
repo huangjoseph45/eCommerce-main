@@ -41,7 +41,6 @@ const useFetchServerData = ({ queries, auth }) => {
       throw new Error(`User is not authorized`);
     }
     try {
-      console.log(queries);
       setLoading(false);
 
       const response = await fetch(
@@ -82,9 +81,7 @@ const useFetchServerData = ({ queries, auth }) => {
   const refetch = useCallback(() => {
     setLoading(true);
     getDataFunc();
-    console.log("HI");
   }, [data]);
-  console.log(data);
   return { isLoading, data, setData, isError, refetch };
 };
 

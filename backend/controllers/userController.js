@@ -188,7 +188,7 @@ const fetchData = async (req, res) => {
       "lastName",
       "age",
       "cart",
-      "creationDate",
+      "createdAt",
       "balance",
       "address",
       "phoneNumber",
@@ -211,7 +211,7 @@ const fetchData = async (req, res) => {
         lastName: user.lastName,
         age: user.age,
         cart: user.cart,
-        creationDate: user.createdAt,
+        createdAt: user.createdAt,
         balance: user.totalBalance,
         address: user.address,
         phoneNumber: user.phoneNumber,
@@ -251,26 +251,44 @@ const handleLogout = (req, res) => {
 
 const handleDataUpdate = async (req, res) => {
   try {
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(400).json({ message: "Empty Package" });
+    }
+
     const { firstName, lastName, email, cart, age, address, phoneNumber } =
       req.body;
-    if (address?.zipCode && address?.zipCode.length !== 5) {
-      return res.status(400).json({ message: "Invalid package" });
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required for update" });
+    }
+
+    if (address?.zipCode && String(address.zipCode).length !== 5) {
+      return res.status(400).json({ message: "Zipcode Invalid" });
     }
 
     const update = {
-      firstName,
-      lastName,
-      cart,
-      age,
-      address,
-      phoneNumber,
+      ...(firstName !== undefined && { firstName }),
+      ...(lastName !== undefined && { lastName }),
+      ...(cart !== undefined && { cart }),
+      ...(age !== undefined && { age }),
+      ...(address !== undefined && { address }),
+      ...(phoneNumber !== undefined && { phoneNumber }),
     };
+
+    if (Object.keys(update).length === 0) {
+      return res.status(400).json({ message: "No fields provided for update" });
+    }
 
     const updatedUser = await User.findOneAndUpdate(
       { email: email },
       { $set: update },
       { new: true, runValidators: true, upsert: false }
     );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     return res.status(200).json({
       message: "User successfully updated",
     });
@@ -323,8 +341,11 @@ const updateSensitiveData = async (req, res) => {
       foundUser.password
     );
 
+    if (password.localeCompare(oldPassword) === 0) {
+      return res.status(402).json({ message: "Must supply new password" });
+    }
     if (!isPasswordValid) {
-      return res.status(402).json({ message: "Invalid password" });
+      return res.status(403).json({ message: "Invalid password" });
     }
 
     const hashedPassword = await EncryptPassword(password);

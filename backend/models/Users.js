@@ -71,6 +71,7 @@ const userSchema = new mongoose.Schema(
       default: 0,
       min: [0, "Total balance cannot be negative"],
     },
+
     loginHistory: {
       type: [Date],
       default: () => [new Date()],

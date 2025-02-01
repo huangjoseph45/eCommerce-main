@@ -10,12 +10,18 @@ import Select from "../select";
 import { Country, State, City } from "country-state-city";
 import { AnimatePresence, motion } from "motion/react";
 
-const ProfileContent = ({ currentSection, fieldData, userInfo, isLoading }) => {
+const ProfileContent = ({
+  currentSection,
+  fieldData,
+  fetchedUserData,
+  isLoading,
+}) => {
   const { showProfileHeaders, setShowProfileHeaders } =
     useContext(ShowProfileContext);
 
   const [isChanged, setIsChanged] = useState(false);
-  const [clonedInfo, setClonedInfo] = useState(structuredClone(userInfo));
+  const [clonedInfo, setClonedInfo] = useState(fetchedUserData);
+  const [alteredData, setAlteredData] = useState({});
 
   const countries = useRef(useMemo(() => Country.getAllCountries(), []));
   const [states, setStates] = useState(() => State.getAllStates());
@@ -41,12 +47,30 @@ const ProfileContent = ({ currentSection, fieldData, userInfo, isLoading }) => {
   }, [clonedInfo, countries.current]);
 
   useEffect(() => {
-    setClonedInfo(structuredClone(userInfo));
-    setIsChanged(false);
-  }, [userInfo]);
+    console.log("changed");
+    setClonedInfo(fetchedUserData);
+  }, [fetchedUserData]);
 
-  const editUserInfo = (e, field) => {
+  const saveFunc = () => {
+    setIsChanged(false);
+  };
+
+  const editfetchedUserData = (e, field) => {
     const prefix = field.prefix;
+
+    setAlteredData({
+      ...alteredData,
+      ...(prefix
+        ? {
+            [prefix]: {
+              ...clonedInfo[prefix],
+              [field.fieldName]: e.target.value,
+            },
+          }
+        : {
+            [field.fieldName]: e.target.value,
+          }),
+    });
     setClonedInfo({
       ...clonedInfo,
       ...(prefix
@@ -68,7 +92,7 @@ const ProfileContent = ({ currentSection, fieldData, userInfo, isLoading }) => {
     let regularText = field.fieldName;
     let textValue;
     if (field && field.isDate) {
-      textValue = new Date(clonedInfo?.creationDate).toDateString();
+      textValue = new Date(clonedInfo?.createdAt).toDateString();
       regularText = parseCamelCase(field.fieldName);
     } else {
       regularText = parseCamelCase(field.fieldName);
@@ -86,7 +110,7 @@ const ProfileContent = ({ currentSection, fieldData, userInfo, isLoading }) => {
           <Select
             options={countries.current}
             selectedValue={clonedInfo?.address?.country}
-            onSelect={editUserInfo}
+            onSelect={editfetchedUserData}
             field={field}
           />
         </li>
@@ -101,8 +125,8 @@ const ProfileContent = ({ currentSection, fieldData, userInfo, isLoading }) => {
         >
           <Select
             options={states}
-            selectedValue={clonedInfo.address?.state}
-            onSelect={editUserInfo}
+            selectedValue={clonedInfo?.address?.state}
+            onSelect={editfetchedUserData}
             field={field}
           />
         </li>
@@ -134,7 +158,7 @@ const ProfileContent = ({ currentSection, fieldData, userInfo, isLoading }) => {
             type="text"
             defaultValue={textValue}
             className="outline outline-gray-600 p-3 rounded-lg w-full"
-            onChange={(e) => editUserInfo(e, field)}
+            onChange={(e) => editfetchedUserData(e, field)}
             maxLength={field.fieldName === "zipCode" ? 5 : 50}
           />
         </li>
@@ -192,9 +216,13 @@ const ProfileContent = ({ currentSection, fieldData, userInfo, isLoading }) => {
             transition={{
               duration: 0.1, // Applies to initial and animate by default
             }}
-            className="mt-4 w-fit mx-auto"
+            className="mt-4 w-fit mx-2"
           >
-            <SaveButton dataToSave={clonedInfo} />
+            <SaveButton
+              dataToSave={alteredData}
+              saveFunc={saveFunc}
+              emailAddress={clonedInfo.email}
+            />
           </motion.div>
         )}
       </AnimatePresence>
