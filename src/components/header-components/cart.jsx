@@ -30,7 +30,7 @@ const Cart = () => {
 
   return (
     <button
-      className="flex items-center justify-center relative cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 rounded-full p-3 transition-all duration-300"
+      className="flex items-center justify-center relative cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 rounded-full p-2 transition-all duration-300 aspect-square"
       aria-label="Cart"
       onClick={handleClick}
     >

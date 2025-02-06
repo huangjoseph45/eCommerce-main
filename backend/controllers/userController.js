@@ -255,15 +255,16 @@ const handleDataUpdate = async (req, res) => {
       return res.status(400).json({ message: "Empty Package" });
     }
 
-    const { firstName, lastName, email, cart, age, address, phoneNumber } =
-      req.body;
-
-    if (!email) {
-      return res.status(400).json({ message: "Email is required for update" });
-    }
+    const { firstName, lastName, cart, age, address, phoneNumber } = req.body;
 
     if (address?.zipCode && String(address.zipCode).length !== 5) {
       return res.status(400).json({ message: "Zipcode Invalid" });
+    }
+
+    const id = req.session.user.userId;
+
+    if (!id || id === "") {
+      return res.status(400).json({ message: "User could not be verified" });
     }
 
     const update = {
@@ -280,7 +281,7 @@ const handleDataUpdate = async (req, res) => {
     }
 
     const updatedUser = await User.findOneAndUpdate(
-      { email: email },
+      { _id: id },
       { $set: update },
       { new: true, runValidators: true, upsert: false }
     );

@@ -3,26 +3,37 @@ const { default: mongoose } = require("mongoose");
 const Product = require("../models/Products");
 
 const createProduct = async (req, res) => {
-  let { productName, type, price, id, discount, colors, sizes, description } =
-    req.body;
+  let {
+    productName,
+    type,
+    price,
+    sku,
+    discount,
+    colors,
+    sizes,
+    description,
+    tags,
+  } = req.body;
 
   if (
     typeof productName !== "string" ||
     typeof type !== "string" ||
     typeof price !== "number" ||
-    typeof id !== "string" ||
+    typeof sku !== "string" ||
+    !Array.isArray(tags) ||
     typeof discount !== "number" ||
     !Array.isArray(colors) ||
     !Array.isArray(sizes) ||
     typeof description !== "string"
   ) {
+    console.error("Invalid Input");
     return res.status(400).send("Invalid input");
   }
   sizes = sizes.map((size) => {
     return size.toUpperCase();
   });
   try {
-    const filter = { id }; // Replace with {_id: id} if using MongoDB's default identifier
+    const filter = { sku };
 
     const update = {
       $set: {
@@ -33,6 +44,7 @@ const createProduct = async (req, res) => {
         colors,
         sizes,
         description,
+        tags,
       },
     };
 
@@ -48,20 +60,53 @@ const createProduct = async (req, res) => {
 };
 
 const fetchProduct = async (req, res) => {
-  const { productId } = req.params;
-
+  console.log(req.params);
+  let { sku } = req.params;
+  if (!sku) {
+    return res.status(400).json({ message: "Missing SKU" });
+  }
   try {
-    const product = await Product.findOne({ id: productId });
+    const product = await Product.findOne({
+      sku: { $regex: `^${sku}$`, $options: "i" },
+    });
+    console.log(product);
     return res.status(200).json(product);
   } catch (error) {
     console.error("Error fetching product: " + error);
     return res
       .status(500)
-      .json({ message: "could not fetch product with id " + productId });
+      .json({ message: "could not fetch product with SKU " + sku });
+  }
+};
+
+const fetchCategory = async (req, res) => {
+  const { category } = req.params;
+
+  const query = category.toLowerCase();
+
+  try {
+    const products =
+      query === "*"
+        ? await Product.find()
+        : await Product.find({
+            $or: [
+              { tags: { $in: [query] } },
+              { productName: { $regex: query, $options: "i" } },
+              { description: { $regex: query, $options: "i" } },
+            ],
+          });
+
+    return res.status(200).json({ products });
+  } catch (error) {
+    console.error("Error fetching product: " + error);
+    return res
+      .status(500)
+      .json({ message: "could not fetch product with id " + query });
   }
 };
 
 module.exports = {
   createProduct,
   fetchProduct,
+  fetchCategory,
 };

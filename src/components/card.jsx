@@ -9,7 +9,7 @@ import parsePrice from "./utilities/parsePrice";
 import { Link } from "react-router-dom";
 
 const Card = ({
-  id,
+  sku,
   name,
   price,
   type,
@@ -26,14 +26,17 @@ const Card = ({
   };
 
   const stringURL = (
+    "/" +
     encodeURIComponent(name.replace(" ", "-")) +
     "/" +
-    id
+    sku
   ).toLowerCase();
+
+  console.log(stringURL);
 
   return (
     <Link
-      id={id}
+      sku={sku}
       to={stringURL}
       className="rounded-sm w-full h-fit flex flex-col gap-1 px-2 cursor-pointer box-border pb-2 relative z-0
 "
@@ -43,7 +46,7 @@ const Card = ({
       <div className="relative">
         <img
           src={`https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
-            id + "-" + colors[0].idMod
+            sku + "-" + colors[0].idMod
           }`}
           alt={name}
           loading="lazy"

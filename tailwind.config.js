@@ -21,6 +21,9 @@ export default {
       // => @media (min-width: 1536px) { ... }
     },
     extend: {
+      fontFamily: {
+        spectral: ["Spectral", "serif"],
+      },
       boxShadow: {
         custom: "0 0 15px #f8fafc",
         top: "0 -1px 0 #3f3f46",

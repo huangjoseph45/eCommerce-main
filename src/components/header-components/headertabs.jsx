@@ -4,22 +4,22 @@ const HeaderTabs = () => {
   const sections = [
     {
       categoryName: "New Arrivals",
-      href: "#",
+      href: "new",
       id: 0,
     },
     {
       categoryName: "Men",
-      href: "#",
+      href: "men",
       id: 1,
     },
     {
       categoryName: "Women",
-      href: "#",
+      href: "women",
       id: 2,
     },
     {
       categoryName: "Children",
-      href: "#",
+      href: "children",
       id: 3,
     },
   ];

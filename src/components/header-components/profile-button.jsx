@@ -20,18 +20,18 @@ const ProfileButton = () => {
 
   return (
     <>
-      <div className="relative">
+      <div className="relative aspect-square rounded-full cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 p-2">
         <svg
           aria-hidden="true"
           focusable="false"
           viewBox="0 0 48 48"
           role="img"
-          width="60px"
-          height="60px"
+          width="40px"
+          height="40px"
           fill="none"
           title="Profile"
           onClick={clickedFunc}
-          className="cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 p-3 rounded-full hidden lg:block"
+          className=""
         >
           <path
             stroke="currentColor"

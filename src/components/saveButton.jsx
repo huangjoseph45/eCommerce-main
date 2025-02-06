@@ -3,6 +3,7 @@ import { ProductContext } from "./utilities/ContextManager";
 import useUpdateServerData from "./utilities/updateServerData";
 
 const SaveButton = ({ dataToSave, saveFunc, emailAddress }) => {
+  console.log(dataToSave);
   const { isLoading, response, errorCode, refetch, setErrorCode } =
     useUpdateServerData({
       dataToUpdate: null,

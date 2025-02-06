@@ -1,23 +1,27 @@
 import isEmpty from "./isEmpty";
 
-const returnProduct = async (productId) => {
-  if (isEmpty(productId)) {
-    console.error("Invalid productId");
+const returnProduct = async (sku) => {
+  if (isEmpty(sku)) {
+    console.error("Invalid SKU");
     return;
   }
 
-  const [baseId, color, size] = productId.split("-");
-  const fetchURL = `http://localhost:2000/api/products/fetch-product/${baseId}`;
+  const [prefix, skuNum, color, size] = sku.split("-");
+
+  const fetchURL = `http://localhost:2000/api/products/fetch-product/${
+    prefix + "-" + skuNum
+  }`;
   try {
     const response = await fetch(fetchURL, {
       method: "GET",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
     });
+
     const {
       createdAt,
       description,
-      id,
+      sku,
       price,
       productName,
       type,
@@ -25,7 +29,7 @@ const returnProduct = async (productId) => {
       colors,
     } = await response.json();
     const imageLink = `https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
-      baseId + "-" + color
+      sku + "-" + color
     }`;
 
     const colorObj = colors.find((colorItem) => {
@@ -34,7 +38,7 @@ const returnProduct = async (productId) => {
     return {
       createdAt,
       description,
-      id,
+      sku,
       price,
       productName,
       size,

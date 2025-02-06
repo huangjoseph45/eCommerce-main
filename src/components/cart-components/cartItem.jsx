@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const CartItem = memo(
   ({
-    productId,
+    sku,
     imageLink,
     productName,
     quantity,
@@ -26,10 +26,10 @@ const CartItem = memo(
     const baseId = useRef();
 
     useEffect(() => {
-      if (productId !== undefined && productId.includes("-")) {
-        baseId.current = productId.split("-")[0];
+      if (sku !== undefined && sku.includes("-")) {
+        baseId.current = sku.split("-")[0];
       }
-    }, [productId]);
+    }, [sku]);
 
     const stringURL = (
       encodeURIComponent(productName.replace(" ", "-")) +
@@ -52,7 +52,7 @@ const CartItem = memo(
               )}{" "}
               <ProductQuantity
                 quantity={quantity}
-                productId={productId}
+                sku={sku}
                 deleteFunc={deleteItem}
               />
             </div>
@@ -77,7 +77,9 @@ const CartItem = memo(
                 </div>
               </div>
               <p className="capitalize text-gray-600">{type}</p>
-              <p className="capitalize text-gray-600">{color.colorName}</p>
+              <p className="capitalize text-gray-600">
+                {color && color.colorName && color.colorName}
+              </p>
               <p className="uppercase text-gray-600">{size}</p>
             </div>
           </div>

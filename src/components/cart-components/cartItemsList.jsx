@@ -1,13 +1,23 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import returnProduct from "../utilities/returnProduct";
 import CartItem from "./cartItem";
 import LoadingCart from "./loadingCart";
-import { ProductsContext } from "../utilities/ContextManager";
+import useUpdateServerData from "../utilities/updateServerData";
 
-const CartItemList = ({ cart }) => {
-  const { products, setProducts } = useContext(ProductsContext);
+const CartItemList = ({ cart, setCart }) => {
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { isLoading, response, errorCode, refetch, setErrorCode } =
+    useUpdateServerData({
+      dataToUpdate: null,
+    });
+
+  const purgeCart = () => {
+    setCart(null);
+
+    refetch({ cart: [] });
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -15,12 +25,11 @@ const CartItemList = ({ cart }) => {
         setLoading(true);
         setError(null);
 
-        const productPromises = cart.map((cartItem) =>
-          returnProduct(cartItem.productId)
-        );
+        const productPromises = cart.map((cartItem) => {
+          return returnProduct(cartItem.sku);
+        });
 
         const fetchedProducts = await Promise.all(productPromises);
-
         setProducts(fetchedProducts);
       } catch (err) {
         console.error("Error fetching products:", err);
@@ -55,17 +64,20 @@ const CartItemList = ({ cart }) => {
         const cartItem = cart[index]; // Corresponding cart item
         if (!product) {
           return (
-            <li key={cartItem.productId} className="list-none py-2">
+            <li
+              key={cartItem.sku}
+              className="list-none hover:bg-red-300 rounded-md cursor-pointer p-2 transition-all duration-100"
+              onClick={purgeCart}
+            >
               Product details not available.
             </li>
           );
         }
         if (!cartItem) return;
-
         return (
           <CartItem
-            key={cartItem.productId}
-            productId={cartItem.productId}
+            key={cartItem.sku}
+            sku={cartItem.sku}
             imageLink={product.imageLink}
             productName={product.productName}
             quantity={cartItem.quantity}

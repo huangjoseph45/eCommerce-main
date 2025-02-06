@@ -9,8 +9,9 @@ const ProductImage = ({ product }) => {
     if (product && productInfo) {
       try {
         const src = `https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
-          product.id + "-" + productInfo.colorInfo.idMod
+          product.sku + "-" + productInfo.colorInfo.idMod
         }`;
+        console.log(src);
         setImgSrc(src);
       } catch (error) {
         console.error("Error constructing image URL:", error);

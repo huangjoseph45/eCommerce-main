@@ -3,34 +3,43 @@ import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionLinks from "./sectionlinks";
+import SearchBar from "./searchbar";
+import ProfileButton from "./profile-button";
+import Cart from "./cart";
+import SearchButton from "./search-button";
 
 const Sidebar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
   const sections = [
     {
       categoryName: "New Arrivals",
-      href: "#",
+      href: "new",
       id: 0,
     },
     {
       categoryName: "Men",
-      href: "#",
+      href: "men",
       id: 1,
     },
     {
       categoryName: "Women",
-      href: "#",
+      href: "women",
       id: 2,
     },
     {
       categoryName: "Children",
-      href: "#",
+      href: "children",
       id: 3,
     },
   ];
 
   const sectionElements = SectionLinks(sections);
+
+  useEffect(() => {
+    setIsSearching(false);
+  }, [showSidebar]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -48,7 +57,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="relative">
+      <div className="relative ">
         <FontAwesomeIcon
           className={`text-black cursor-pointer size-8 md:size-10 hover:bg-slate-500 hover:bg-opacity-25 p-3 rounded-full lg:hidden ${
             showSidebar && "rotate-90"
@@ -60,7 +69,7 @@ const Sidebar = () => {
         <AnimatePresence>
           {showSidebar && (
             <motion.ul
-              className="fixed right-0 top-25 w-full h-full bg-white p-10 text-2xl flex flex-col gap-4"
+              className="fixed right-0 top-0 w-full h-full bg-white p-10 text-2xl flex flex-col gap-4"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
@@ -68,7 +77,22 @@ const Sidebar = () => {
                 duration: 0.2, // Applies to initial and animate by default
               }}
             >
+              <FontAwesomeIcon
+                className={`text-black cursor-pointer size-8 md:size-10 hover:bg-slate-500 hover:bg-opacity-25 p-3 rounded-full lg:hidden $ transition-all duration-300 absolute right-2 top-6`}
+                icon={faXmark}
+                title={"Close"}
+                onClick={() => setShowSidebar(false)}
+              />
               {sectionElements}
+              <div className="absolute top-[90%] flex gap-3 sm:gap-4 items-center justify-between w-full box-border left-0 px-8">
+                <SearchButton setSearch={setIsSearching} />
+                <Cart />
+                <ProfileButton />
+              </div>
+              <SearchBar
+                isSearching={isSearching}
+                setIsSearching={setIsSearching}
+              />
             </motion.ul>
           )}
         </AnimatePresence>

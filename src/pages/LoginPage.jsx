@@ -20,6 +20,7 @@ const LoginPage = () => {
     isPasswordInvalid: false,
     isError: false,
   });
+  const [errorMessage, setErrorMessage] = useState("");
   const [showTooltip, setShowTooltip] = useState(false);
 
   const { userInfo, setUserInfo, setIsLoggedIn } = useContext(ProductContext);
@@ -67,7 +68,10 @@ const LoginPage = () => {
         setErrorState((prev) => ({
           ...prev,
           isError: true,
+          errorMessage: "Invalid Email or Password",
         }));
+        setErrorMessage("Invalid Email or Password");
+
         return;
       }
 
@@ -77,6 +81,11 @@ const LoginPage = () => {
       nav("/");
     } catch (error) {
       console.error("Error submitting form:", error);
+      setErrorState((prev) => ({
+        ...prev,
+        isError: true,
+      }));
+      setErrorMessage("Internal Server Error");
     }
   };
 
@@ -166,11 +175,7 @@ const LoginPage = () => {
         >
           {isModeSignIn ? "Sign In" : "Create Account"}
         </button>
-        {renderErrorMessage(
-          errorState.isError,
-          "Invalid Email/Password",
-          "isError"
-        )}
+        {renderErrorMessage(errorState.isError, errorMessage, "isError")}
       </form>
     </>
   );

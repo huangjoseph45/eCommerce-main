@@ -3,14 +3,13 @@ import isEmpty from "./isEmpty";
 
 let count = 0;
 
-const useUpdateServerData = ({ dataToUpdate }) => {
+const useUpdateServerData = ({ dataToUpdate = {} }) => {
   const [response, setResponse] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const [errorCode, setErrorCode] = useState(null);
 
   const handleUpdate = async (data) => {
     try {
-      console.log(data);
       setLoading(true);
       const res = await fetch("http://localhost:2000/api/users/update", {
         method: "POST",

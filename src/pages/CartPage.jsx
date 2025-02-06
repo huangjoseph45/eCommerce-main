@@ -31,7 +31,11 @@ const CartPage = () => {
       <div className="flex flex-col lg:flex-row items-start justify-between max-w-[70%] m-auto relative">
         <div className="w-2/3 mr-2">
           <h1 className="text-2xl my-2 mt-4">Bag</h1>
-          {isLoading ? <p>Loading...</p> : <CartItemList cart={cart} />}
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : (
+            <CartItemList cart={cart} setCart={setCart} />
+          )}
         </div>{" "}
         {cart && cart.length > 0 && !isLoading && <CartSummary />}
       </div>

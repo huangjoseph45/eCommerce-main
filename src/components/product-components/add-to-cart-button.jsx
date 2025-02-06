@@ -16,14 +16,14 @@ const AddToCart = () => {
     }
     if (!isEmpty(productInfo.sizeInfo) && !isEmpty(productInfo.colorInfo)) {
       const cartInfo = structuredClone(productInfo);
-      const fullId = `${cartInfo.productId}-${cartInfo.colorInfo.idMod}-${cartInfo.sizeInfo}`;
+      const fullId = `${cartInfo.sku}-${cartInfo.colorInfo.idMod}-${cartInfo.sizeInfo}`;
       const itemIndex = userInfo.cart.findIndex(
-        (cartItem) => cartItem.productId === fullId
+        (cartItem) => cartItem.sku === fullId
       );
 
       const updatedCart =
         itemIndex === -1
-          ? [...userInfo.cart, { productId: fullId, quantity: 1 }]
+          ? [...userInfo.cart, { sku: fullId, quantity: 1 }]
           : userInfo.cart.map((item, index) =>
               index === itemIndex
                 ? { ...item, quantity: item.quantity + 1 }

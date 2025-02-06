@@ -26,7 +26,7 @@ const SettingsSectionsList = ({ sections, setSection }) => {
     return (
       <li
         key={section}
-        className="list-none cursor-pointer text-3xl lg:hover:text-xl hover:text-[1.9srem] hover:font-semibold h-14 transition-all duration-100 flex items-center w-full justify-center lg:justify-start lg:text-lg"
+        className="list-none cursor-pointer lg:hover:text-xl hover:text-[1.9srem] hover:font-semibold h-14 transition-all duration-100 flex items-center w-full justify-center lg:justify-start lg:text-lg text-2xl text-center hover:text-blue-950"
         onClick={() => {
           setSection(index);
           if (window.innerWidth < 1024) {
@@ -50,7 +50,7 @@ const SettingsSectionsList = ({ sections, setSection }) => {
             transition={{
               duration: 0.3,
             }}
-            className="flex flex-col w-full lg:w-1/4 p-4 fixed  items-center lg:items-start bg-white z-30 h-full lg:h-fit"
+            className="flex flex-col w-full lg:w-1/4 p-4 fixed  items-center lg:items-start bg-white z-30 h-full lg:h-fit "
           >
             {accountSections}
             <LogoutButton />

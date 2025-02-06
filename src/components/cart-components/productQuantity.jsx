@@ -1,7 +1,7 @@
 import { useContext, useState, useRef, useEffect, useCallback } from "react";
 import { ProductContext } from "../utilities/ContextManager";
 
-const ProductQuantity = ({ quantity, productId, deleteFunc }) => {
+const ProductQuantity = ({ quantity, sku, deleteFunc }) => {
   const { userInfo, setUserInfo } = useContext(ProductContext);
   const [value, setValue] = useState(quantity);
   const inputRef = useRef(null);
@@ -19,7 +19,7 @@ const ProductQuantity = ({ quantity, productId, deleteFunc }) => {
         setUserInfo({
           ...userInfo,
           cart: userInfo.cart.map((product) => {
-            return product.productId.split()[0] === productId
+            return product.sku.split()[0] === sku
               ? { ...product, quantity: value }
               : product;
           }),
@@ -37,7 +37,7 @@ const ProductQuantity = ({ quantity, productId, deleteFunc }) => {
       setUserInfo({
         ...userInfo,
         cart: userInfo.cart.map((product) => {
-          return product.productId.split()[0] === productId
+          return product.sku.split()[0] === sku
             ? { ...product, quantity: value + modifier }
             : product;
         }),
@@ -52,12 +52,12 @@ const ProductQuantity = ({ quantity, productId, deleteFunc }) => {
     setUserInfo({
       ...userInfo,
       cart: userInfo.cart.filter((item) => {
-        if (item.productId !== productId) console.log(item);
-        return item.productId !== productId;
+        if (item.sku !== sku) console.log(item);
+        return item.sku !== sku;
       }),
     });
-    console.log(productId);
-    deleteFunc(productId);
+    console.log(sku);
+    deleteFunc(sku);
   };
 
   return (

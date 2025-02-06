@@ -5,6 +5,7 @@ import debounce from "lodash.debounce"; // Install lodash.debounce for debouncin
 
 import { ProductContext } from "./components/utilities/ContextManager";
 import useUpdateServerData from "./components/utilities/updateServerData";
+import useFetchProducts from "./components/utilities/useFetchMultipleProducts";
 
 import Shopping from "./pages/Shopping";
 import NoPage from "./pages/NoPage";
@@ -12,36 +13,58 @@ import ProductPage from "./pages/ProductPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import CartPage from "./pages/CartPage";
+import SearchResultsPage from "./pages/SearchResults";
 
-const products = [
-  {
-    productName: "Fancy Polo",
-    type: "Men's Clothing",
-    price: 100,
-    id: "testfp1",
-    discount: 10,
-    colors: [
+// const products = [
+//   {
+//     productName: "Fancy Polo",
+//     type: "Men's Clothing",
+//     price: 100,
+//     sku: "SKU-1",
+//     tags: ["hi"],
+//     discount: 10,
+//     colors: [
+//       {
+//         colorName: "navy",
+//         colorCode: "#212e50",
+//         idMod: "nav",
+//       },
+//       {
+//         colorName: "white",
+//         colorCode: "#ffffff",
+//         idMod: "whi",
+//       },
+//     ],
+//     sizes: ["xs", "s", "m", "l", "xl"],
+//     description:
+//       "An American style standard since 1972, the Polo shirt has been imitated but never matched. Over the decades, Ralph Lauren has reimagined his signature style in a wide array of colors and fits, yet all retain the quality and attention to detail of the iconic original. This relaxed version is made with luxe cotton interlock that features an ultrasoft finish.",
+//   },
+// ];
+
+const createProduct = async (product) => {
+  try {
+    const response = await fetch(
+      "http://localhost:2000/api/products/create-product",
       {
-        colorName: "navy",
-        colorCode: "#212e50",
-        idMod: "nav",
-      },
-      {
-        colorName: "white",
-        colorCode: "#ffffff",
-        idMod: "whi",
-      },
-    ],
-    sizes: ["xs", "s", "m", "l", "xl"],
-    description:
-      "An American style standard since 1972, the Polo shirt has been imitated but never matched. Over the decades, Ralph Lauren has reimagined his signature style in a wide array of colors and fits, yet all retain the quality and attention to detail of the iconic original. This relaxed version is made with luxe cotton interlock that features an ultrasoft finish.",
-  },
-];
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(product) || null,
+      }
+    );
+
+    console.log(await response.json());
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 function App() {
+  const { isLoading, products, refetchProducts } = useFetchProducts();
   const [userInfo, setUserInfo] = useState({});
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { isLoading, response, errorCode, refetch } = useUpdateServerData({
+  const { refetch } = useUpdateServerData({
     dataToUpdate: null,
   });
 
@@ -49,26 +72,13 @@ function App() {
     refetch(userInfo);
   }, [userInfo]);
 
-  const productLinks = products.map((product) => {
-    const stringURL = (
-      encodeURIComponent(product.productName.replace(" ", "-")) +
-      "/" +
-      product.id
-    ).toLowerCase();
-    return (
-      <Route
-        key={product.id}
-        path={`/${stringURL}`}
-        element={<ProductPage product={product} />}
-      />
-    );
-  });
+  useEffect(() => {
+    refetchProducts("");
+  }, []);
 
   return (
     <>
-      <ProductContext.Provider
-        value={{ products, isLoggedIn, userInfo, setUserInfo, setIsLoggedIn }}
-      >
+      <ProductContext.Provider value={{ products, userInfo, setUserInfo }}>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Shopping />} />
@@ -76,8 +86,25 @@ function App() {
             <Route path="/login" element={<LoginPage />}></Route>
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/cart" element={<CartPage />} />
-
-            {productLinks}
+            <Route path="/search" element={<SearchResultsPage />} />
+            {products &&
+              Array.isArray(products) &&
+              products.length > 0 &&
+              products.map((product) => {
+                const stringURL = (
+                  encodeURIComponent(product.productName.replace(" ", "-")) +
+                  "/" +
+                  product.sku
+                ).toLowerCase();
+                console.log(stringURL);
+                return (
+                  <Route
+                    key={product.sku}
+                    path={`/${stringURL}`}
+                    element={<ProductPage product={product} />}
+                  />
+                );
+              })}
           </Routes>
         </BrowserRouter>
       </ProductContext.Provider>

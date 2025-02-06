@@ -14,8 +14,8 @@ const CartSummary = () => {
     if (userInfo && userInfo !== undefined && userInfo.cart && products) {
       let cost = 0;
       userInfo.cart.forEach((item) => {
-        const productId = item.productId.split("-")[0];
-        const product = products.find((product) => product.id === productId);
+        const sku = item.sku.split("-")[0];
+        const product = products.find((product) => product.id === sku);
         if (product)
           cost += item.quantity * product.price * (1 - product.discount / 100);
       });
@@ -25,8 +25,9 @@ const CartSummary = () => {
 
   return (
     userInfo &&
+    userInfo.cart &&
     userInfo.cart.length > 0 && (
-      <div className="w-1/3 sticky top-[7rem] z-40 flex flex-col gap-2">
+      <div className="lg:w-1/3 sticky top-[7rem] z-40 flex flex-col gap-2 w-full mt-6 lg:mt-0">
         <h1 className="font-semibold text-lg">Summary</h1>
         <CartSummaryHeader
           mainText={"Subtotal"}
