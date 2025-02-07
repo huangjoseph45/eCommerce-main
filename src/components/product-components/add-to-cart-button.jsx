@@ -1,4 +1,4 @@
-import { useContext, useCallback } from "react";
+import { useContext, useCallback, useState, useEffect } from "react";
 import { ProductInfoContext } from "../utilities/ContextManager";
 import { ProductContext } from "../utilities/ContextManager";
 import isEmpty from "../utilities/isEmpty";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 const AddToCart = () => {
   const { productInfo } = useContext(ProductInfoContext);
   const { userInfo, setUserInfo } = useContext(ProductContext);
+  const [showPopup, setShowPopup] = useState(false);
   const nav = useNavigate();
 
   const addToCartFunction = useCallback(() => {
@@ -34,16 +35,41 @@ const AddToCart = () => {
         ...userInfo,
         cart: updatedCart,
       });
+      setShowPopup(true);
     }
   }, [productInfo, setUserInfo, userInfo]);
 
+  useEffect(() => {
+    let timeoutId;
+    console.log(showPopup);
+    if (showPopup === true) {
+      timeoutId = setTimeout(() => {
+        setShowPopup(false);
+      }, [3000]);
+    }
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [showPopup]);
+
   return (
-    <button
-      className="rounded-lg bg-slate-50 text-black w-[90%] p-3 text-sm hover:bg-slate-950 hover:text-white outline outline-2 outline-slate-950 hover:scale-[102.5%] transition-all duration-0.3 mb-8"
-      onClick={addToCartFunction}
-    >
-      Add to Cart
-    </button>
+    <>
+      {showPopup && (
+        <span
+          className={
+            "fixed bottom-[1rem] right-[1rem] bg-white shadow-md border rounded-full p-3 cursor-pointer"
+          }
+        >
+          Added to Cart
+        </span>
+      )}
+      <button
+        className="rounded-lg bg-slate-50 text-black w-[90%] p-3 text-sm hover:bg-slate-950 hover:text-white outline outline-2 outline-slate-950 hover:scale-[102.5%] transition-all duration-0.3 mb-8"
+        onClick={addToCartFunction}
+      >
+        Add to Cart
+      </button>
+    </>
   );
 };
 

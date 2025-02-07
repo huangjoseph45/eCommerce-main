@@ -6,10 +6,8 @@ import ErrorMessage from "../components/login-components/error-message";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { ProductContext } from "../components/utilities/ContextManager";
-import getDataFromServer from "../components/utilities/getDataFromServer";
 import { useNavigate } from "react-router-dom";
-import handleLogout from "../components/utilities/handleLogout";
-import Logo from "../components/header-components/logo";
+import useLogout from "../components/utilities/useLogout";
 import Header from "../components/header";
 
 const LoginPage = () => {
@@ -25,31 +23,21 @@ const LoginPage = () => {
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [showTooltip, setShowTooltip] = useState(false);
-
+  const [loading, result, tryLogout] = useLogout();
+  const [isLoading, setIsLoading] = useState(false);
   const { userInfo } = useContext(ProductContext);
 
   const handleSubmit = async (event) => {
+    setIsLoading(true);
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData.entries());
 
     data["cart"] = userInfo;
     data["remember"] = checked;
-
-    console.log(data);
+    tryLogout();
 
     try {
-      await handleLogout();
-      if (!isModeSignIn && data.password !== data.password2) {
-        console.log(data.password !== data.password2);
-        setErrorMessage("Passwords do not match");
-        setErrorState((prev) => ({
-          ...prev,
-          isError: true,
-        }));
-        return;
-      }
-
       const validatedEmail = validateEmail(data.email);
       const validatedPassword = validatePassword(data.password);
 
@@ -87,13 +75,15 @@ const LoginPage = () => {
           errorMessage: "Invalid Email or Password",
         }));
         setErrorMessage("Invalid Email or Password");
+        setIsLoading(false);
 
         return;
       }
 
-      const result = await response.text();
+      setIsLoading(false);
       nav("/");
     } catch (error) {
+      setIsLoading(false);
       setErrorState((prev) => ({
         ...prev,
         isError: true,
@@ -172,7 +162,9 @@ const LoginPage = () => {
           <AnimatePresence>
             {showTooltip && (
               <motion.p
-                className="absolute w-full border bg-gray-300 p-2 left-1/2 -translate-x-1/2 top-[12 rem] lg:left-full lg:translate-x-[1rem] flex justify-center items-center"
+                className={`absolute w-full border bg-gray-300 p-2 left-1/2 -translate-x-1/2 ${
+                  isModeSignIn ? "top-[12rem]" : "top-[16rem]"
+                } lg:left-full lg:translate-x-[1rem] flex justify-center items-center`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -249,7 +241,13 @@ const LoginPage = () => {
           type="submit"
           className="bg-slate-900 text-white w-full p-4 text-sm hover:bg-slate-800 hover:scale-[102.5%] transition-all duration-300"
         >
-          {isModeSignIn ? "Sign In" : "Create Account"}
+          {isModeSignIn
+            ? isLoading
+              ? "Signing In..."
+              : "Sign In"
+            : isLoading
+            ? "Creating Account..."
+            : "Create Account"}
         </button>
         {renderErrorMessage(errorState.isError, errorMessage, "isError")}
       </form>

@@ -22,26 +22,6 @@ const CardGrid = ({ isLoading, products }) => {
                   numPatterns={product.colors.length}
                   discount={product.discount}
                 />{" "}
-                <Card
-                  key={product.id}
-                  sku={product.sku}
-                  colors={product.colors}
-                  name={product.productName}
-                  price={product.price}
-                  type={product.type}
-                  numPatterns={product.colors.length}
-                  discount={product.discount}
-                />{" "}
-                <Card
-                  key={product.id}
-                  sku={product.sku}
-                  colors={product.colors}
-                  name={product.productName}
-                  price={product.price}
-                  type={product.type}
-                  numPatterns={product.colors.length}
-                  discount={product.discount}
-                />
               </>
             );
           })
