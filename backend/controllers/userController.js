@@ -35,24 +35,40 @@ const findUserByEmail = async (email, res) => {
 /**
  * Helper function to create and save a session.
  */
-const createSession = (req, res, user) => {
-  if (!user || !user._id || !user.email) {
+const createSession = ({ req, res, user, remember = false }) => {
+  console.log(user);
+
+  if (!user || !user.email) {
     console.error("Invalid user data provided for session creation.");
-    return res.error({ status: 400, message: "Invalid user data" });
+    return res.status(400).json({ status: 400, message: "Invalid user data" });
   }
+
+  const role = "customer";
 
   const sessionUser = {
     userId: user._id.toString(),
     email: user.email,
     ip: req.ip,
     userAgent: req.get("User-Agent"),
+    role,
   };
+
   req.session.user = sessionUser;
+
+  if (remember) {
+    req.session.cookie.maxAge = 365 * 24 * 60 * 60 * 1000;
+  } else if (role === "customer") {
+    req.session.cookie.maxAge = 7 * 24 * 60 * 60 * 1000;
+  } else {
+    req.session.cookie.maxAge = 2 * 60 * 60 * 1000;
+  }
 
   req.session.save((err) => {
     if (err) {
       console.error("Session save error:", err);
-      return res.error({ status: 500, message: "Session save failed" });
+      return res
+        .status(500)
+        .json({ status: 500, message: "Session save failed" });
     }
   });
   return res.send(req.session.user);
@@ -63,7 +79,7 @@ const createSession = (req, res, user) => {
  */
 const checkUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, remember } = req.body;
 
     // Validate required fields
     if (
@@ -82,6 +98,7 @@ const checkUser = async (req, res) => {
     if (!user) return;
 
     // Compare passwords
+    console.log(user);
     const isMatch = await ComparePassword(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
@@ -108,7 +125,7 @@ const checkUser = async (req, res) => {
     }
 
     // Create and save session
-    createSession(req, res, user);
+    createSession({ req, res, user, remember });
   } catch (error) {
     console.error("Error in checkUser:", error);
     return res.status(500).json({ error: error.message });
@@ -136,7 +153,9 @@ const newUser = async (req, res) => {
 
     // Check if user already exists
     const existingUser = await findUserByEmail(email, res);
+
     if (existingUser) {
+      console.log(existingUser);
       return res.status(409).json({ error: "Email already exists" });
     }
 
@@ -147,8 +166,9 @@ const newUser = async (req, res) => {
       password: hashedPassword,
     });
 
-    // Create and save session
-    createSession(req, res, new_user);
+    console.log(new_user);
+
+    createSession({ req, res, user: new_user, remember: false });
   } catch (error) {
     console.error("Error in newUser:", error);
     return res.status(500).json({
@@ -369,7 +389,7 @@ const updateSensitiveData = async (req, res) => {
  * Middleware to verify user session.
  */
 const verifySession = (req, res, next) => {
-  if (!req.session || !req.session.user) {
+  if (!req.session || !req.session.user || !req.session.user) {
     return res.status(401).json({ message: "Unauthorized" });
   }
   next();

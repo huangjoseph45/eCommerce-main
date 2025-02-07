@@ -27,19 +27,20 @@ const CartItem = memo(
 
     useEffect(() => {
       if (sku !== undefined && sku.includes("-")) {
-        baseId.current = sku.split("-")[0];
+        baseId.current =
+          sku.split("-")[0].toString() + "-" + sku.split("-")[1].toString();
       }
     }, [sku]);
-
+    console.log(baseId.current);
     const stringURL = (
-      encodeURIComponent(productName.replace(" ", "-")) +
+      encodeURIComponent(productName.replace(/ /g, "-")) +
       "/" +
       baseId.current
     ).toLowerCase();
 
     return (
       isVisible && (
-        <li className="list-none py-2">
+        <li className="list-none py-2 w-[20rem] sm:w-[25rem] lg:w-[30rem]">
           <div className="flex gap-4">
             <div className="flex flex-col gap-2">
               {imageLink && (
@@ -65,7 +66,7 @@ const CartItem = memo(
                 >
                   {productName}
                 </a>
-                <div className="flex flex-row gap-4">
+                <div className="flex flex-col sm:flex-row sm:gap-4">
                   {discount && (
                     <p className="text-gray-700 line-through">
                       ${price.toFixed(2)}

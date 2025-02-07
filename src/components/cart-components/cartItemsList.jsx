@@ -1,51 +1,18 @@
 import { useState, useEffect } from "react";
-import returnProduct from "../utilities/returnProduct";
 import CartItem from "./cartItem";
 import LoadingCart from "./loadingCart";
 import useUpdateServerData from "../utilities/updateServerData";
 
-const CartItemList = ({ cart, setCart }) => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const { isLoading, response, errorCode, refetch, setErrorCode } =
-    useUpdateServerData({
-      dataToUpdate: null,
-    });
+const CartItemList = ({ cart, setCart, loading, products, error }) => {
+  const { refetch } = useUpdateServerData({
+    dataToUpdate: null,
+  });
 
   const purgeCart = () => {
     setCart(null);
 
     refetch({ cart: [] });
   };
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const productPromises = cart.map((cartItem) => {
-          return returnProduct(cartItem.sku);
-        });
-
-        const fetchedProducts = await Promise.all(productPromises);
-        setProducts(fetchedProducts);
-      } catch (err) {
-        console.error("Error fetching products:", err);
-        setError("Failed to load products. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    if (cart && cart.length > 0) {
-      fetchProducts();
-    } else {
-      setProducts([]);
-      setLoading(false);
-    }
-  }, [cart]);
-
   if (loading) {
     return <LoadingCart />;
   }
@@ -59,7 +26,7 @@ const CartItemList = ({ cart, setCart }) => {
   }
 
   return (
-    <ul>
+    <ul className=" w-full">
       {products.map((product, index) => {
         const cartItem = cart[index]; // Corresponding cart item
         if (!product) {

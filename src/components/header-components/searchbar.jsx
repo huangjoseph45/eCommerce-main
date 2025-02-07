@@ -17,6 +17,7 @@ const SearchBar = ({ isSearching, setIsSearching }) => {
   const handleSubmit = () => {
     if (value.trim()) {
       nav(`/search?q=${encodeURIComponent(value)}`);
+      setIsSearching(false);
     }
   };
 
@@ -69,9 +70,10 @@ const SearchBar = ({ isSearching, setIsSearching }) => {
   };
 
   return (
-    <AnimatePresence ref={searchRef}>
+    <AnimatePresence>
       {isSearching && (
         <motion.div
+          ref={searchRef}
           initial={
             window.innerWidth > 1024
               ? {

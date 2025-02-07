@@ -13,7 +13,7 @@ import ProductPage from "./pages/ProductPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import CartPage from "./pages/CartPage";
-import SearchResultsPage from "./pages/SearchResults";
+import SearchResultsPage from "./pages/SearchResultsPage";
 
 // const products = [
 //   {
@@ -92,11 +92,11 @@ function App() {
               products.length > 0 &&
               products.map((product) => {
                 const stringURL = (
-                  encodeURIComponent(product.productName.replace(" ", "-")) +
+                  encodeURIComponent(product.productName.replace(/ /g, "-")) +
                   "/" +
                   product.sku
                 ).toLowerCase();
-                console.log(stringURL);
+
                 return (
                   <Route
                     key={product.sku}

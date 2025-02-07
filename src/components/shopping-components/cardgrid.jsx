@@ -1,14 +1,9 @@
 import Card from "./card";
 import { useState, useContext, useEffect } from "react";
-import { ProductContext } from "./utilities/ContextManager";
-import useFetchProducts from "./utilities/useFetchMultipleProducts";
+import CardPlaceHolder from "./cardPlaceholder";
 
 const CardGrid = ({ isLoading, products }) => {
   const [showNum, setShowNum] = useState(1);
-
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
 
   return (
     <>
@@ -29,7 +24,14 @@ const CardGrid = ({ isLoading, products }) => {
             );
           })
         ) : (
-          <p>Loading...</p>
+          <>
+            <CardPlaceHolder key={1} />
+            <CardPlaceHolder key={2} />
+            <CardPlaceHolder key={3} />
+            <CardPlaceHolder key={4} />
+            <CardPlaceHolder key={5} />
+            <CardPlaceHolder key={6} />
+          </>
         )}
         {isLoading && products && (
           <p className="text-sm lg:text-base absolute right-0 top-full p-2 whitespace-nowrap">

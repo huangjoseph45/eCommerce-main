@@ -69,11 +69,15 @@ const Header = () => {
   };
 
   useEffect(() => {
-    console.log("updated data");
-    console.log(data);
-    if (data) {
-      setUserInfo(data);
-    }
+    const timeoutId = setTimeout(() => {
+      if (data) {
+        setUserInfo(data);
+      }
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [data, isLoggedIn]);
 
   useEffect(() => {

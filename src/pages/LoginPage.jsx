@@ -9,12 +9,15 @@ import { ProductContext } from "../components/utilities/ContextManager";
 import getDataFromServer from "../components/utilities/getDataFromServer";
 import { useNavigate } from "react-router-dom";
 import handleLogout from "../components/utilities/handleLogout";
+import Logo from "../components/header-components/logo";
+import Header from "../components/header";
 
 const LoginPage = () => {
   const nav = useNavigate();
 
   const [isModeSignIn, setModeSignIn] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [checked, setChecked] = useState(false);
   const [errorState, setErrorState] = useState({
     isEmailInvalid: false,
     isPasswordInvalid: false,
@@ -23,16 +26,29 @@ const LoginPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showTooltip, setShowTooltip] = useState(false);
 
-  const { userInfo, setUserInfo, setIsLoggedIn } = useContext(ProductContext);
+  const { userInfo } = useContext(ProductContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData.entries());
+
     data["cart"] = userInfo;
+    data["remember"] = checked;
+
+    console.log(data);
 
     try {
       await handleLogout();
+      if (!isModeSignIn && data.password !== data.password2) {
+        console.log(data.password !== data.password2);
+        setErrorMessage("Passwords do not match");
+        setErrorState((prev) => ({
+          ...prev,
+          isError: true,
+        }));
+        return;
+      }
 
       const validatedEmail = validateEmail(data.email);
       const validatedPassword = validatePassword(data.password);
@@ -64,7 +80,7 @@ const LoginPage = () => {
           errorBody = { error: response };
         }
 
-        console.log("Error from server:", errorBody);
+        console.error("Error from server:", errorBody);
         setErrorState((prev) => ({
           ...prev,
           isError: true,
@@ -76,11 +92,8 @@ const LoginPage = () => {
       }
 
       const result = await response.text();
-      console.log(result);
-      setIsLoggedIn(true);
       nav("/");
     } catch (error) {
-      console.error("Error submitting form:", error);
       setErrorState((prev) => ({
         ...prev,
         isError: true,
@@ -89,21 +102,27 @@ const LoginPage = () => {
     }
   };
 
-  const renderErrorMessage = (condition, message, resetStateKey) =>
-    condition && (
-      <ErrorMessage
-        message={message}
-        setState={(val) =>
-          setErrorState((prev) => ({ ...prev, [resetStateKey]: val }))
-        }
-      />
+  const renderErrorMessage = (condition, message, resetStateKey) => {
+    return (
+      condition && (
+        <ErrorMessage
+          message={message}
+          setState={(val) =>
+            setErrorState((prev) => ({ ...prev, [resetStateKey]: val }))
+          }
+        />
+      )
     );
+  };
 
   return (
     <>
+      <Header />
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col m-auto w-[25rem] gap-1 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[100%]"
+        className={`flex flex-col m-auto w-[25rem] gap-1 absolute ${
+          isModeSignIn ? "top-1/2" : "top-[57.5%]"
+        } left-1/2 -translate-x-1/2 -translate-y-[100%]`}
       >
         <SelectSignIn
           setModeSignIn={setModeSignIn}
@@ -114,7 +133,7 @@ const LoginPage = () => {
           type="text"
           name="email"
           autoComplete="account-email"
-          className={`w-full border p-2 ${
+          className={`w-full border p-3 mb-4 ${
             errorState.isEmailInvalid ? "border-red-500" : "border-gray-400"
           }`}
           placeholder="Email"
@@ -124,12 +143,12 @@ const LoginPage = () => {
           "Invalid Email",
           "isEmailInvalid"
         )}
-        <div className="relative">
+        <div className="relative border mb-2">
           <input
             type={showPassword ? "text" : "password"}
             name="password"
             autoComplete="account-password"
-            className={`w-full border p-2 ${
+            className={`w-full border p-3  ${
               errorState.isPasswordInvalid
                 ? "border-red-500"
                 : "border-gray-400"
@@ -153,7 +172,7 @@ const LoginPage = () => {
           <AnimatePresence>
             {showTooltip && (
               <motion.p
-                className="absolute w-full border bg-gray-300 p-2 left-full translate-x-[1rem] flex justify-center items-center"
+                className="absolute w-full border bg-gray-300 p-2 left-1/2 -translate-x-1/2 top-[12 rem] lg:left-full lg:translate-x-[1rem] flex justify-center items-center"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -164,14 +183,71 @@ const LoginPage = () => {
             )}
           </AnimatePresence>
         </div>
+        {!isModeSignIn && (
+          <div className="relative border mb-2">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password2"
+              autoComplete="account-password"
+              className={`w-full border p-3  ${
+                errorState.isPasswordInvalid
+                  ? "border-red-500"
+                  : "border-gray-400"
+              }`}
+              placeholder="Password"
+            />
+          </div>
+        )}
+
         {renderErrorMessage(
           errorState.isPasswordInvalid,
           "Invalid Password",
           "isPasswordInvalid"
         )}
+        <div
+          className="flex w-fit p-1 justify-center items-center gap-2 mb-4 "
+          onClick={() => {
+            console.log("clicked");
+            setChecked(!checked);
+          }}
+        >
+          <div className="inline-flex items-center justify-center">
+            <label className="flex items-center cursor-pointer relative">
+              <input
+                defaultChecked={false}
+                type="checkbox"
+                className="peer h-4 w-4 cursor-pointer transition-all appearance-none rounded-sm shadow hover:shadow-md border border-slate-300 checked:bg-slate-800 checked:border-slate-800"
+                id="check"
+              />
+              <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-3.5 w-3.5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+              </span>
+            </label>
+          </div>
+          <label
+            htmlFor="remember"
+            className="cursor-pointer high select-none text-gray-700"
+          >
+            Remember Me
+          </label>
+        </div>
+
         <button
           type="submit"
-          className="bg-slate-900 text-white w-full p-3 text-sm hover:bg-slate-800 hover:scale-[102.5%] transition-all duration-300"
+          className="bg-slate-900 text-white w-full p-4 text-sm hover:bg-slate-800 hover:scale-[102.5%] transition-all duration-300"
         >
           {isModeSignIn ? "Sign In" : "Create Account"}
         </button>

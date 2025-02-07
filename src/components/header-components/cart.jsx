@@ -8,7 +8,6 @@ const Cart = () => {
   const { userInfo } = useContext(ProductContext);
   const [numItems, setNumItems] = useState(0);
   const nav = useNavigate();
-  console.log(userInfo);
 
   useEffect(() => {
     if (userInfo?.cart && Array.isArray(userInfo.cart)) {

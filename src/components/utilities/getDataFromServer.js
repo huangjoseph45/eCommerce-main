@@ -60,7 +60,6 @@ const useFetchServerData = ({ queries, auth }) => {
       }
 
       const new_data = await response.json();
-      console.log(new_data);
       setData(new_data);
     } catch (error) {
       setIsError(true);

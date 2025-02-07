@@ -1,6 +1,6 @@
 import Header from "../components/header";
 import Footer from "../components/footer";
-import CardGrid from "../components/cardgrid";
+import CardGrid from "../components/shopping-components/cardgrid";
 import { useEffect } from "react";
 import useFetchProducts from "../components/utilities/useFetchMultipleProducts";
 import { useSearchParams } from "react-router-dom";
@@ -23,6 +23,13 @@ function SearchResultsPage() {
     refetchProducts(searchQuery);
   }, [searchQuery]);
 
+  const displayQuery = searchQuery
+    .split(" ")
+    .map((word) => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(" ");
+
   return (
     <>
       <Header />
@@ -33,7 +40,7 @@ function SearchResultsPage() {
               {" "}
               <p className="text-base">Search results for </p>
               <p className="text-3xl">
-                {searchQuery}&nbsp;({products.length})
+                {displayQuery}&nbsp;({products.length})
               </p>
             </div>
 

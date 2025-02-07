@@ -1,6 +1,6 @@
 import Header from "../components/header";
 import Footer from "../components/footer";
-import CardGrid from "../components/cardgrid";
+import CardGrid from "../components/shopping-components/cardgrid";
 import { useEffect } from "react";
 import useFetchProducts from "../components/utilities/useFetchMultipleProducts";
 

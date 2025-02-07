@@ -39,7 +39,7 @@ app.use(
     cookie: {
       secure: false,
       httpOnly: false,
-      maxAge: 1000 * 60 * 10, // 10 minutes
+      maxAge: 1000 * 60 * 60 * 36, // 36 hours
       sameSite: "lax",
     },
   })
