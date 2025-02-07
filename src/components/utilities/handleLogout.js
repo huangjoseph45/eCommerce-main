@@ -1,6 +1,6 @@
 const handleLogout = async () => {
   try {
-    const response = await fetch("http://localhost:2000/api/users/logout", {
+    const response = await fetch(`${import.meta.env.VITE_PATH}/users/logout`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

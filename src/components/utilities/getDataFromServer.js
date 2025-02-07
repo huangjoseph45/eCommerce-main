@@ -44,7 +44,7 @@ const useFetchServerData = ({ queries, auth }) => {
       setLoading(false);
 
       const response = await fetch(
-        "http://localhost:2000/api/users/fetch-data",
+        `${import.meta.env.VITE_PATH}/users/fetch-data`,
         {
           method: "POST",
           credentials: "include",

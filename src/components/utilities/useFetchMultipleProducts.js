@@ -8,7 +8,9 @@ const useFetchProducts = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:2000/api/products/fetch${tags ? "/" + tags : "/*"}`,
+        `${import.meta.env.VITE_PATH}/products/fetch${
+          tags ? "/" + tags : "/*"
+        }`,
         {
           method: "GET",
           credentials: "include",
