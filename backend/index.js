@@ -23,6 +23,8 @@ app.use(express.json());
 
 const allowedOrigins = [
   "https://e-commerce-main-huangjoseph45s-projects.vercel.app/",
+  "https://e-commerce-main-git-main-huangjoseph45s-projects.vercel.app/",
+  "https://e-commerce-main-ln8tvf3tq-huangjoseph45s-projects.vercel.app/",
   "http://localhost:5173",
   "http://localhost:5174",
 ];
