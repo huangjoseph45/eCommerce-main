@@ -32,12 +32,7 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin) return callback(null, false); // Allow server-to-server requests
-      if (allowedOrigins.includes(origin)) {
-        callback(null, origin);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
+      callback(null, origin || "*"); // Allow any origin
     },
     credentials: true, // Allow cookies & authentication headers
     methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
