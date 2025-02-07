@@ -27,7 +27,7 @@ const CartSummary = ({ products }) => {
     userInfo &&
     userInfo.cart &&
     userInfo.cart.length > 0 && (
-      <div className="w-[30rem] sticky top-[7rem] z-40 flex flex-col gap-2 mt-6 lg:mt-0">
+      <div className="w-[30rem] sticky top-[7rem] z-10 flex flex-col gap-2 mt-6 lg:mt-0">
         <h1 className="font-semibold text-lg">Summary</h1>
         <CartSummaryHeader
           mainText={"Subtotal"}
@@ -35,7 +35,7 @@ const CartSummary = ({ products }) => {
           zeroText={"Free"}
         />
         <CartSummaryHeader
-          mainText={"Estimated Shipping & Handling"}
+          mainText={`${"Est. Shipping & Handling"}`}
           value={shippingPrice}
           zeroText={"Free"}
         />{" "}
@@ -61,6 +61,12 @@ const CartSummary = ({ products }) => {
           zeroText={"Free"}
         />
         <hr />
+        <button
+          className="border rounded-md p-2 border-black bg-black text-white hover:bg-slate-950/90 my-2 w-full"
+          disabled={products.length === 0}
+        >
+          Checkout
+        </button>{" "}
       </div>
     )
   );

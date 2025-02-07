@@ -134,7 +134,11 @@ const Header = () => {
           <Sidebar />
         </div>
 
-        <SearchBar isSearching={isSearching} setIsSearching={setIsSearching} />
+        <SearchBar
+          isSearching={isSearching}
+          setIsSearching={setIsSearching}
+          setHeaderVisible={setVisible}
+        />
       </motion.div>
     </>
   );

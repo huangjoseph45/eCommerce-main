@@ -3,11 +3,12 @@ import LogoutButton from "../logoutButton";
 import debounce from "lodash.debounce";
 import { ShowProfileContext } from "../utilities/ContextManager";
 import { AnimatePresence } from "motion/react";
-import { motion } from "motion/react";
+import { motion, delay, frame } from "motion/react";
 
 const SettingsSectionsList = ({ sections, setSection }) => {
   const { showProfileHeaders, setShowProfileHeaders } =
     useContext(ShowProfileContext);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     const checkSize = debounce(() => {
@@ -17,10 +18,20 @@ const SettingsSectionsList = ({ sections, setSection }) => {
       }
     }, 100);
 
-    window.addEventListener("resize", checkSize);
+    return () => {
+      window.removeEventListener("resize", checkSize);
+    };
+  }, []);
 
-    return () => window.removeEventListener("resize", checkSize);
-  });
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShow(true);
+    }, 320);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [showProfileHeaders]);
 
   const accountSections = sections.map((section, index) => {
     return (
@@ -46,13 +57,24 @@ const SettingsSectionsList = ({ sections, setSection }) => {
           <motion.div
             initial={{ opacity: 0.5, x: "-100%" }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 1, x: "-100%" }}
-            transition={{
-              duration: 0.3,
-            }}
-            className="flex flex-col w-full lg:w-1/4 p-4 fixed  items-center lg:items-start bg-white z-30 h-full lg:h-fit "
+            exit={{ opacity: 0, x: "-100%" }}
+            transition={{ duration: 0.3 }}
+            className="flex flex-col w-full lg:w-1/4 p-4 fixed items-center lg:items-start bg-white z-30 h-full lg:h-fit"
           >
-            {accountSections}
+            {/* Inner AnimatePresence for motion.ul */}
+            <AnimatePresence>
+              {show && (
+                <motion.ul
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  {accountSections}
+                </motion.ul>
+              )}
+            </AnimatePresence>
+
             <LogoutButton />
           </motion.div>
         )}

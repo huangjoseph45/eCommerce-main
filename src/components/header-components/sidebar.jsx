@@ -48,10 +48,18 @@ const Sidebar = () => {
       }
     };
 
+    const handleKeyPress = (e) => {
+      if (e.key === "Escape") {
+        setShowSidebar(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
     window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("keydown", handleKeyPress);
     };
   }, []);
 
@@ -59,7 +67,7 @@ const Sidebar = () => {
     <>
       <div className="relative ">
         <FontAwesomeIcon
-          className={`text-black cursor-pointer size-8 md:size-10 hover:bg-slate-500 hover:bg-opacity-25 p-3 rounded-full lg:hidden ${
+          className={`text-black cursor-pointer size-8 md:size-8 mt-1 hover:bg-slate-500 hover:bg-opacity-25 p-3 rounded-full lg:hidden ${
             showSidebar && "rotate-90"
           } transition-all duration-300`}
           icon={showSidebar ? faXmark : faBars}
@@ -92,6 +100,7 @@ const Sidebar = () => {
               <SearchBar
                 isSearching={isSearching}
                 setIsSearching={setIsSearching}
+                setSideBarVisible={setShowSidebar}
               />
             </motion.ul>
           )}

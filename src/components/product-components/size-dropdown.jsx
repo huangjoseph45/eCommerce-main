@@ -22,9 +22,18 @@ const SizesDropdown = ({ product, defaultSelector = "Select" }) => {
       }
     };
 
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setShowElement(false);
+      }
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 

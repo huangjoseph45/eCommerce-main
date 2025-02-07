@@ -7,20 +7,42 @@ const CardGrid = ({ isLoading, products }) => {
 
   return (
     <>
-      <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4 w-full px-8 relatives">
+      <div className="grid grid-cols-2 xs:grid-cols-2 lg:grid-cols-3 gap-4 w-full px-8 relatives">
         {!isLoading && products ? (
           products.map((product) => {
             return (
-              <Card
-                key={product.id}
-                sku={product.sku}
-                colors={product.colors}
-                name={product.productName}
-                price={product.price}
-                type={product.type}
-                numPatterns={product.colors.length}
-                discount={product.discount}
-              />
+              <>
+                <Card
+                  key={product.id}
+                  sku={product.sku}
+                  colors={product.colors}
+                  name={product.productName}
+                  price={product.price}
+                  type={product.type}
+                  numPatterns={product.colors.length}
+                  discount={product.discount}
+                />{" "}
+                <Card
+                  key={product.id}
+                  sku={product.sku}
+                  colors={product.colors}
+                  name={product.productName}
+                  price={product.price}
+                  type={product.type}
+                  numPatterns={product.colors.length}
+                  discount={product.discount}
+                />{" "}
+                <Card
+                  key={product.id}
+                  sku={product.sku}
+                  colors={product.colors}
+                  name={product.productName}
+                  price={product.price}
+                  type={product.type}
+                  numPatterns={product.colors.length}
+                  discount={product.discount}
+                />
+              </>
             );
           })
         ) : (

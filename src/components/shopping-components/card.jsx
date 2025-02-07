@@ -48,7 +48,7 @@ const Card = ({
   return (
     <div
       key={sku}
-      className="rounded-sm w-full h-fit flex flex-col gap-1 px-2 cursor-pointer box-border pb-2 relative z-0
+      className="hover:shadow-md transition-all duration-100 rounded-sm w-full h-fit flex flex-col gap-1 cursor-pointer box-border pb-2 relative z-0
 "
       onMouseEnter={toggleShowArrows}
       onMouseLeave={toggleShowArrows}
@@ -61,19 +61,19 @@ const Card = ({
           alt={name}
           onClick={() => nav(stringURL)}
           loading="lazy"
-          className="w-full h-[25rem] xs:h-[20rem] sm:h-[25rem] md:h-[30rem] select-none object-cover"
+          className="w-full h-[17rem] sm:h-[24rem] md:h-[30rem] lg:h-[22rem] xl:h-[25rem] select-none object-cover"
         />
 
         {isShowingArrows && (
           <>
             <span
-              className="absolute inset-y-1/2 left-2  w-4 h-4 p-4 rounded-full flex items-center justify-center hover:bg-white/40   transition-colors duration-[0.4s]"
+              className="absolute inset-y-1/2 left-2  w-4 h-4 p-4 rounded-full flex items-center justify-center hover:bg-black/10 shadow-md  transition-colors duration-[0.4s]"
               onClick={() => modifyCardColor(-1)}
             >
               <FontAwesomeIcon icon={faChevronLeft} />
             </span>
             <span
-              className="absolute inset-y-1/2 right-2  w-4 h-4 p-4 rounded-full flex items-center justify-center hover:bg-white/40  transition-colors duration-[0.4s]"
+              className="absolute inset-y-1/2 right-2  w-4 h-4 p-4 rounded-full flex items-center justify-center hover:bg-black/10 shadow-md transition-colors duration-[0.4s]"
               onClick={() => modifyCardColor(1)}
             >
               <FontAwesomeIcon icon={faChevronRight} />
@@ -81,7 +81,7 @@ const Card = ({
           </>
         )}
       </div>
-      <Link to={stringURL}>
+      <Link to={stringURL} className="px-2">
         <p className="font-semibold text-xl">{name}</p>
         <p className="text-gray-500 text-sm">{type}</p>
         <p className="text-gray-500 text-sm">{numPatterns} Patterns</p>

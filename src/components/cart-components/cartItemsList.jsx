@@ -26,7 +26,8 @@ const CartItemList = ({ cart, setCart, loading, products, error }) => {
   }
 
   return (
-    <ul className=" w-full">
+    <ul className="w-fit flex flex-col items-center mx-auto">
+      <h1 className="text-2xl my-2 mt-4 flex items-center self-start">Bag</h1>
       {products.map((product, index) => {
         const cartItem = cart[index]; // Corresponding cart item
         if (!product) {

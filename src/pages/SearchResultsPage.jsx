@@ -48,9 +48,8 @@ function SearchResultsPage() {
           </>
         ) : (
           <div className="flex justify-center">
-            <p className="text-3xl w-fit py-8">No Results Found for</p>
-            <p className="text-3xl w-fit py-8">
-              &nbsp;&quot;{searchQuery}&quot;
+            <p className="text-3xl w-fit py-8 mx-2">
+              No Results Found for&nbsp;&quot;{searchQuery}&quot;
             </p>
           </div>
         )}
