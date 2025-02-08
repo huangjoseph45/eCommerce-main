@@ -31,15 +31,17 @@ import { isEqual } from "lodash";
 //   }
 // };
 
-const useFetchServerData = ({ queries, auth }) => {
+const useFetchServerData = (options = {}) => {
+  const { queries = null, auth = null } = options;
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState(null);
   const [isError, setIsError] = useState(false);
 
-  const getDataFunc = async () => {
+  const getDataFunc = async (queries, auth) => {
     if (!auth) {
       throw new Error(`User is not authorized`);
     }
+    console.log("new req");
     try {
       setLoading(false);
 
@@ -70,17 +72,18 @@ const useFetchServerData = ({ queries, auth }) => {
 
   useEffect(() => {
     if (Array.isArray(queries)) {
-      getDataFunc();
+      getDataFunc(queries, auth);
     } else {
       console.log("Not an array");
     }
     setLoading(false);
   }, []);
 
-  const refetch = useCallback(() => {
+  const refetch = ({ queries, auth }) => {
     setLoading(true);
-    getDataFunc();
-  }, [data]);
+    getDataFunc(queries, auth);
+  };
+
   return { isLoading, data, setData, isError, refetch };
 };
 

@@ -41,7 +41,6 @@ const AddToCart = () => {
 
   useEffect(() => {
     let timeoutId;
-    console.log(showPopup);
     if (showPopup === true) {
       timeoutId = setTimeout(() => {
         setShowPopup(false);

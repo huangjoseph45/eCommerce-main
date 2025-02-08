@@ -5,7 +5,6 @@ import ProductImage from "../components/product-components/product-image";
 import ProductInfo from "../components/product-components/product-info";
 import { ProductInfoContext } from "../components/utilities/ContextManager";
 import { useEffect, useState } from "react";
-import useFetchProducts from "../components/utilities/useFetchMultipleProducts";
 
 const ProductPage = ({ product }) => {
   const [productInfo, setProductInfo] = useState({});

@@ -9,6 +9,7 @@ import PasswordField from "./password-field";
 import Select from "../select";
 import { Country, State, City } from "country-state-city";
 import { AnimatePresence, motion } from "motion/react";
+import OrderHistory from "./order-history";
 
 const ProfileContent = ({
   currentSection,
@@ -206,7 +207,9 @@ const ProfileContent = ({
         </button>
       )}
       <h1 className="text-2xl mb-6">{currentSection ? currentSection : ""}</h1>
-      <ul className="flex flex-col gap-4  max-w-[25rem]"> {fields}</ul>
+      <ul className="flex flex-col gap-4  max-w-[25rem]">
+        {currentSection !== "Order History" ? fields : <OrderHistory />}
+      </ul>
       <AnimatePresence>
         {isChanged && (
           <motion.div

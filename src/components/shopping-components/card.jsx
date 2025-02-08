@@ -47,7 +47,6 @@ const Card = ({
 
   return (
     <div
-      key={sku}
       className="hover:shadow-md transition-all duration-100 rounded-sm w-full h-fit flex flex-col gap-1 cursor-pointer box-border pb-2 relative z-0
 "
       onMouseEnter={toggleShowArrows}

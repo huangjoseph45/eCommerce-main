@@ -164,21 +164,21 @@ const SearchBar = ({
                 onClick={checkHideBar}
               />
             </div>
-            <div className="flex flex-col w-full ml-[6rem] lg:ml-0 mt-[10rem] lg:mt-[4rem] px-4 ">
+            <div className="flex flex-col w-full lg:ml-0 mt-[10rem] lg:mt-[4rem] px-4 ">
               <h1 className="text-lg">Your Searches</h1>
               <ul className="grid grid-rows-2 grid-flow-col gap-2 w-fit">
                 {pastSearches &&
-                  pastSearches.map((search, index) => (
+                  pastSearches.map((searchValue, index) => (
                     <li
-                      key={`${search}-${index}`}
+                      key={`${searchValue}-${index}`}
                       onClick={() => {
                         setSideBarVisible(false);
                         setIsSearching(false);
-                        nav(`/search?q=${encodeURIComponent(search)}`);
+                        nav(`/search?q=${encodeURIComponent(searchValue)}`);
                       }}
-                      className="p-2 border rounded w-fit shadow-md cursor-pointer"
+                      className="p-2 border rounded w-fit shadow-md cursor-pointer hover:scale-105 transition-all duration-200"
                     >
-                      {search}
+                      {searchValue}
                     </li>
                   ))}
               </ul>

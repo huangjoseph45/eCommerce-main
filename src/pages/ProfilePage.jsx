@@ -23,12 +23,10 @@ const ProfilePage = () => {
     "createdAt",
     "address",
     "phoneNumber",
+    "orderHistory",
   ];
 
-  const { isLoading, data, refetch } = useFetchServerData({
-    queries: fetchFields,
-    auth: { isLoggedIn },
-  });
+  const { isLoading, data, refetch } = useFetchServerData();
 
   const nav = useNavigate();
 
@@ -118,6 +116,13 @@ const ProfilePage = () => {
 
     checkWindowWidth();
     window.addEventListener("resize", checkWindowWidth);
+
+    if (!data) {
+      refetch({
+        queries: fetchFields,
+        auth: { isLoggedIn },
+      });
+    }
 
     const cookies = document.cookie;
     if (!cookies.includes("sessionId")) {

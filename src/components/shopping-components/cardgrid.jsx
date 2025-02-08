@@ -1,5 +1,5 @@
 import Card from "./card";
-import { useState, useContext, useEffect } from "react";
+import { useState } from "react";
 import CardPlaceHolder from "./cardPlaceholder";
 
 const CardGrid = ({ isLoading, products }) => {
@@ -11,18 +11,16 @@ const CardGrid = ({ isLoading, products }) => {
         {!isLoading && products ? (
           products.map((product) => {
             return (
-              <>
-                <Card
-                  key={product.id}
-                  sku={product.sku}
-                  colors={product.colors}
-                  name={product.productName}
-                  price={product.price}
-                  type={product.type}
-                  numPatterns={product.colors.length}
-                  discount={product.discount}
-                />{" "}
-              </>
+              <Card
+                key={product.sku}
+                sku={product.sku}
+                colors={product.colors}
+                name={product.productName}
+                price={product.price}
+                type={product.type}
+                numPatterns={product.colors.length}
+                discount={product.discount}
+              />
             );
           })
         ) : (

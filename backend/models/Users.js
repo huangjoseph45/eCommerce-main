@@ -65,6 +65,10 @@ const userSchema = new mongoose.Schema(
       default: 0,
       min: [0, "Number of sales cannot be negative"],
     },
+    orderHistory: {
+      type: [String],
+      default: [],
+    },
     address: { type: addressSchema, default: () => ({}) },
     totalBalance: {
       type: Number,
@@ -84,6 +88,7 @@ const userSchema = new mongoose.Schema(
     },
     cart: {
       type: Array,
+      default: [],
     },
   },
   {

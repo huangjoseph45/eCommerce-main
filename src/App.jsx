@@ -1,7 +1,6 @@
 import "./index.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import debounce from "lodash.debounce"; // Install lodash.debounce for debouncing server updates
 
 import { ProductContext } from "./components/utilities/ContextManager";
 import useUpdateServerData from "./components/utilities/updateServerData";
@@ -14,6 +13,7 @@ import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import CartPage from "./pages/CartPage";
 import SearchResultsPage from "./pages/SearchResultsPage";
+import { isEmpty } from "lodash";
 
 // const products = [
 //   {
@@ -73,7 +73,7 @@ function App() {
   }, [userInfo]);
 
   useEffect(() => {
-    refetchProducts("");
+    if (!products || products.length < 1) refetchProducts("");
   }, []);
 
   return (

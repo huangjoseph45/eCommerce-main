@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SectionLinks = (sections) => {
+const SectionLinks = (sections, setShow = () => {}) => {
   const [hoverId, setHoverId] = useState(null);
   const nav = useNavigate();
   return sections.map((element, index) => {
@@ -13,7 +13,10 @@ const SectionLinks = (sections) => {
         className="w-fit relative"
         onMouseEnter={() => setHoverId(element.id)}
         onMouseLeave={() => setHoverId(null)}
-        onClick={() => nav(`/search?q=${encodeURIComponent(element.href)}`)}
+        onClick={() => {
+          setShow(false);
+          nav(`/search?q=${encodeURIComponent(element.href)}`);
+        }}
       >
         <li
           href={element.href}

@@ -27,7 +27,7 @@ const CartSummary = ({ products }) => {
     userInfo &&
     userInfo.cart &&
     userInfo.cart.length > 0 && (
-      <div className="w-[30rem] sticky top-[7rem] z-10 flex flex-col gap-2 mt-6 lg:mt-0">
+      <div className="w-[30rem] sticky top-[7rem] z-10 flex flex-col gap-2 mt-6 lg:mt-0 cursor-pointer hover:shadow-md p-4 rounded-sm transition-all duration-200">
         <h1 className="font-semibold text-lg">Summary</h1>
         <CartSummaryHeader
           mainText={"Subtotal"}
@@ -62,7 +62,7 @@ const CartSummary = ({ products }) => {
         />
         <hr />
         <button
-          className="border rounded-md p-2 border-black bg-black text-white hover:bg-slate-950/90 my-2 w-full"
+          className="border rounded-md p-2 border-black bg-black text-white hover:bg-slate-950/90 my-2 w-full hover:shadow-md"
           disabled={products.length === 0}
         >
           Checkout

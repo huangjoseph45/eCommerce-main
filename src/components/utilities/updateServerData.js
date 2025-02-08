@@ -9,9 +9,11 @@ const useUpdateServerData = ({ dataToUpdate = {} }) => {
   const [errorCode, setErrorCode] = useState(null);
 
   const handleUpdate = async (data) => {
+    if (!data || isEmpty(data)) return;
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:2000/api/users/update", {
+
+      const res = await fetch(`${import.meta.env.VITE_PATH}/users/update`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

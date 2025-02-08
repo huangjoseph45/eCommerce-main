@@ -29,10 +29,7 @@ const Header = () => {
   const timeoutRef = useRef(null);
   const { setUserInfo, userInfo } = useContext(ProductContext);
 
-  const { isLoading, data, refetch } = useFetchServerData({
-    queries: ["cart", "firstName"],
-    auth: { isLoggedIn },
-  });
+  const { isLoading, data, refetch } = useFetchServerData();
 
   useEffect(() => {
     const resizeEvent = () => {
@@ -52,6 +49,14 @@ const Header = () => {
       window.removeEventListener("resize", resizeEvent);
     };
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (!data)
+      refetch({
+        queries: ["cart", "firstName"],
+        auth: { isLoggedIn },
+      });
+  }, []);
 
   const mouseEnter = () => {
     if (!isVisible) {
@@ -86,7 +91,11 @@ const Header = () => {
 
       if (cookies.includes("sessionId")) {
         setIsLoggedIn(true);
-        refetch();
+        console.log("hi");
+        refetch({
+          queries: ["cart", "firstName"],
+          auth: { isLoggedIn },
+        });
       } else {
         setIsLoggedIn(false);
         setUserInfo({});

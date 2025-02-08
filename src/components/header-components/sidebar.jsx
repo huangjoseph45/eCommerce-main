@@ -35,7 +35,7 @@ const Sidebar = () => {
     },
   ];
 
-  const sectionElements = SectionLinks(sections);
+  const sectionElements = SectionLinks(sections, setShowSidebar);
 
   useEffect(() => {
     setIsSearching(false);
