@@ -110,8 +110,8 @@ const LoginPage = () => {
       <Header />
       <form
         onSubmit={handleSubmit}
-        className={`flex flex-col m-auto w-[25rem] gap-1 absolute ${
-          isModeSignIn ? "top-1/2" : "top-[57.5%]"
+        className={`flex flex-col h-fit m-auto min-w-[17rem] w-[50vw] max-w-[25rem] gap-1 absolute  ${
+          isModeSignIn ? "top-[30rem]" : "top-[34rem]"
         } left-1/2 -translate-x-1/2 -translate-y-[100%]`}
       >
         <SelectSignIn
@@ -162,12 +162,12 @@ const LoginPage = () => {
           <AnimatePresence>
             {showTooltip && (
               <motion.p
-                className={`absolute w-full border bg-gray-300 p-2 left-1/2 -translate-x-1/2 ${
+                className={`absolute w-full border bg-gray-300 p-2 left-0 -translate-x-1/2 ${
                   isModeSignIn ? "top-[12rem]" : "top-[16rem]"
-                } lg:left-full lg:translate-x-[1rem] flex justify-center items-center`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+                } lg:left-[105%] lg:top-[3rem] lg:translate-x-[1rem] flex justify-center items-center`}
+                initial={{ opacity: 0, scale: 0.6 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.6 }}
                 transition={{ duration: 0.1 }}
               >
                 Password must be at least 8 characters and contain a number
@@ -259,7 +259,7 @@ export default LoginPage;
 
 function SelectSignIn({ setModeSignIn, isModeSignIn }) {
   return (
-    <div className="flex flex-1">
+    <div className="flex flex-1 whitespace-nowrap">
       <p
         onClick={() => setModeSignIn(true)}
         className={`cursor-pointer w-1/2 m-auto text-left text-2xl ${
@@ -274,7 +274,7 @@ function SelectSignIn({ setModeSignIn, isModeSignIn }) {
           !isModeSignIn ? "text-slate-900" : "text-gray-400"
         }`}
       >
-        Create Account
+        New Account
       </p>
     </div>
   );
