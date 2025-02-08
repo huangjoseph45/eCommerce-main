@@ -47,7 +47,7 @@ const Card = ({
 
   return (
     <div
-      className="hover:shadow-md transition-all duration-100 rounded-sm w-full h-fit flex flex-col gap-1 cursor-pointer box-border pb-2 relative z-0
+      className="hover:shadow-md transition-all duration-100 rounded-sm w-full h-fit flex flex-col gap-1 cursor-pointer box-border pb-2 relative z-0 
 "
       onMouseEnter={toggleShowArrows}
       onMouseLeave={toggleShowArrows}
@@ -60,19 +60,19 @@ const Card = ({
           alt={name}
           onClick={() => nav(stringURL)}
           loading="lazy"
-          className="w-full h-[17rem] sm:h-[24rem] md:h-[30rem] lg:h-[22rem] xl:h-[25rem] select-none object-cover"
+          className="w-full  select-none object-cover aspect-[3/4]"
         />
 
         {isShowingArrows && (
           <>
             <span
-              className="absolute inset-y-1/2 left-2  w-4 h-4 p-4 rounded-full flex items-center justify-center hover:bg-black/10 shadow-md  transition-colors duration-[0.4s]"
+              className="absolute inset-y-1/2 left-2  w-4 h-4 p-4 rounded-full flex items-center justify-center hover:bg-black/10 shadow-md  transition-colors duration-[0.4s] filter: bg-blur-sm"
               onClick={() => modifyCardColor(-1)}
             >
               <FontAwesomeIcon icon={faChevronLeft} />
             </span>
             <span
-              className="absolute inset-y-1/2 right-2  w-4 h-4 p-4 rounded-full flex items-center justify-center hover:bg-black/10 shadow-md transition-colors duration-[0.4s]"
+              className="absolute inset-y-1/2 right-2  w-4 h-4 p-4 rounded-full flex items-center justify-center hover:bg-black/10 shadow-md transition-colors duration-[0.4s] filter: bg-blur-sm"
               onClick={() => modifyCardColor(1)}
             >
               <FontAwesomeIcon icon={faChevronRight} />

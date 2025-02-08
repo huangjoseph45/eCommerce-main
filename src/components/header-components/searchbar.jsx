@@ -176,7 +176,7 @@ const SearchBar = ({
                         setIsSearching(false);
                         nav(`/search?q=${encodeURIComponent(searchValue)}`);
                       }}
-                      className="p-2 border rounded w-fit shadow-md cursor-pointer hover:scale-105 transition-all duration-200"
+                      className="p-2 border rounded w-fit shadow-md cursor-pointer hover:scale-105 transition-all duration-200 hover:bg-black/5 flex justify-center items-center h-fit"
                     >
                       {searchValue}
                     </li>

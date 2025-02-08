@@ -29,9 +29,9 @@ const ProductInfo = ({ product }) => {
   const colorBoxes = product.colors.map((color) => (
     <div
       key={color.colorCode}
-      className={`w-12 h-12 lg:w-8 lg:h-8 border hover:border-blue-400 hover:border-2 cursor-pointer  hover:scale-[110%] transition-all duration-150 rounded-full ${
+      className={`w-12 h-12 lg:w-8 lg:h-8 border hover:border-blue-400 hover:border-2 cursor-pointer  hover:scale-[110%] transition-all shadow-md duration-150 rounded-full ${
         currentColor.localeCompare(color.colorName) === 0 &&
-        "border-blue-500 border-[.15rem]"
+        "border-blue-500 border-[.15rem] "
       }`}
       style={{ backgroundColor: color.colorCode }}
       onClick={() => setCurrentColor(color.colorName)}

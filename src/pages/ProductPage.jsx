@@ -21,9 +21,9 @@ const ProductPage = ({ product }) => {
     <>
       {" "}
       <Header></Header>
-      <div className="w-full lg:w-[90%] xl:w-[80%] mx-auto *:h-fit overflow-x-hidden">
+      <div className="w-full md:w-[95%] mx-auto *:h-fit overflow-x-hidden">
         <ProductInfoContext.Provider value={{ productInfo, setProductInfo }}>
-          <div className="flex flex-col lg:flex-row justify-center xl: gap-8  lg:w-full xl:w-4/5 2xl:w-3/4 m-auto">
+          <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-0  md:w-full xl:w-4/5 m-auto">
             <ProductImage product={product} />
             <ProductInfo product={product} />
           </div>

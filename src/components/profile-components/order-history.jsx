@@ -58,7 +58,7 @@ const OrderHistory = () => {
     return (
       <li
         key={sku + "-" + dateOrdered + color.colorCode}
-        className="flex gap-3 h-fit hover:shadow-md cursor-pointer transition-all duration-200"
+        className="flex gap-3 h-fit shadow-md cursor-pointer transition-all duration-200 hover:bg-black/5"
       >
         <img
           src={imageLink}
