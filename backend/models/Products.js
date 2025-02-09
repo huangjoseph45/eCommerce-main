@@ -1,4 +1,4 @@
-const { trim, lowerCase } = require("lodash");
+const { lowerCase } = require("lodash");
 const mongoose = require("mongoose");
 
 // Define the Color Subschema
@@ -22,6 +22,19 @@ const colorSchema = new mongoose.Schema(
   },
   { _id: false }
 ); // Prevent creation of separate _id for subdocuments
+
+const stripeProductSchema = new mongoose.Schema({
+  stripeProductId: { type: String, required: true, unique: true }, // Stripe product ID
+  name: { type: String, required: true },
+  description: { type: String },
+  price: { type: Number, required: true }, // Store in cents for accuracy
+  currency: { type: String, default: "usd" },
+  images: [{ type: String }], // Array of image URLs
+  metadata: { type: Map, of: String }, // Store additional Stripe metadata
+  stripePriceId: { type: String, required: true, unique: true }, // Stripe price ID
+  active: { type: Boolean, default: true },
+  createdAt: { type: Date, default: Date.now },
+});
 
 // Define the Product Schema
 const productSchema = new mongoose.Schema(
@@ -92,6 +105,18 @@ const productSchema = new mongoose.Schema(
       trim: true,
       maxlength: [1000, "Description cannot exceed 1000 characters"],
     },
+    taxcode: {
+      type: String,
+      required: true,
+      enum: {
+        values: ["txcd_99999999", "txcd_00000000"],
+        message: "{VALUE} is not a valid tax code",
+      },
+      trim: true,
+    },
+    stripeProductId: String,
+    stripePriceId: String,
+    stripePrice: Object,
   },
   {
     timestamps: true, // Adds createdAt and updatedAt fields
@@ -107,4 +132,8 @@ function arrayLimit(val) {
 productSchema.index({ productName: "text", description: "text" }); // For text search
 
 // Export the Product Model
-module.exports = mongoose.model("Product", productSchema);
+
+const Product = (module.exports = mongoose.model("Product", productSchema));
+const StripeProduct = mongoose.model("StripeProduct", stripeProductSchema);
+
+module.exports = { Product, StripeProduct };

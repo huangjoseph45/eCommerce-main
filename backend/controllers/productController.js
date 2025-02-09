@@ -1,6 +1,7 @@
 const MONGO_URI = process.env.MONGO_URI;
 const { default: mongoose } = require("mongoose");
-const Product = require("../models/Products");
+const { Product, StripeProduct } = require("../models/Products");
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 const createProduct = async (req, res) => {
   let {
@@ -29,30 +30,64 @@ const createProduct = async (req, res) => {
     console.error("Invalid Input");
     return res.status(400).send("Invalid input");
   }
-  sizes = sizes.map((size) => {
-    return size.toUpperCase();
-  });
+
+  sizes = sizes.map((size) => size.toUpperCase());
+
   try {
-    const filter = { sku };
+    // Check if the product already exists
+    let existingProduct = await Product.findOne({ sku });
 
-    const update = {
-      $set: {
-        productName,
-        type,
-        price,
-        discount,
-        colors,
-        sizes,
-        description,
-        tags,
-      },
-    };
+    if (!existingProduct) {
+      // Create a new product in Stripe
+      const stripeProduct = await stripe.products.create({
+        name: productName,
+        description: description,
+        metadata: { sku },
+        active: true,
+      });
 
-    const options = { upsert: true, new: true, runValidators: true };
-    const new_product = await Product.findOneAndUpdate(filter, update, options);
-    return new_product;
+      const stripePrice = await stripe.prices.create({
+        product: stripeProduct.id,
+        unit_amount: price * 100, // Convert to cents
+        currency: "usd",
+      });
+
+      const newStripeProduct = await StripeProduct.findOneAndUpdate(
+        { stripeProductId: stripeProduct.id },
+        {
+          stripeProductId: stripeProduct.id,
+          stripePriceId: stripePrice.id,
+          productName,
+          metadata: { sku },
+          active: true,
+        },
+        { upsert: true, new: true, runValidators: true }
+      );
+
+      // Store the product in the database
+      const newProduct = await Product.findOneAndUpdate(
+        { sku },
+        {
+          productName,
+          type,
+          price,
+          discount,
+          colors,
+          sizes,
+          description,
+          tags,
+          stripeProductId: stripeProduct.id,
+          stripePriceId: stripePrice.id,
+        },
+        { upsert: true, new: true, runValidators: true }
+      );
+
+      return res.status(201).json({ newProduct, newStripeProduct });
+    } else {
+      return res.status(400).json({ message: "Product already exists" });
+    }
   } catch (error) {
-    console.error("ERROR WITH PRODUCT CREATION: " + error);
+    console.error("ERROR WITH PRODUCT CREATION: ", error);
     return res.status(500).json({
       message: "ERROR WITH PRODUCT CREATION",
     });

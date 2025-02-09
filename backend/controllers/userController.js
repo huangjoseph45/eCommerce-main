@@ -6,7 +6,6 @@ const {
   EncryptPassword,
   ComparePassword,
 } = require("../models/encrypt-password");
-const { m } = require("motion/react");
 
 /**
  * Helper function to validate required fields.

@@ -8,6 +8,7 @@ const MongoStore = require("connect-mongo");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
+const stripeRoutes = require("./routes/stripeRoute.js");
 
 const app = express();
 const MONGO_URI = process.env.MONGO_URI;
@@ -20,14 +21,6 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 app.use(express.json());
-
-const allowedOrigins = [
-  "https://e-commerce-main-huangjoseph45s-projects.vercel.app/",
-  "https://e-commerce-main-git-main-huangjoseph45s-projects.vercel.app/",
-  "https://e-commerce-main-ln8tvf3tq-huangjoseph45s-projects.vercel.app/",
-  "http://localhost:5173",
-  "http://localhost:5174",
-];
 
 app.use(
   cors({
@@ -59,6 +52,7 @@ app.use(
 
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/stripe", stripeRoutes);
 
 app.use("/", (req, res) => {
   res.send("Welcome");

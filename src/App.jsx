@@ -15,32 +15,6 @@ import CartPage from "./pages/CartPage";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import { isEmpty } from "lodash";
 
-// const products = [
-//   {
-//     productName: "Fancy Polo",
-//     type: "Men's Clothing",
-//     price: 100,
-//     sku: "SKU-1",
-//     tags: ["hi"],
-//     discount: 10,
-//     colors: [
-//       {
-//         colorName: "navy",
-//         colorCode: "#212e50",
-//         idMod: "nav",
-//       },
-//       {
-//         colorName: "white",
-//         colorCode: "#ffffff",
-//         idMod: "whi",
-//       },
-//     ],
-//     sizes: ["xs", "s", "m", "l", "xl"],
-//     description:
-//       "An American style standard since 1972, the Polo shirt has been imitated but never matched. Over the decades, Ralph Lauren has reimagined his signature style in a wide array of colors and fits, yet all retain the quality and attention to detail of the iconic original. This relaxed version is made with luxe cotton interlock that features an ultrasoft finish.",
-//   },
-// ];
-
 const createProduct = async (product) => {
   try {
     const response = await fetch(
@@ -62,6 +36,31 @@ const createProduct = async (product) => {
 };
 
 function App() {
+  const productsList = [
+    {
+      productName: "Fancy Polo",
+      type: "Men's Clothing",
+      price: 100,
+      sku: "SKU-1",
+      tags: ["hi"],
+      discount: 10,
+      colors: [
+        {
+          colorName: "navy",
+          colorCode: "#212e50",
+          idMod: "nav",
+        },
+        {
+          colorName: "white",
+          colorCode: "#ffffff",
+          idMod: "whi",
+        },
+      ],
+      sizes: ["xs", "s", "m", "l", "xl"],
+      description:
+        "An American style standard since 1972, the Polo shirt has been imitated but never matched. Over the decades, Ralph Lauren has reimagined his signature style in a wide array of colors and fits, yet all retain the quality and attention to detail of the iconic original. This relaxed version is made with luxe cotton interlock that features an ultrasoft finish.",
+    },
+  ];
   const { isLoading, products, refetchProducts } = useFetchProducts();
   const [userInfo, setUserInfo] = useState({});
   const { refetch } = useUpdateServerData({
@@ -73,6 +72,7 @@ function App() {
   }, [userInfo]);
 
   useEffect(() => {
+    createProduct(productsList[0]);
     if (!products || products.length < 1) refetchProducts("");
   }, []);
 

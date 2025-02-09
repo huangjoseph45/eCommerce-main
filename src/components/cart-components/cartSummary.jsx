@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { ProductContext } from "../utilities/ContextManager";
 import CartSummaryHeader from "./cartSummaryHeader";
+import { useNavigate } from "react-router-dom";
+import CheckoutButton from "./checkoutButton";
 
 const CartSummary = ({ products }) => {
   const { userInfo } = useContext(ProductContext);
@@ -8,7 +10,6 @@ const CartSummary = ({ products }) => {
   const [globalDiscount, setGlobalDiscount] = useState(25);
   const [tax, setTax] = useState(0);
   const [shippingPrice, setShippingPrice] = useState(0);
-  console.log(products);
 
   useEffect(() => {
     if (userInfo && userInfo !== undefined && userInfo.cart && products) {
@@ -61,12 +62,7 @@ const CartSummary = ({ products }) => {
           zeroText={"Free"}
         />
         <hr />
-        <button
-          className="border rounded-md p-2 border-black bg-black text-white hover:bg-slate-950/90 my-2 w-full hover:shadow-md"
-          disabled={products.length === 0}
-        >
-          Checkout
-        </button>{" "}
+        <CheckoutButton cart={userInfo && userInfo.cart} products={products} />
       </div>
     )
   );

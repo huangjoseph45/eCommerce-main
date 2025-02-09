@@ -27,6 +27,8 @@ const returnProduct = async (sku) => {
       type,
       discount,
       colors,
+      stripePriceId,
+      stripeProductId,
     } = await response.json();
     const imageLink = `https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
       sku + "-" + color
@@ -46,6 +48,8 @@ const returnProduct = async (sku) => {
       color: colorObj,
       imageLink,
       discount,
+      stripePriceId,
+      stripeProductId,
     };
   } catch (error) {
     console.error("Error fetching product from server: " + error);
