@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
+const { verifySession } = require("../models/verification.js");
 const {
   checkUser,
   newUser,
   fetchData,
-  verifySession,
   handleLogout,
   handleDataUpdate,
   updateSensitiveData,
@@ -14,7 +14,7 @@ router.post("/signin", checkUser);
 
 router.post("/createuser", newUser);
 
-router.post("/logout", handleLogout);
+router.post("/logout", verifySession, handleLogout);
 
 router.post("/fetch-data", verifySession, fetchData);
 

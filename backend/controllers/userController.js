@@ -187,7 +187,6 @@ const fetchData = async (req, res) => {
     // Validate session data
     if (!validateFields([{ name: "email", value: email }], res)) return;
 
-    // Find user and verify session
     const user = await User.findOne(
       { email },
       "email firstName lastName age cart createdAt totalBalance address phoneNumber"
@@ -387,18 +386,11 @@ const updateSensitiveData = async (req, res) => {
 /**
  * Middleware to verify user session.
  */
-const verifySession = (req, res, next) => {
-  if (!req.session || !req.session.user || !req.session.user) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
-  next();
-};
 
 module.exports = {
   checkUser,
   newUser,
   fetchData,
-  verifySession,
   handleLogout,
   handleDataUpdate,
   updateSensitiveData,
