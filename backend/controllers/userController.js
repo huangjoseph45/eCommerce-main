@@ -35,8 +35,6 @@ const findUserByEmail = async (email, res) => {
  * Helper function to create and save a session.
  */
 const createSession = ({ req, res, user, remember = false }) => {
-  console.log(user);
-
   if (!user || !user.email) {
     console.error("Invalid user data provided for session creation.");
     return res.status(400).json({ status: 400, message: "Invalid user data" });
@@ -97,7 +95,6 @@ const checkUser = async (req, res) => {
     if (!user) return;
 
     // Compare passwords
-    console.log(user);
     const isMatch = await ComparePassword(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
@@ -154,7 +151,6 @@ const newUser = async (req, res) => {
     const existingUser = await findUserByEmail(email, res);
 
     if (existingUser) {
-      console.log(existingUser);
       return res.status(409).json({ error: "Email already exists" });
     }
 
@@ -164,8 +160,6 @@ const newUser = async (req, res) => {
       email,
       password: hashedPassword,
     });
-
-    console.log(new_user);
 
     createSession({ req, res, user: new_user, remember: false });
   } catch (error) {

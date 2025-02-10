@@ -5,10 +5,23 @@ const {
   createProduct,
   fetchProduct,
   fetchCategory,
+  findPromo,
+  createDiscount,
 } = require("../controllers/productController.js");
 
-router.post("/create-product", verifyAdmin, createProduct);
+router.post(
+  "/create-product",
+  express.json({ type: "application/json" }),
+  verifyAdmin,
+  createProduct
+);
 router.get("/fetch-product/:sku", verifySession, fetchProduct);
 router.get("/fetch/:category", fetchCategory);
+router.get("/discount/:code", findPromo);
+router.post(
+  "/discount/create",
+  express.json({ type: "application/json" }),
+  createDiscount
+);
 
 module.exports = router;

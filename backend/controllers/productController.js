@@ -1,6 +1,6 @@
 const MONGO_URI = process.env.MONGO_URI;
 const { default: mongoose } = require("mongoose");
-const { Product, StripeProduct } = require("../models/Products");
+const { Product, StripeProduct, Discount } = require("../models/Products");
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 const createProduct = async (req, res) => {
@@ -46,17 +46,10 @@ const createProduct = async (req, res) => {
         active: true,
       });
 
-      const stripePrice = await stripe.prices.create({
-        product: stripeProduct.id,
-        unit_amount: price * 100, // Convert to cents
-        currency: "usd",
-      });
-
       const newStripeProduct = await StripeProduct.findOneAndUpdate(
         { stripeProductId: stripeProduct.id },
         {
           stripeProductId: stripeProduct.id,
-          stripePriceId: stripePrice.id,
           productName,
           metadata: { sku },
           active: true,
@@ -77,7 +70,6 @@ const createProduct = async (req, res) => {
           description,
           tags,
           stripeProductId: stripeProduct.id,
-          stripePriceId: stripePrice.id,
         },
         { upsert: true, new: true, runValidators: true }
       );
@@ -140,8 +132,41 @@ const fetchCategory = async (req, res) => {
   }
 };
 
+const findPromo = async (req, res) => {
+  const { code } = req.params;
+  try {
+    if (!code) return res.status(400).json({ message: "No query" });
+    const foundDiscount = await Discount.findOne({ code: code.toUpperCase() });
+    if (!foundDiscount) return res.status(204).json({ message: null });
+
+    return res.status(200).json(foundDiscount);
+  } catch (error) {
+    return res.status(500).json({ Message: error });
+  }
+};
+
+const createDiscount = async (req, res) => {
+  let { code, value, validProducts } = req.body;
+  if (!validProducts) validProducts = [];
+  try {
+    if (!code || !value)
+      return res.status(400).json({ message: "No code/value" });
+    const new_discount = Discount.create({
+      code: code.toUpperCase(),
+      value: value,
+      validProducts: validProducts,
+    });
+
+    return res.status(200).json(new_discount);
+  } catch (error) {
+    return res.status(500).json({ Message: error });
+  }
+};
+
 module.exports = {
   createProduct,
   fetchProduct,
   fetchCategory,
+  findPromo,
+  createDiscount,
 };

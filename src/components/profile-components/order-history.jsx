@@ -58,7 +58,7 @@ const OrderHistory = () => {
     return (
       <li
         key={sku + "-" + dateOrdered + color.colorCode}
-        className="flex gap-3 h-fit shadow-md cursor-pointer transition-all duration-200 hover:bg-black/5"
+        className="flex gap-3 h-fit shadow-md cursor-pointer transition-all duration-200 hover:bg-bgBlack/5"
       >
         <img
           src={imageLink}
@@ -71,10 +71,10 @@ const OrderHistory = () => {
             <p
               className={`whitespace-nowrap capitalize text-lg font-semibold font-sans ${
                 statusText?.toLowerCase().trim() === "shipped" && isOk
-                  ? "text-green-700"
+                  ? "text-errorFalse"
                   : isOk
-                  ? "text-black"
-                  : "text-red-700"
+                  ? "text-textDark"
+                  : "text-errorTrue"
               }`}
             >
               {isOk ? statusText : "Error: Contact Support"}
@@ -87,7 +87,7 @@ const OrderHistory = () => {
             {" "}
             <p className="whitespace-nowrap capitalize text-gray-500">{type}</p>
             <p
-              className={`whitespace-nowrap capitalize text-black  cursor-pointer`}
+              className={`whitespace-nowrap capitalize text-bgBlack  cursor-pointer`}
             >
               {color.colorName}
             </p>

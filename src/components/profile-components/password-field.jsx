@@ -76,10 +76,10 @@ const PasswordField = () => {
         <div className="flex flex-col w-full gap-4">
           <label
             htmlFor="password1"
-            className="absolute top-0 -translate-y-1/2  left-[.9rem] bg-white px-1 text-xs flex gap-[0.1rem]"
+            className="absolute top-0 -translate-y-1/2  left-[.9rem] bg-bgBase px-1 text-xs flex gap-[0.1rem]"
           >
             {isSelected ? "Old Password" : "Password"}{" "}
-            <p className="text-red-600 ">*</p>
+            <p className="text-errorTrue ">*</p>
           </label>{" "}
           <input
             type={isSelected ? "text" : "password"}
@@ -91,7 +91,7 @@ const PasswordField = () => {
           />
           {!isSelected && (
             <span
-              className="text-black text-sm absolute top-[1.5rem]  mt-1 z-5 -translate-y-[70%] left-5 select-none pointer-events-none  z-20"
+              className="text-textDark text-sm absolute top-[1.5rem]  mt-1 z-5 -translate-y-[70%] left-5 select-none pointer-events-none  z-20"
               type="password"
             >
               ••••••••••••••••
@@ -108,9 +108,9 @@ const PasswordField = () => {
                     duration: 0.15, // Applies to initial and animate by default
                   }}
                   htmlFor="password1"
-                  className={`absolute top-[24%] left-[.9rem] bg-white px-1 text-xs flex gap-[0.1rem] z-10`}
+                  className={`absolute top-[24%] left-[.9rem] bg-bgBase px-1 text-xs flex gap-[0.1rem] z-10`}
                 >
-                  Password <p className="text-red-600 ">*</p>
+                  Password <p className="text-errorTrue ">*</p>
                 </motion.label>
                 <motion.input
                   initial={{ opacity: 0, scale: 0.95, zIndex: 0 }}
@@ -134,9 +134,9 @@ const PasswordField = () => {
                     duration: 0.15, // Applies to initial and animate by default
                   }}
                   htmlFor="password2"
-                  className="absolute top-[51%] left-[.9rem] bg-white px-1 text-xs flex gap-[0.1rem] z-10"
+                  className="absolute top-[51%] left-[.9rem] bg-bgBase px-1 text-xs flex gap-[0.1rem] z-10"
                 >
-                  Confirm Password <p className="text-red-600 ">*</p>
+                  Confirm Password <p className="text-errorTrue">*</p>
                 </motion.label>{" "}
                 <motion.input
                   initial={{ opacity: 0, scale: 0.95, zIndex: 0 }}
@@ -160,13 +160,13 @@ const PasswordField = () => {
                     transition={{
                       duration: 0.15, // Applies to initial and animate by default
                     }}
-                    className=" w-fit px-4 py-2 rounded-md bg-slate-900 text-white hover:bg-slate-700 whitespace-nowrap"
+                    className=" w-fit px-4 py-2 rounded-md bg-bgSecondary text-textLight hover:bgExtraSecondaryLight whitespace-nowrap"
                     onClick={changePassword}
                   >
                     Save Password
                   </motion.button>
                   {!isEmpty(message) && (
-                    <span className="items-center justify-center flex px-4 text-black">
+                    <span className="items-center justify-center flex px-4 text-textDark">
                       {message}
                     </span>
                   )}

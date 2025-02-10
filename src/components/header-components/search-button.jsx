@@ -1,13 +1,10 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-
 const SearchButton = ({ setSearch }) => {
   return (
     <>
       <div
         title="Search"
         onClick={() => setSearch(true)}
-        className="text-black cursor-pointer aspect-square  hover:bg-slate-500 hover:bg-opacity-25 p-2 rounded-full"
+        className="text-textDark cursor-pointer aspect-square  hover:bg-slate-500 hover:bg-opacity-25 p-2 rounded-full"
       >
         {" "}
         <svg

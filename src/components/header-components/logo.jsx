@@ -6,8 +6,8 @@ const Logo = () => {
       to="/"
       className="group flex flex-row cursor-pointer m-auto gap-2 h-[2rem]"
     >
-      <h2 className="text-black select-none text-2xl">Imagine</h2>
-      <h2 className="text-black select-none text-2xl">Collective</h2>
+      <h2 className="text-textDark select-none text-2xl">Imagine</h2>
+      <h2 className="text-textDark select-none text-2xl">Collective</h2>
     </Link>
   );
 };

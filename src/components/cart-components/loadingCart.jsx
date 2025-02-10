@@ -35,7 +35,7 @@ const LoadingCart = () => {
                     ></SquigglyText>
                   </h3>
                   <div className="flex flex-row gap-4">
-                    <p className="text-black w-24">
+                    <p className="text-textDark w-24">
                       <SquigglyText
                         delay={2 + 3 * Math.random() + "s"}
                       ></SquigglyText>

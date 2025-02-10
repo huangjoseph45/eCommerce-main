@@ -8,7 +8,7 @@ const MongoStore = require("connect-mongo");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
-const stripeRoutes = require("./routes/stripeRoute.js");
+const paymentRoutes = require("./routes/paymentRoutes.js");
 
 const app = express();
 const MONGO_URI = process.env.MONGO_URI;
@@ -19,8 +19,6 @@ mongoose
   .connect(MONGO_URI)
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
-
-app.use(express.json());
 
 app.use(
   cors({
@@ -50,9 +48,10 @@ app.use(
   })
 );
 
+app.use("/api/stripe", paymentRoutes);
+app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
-app.use("/api/stripe", stripeRoutes);
 
 app.use("/", (req, res) => {
   res.send("Welcome");

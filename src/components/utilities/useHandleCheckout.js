@@ -6,11 +6,11 @@ const useHandleCheckout = () => {
 
   const handleCheckout = async (products) => {
     try {
-      console.log(products);
       setLoading(true);
       const response = await fetch(checkoutLink, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ products }),
       });
 

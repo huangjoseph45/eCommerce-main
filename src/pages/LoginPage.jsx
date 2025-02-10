@@ -1,18 +1,13 @@
 import { useContext, useEffect, useState } from "react";
-import validateEmail from "../components/utilities/validateEmail";
-import validatePassword from "../components/utilities/validatePassword";
+import useAuthenticate from "../components/utilities/useAuthenticate";
 import { AnimatePresence, motion } from "motion/react";
 import ErrorMessage from "../components/login-components/error-message";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { ProductContext } from "../components/utilities/ContextManager";
-import { useNavigate } from "react-router-dom";
-import useLogout from "../components/utilities/useLogout";
 import Header from "../components/header";
 
 const LoginPage = () => {
-  const nav = useNavigate();
-
   const [isModeSignIn, setModeSignIn] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -21,75 +16,17 @@ const LoginPage = () => {
     isPasswordInvalid: false,
     isError: false,
   });
-  const [errorMessage, setErrorMessage] = useState("");
   const [showTooltip, setShowTooltip] = useState(false);
-  const [loading, result, tryLogout] = useLogout();
-  const [isLoading, setIsLoading] = useState(false);
   const { userInfo } = useContext(ProductContext);
+  const [isLoading, errorMessage, onAuthenticate] = useAuthenticate({
+    setErrorState,
+    checked,
+    userInfo,
+    isModeSignIn,
+  });
 
   const handleSubmit = async (event) => {
-    setIsLoading(true);
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData.entries());
-
-    data["cart"] = userInfo;
-    data["remember"] = checked;
-    tryLogout();
-
-    try {
-      const validatedEmail = validateEmail(data.email);
-      const validatedPassword = validatePassword(data.password);
-
-      setErrorState({
-        isEmailInvalid: !validatedEmail,
-        isPasswordInvalid: !validatedPassword,
-        isError: false,
-      });
-
-      if (!validatedEmail || !validatedPassword) return;
-
-      const endpoint = isModeSignIn
-        ? "http://localhost:2000/api/users/signin"
-        : "http://localhost:2000/api/users/createuser";
-
-      const response = await fetch(endpoint, {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        let errorBody;
-        try {
-          errorBody = await response.json();
-        } catch (jsonErr) {
-          errorBody = { error: response };
-        }
-
-        console.error("Error from server:", errorBody);
-        setErrorState((prev) => ({
-          ...prev,
-          isError: true,
-          errorMessage: "Invalid Email or Password",
-        }));
-        setErrorMessage("Invalid Email or Password");
-        setIsLoading(false);
-
-        return;
-      }
-
-      setIsLoading(false);
-      nav("/");
-    } catch (error) {
-      setIsLoading(false);
-      setErrorState((prev) => ({
-        ...prev,
-        isError: true,
-      }));
-      setErrorMessage("Internal Server Error");
-    }
+    onAuthenticate(event);
   };
 
   const renderErrorMessage = (condition, message, resetStateKey) => {
@@ -118,13 +55,13 @@ const LoginPage = () => {
           setModeSignIn={setModeSignIn}
           isModeSignIn={isModeSignIn}
         />
-        <hr className="w-full border-t border-slate-900 mb-4" />
+        <hr className="w-full border-t border-bgSecondary mb-4" />
         <input
           type="text"
           name="email"
           autoComplete="account-email"
           className={`w-full border p-3 mb-4 ${
-            errorState.isEmailInvalid ? "border-red-500" : "border-gray-400"
+            errorState.isEmailInvalid ? "border-errorTrue" : "border-gray-400"
           }`}
           placeholder="Email"
         />
@@ -140,7 +77,7 @@ const LoginPage = () => {
             autoComplete="account-password"
             className={`w-full border p-3  ${
               errorState.isPasswordInvalid
-                ? "border-red-500"
+                ? "border-errorTrue"
                 : "border-gray-400"
             }`}
             placeholder="Password"
@@ -149,7 +86,7 @@ const LoginPage = () => {
             icon={faEye}
             onClick={() => setShowPassword(!showPassword)}
             className={`absolute top-1/2 -translate-y-1/2 -translate-x-[2rem] cursor-pointer text-xl  ${
-              !showPassword && "opacity-35 text-black"
+              !showPassword && "opacity-35 text-textDark"
             }`}
           />
           <div
@@ -183,7 +120,7 @@ const LoginPage = () => {
               autoComplete="account-password"
               className={`w-full border p-3  ${
                 errorState.isPasswordInvalid
-                  ? "border-red-500"
+                  ? "border-errorTrue"
                   : "border-gray-400"
               }`}
               placeholder="Password"
@@ -208,10 +145,10 @@ const LoginPage = () => {
               <input
                 defaultChecked={false}
                 type="checkbox"
-                className="peer h-4 w-4 cursor-pointer transition-all appearance-none rounded-sm shadow hover:shadow-md border border-slate-300 checked:bg-slate-800 checked:border-slate-800"
+                className="peer h-4 w-4 cursor-pointer transition-all appearance-none rounded-sm shadow hover:shadow-md border border-slate-300 checked:bg-bgSecondaryLight checked:border-bgSecondaryLight"
                 id="check"
               />
-              <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+              <span className="absolute text-textLight opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-3.5 w-3.5"
@@ -239,7 +176,7 @@ const LoginPage = () => {
 
         <button
           type="submit"
-          className="bg-slate-900 text-white w-full p-4 text-sm hover:bg-slate-800 hover:scale-[102.5%] transition-all duration-300"
+          className="bg-bgSecondary text-textLight w-full p-4 text-sm hover:bg-bgSecondaryLight hover:scale-[102.5%] transition-all duration-300"
         >
           {isModeSignIn
             ? isLoading
@@ -263,7 +200,7 @@ function SelectSignIn({ setModeSignIn, isModeSignIn }) {
       <p
         onClick={() => setModeSignIn(true)}
         className={`cursor-pointer w-1/2 m-auto text-left text-2xl ${
-          isModeSignIn ? "text-slate-900" : "text-gray-400"
+          isModeSignIn ? "text-bgSecondary" : "text-gray-400"
         }`}
       >
         Sign In
@@ -271,7 +208,7 @@ function SelectSignIn({ setModeSignIn, isModeSignIn }) {
       <p
         onClick={() => setModeSignIn(false)}
         className={`cursor-pointer w-1/2 m-auto text-right text-2xl ${
-          !isModeSignIn ? "text-slate-900" : "text-gray-400"
+          !isModeSignIn ? "text-bgSecondary" : "text-gray-400"
         }`}
       >
         New Account

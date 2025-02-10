@@ -1,7 +1,7 @@
 const ErrorMessage = ({ message, setState }) => {
   return (
     <p
-      className="bg-red-300 text-red-600 p-2 text-[.5rem] cursor-pointer"
+      className="bg-errorTrue/30 text-errorTrue p-2 text-[.5rem] cursor-pointer"
       onClick={() => setState(false)}
     >
       {message}

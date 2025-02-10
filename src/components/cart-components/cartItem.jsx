@@ -72,7 +72,7 @@ const CartItem = memo(
                       ${price.toFixed(2)}
                     </p>
                   )}
-                  <p className="text-black">
+                  <p className="text-textDark">
                     ${(price * (1 - discount / 100)).toFixed(2)}
                   </p>{" "}
                 </div>

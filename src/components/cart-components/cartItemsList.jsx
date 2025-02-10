@@ -34,7 +34,7 @@ const CartItemList = ({ cart, setCart, loading, products, error }) => {
           return (
             <li
               key={cartItem.sku}
-              className="list-none hover:bg-red-300 rounded-md cursor-pointer p-2 transition-all duration-100"
+              className="list-none hover:bg-errorTrue/30 rounded-md cursor-pointer p-2 transition-all duration-100"
               onClick={purgeCart}
             >
               Product details not available.

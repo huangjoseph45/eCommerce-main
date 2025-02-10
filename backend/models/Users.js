@@ -53,7 +53,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "Password is required"],
-      select: false, // Exclude from query results by default
+      select: false,
     },
     age: {
       type: Number,
@@ -89,6 +89,9 @@ const userSchema = new mongoose.Schema(
     cart: {
       type: Array,
       default: [],
+    },
+    customerId: {
+      type: String,
     },
   },
   {

@@ -20,9 +20,22 @@ export default {
       "2xl": "1536px",
       // => @media (min-width: 1536px) { ... }
     },
+
     extend: {
       fontFamily: {
         spectral: ["Spectral", "serif"],
+      },
+      colors: {
+        bgBase: "white",
+        bgBlack: "black",
+        bgSecondary: "#0f172a",
+        bgSecondaryLight: "#1e293b",
+        bgExtraSecondaryLight: "#334155",
+        textLight: "white",
+        textHollow: "#9ca3af",
+        textDark: "black",
+        errorTrue: "#b91c1c",
+        errorFalse: "#15803d",
       },
       boxShadow: {
         custom: "0 0 15px #f8fafc",

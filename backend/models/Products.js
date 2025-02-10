@@ -1,4 +1,3 @@
-const { lowerCase } = require("lodash");
 const mongoose = require("mongoose");
 
 // Define the Color Subschema
@@ -22,6 +21,25 @@ const colorSchema = new mongoose.Schema(
   },
   { _id: false }
 ); // Prevent creation of separate _id for subdocuments
+
+const discountSchema = new mongoose.Schema({
+  code: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    uppercase: true,
+  },
+  value: {
+    type: Number,
+    required: true,
+  },
+  validProducts: {
+    type: [String],
+    set: (tags) => tags.map((tag) => tag.trim().toLowerCase()), // Ensure tags are both trimmed and lowercase
+    default: [],
+  },
+});
 
 const stripeProductSchema = new mongoose.Schema({
   stripeProductId: { type: String, required: true, unique: true }, // Stripe product ID
@@ -133,7 +151,8 @@ productSchema.index({ productName: "text", description: "text" }); // For text s
 
 // Export the Product Model
 
-const Product = (module.exports = mongoose.model("Product", productSchema));
+const Product = mongoose.model("Product", productSchema);
 const StripeProduct = mongoose.model("StripeProduct", stripeProductSchema);
+const Discount = mongoose.model("Discount", discountSchema);
 
-module.exports = { Product, StripeProduct };
+module.exports = { Product, StripeProduct, Discount };

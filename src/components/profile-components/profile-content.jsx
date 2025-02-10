@@ -151,9 +151,9 @@ const ProfileContent = ({
           key={field.fieldName}
           className="flex flex-row gap-3 p-2 items-center relative w-full"
         >
-          <label className="absolute top-0 left-[.9rem] bg-white px-1 text-xs flex gap-[0.1rem]">
+          <label className="absolute top-0 left-[.9rem] bg-bgBase px-1 text-xs flex gap-[0.1rem]">
             {regularText}{" "}
-            {field.isRequired && <p className="text-red-600">*</p>}
+            {field.isRequired && <p className="text-errorTrue">*</p>}
           </label>
           <input
             type="text"

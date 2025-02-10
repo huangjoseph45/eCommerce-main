@@ -108,8 +108,8 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
 
   return (
     <>
-      <label className="absolute top-0 left-[.9rem] bg-white px-1 text-xs flex gap-[0.1rem]">
-        {label} {field.isRequired && <p className="text-red-600">*</p>}
+      <label className="absolute top-0 left-[.9rem] bg-bgBase px-1 text-xs flex gap-[0.1rem]">
+        {label} {field.isRequired && <p className="text-errorTrue">*</p>}
       </label>
       <div className=" rounded-lg w-full cursor-pointer">
         <input
@@ -149,7 +149,7 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="absolute flex z-20 flex-col bg-white overflow-y-scroll h-fit max-h-[20rem] mt-4 p-2 w-full outline rounded-lg"
+              className="absolute flex z-20 flex-col bg-bgBase overflow-y-scroll h-fit max-h-[20rem] mt-4 p-2 w-full outline rounded-lg"
             >
               {optionElements}
             </motion.ul>

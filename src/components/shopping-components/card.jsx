@@ -66,13 +66,13 @@ const Card = ({
         {isShowingArrows && (
           <>
             <span
-              className="absolute inset-y-1/2 left-2  w-4 h-4 p-4 rounded-full flex items-center justify-center hover:bg-black/10 shadow-md  transition-colors duration-[0.4s] filter: bg-blur-sm"
+              className="absolute inset-y-1/2 left-2  w-4 h-4 p-4 rounded-full flex items-center justify-center hover:bg-bgBlack/10 shadow-md  transition-colors duration-[0.4s] filter: bg-blur-sm"
               onClick={() => modifyCardColor(-1)}
             >
               <FontAwesomeIcon icon={faChevronLeft} />
             </span>
             <span
-              className="absolute inset-y-1/2 right-2  w-4 h-4 p-4 rounded-full flex items-center justify-center hover:bg-black/10 shadow-md transition-colors duration-[0.4s] filter: bg-blur-sm"
+              className="absolute inset-y-1/2 right-2  w-4 h-4 p-4 rounded-full flex items-center justify-center hover:bg-bgBlack/10 shadow-md transition-colors duration-[0.4s] filter: bg-blur-sm"
               onClick={() => modifyCardColor(1)}
             >
               <FontAwesomeIcon icon={faChevronRight} />
@@ -93,7 +93,7 @@ const Card = ({
           )}
         </div>
         {discount !== 0 && (
-          <p className="font-semibold text-lg text-green-600">
+          <p className="font-semibold text-lg text-errorFalse">
             {discount}% off
           </p>
         )}

@@ -56,14 +56,14 @@ const AddToCart = () => {
       {showPopup && (
         <span
           className={
-            "fixed bottom-[1rem] right-[1rem] bg-white shadow-md border rounded-full p-3 cursor-pointer"
+            "fixed bottom-[1rem] right-[1rem] bg-bgBase shadow-md border rounded-full p-3 cursor-pointer"
           }
         >
           Added to Cart
         </span>
       )}
       <button
-        className="rounded-lg bg-slate-50 text-black w-[90%] p-3 text-sm hover:bg-slate-950 hover:text-white outline outline-2 outline-slate-950 hover:scale-[102.5%] transition-all duration-0.3 mb-8"
+        className="rounded-lg bg-slate-50 text-black w-[90%] p-3 text-sm hover:bg-bgSecondary hover:text-textLight outline outline-2 outline-bgSecondary hover:scale-[102.5%] transition-all duration-0.3 mb-8"
         onClick={addToCartFunction}
       >
         Add to Cart

@@ -10,15 +10,30 @@ const {
   updateSensitiveData,
 } = require("../controllers/userController.js");
 
-router.post("/signin", checkUser);
+router.post("/signin", express.json({ type: "application/json" }), checkUser);
 
-router.post("/createuser", newUser);
+router.post("/createuser", express.json({ type: "application/json" }), newUser);
 
-router.post("/logout", verifySession, handleLogout);
+router.post(
+  "/logout",
+  verifySession,
+  express.json({ type: "application/json" }),
+  handleLogout
+);
 
-router.post("/fetch-data", verifySession, fetchData);
+router.post(
+  "/fetch-data",
+  verifySession,
+  express.json({ type: "application/json" }),
+  fetchData
+);
 
-router.post("/update", verifySession, handleDataUpdate);
+router.post(
+  "/update",
+  verifySession,
+  express.json({ type: "application/json" }),
+  handleDataUpdate
+);
 
 router.post("/update-sensitive-data", verifySession, updateSensitiveData);
 

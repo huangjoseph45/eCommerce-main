@@ -67,7 +67,7 @@ const Sidebar = () => {
     <>
       <div className="relative ">
         <FontAwesomeIcon
-          className={`text-black cursor-pointer size-8 md:size-8 mt-1 hover:bg-slate-500 hover:bg-opacity-25 p-3 rounded-full lg:hidden ${
+          className={`text-textDark cursor-pointer size-8 md:size-8 mt-1 hover:bg-slate-500 hover:bg-opacity-25 p-3 rounded-full lg:hidden ${
             showSidebar && "rotate-90"
           } transition-all duration-300`}
           icon={showSidebar ? faXmark : faBars}
@@ -77,7 +77,7 @@ const Sidebar = () => {
         <AnimatePresence>
           {showSidebar && (
             <motion.ul
-              className="fixed right-0 top-0 w-full h-full bg-white p-10 text-2xl flex flex-col gap-4"
+              className="fixed right-0 top-0 w-full h-full bg-bgBase p-10 text-2xl flex flex-col gap-4"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
@@ -86,7 +86,7 @@ const Sidebar = () => {
               }}
             >
               <FontAwesomeIcon
-                className={`text-black cursor-pointer size-8 md:size-10 hover:bg-slate-500 hover:bg-opacity-25 p-3 rounded-full lg:hidden $ transition-all duration-300 absolute right-2 top-6`}
+                className={`text-textDark cursor-pointer size-8 md:size-10 hover:bg-slate-500 hover:bg-opacity-25 p-3 rounded-full lg:hidden $ transition-all duration-300 absolute right-2 top-6`}
                 icon={faXmark}
                 title={"Close"}
                 onClick={() => setShowSidebar(false)}

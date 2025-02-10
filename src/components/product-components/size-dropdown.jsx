@@ -50,7 +50,7 @@ const SizesDropdown = ({ product, defaultSelector = "Select" }) => {
     return (
       <li
         key={size}
-        className="list-none cursor-pointer hover:text-white hover:bg-slate-700 text-black text-left p-2 rounded-md pl-4 min-w-[10rem] w-full uppercase select-none"
+        className="list-none cursor-pointer hover:text-textLight hover:bg-slate-700 text-textDark text-left p-2 rounded-md pl-4 min-w-[10rem] w-full uppercase select-none"
         onClick={() => selectSize(size)}
       >
         {size}
@@ -67,10 +67,10 @@ const SizesDropdown = ({ product, defaultSelector = "Select" }) => {
       >
         <div
           onClick={showFunc}
-          className="handle group flex items-center justify-center bg-white w-fit m-auto px-4 py-2 cursor-pointer hover:bg-slate-800 box-border border-2 border-slate-800 rounded-md"
+          className="handle group flex items-center justify-center bg-bgBase w-fit m-auto px-4 py-2 cursor-pointer hover:bg-bgSecondaryLight box-border border-2 border-bgSecondaryLight rounded-md"
         >
           <p
-            className={`text-xl text-black group-hover:text-white select-none transition-all duration-300 ${
+            className={`text-xl text-textDark group-hover:text-textLight select-none transition-all duration-300 ${
               selected !== defaultSelector && "uppercase"
             }`}
           >
@@ -84,7 +84,7 @@ const SizesDropdown = ({ product, defaultSelector = "Select" }) => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.1 }}
-              className="flex bg-white items-center m-auto flex-col gap-2 border border-black rounded-md w-fit p-1 absolute top-full left-0 z-20"
+              className="flex bg-bgBase items-center m-auto flex-col gap-2 border border-textDark rounded-md w-fit p-1 absolute top-full left-0 z-20"
             >
               {sizes}
             </motion.div>

@@ -59,7 +59,7 @@ const SettingsSectionsList = ({ sections, setSection }) => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "-100%" }}
             transition={{ duration: 0.3 }}
-            className="flex flex-col w-full lg:w-1/4 p-4 fixed items-center lg:items-start bg-white z-30 h-full lg:h-fit"
+            className="flex flex-col w-full lg:w-1/4 p-4 fixed items-center lg:items-start bg-bgBase z-30 h-full lg:h-fit"
           >
             {/* Inner AnimatePresence for motion.ul */}
             <AnimatePresence>

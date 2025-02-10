@@ -50,7 +50,7 @@ const Cart = () => {
       </svg>
       {numItems > 0 && (
         <span
-          className="absolute text-black font-semibold text-[0.8rem] flex items-center justify-center rounded-full p-2  select-none translate-y-[5%]"
+          className="absolute text-textDark font-semibold text-[0.8rem] flex items-center justify-center rounded-full p-2  select-none translate-y-[5%]"
           aria-label={`${numItems} items in cart`}
         >
           {numItems}

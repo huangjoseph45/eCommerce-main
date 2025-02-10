@@ -12,8 +12,8 @@ import ProductPage from "./pages/ProductPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import CartPage from "./pages/CartPage";
+import SuccessPage from "./pages/SuccessPage";
 import SearchResultsPage from "./pages/SearchResultsPage";
-import { isEmpty } from "lodash";
 
 const createProduct = async (product) => {
   try {
@@ -86,6 +86,7 @@ function App() {
             <Route path="/login" element={<LoginPage />}></Route>
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/success" element={<SuccessPage />} />
             <Route path="/search" element={<SearchResultsPage />} />
             {products &&
               Array.isArray(products) &&

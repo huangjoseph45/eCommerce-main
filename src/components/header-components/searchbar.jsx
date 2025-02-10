@@ -117,7 +117,7 @@ const SearchBar = ({
             transition={{
               duration: 0.1, // Applies to initial and animate by default
             }}
-            className=" -top-[4rem] lg:top-0 fixed left-0 lg:left-1/2 w-screen lg:w-full flex justify-center p-2 h-[120vh] lg:h-[25vh] min-h-[13rem] z-10 bg-white"
+            className=" -top-[4rem] lg:top-0 fixed left-0 lg:left-1/2 w-screen lg:w-full flex justify-center p-2 h-[120vh] lg:h-[25vh] min-h-[13rem] z-10 bg-bgBase"
           >
             <div className="absolute top-0 left-0 p-4">
               <Logo />
@@ -125,7 +125,7 @@ const SearchBar = ({
             <div className=" absolute top-[5rem] lg:top-0 w-full flex items-center px-4 lg:justify-center pt-4">
               <div className="relative">
                 <button
-                  className="absolute left-0 top-1/2 -translate-y-1/2 h-full box-border cursor-pointer aspect-square rounded-md hover:bg-gray-300 text-gray-400 flex items-center justify-center"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 h-full box-border cursor-pointer aspect-square rounded-md hover:bg-gray-300 text-textHollow flex items-center justify-center"
                   onClick={handleSubmit}
                 >
                   <svg
@@ -160,7 +160,7 @@ const SearchBar = ({
               <FontAwesomeIcon
                 icon={window.innerWidth > 1024 ? faXmark : faChevronRight}
                 size="lg"
-                className=" text-black p-2 h-8 aspect-square rounded-full cursor-pointer hover:bg-black/10 shadow-md transition-all duration-200 bg-opacity-55"
+                className=" text-textDark p-2 h-8 aspect-square rounded-full cursor-pointer hover:bg-bgBlack/10 shadow-md transition-all duration-200 bg-opacity-55"
                 onClick={checkHideBar}
               />
             </div>
@@ -176,7 +176,7 @@ const SearchBar = ({
                         setIsSearching(false);
                         nav(`/search?q=${encodeURIComponent(searchValue)}`);
                       }}
-                      className="p-2 border rounded w-fit shadow-md cursor-pointer hover:scale-105 transition-all duration-200 hover:bg-black/5 flex justify-center items-center h-fit"
+                      className="p-2 border rounded w-fit shadow-md cursor-pointer hover:scale-105 transition-all duration-200 hover:bg-bgBlack/5 flex justify-center items-center h-fit"
                     >
                       {searchValue}
                     </li>
@@ -184,7 +184,7 @@ const SearchBar = ({
               </ul>
             </div>
           </motion.div>
-          <div className="content-[''] w-[100vw] h-[100vh] fixed bg-black/30 top-0 left-0 -z-10 box-border border-none"></div>
+          <div className="content-[''] w-[100vw] h-[100vh] fixed bg-bgBlack/30 top-0 left-0 -z-10 box-border border-none"></div>
         </>
       )}
     </AnimatePresence>
