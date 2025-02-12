@@ -105,7 +105,7 @@ const ProfileContent = ({
       return (
         <li
           key={field.fieldName}
-          className="flex flex-row gap-3 p-2 items-center relative w-full"
+          className="flex flex-row gap-3 items-center relative w-full"
         >
           <Select
             options={countries.current}
@@ -121,7 +121,7 @@ const ProfileContent = ({
       return (
         <li
           key={field.fieldName}
-          className="flex flex-row gap-3 p-2 items-center relative w-full"
+          className="flex flex-row gap-3 p items-center relative w-full"
         >
           <Select
             options={states}
@@ -137,7 +137,7 @@ const ProfileContent = ({
       return (
         <li
           key={field.fieldName}
-          className="flex flex-row gap-3 p-2 items-center relative w-full"
+          className="flex flex-row gap-3 items-center relative w-full"
         >
           <PasswordField />
         </li>
@@ -148,9 +148,9 @@ const ProfileContent = ({
       return (
         <li
           key={field.fieldName}
-          className="flex flex-row gap-3 p-2 items-center relative w-full"
+          className="flex flex-row gap-3 items-center relative w-full"
         >
-          <label className="absolute top-0 left-[.9rem] bg-bgBase px-1 text-xs flex gap-[0.1rem]">
+          <label className="absolute -top-2 left-[.9rem] bg-bgBase px-1 text-xs flex gap-[0.1rem]">
             {regularText}{" "}
             {field.isRequired && <p className="text-errorTrue">*</p>}
           </label>
@@ -182,10 +182,10 @@ const ProfileContent = ({
     );
   });
   return (
-    <div className="flex flex-col w-2/3 lg:w-1/2 mx-auto lg:mx-0 ">
+    <div className="flex flex-col w-2/3 lg:w-1/2 mx-auto lg:mx-0 pl-2">
       {!showProfileHeaders && (
         <button
-          className="left-0 w-fit  aspect-square -translate-x-[4.5rem] top-[6rem] sticky rounded-full p-2 hover:bg-gray-100 transition-all duration-200"
+          className="left-0 top-[6.5rem] w-fit  aspect-square  absolute rounded-full p-2 hover:bg-gray-100 transition-all duration-200"
           onClick={() => setShowProfileHeaders(true)}
         >
           <svg
@@ -207,7 +207,7 @@ const ProfileContent = ({
       )}
       <h1 className="text-2xl mb-6">{currentSection ? currentSection : ""}</h1>
       <ul
-        className={`flex flex-col gap-4   min-h-[20rem] relative ${
+        className={` flex flex-col gap-4 min-h-[20rem] relative ${
           currentSection !== "Order History"
             ? " max-w-[30rem]"
             : "max-w-[50rem]"

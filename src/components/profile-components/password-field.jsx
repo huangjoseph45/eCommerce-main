@@ -72,7 +72,7 @@ const PasswordField = () => {
 
   return (
     <>
-      <div className="relative w-full">
+      <div className="relative w-full ">
         <div className="flex flex-col w-full gap-4">
           <label
             htmlFor="password1"
@@ -85,7 +85,7 @@ const PasswordField = () => {
             type={isSelected ? "text" : "password"}
             value={fieldValue.oldField}
             name="password0"
-            className="outline outline-gray-600 p-3 rounded-lg w-full"
+            className="outline outline-gray-600 p-3 rounded-lg w-full bg-bgBase"
             onSelect={fieldSelected}
             onChange={(event) => handleChange(event, "oldField")}
           />
@@ -122,7 +122,7 @@ const PasswordField = () => {
                   type={isSelected ? "text" : "password"}
                   name="password1"
                   value={fieldValue.primaryField}
-                  className="outline outline-gray-600 p-3 rounded-lg w-full  z-0"
+                  className="outline outline-gray-600 p-3 rounded-lg w-full bg-bgBase z-0"
                   onSelect={fieldSelected}
                   onChange={(event) => handleChange(event, "primaryField")}
                 />
@@ -148,7 +148,7 @@ const PasswordField = () => {
                   type={isSelected ? "text" : "password"}
                   value={fieldValue.confirmationField}
                   name="password2"
-                  className="outline outline-gray-600 p-3 rounded-lg w-full"
+                  className="outline outline-gray-600 p-3 rounded-lg w-full bg-bgBase"
                   onSelect={fieldSelected}
                   onChange={(event) => handleChange(event, "confirmationField")}
                 />

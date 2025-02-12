@@ -26,9 +26,9 @@ export default {
         spectral: ["Spectral", "serif"],
       },
       colors: {
-        bgBase: "#fafaf7",
-        bgBase2: "#f4f4f2",
-        bgBase3: "#f5f5f1",
+        bgBase: "#fffffc",
+        bgBase2: "#f8f9fa",
+        bgBase3: "#f4f4f2",
         bgBlack: "black",
         bgSecondary: "#0f172a",
         bgSecondaryLight: "#1e293b",

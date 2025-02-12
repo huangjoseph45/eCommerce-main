@@ -107,7 +107,7 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
 
   return (
     <>
-      <label className="absolute top-0 left-[.9rem] bg-bgBase px-1 text-xs flex gap-[0.1rem]">
+      <label className="absolute -top-2 left-[.9rem] bg-bgBase px-1 text-xs flex gap-[0.1rem]">
         {label} {field.isRequired && <p className="text-errorTrue">*</p>}
       </label>
       <div className=" rounded-lg w-full cursor-pointer">
@@ -138,17 +138,17 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
               handleSelect(query);
           }}
           onChange={(e) => changeInput(e)}
-          className="outline outline-gray-600 p-3 rounded-lg w-full cursor-pointe"
+          className="outline outline-gray-600 p-3 rounded-lg w-full cursor-pointe bg-bgBase"
         />
 
         <AnimatePresence>
           {showElements && (
             <motion.ul
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="absolute flex z-20 flex-col bg-bgBase overflow-y-scroll h-fit max-h-[20rem] mt-4 p-2 w-full outline rounded-lg"
+              initial={{ height: 0 }}
+              animate={{ maxHeight: "20rem", height: "fit-content" }}
+              exit={{ height: 0 }}
+              transition={{ duration: 0.15 }}
+              className="absolute flex z-20 flex-col bg-bgBase overflow-y-scroll mt-2 p-2 w-full outline rounded-lg"
             >
               {optionElements}
             </motion.ul>

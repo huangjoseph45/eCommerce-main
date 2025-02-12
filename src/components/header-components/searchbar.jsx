@@ -159,7 +159,7 @@ const SearchBar = ({
               <FontAwesomeIcon
                 icon={window.innerWidth > 1024 ? faXmark : faChevronRight}
                 size="lg"
-                className=" text-textDark p-2 h-8 aspect-square rounded-full cursor-pointer hover:bg-bgBlack/10 shadow-md transition-all duration-200 bg-opacity-55"
+                className=" text-textDark p-2 h-6 aspect-square rounded-full cursor-pointer hover:bg-bgBlack/10 shadow-md transition-all duration-200 bg-opacity-55"
                 onClick={checkHideBar}
               />
             </div>

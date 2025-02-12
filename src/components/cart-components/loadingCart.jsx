@@ -15,7 +15,10 @@ const LoadingCart = () => {
       {userInfo?.cart &&
         userInfo.cart.length > 0 &&
         userInfo.cart.map((item, index) => (
-          <li key={index} className="list-none py-2">
+          <li
+            key={index}
+            className="list-none py-2 w-[20rem] sm:w-[25rem] lg:w-[30rem] mx-auto borderp-2"
+          >
             <div className="flex gap-4">
               <div className="flex flex-col gap-2">
                 <div
@@ -29,13 +32,13 @@ const LoadingCart = () => {
 
               <div className="w-full flex flex-col gap-2">
                 <div className="flex flex-row w-full justify-between">
-                  <h3 className="text-lg font-semibold w-32">
+                  <h3 className="text-lg font-semibold w-24">
                     <SquigglyText
                       delay={2 + 3 * Math.random() + "s"}
                     ></SquigglyText>
                   </h3>
                   <div className="flex flex-row gap-4">
-                    <p className="text-textDark w-24">
+                    <p className="text-textDark w-12">
                       <SquigglyText
                         delay={2 + 3 * Math.random() + "s"}
                       ></SquigglyText>

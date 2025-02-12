@@ -106,7 +106,7 @@ const CartSummary = ({ products }) => {
     userInfo &&
     userInfo.cart &&
     userInfo.cart.length > 0 && (
-      <div className="min-w-[20rem] w-full max-w-[30rem] lg:max-w-[25rem] sticky top-[7rem] z-10 flex flex-col gap-2 mt-6 lg:mt-0 cursor-pointer shadow-md p-4 rounded-md transition-all duration-200 bg-bgBase3 text-textDark">
+      <div className="min-w-[20rem] w-full max-w-[30rem] lg:max-w-[25rem] sticky top-[7rem] z-10 flex flex-col gap-2 mt-6 lg:mt-0 cursor-pointer shadow-md p-4 rounded-md transition-all duration-200 bg-bgBase2 text-textDark">
         <h1 className="font-semibold text-lg">Summary</h1>
         <button
           className="text-left font-medium relative z-2"
@@ -136,7 +136,7 @@ const CartSummary = ({ products }) => {
               <div className="flex flex-row gap-2 py-2 px-1 z-0 relative items-center justify-center ">
                 <input
                   type="text"
-                  className="shadow-md border p-2 w-full rounded-md z-0 relative uppercase outline-none"
+                  className="shadow-md border p-2 w-full rounded-md z-0 relative uppercase  bg-bgBase"
                   value={discount.code}
                   onChange={(event) => handleChangeDiscount(event)}
                   onKeyDown={(e) => handleKeyDown(e)}

@@ -47,7 +47,7 @@ const Card = ({
 
   return (
     <div
-      className="hover:shadow-md transition-all duration-100 rounded-sm w-full h-fit flex flex-col gap-1 cursor-pointer box-border pb-2 relative z-0 
+      className="hover:shadow-md transition-all duration-100 rounded-sm w-full h-fit flex flex-col gap-1 cursor-pointer box-border pb-2 relative z-0 hover:bg-bgBase3
 "
       onMouseEnter={toggleShowArrows}
       onMouseLeave={toggleShowArrows}

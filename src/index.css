@@ -12,6 +12,10 @@ input {
   background-color: #f4f4f2;
 }
 
+input:focus {
+  outline: 2px solid #1e293b;
+}
+
 @layer components {
   /* HTML: <div class="loader"></div> */
   .loader {
