@@ -6,7 +6,6 @@ import isEmpty from "./utilities/isEmpty";
 const Select = ({ options, selectedValue, onSelect, field }) => {
   const [showElements, setShowElements] = useState(false);
   const list = useRef([]);
-  console.log(options);
   list.current = useMemo(() => {
     return options.map((option) => option.name);
   }, [options]);

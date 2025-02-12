@@ -3,12 +3,16 @@ import { ProductInfoContext } from "../utilities/ContextManager";
 import { ProductContext } from "../utilities/ContextManager";
 import isEmpty from "../utilities/isEmpty";
 import { useNavigate } from "react-router-dom";
+import useUpdateServerData from "../utilities/updateServerData";
 
 const AddToCart = () => {
   const { productInfo } = useContext(ProductInfoContext);
   const { userInfo, setUserInfo } = useContext(ProductContext);
   const [showPopup, setShowPopup] = useState(false);
   const nav = useNavigate();
+  const { refetch } = useUpdateServerData({
+    dataToUpdate: null,
+  });
 
   const addToCartFunction = useCallback(() => {
     const cookies = document.cookie;
@@ -35,6 +39,7 @@ const AddToCart = () => {
         ...userInfo,
         cart: updatedCart,
       });
+      refetch({ cart: updatedCart });
       setShowPopup(true);
     }
   }, [productInfo, setUserInfo, userInfo]);

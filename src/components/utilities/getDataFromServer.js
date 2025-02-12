@@ -41,7 +41,6 @@ const useFetchServerData = (options = {}) => {
     if (!auth) {
       throw new Error(`User is not authorized`);
     }
-    console.log("new req");
     try {
       setLoading(false);
 
@@ -73,8 +72,6 @@ const useFetchServerData = (options = {}) => {
   useEffect(() => {
     if (Array.isArray(queries)) {
       getDataFunc(queries, auth);
-    } else {
-      console.log("Not an array");
     }
     setLoading(false);
   }, []);

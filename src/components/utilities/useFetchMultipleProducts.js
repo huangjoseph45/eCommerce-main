@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const useFetchProducts = () => {
   const [isLoading, setLoading] = useState(false);
-  const [products, setProducts] = useState(null);
+  const [products, setProducts] = useState();
 
   const getProducts = async (tags) => {
     try {
@@ -21,7 +21,9 @@ const useFetchProducts = () => {
       );
 
       const data = await response.json();
-      setProducts(data.products);
+      if (Array.isArray(data.products) && data.products.length > 0) {
+        setProducts(data.products);
+      }
     } catch (e) {
       console.error(e);
     }
@@ -29,10 +31,10 @@ const useFetchProducts = () => {
   };
 
   const refetchProducts = async (tag) => {
-    return getProducts(tag);
+    getProducts(tag);
   };
 
-  return { isLoading, products, refetchProducts };
+  return [isLoading, products, refetchProducts];
 };
 
 export default useFetchProducts;

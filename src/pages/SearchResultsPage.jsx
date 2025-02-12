@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 function SearchResultsPage() {
   const [searchParams] = useSearchParams();
   const nav = useNavigate();
-  const { isLoading, products, refetchProducts } = useFetchProducts();
+  const [isLoading, products, refetchProducts] = useFetchProducts();
   const [searchQuery, setSearchQuery] = useState();
   const displayQuery = useRef();
 
@@ -22,10 +22,7 @@ function SearchResultsPage() {
   }, [searchParams]);
 
   useEffect(() => {
-    if (
-      searchQuery &&
-      searchQuery.toLowerCase() !== "namkhang has a small pp"
-    ) {
+    if (searchQuery) {
       refetchProducts(searchQuery);
       displayQuery.current = searchQuery
         .split(" ")
@@ -55,15 +52,9 @@ function SearchResultsPage() {
         ) : (
           <div className="flex justify-center">
             <p className="text-3xl w-fit py-8 mx-2">
-              {searchQuery &&
-              searchQuery.toLowerCase() === "namkhang has a small pp" ? (
-                <div className="flex flex-col items-center justify-center lowercase">
-                  <p>namkhang has a small pp?</p>
-                  <p>He does</p>
-                </div>
-              ) : (
-                "No Results Found for&nbsp;&quot;{searchQuery}&quot;"
-              )}
+              <p className="capitalize">
+                No Results Found for&nbsp;&quot;{searchQuery}&quot;
+              </p>
             </p>
           </div>
         )}

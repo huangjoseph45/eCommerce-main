@@ -3,9 +3,9 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET);
 const SERVER_DOMAIN = process.env.VITE_PATH;
 const CLIENT_DOMAIN = process.env.VITE_CLIENT_PATH;
 const { Product, Discount } = require("../models/Products.js");
-const { color } = require("motion/react");
 const User = require("../models/Users.js");
 const { Orders } = require("../models/Orders.js");
+const Users = require("../models/Users.js");
 
 const endpointSecret =
   "whsec_532019e6b33b8f33f4ca608a9c36356acb076993c972768d6fc5e4b7499206d8";
@@ -14,7 +14,6 @@ const handleCheckout = async (req, res) => {
   const { products } = req.body;
   const userId = req.session.user.userId;
   let customerId;
-
   try {
     if (!products || products.length < 1) {
       return res.status(400).json({ message: "Request contains no products" });
@@ -119,12 +118,26 @@ const handleCheckout = async (req, res) => {
         };
       })
     );
-
+    // {
+    //   price_data: { currency: 'usd', unit_amount: 9000 },
+    //   quantity: 1,
+    //   productData: {
+    //     sku: 'SKU-1',
+    //     productName: 'Fancy Polo',
+    //     color: '{"colorName":"white","colorCode":"#ffffff","idMod":"whi"}',
+    //     size: 'L'
+    //   }
+    // }
     const filteredLineItems = lineItems.filter((item) => item !== null);
     const metaDataLineItems = filteredLineItems.map((item) => {
       const lineItem = structuredClone(item);
-      delete lineItem.price_data.product_data;
-      return lineItem;
+      return {
+        sku: `${lineItem.productData.sku}-${
+          JSON.parse(lineItem.productData.color).idMod
+        }-${lineItem.productData.size}`,
+        q: lineItem.quantity,
+        p: lineItem.price_data.unit_amount,
+      };
     });
     const stripeLineItems = filteredLineItems.map((item) => {
       const lineItem = structuredClone(item);
@@ -136,7 +149,7 @@ const handleCheckout = async (req, res) => {
       customer: customerId,
       line_items: stripeLineItems,
       mode: "payment",
-      success_url: `${req.protocol}://${req.get("host")}/stripe/success`,
+      success_url: `${process.env.VITE_CLIENT_PATH}/success`,
       cancel_url: `${CLIENT_DOMAIN}/cart`,
       billing_address_collection: "required",
       shipping_address_collection: {
@@ -181,60 +194,80 @@ const webhook = async (req, res) => {
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
   } catch (err) {
-    console.log("Error message: " + err.message);
+    console.error("Error message: " + err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
   switch (event.type) {
     case "payment_intent.succeeded": {
-      const paymentIntent = event.data.object;
+      (async () => {
+        try {
+          const paymentIntent = event.data.object;
+          const sessionData = JSON.parse(paymentIntent.metadata.session);
+          const productInfo = JSON.parse(paymentIntent.metadata.product);
+          const shippingInfo = JSON.parse(paymentIntent.metadata.shipping);
 
-      //add order data to mongo in this webhook
-      //redirect to success page that adds order to mongo
-      //refresh cart on success page
+          const productInfoMap = await Promise.all(
+            productInfo.map(async (product) => {
+              const [pre, post, colorMod, size] = product.sku.split("-");
+              const sku = `${pre}-${post}`;
+              const foundProduct = await Product.findOne({ sku: sku });
 
-      console.log("PaymentIntent was successful!");
-      const sessionData = JSON.parse(paymentIntent.metadata.session);
-      const productInfo = JSON.parse(paymentIntent.metadata.product);
-      const shippingInfo = JSON.parse(paymentIntent.metadata.shipping);
-      console.log(productInfo);
+              const color =
+                foundProduct.colors.find((color) => {
+                  return color.idMod === colorMod;
+                }) || null;
 
-      const productInfoMap = productInfo.map((product) => {
-        return {
-          paymentInfo: product.price_data,
-          sku: product.productData.sku,
-          quantity: product.quantity,
-          size: product.productData.size,
-          color: JSON.parse(product.productData.color),
-        };
-      });
+              return {
+                paymentInfo: {
+                  currency: "usd",
+                  unit_amount: product.p,
+                },
+                sku: sku,
+                quantity: product.q,
+                size: size,
+                color: color,
+                name: foundProduct.productName,
+              };
+            })
+          );
 
-      const newOrder = await Orders.create({
-        productInfo: productInfoMap,
-        shippingInfo: {
-          name: shippingInfo.name,
-          address: shippingInfo.address,
-        },
-        userInfo: {
-          userId: sessionData.userId,
-          email: sessionData.email,
-        },
-      });
+          const newOrder = await Orders.create({
+            productInfo: productInfoMap,
+            shippingInfo: {
+              name: shippingInfo.name,
+              address: shippingInfo.address,
+            },
+            userInfo: {
+              userId: sessionData.userId,
+              email: sessionData.email,
+            },
+          });
 
-      console.log(newOrder);
+          await Users.updateOne(
+            { _id: sessionData.userId },
+            { $push: { orders: newOrder._id } }
+          );
+
+          res.redirect(
+            301,
+            `${process.env.VITE_CLIENT_PATH}/success?q=${newOrder._id}`
+          );
+        } catch (error) {
+          console.error("Error processing webhook:", error);
+          res.status(500).send("Internal Server Error");
+        }
+      })();
       break;
     }
 
-    case "payment_intent.payment_failed": {
-      const paymentIntent = event.data.object;
-      console.log("PaymentIntent has failed", paymentIntent);
+    case "payment_intent.payment_failed":
+      console.log("PaymentIntent has failed", event.data.object);
       break;
-    }
+
     default:
       console.log(`Unhandled event type ${event.type}`);
   }
-
-  return res.json({ received: true });
 };
 
 const syncProducts = async (req, res) => {
@@ -267,25 +300,39 @@ const syncProducts = async (req, res) => {
       product.stripeProductId = stripeProduct.id;
       product.stripePrice = stripePrice.id;
 
-      console.log(product);
       await product.save();
     }
 
-    res.json({ message: "Products synced with Stripe successfully!" });
+    return res
+      .status(200)
+      .json({ message: "Products synced with Stripe successfully!" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-const getOrder = async (req, res) => {
-  const { id } = req.params;
-
+const getOrders = async (req, res) => {
+  const { orderIdList } = req.body;
+  const userId = req.session.user.userId;
   try {
-    const foundOrder = await Orders.findOne({ _id: id });
-    if (foundOrder) {
-      return res.status(200).json({ order: foundOrder, orderExists: true });
+    if (!orderIdList || orderIdList.length < 1) {
+      return res.status(400).json({ message: "Faulty id list" });
+    }
+    const ordersList = await Promise.all(
+      orderIdList.map(async (orderId) => {
+        return await Orders.findOne({ _id: orderId });
+      })
+    );
+
+    const filteredList = ordersList.filter((item) => item !== null);
+    if (filteredList) {
+      if (filteredList[0].userInfo.userId === userId) {
+        return res
+          .status(200)
+          .json({ orders: filteredList, orderExists: true });
+      } else return res.status(400).json({ message: "Unauthorized" });
     } else {
-      return res.status(204).json({ order: null, orderExists: false });
+      return res.status(204).json({ orders: null, orderExists: false });
     }
   } catch (error) {
     console.error(error);
@@ -295,8 +342,7 @@ const getOrder = async (req, res) => {
 
 module.exports = {
   handleCheckout,
-  checkoutSuccess,
   syncProducts,
-  getOrder,
+  getOrders,
   webhook,
 };

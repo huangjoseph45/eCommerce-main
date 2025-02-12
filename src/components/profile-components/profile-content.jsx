@@ -48,7 +48,6 @@ const ProfileContent = ({
   }, [clonedInfo, countries.current]);
 
   useEffect(() => {
-    console.log("changed");
     setClonedInfo(fetchedUserData);
   }, [fetchedUserData]);
 
@@ -158,7 +157,7 @@ const ProfileContent = ({
           <input
             type="text"
             defaultValue={textValue}
-            className="outline outline-gray-600 p-3 rounded-lg w-full"
+            className="outline outline-gray-600 p-3 rounded-lg w-full bg-bgBase"
             onChange={(e) => editfetchedUserData(e, field)}
             maxLength={field.fieldName === "zipCode" ? 5 : 50}
           />
@@ -183,10 +182,10 @@ const ProfileContent = ({
     );
   });
   return (
-    <div className="flex flex-col w-1/2 m-auto">
+    <div className="flex flex-col w-2/3 lg:w-1/2 mx-auto lg:mx-0 ">
       {!showProfileHeaders && (
         <button
-          className="absolute left-4  rounded-full p-2 hover:bg-gray-100 transition-all duration-200"
+          className="left-0 w-fit  aspect-square -translate-x-[4.5rem] top-[6rem] sticky rounded-full p-2 hover:bg-gray-100 transition-all duration-200"
           onClick={() => setShowProfileHeaders(true)}
         >
           <svg
@@ -207,7 +206,13 @@ const ProfileContent = ({
         </button>
       )}
       <h1 className="text-2xl mb-6">{currentSection ? currentSection : ""}</h1>
-      <ul className="flex flex-col gap-4  max-w-[25rem]">
+      <ul
+        className={`flex flex-col gap-4   min-h-[20rem] relative ${
+          currentSection !== "Order History"
+            ? " max-w-[30rem]"
+            : "max-w-[50rem]"
+        }`}
+      >
         {currentSection !== "Order History" ? fields : <OrderHistory />}
       </ul>
       <AnimatePresence>

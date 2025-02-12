@@ -28,12 +28,17 @@ const createProduct = async (product) => {
         body: JSON.stringify(product) || null,
       }
     );
-
-    console.log(await response.json());
   } catch (e) {
     console.error(e);
   }
 };
+
+const basicCategories = [
+  { name: "New Arrivals", header: "new" },
+  { name: "Men's Clothing", header: "men" },
+  { name: "Women's Clothing", header: "women" },
+  { name: "Children's Clothing", header: "children" },
+];
 
 function App() {
   const productsList = [
@@ -61,7 +66,7 @@ function App() {
         "An American style standard since 1972, the Polo shirt has been imitated but never matched. Over the decades, Ralph Lauren has reimagined his signature style in a wide array of colors and fits, yet all retain the quality and attention to detail of the iconic original. This relaxed version is made with luxe cotton interlock that features an ultrasoft finish.",
     },
   ];
-  const { isLoading, products, refetchProducts } = useFetchProducts();
+  const [isLoading, products, refetchProducts] = useFetchProducts();
   const [userInfo, setUserInfo] = useState({});
   const { refetch } = useUpdateServerData({
     dataToUpdate: null,
@@ -72,13 +77,14 @@ function App() {
   }, [userInfo]);
 
   useEffect(() => {
-    createProduct(productsList[0]);
     if (!products || products.length < 1) refetchProducts("");
   }, []);
 
   return (
     <>
-      <ProductContext.Provider value={{ products, userInfo, setUserInfo }}>
+      <ProductContext.Provider
+        value={{ products, userInfo, setUserInfo, basicCategories }}
+      >
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Shopping />} />
@@ -103,6 +109,16 @@ function App() {
                     key={product.sku}
                     path={`/${stringURL}`}
                     element={<ProductPage product={product} />}
+                  />
+                );
+              })}
+            {basicCategories &&
+              basicCategories.map((category, index) => {
+                return (
+                  <Route
+                    key={`category-${index}`}
+                    path={`/${encodeURIComponent(category.header)}`}
+                    element={<Shopping category={category.name} />}
                   />
                 );
               })}

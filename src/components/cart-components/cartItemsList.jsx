@@ -22,7 +22,7 @@ const CartItemList = ({ cart, setCart, loading, products, error }) => {
   }
 
   if (!cart || cart.length === 0) {
-    return <p>Your cart is empty.</p>;
+    return <p className="my-4 text-base">Your cart is empty.</p>;
   }
 
   return (

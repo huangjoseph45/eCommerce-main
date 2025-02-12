@@ -93,6 +93,10 @@ const userSchema = new mongoose.Schema(
     customerId: {
       type: String,
     },
+    orders: {
+      type: [String],
+      default: [],
+    },
   },
   {
     timestamps: true, // Automatically manages createdAt and updatedAt

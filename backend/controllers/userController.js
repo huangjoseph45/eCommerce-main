@@ -180,10 +180,9 @@ const fetchData = async (req, res) => {
     const queries = req.body || null;
     // Validate session data
     if (!validateFields([{ name: "email", value: email }], res)) return;
-
     const user = await User.findOne(
       { email },
-      "email firstName lastName age cart createdAt totalBalance address phoneNumber"
+      "email firstName lastName age cart createdAt totalBalance address phoneNumber orders"
     );
     if (!user || user._id.toString() !== userId) {
       req.session.destroy();
@@ -204,6 +203,7 @@ const fetchData = async (req, res) => {
       "balance",
       "address",
       "phoneNumber",
+      "orders",
     ];
 
     let matched;
@@ -227,6 +227,7 @@ const fetchData = async (req, res) => {
         balance: user.totalBalance,
         address: user.address,
         phoneNumber: user.phoneNumber,
+        orders: user.orders,
       };
     }
 

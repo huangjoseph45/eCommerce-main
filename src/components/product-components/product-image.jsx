@@ -26,7 +26,7 @@ const ProductImage = ({ product }) => {
           src={imgSrc}
           alt={product?.id || "Product Image"}
           loading="lazy"
-          className="object-contain w-fit h-fit max-h-full object-top lg:rounded-md mx-auto aspect-[3/4]"
+          className="object-cover rounded-b-md w-fit h-fit max-h-full object-top mx-auto aspect-[3/4]"
         />
       </div>
     </>

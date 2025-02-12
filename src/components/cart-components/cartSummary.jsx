@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { ProductContext } from "../utilities/ContextManager";
 import CartSummaryHeader from "./cartSummaryHeader";
 import { AnimatePresence, motion } from "motion/react";
@@ -20,6 +20,7 @@ const CartSummary = ({ products }) => {
     show: false,
     ok: false,
   });
+  const tId = useRef();
 
   const handleKeyDown = (e) => {
     console.log(e.key);
@@ -68,16 +69,17 @@ const CartSummary = ({ products }) => {
     }
   };
   useEffect(() => {
-    let tID;
-
     if (discountStatus.show) {
-      tID = setTimeout(() => {
+      if (tId.current) clearTimeout(tId.current);
+
+      tId.current = setTimeout(() => {
         setDiscountStatus({ message: "", show: false, ok: false });
+        tId.current = null;
       }, 4000);
     }
 
     return () => {
-      if (tID) clearTimeout(tID);
+      if (tId.current) clearTimeout(tId.current);
     };
   }, [discountStatus.show]);
 
@@ -89,8 +91,10 @@ const CartSummary = ({ products }) => {
     if (userInfo && userInfo !== undefined && userInfo.cart && products) {
       let cost = 0;
       userInfo.cart.forEach((item) => {
-        const sku = item.sku.split("-")[0] + "-" + item.sku.split("-")[1];
-        const product = products.find((product) => product.sku === sku);
+        const sku = item.sku
+          ? item.sku.split("-")[0] + "-" + item.sku.split("-")[1]
+          : "";
+        const product = products.find((product) => product?.sku === sku);
         if (product)
           cost += item.quantity * product.price * (1 - product.discount / 100);
       });
@@ -102,7 +106,7 @@ const CartSummary = ({ products }) => {
     userInfo &&
     userInfo.cart &&
     userInfo.cart.length > 0 && (
-      <div className="min-w-[20rem] w-full max-w-[30rem] lg:max-w-[25rem] sticky top-[7rem] z-10 flex flex-col gap-2 mt-6 lg:mt-0 cursor-pointer hover:shadow-md p-4 rounded-sm transition-all duration-200">
+      <div className="min-w-[20rem] w-full max-w-[30rem] lg:max-w-[25rem] sticky top-[7rem] z-10 flex flex-col gap-2 mt-6 lg:mt-0 cursor-pointer shadow-md p-4 rounded-md transition-all duration-200 bg-bgBase3 text-textDark">
         <h1 className="font-semibold text-lg">Summary</h1>
         <button
           className="text-left font-medium relative z-2"
@@ -120,21 +124,25 @@ const CartSummary = ({ products }) => {
           {discount.show && (
             <motion.div
               className="flex flex-col"
-              initial={{ opacity: 0.5 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              initial={{ opacity: 0.95, height: 0, top: 0 }}
+              animate={{
+                opacity: 1,
+                height: "5rem",
+                overflow: "hidden",
+              }}
+              exit={{ opacity: 0.95, height: 0 }}
+              transition={{ duration: 0.1, ease: "easeIn" }}
             >
-              <div className="flex flex-row gap-2 pb-2 z-0 relative">
+              <div className="flex flex-row gap-2 py-2 px-1 z-0 relative items-center justify-center ">
                 <input
                   type="text"
-                  className="shadow-md border p-2 w-full rounded-md z-0 relative uppercase"
+                  className="shadow-md border p-2 w-full rounded-md z-0 relative uppercase outline-none"
                   value={discount.code}
                   onChange={(event) => handleChangeDiscount(event)}
                   onKeyDown={(e) => handleKeyDown(e)}
                 />
                 <button
-                  className="border px-4 p-2 rounded-full bg-bgSecondaryLight text-bgBase hover:bgExtraSecondaryLight transition-all duration-150 "
+                  className="border px-4 p-2 rounded-full bg-bgSecondaryLight text-bgBase focus:outline focus:outline-2 focus:outline-bgExtraSecondaryLight hover:bg-bgExtraSecondaryLight transition-all duration-150 "
                   onClick={applyDiscount}
                 >
                   Apply

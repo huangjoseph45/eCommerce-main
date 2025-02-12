@@ -33,6 +33,10 @@ const productInfoSchema = new mongoose.Schema({
     trim: true,
     required: true,
   },
+  name: {
+    type: String,
+    required: true,
+  },
   color: {
     colorName: { type: String, required: true, trim: true },
     colorCode: { type: String, trim: true }, // Added trim for consistency
@@ -40,54 +44,59 @@ const productInfoSchema = new mongoose.Schema({
   },
 });
 
-const orderSchema = new mongoose.Schema({
-  productInfo: [productInfoSchema],
+const orderSchema = new mongoose.Schema(
+  {
+    productInfo: [productInfoSchema],
 
-  shippingInfo: {
-    name: {
+    shippingInfo: {
+      name: {
+        type: String,
+        trim: true,
+      },
+      address: {
+        line1: {
+          type: String,
+          trim: true,
+          required: true,
+        },
+        city: {
+          type: String,
+          trim: true,
+          required: true,
+        },
+        state: {
+          type: String,
+          trim: true,
+          required: true,
+        },
+        country: {
+          type: String,
+          trim: true,
+          required: true,
+        },
+      },
+    },
+    userInfo: {
+      userId: { type: String, trim: true, required: true },
+      email: { type: String, trim: true },
+    },
+    status: {
       type: String,
-      trim: true,
-    },
-    address: {
-      line1: {
-        type: String,
-        trim: true,
-        required: true,
-      },
-      city: {
-        type: String,
-        trim: true,
-        required: true,
-      },
-      state: {
-        type: String,
-        trim: true,
-        required: true,
-      },
-      country: {
-        type: String,
-        trim: true,
-        required: true,
-      },
+      default: "processing",
+      enum: [
+        "processing",
+        "shipped",
+        "delivered",
+        "cancelled",
+        "refunded",
+        "returned",
+      ],
     },
   },
-  userInfo: {
-    userId: { type: String, trim: true, required: true },
-    email: { type: String, trim: true },
-  },
-  status: {
-    type: String,
-    default: "processing",
-    enum: [
-      "processing",
-      "shipped",
-      "delivered",
-      "cancelled",
-      "refunded",
-      "returned",
-    ],
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 const Orders = mongoose.model("Orders", orderSchema);
 module.exports = { Orders };

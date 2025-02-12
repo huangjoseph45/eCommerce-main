@@ -15,8 +15,8 @@ router.post(
   verifyAdmin,
   createProduct
 );
-router.get("/fetch-product/:sku", verifySession, fetchProduct);
-router.get("/fetch/:category", fetchCategory);
+router.get("/fetch-product/:skuComplete", verifySession, fetchProduct);
+router.get("/fetch/:query", fetchCategory);
 router.get("/discount/:code", findPromo);
 router.post(
   "/discount/create",

@@ -107,7 +107,7 @@ const Header = () => {
     <>
       {" "}
       {isLoggedIn && userInfo && data?.firstName && (
-        <div className="bg-bgSecondary text-textLight p-2 text-xs  justify-end px-4 flex flex-row">
+        <div className="bg-bgSecondaryLight text-textLight p-2 text-xs  justify-end px-4 flex flex-row w-full relative z-40">
           <div className="">Welcome Back,&nbsp;</div>
           <a
             href="/profile"
@@ -119,7 +119,7 @@ const Header = () => {
         </div>
       )}
       <motion.div
-        className={`sticky top-0 bg-bgBase h-[4rem] flex px-4 py-2 flex-row justify-between min-h-[2rem] max-h-[5rem] z-40  border-b ${
+        className={`sticky top-0 bg-bgBase2 h-[4rem] flex px-4 py-2 flex-row justify-between min-h-[2rem] max-h-[5rem] z-40  border-b ${
           isVisible ? "opacity-1" : "opacity-0"
         }`}
         onMouseEnter={mouseEnter}

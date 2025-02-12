@@ -125,7 +125,7 @@ const SearchBar = ({
             <div className=" absolute top-[5rem] lg:top-0 w-full flex items-center px-4 lg:justify-center pt-4">
               <div className="relative">
                 <button
-                  className="absolute left-0 top-1/2 -translate-y-1/2 h-full box-border cursor-pointer aspect-square rounded-md hover:bg-gray-300 text-textHollow flex items-center justify-center"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 h-full box-border cursor-pointer aspect-square rounded-md  bg-bgSecondary/5 text-textHollow flex items-center justify-center"
                   onClick={handleSubmit}
                 >
                   <svg
@@ -146,10 +146,9 @@ const SearchBar = ({
                 </button>
 
                 <input
-                  className="hover:bg-gray-200 bg-gray-100 px-4 py-2 rounded-md min-w-[15rem] w-[80vw] lg:w-[30vw] text-start max-w-[64rem] z-2 pl-12 outline-none"
+                  className="focus:bg-bgSecondary/10 bg-bgSecondary/5 px-4 py-2 rounded-md min-w-[15rem] w-[80vw] lg:w-[30vw] text-start max-w-[64rem] z-2 pl-14 outline-none"
                   placeholder={"Search"}
                   autoFocus={false}
-                  onBlur={(e) => checkHideBar(e)}
                   value={value}
                   onChange={(e) => setValue(e.target.value)}
                   onKeyDown={(e) => handleKeyPress(e)}

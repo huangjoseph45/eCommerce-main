@@ -15,12 +15,12 @@ const SectionLinks = (sections, setShow = () => {}) => {
         onMouseLeave={() => setHoverId(null)}
         onClick={() => {
           setShow(false);
-          nav(`/search?q=${encodeURIComponent(element.href)}`);
+          nav(`/${encodeURIComponent(element.href)}`);
         }}
       >
         <li
           href={element.href}
-          className="font-semibold cursor-pointer select-none list-none hover:text-gray-500"
+          className="cursor-pointer select-none list-none hover:text-black/65"
         >
           {element.categoryName}
         </li>

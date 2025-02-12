@@ -14,9 +14,12 @@ const SettingsSectionsList = ({ sections, setSection }) => {
     const checkSize = debounce(() => {
       const windowWidth = window.innerWidth;
       if (windowWidth >= 1024) {
+        document.body.style.overflow = "scroll";
         setShowProfileHeaders(true);
       }
     }, 100);
+
+    window.addEventListener("resize", checkSize);
 
     return () => {
       window.removeEventListener("resize", checkSize);
@@ -24,9 +27,16 @@ const SettingsSectionsList = ({ sections, setSection }) => {
   }, []);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [showProfileHeaders]);
+
+  useEffect(() => {
     const timer = setTimeout(() => {
       setShow(true);
     }, 320);
+
+    document.body.style.overflow =
+      window.innerWidth < 1024 && showProfileHeaders ? "hidden" : "scroll";
 
     return () => {
       clearTimeout(timer);
@@ -37,7 +47,7 @@ const SettingsSectionsList = ({ sections, setSection }) => {
     return (
       <li
         key={section}
-        className="list-none cursor-pointer lg:hover:text-xl hover:text-[1.9srem] hover:font-semibold h-14 transition-all duration-100 flex items-center w-full justify-center lg:justify-start lg:text-lg text-2xl text-center hover:text-blue-950"
+        className="list-none cursor-pointer lg:hover:text-xl hover:text-[1.9srem] hover:font-medium h-14 transition-all duration-100 flex items-center w-full justify-center lg:justify-start lg:text-lg text-2xl text-center hover:text-bgSecondary"
         onClick={() => {
           setSection(index);
           if (window.innerWidth < 1024) {
@@ -59,7 +69,7 @@ const SettingsSectionsList = ({ sections, setSection }) => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "-100%" }}
             transition={{ duration: 0.3 }}
-            className="flex flex-col w-full lg:w-1/4 p-4 fixed items-center lg:items-start bg-bgBase z-30 h-full lg:h-fit"
+            className="flex flex-col w-full lg:w-1/4 p-4 pt-32 lg:pt-[4rem] absolute bg-bgBase lg:bg-none lg:static top-[0rem] overscroll-contain items-center lg:items-start z-30 h-full lg:h-fit lg:ml-6"
           >
             {/* Inner AnimatePresence for motion.ul */}
             <AnimatePresence>

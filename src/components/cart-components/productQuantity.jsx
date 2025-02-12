@@ -88,7 +88,7 @@ const ProductQuantity = ({ quantity, sku, deleteFunc }) => {
           type="text"
           ref={inputRef}
           value={value}
-          className="w-12 h-8 text-center  rounded-none relative box-border flex-grow"
+          className="w-12 h-8 text-center  rounded-none relative box-border flex-grow bg-bgBase"
           maxLength={2}
           onChange={(e) => handleChange(e)}
           onKeyDown={(e) => submitForm(e)}

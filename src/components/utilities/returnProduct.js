@@ -7,9 +7,8 @@ const returnProduct = async (sku) => {
   }
 
   const [prefix, skuNum, color, size] = sku.split("-");
-
   const fetchURL = `${import.meta.env.VITE_PATH}/products/fetch-product/${
-    prefix + "-" + skuNum
+    prefix + "-" + skuNum + "-" + color + "-" + size
   }`;
   try {
     const response = await fetch(fetchURL, {

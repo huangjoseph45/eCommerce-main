@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { ProductContext } from "../components/utilities/ContextManager";
 import Header from "../components/header";
+import { useSearchParams } from "react-router-dom";
 
 const LoginPage = () => {
   const [isModeSignIn, setModeSignIn] = useState(true);
@@ -24,6 +25,11 @@ const LoginPage = () => {
     userInfo,
     isModeSignIn,
   });
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get("q") === "sign-up") setModeSignIn(false);
+  }, [searchParams]);
 
   const handleSubmit = async (event) => {
     onAuthenticate(event);

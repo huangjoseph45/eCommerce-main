@@ -140,8 +140,8 @@ const ProfilePage = () => {
     <ShowProfileContext.Provider
       value={{ showProfileHeaders, setShowProfileHeaders }}
     >
+      {" "}
       <Header></Header>
-
       <div className="flex flex-row pt-4  border-t-[.1rem] lg:border-t-0 border-t-black">
         <SettingsSectionsList
           sections={accountSections}
