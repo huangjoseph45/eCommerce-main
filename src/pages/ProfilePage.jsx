@@ -1,6 +1,6 @@
 import ProfileContent from "../components/profile-components/profile-content.jsx";
-import { createContext, useContext, useEffect, useState } from "react";
-import { ProductContext } from "../components/utilities/ContextManager.js";
+import { useEffect, useState } from "react";
+
 import Header from "../components/header.jsx";
 import SettingsSectionsList from "../components/profile-components/settings-sections-list.jsx";
 import debounce from "lodash.debounce";
@@ -8,12 +8,12 @@ import { useNavigate } from "react-router-dom";
 import { ShowProfileContext } from "../components/utilities/ContextManager.js";
 import Footer from "../components/footer.jsx";
 import useFetchServerData from "../components/utilities/getDataFromServer.js";
+import isLoggedIn from "../components/utilities/isLoggedIn.js";
 
 const ProfilePage = () => {
   const [showProfileHeaders, setShowProfileHeaders] = useState(true);
   const [currentSection, setCurrentSection] = useState(0);
   const [userInfo, setUserInfo] = useState();
-  const { isLoggedIn } = useContext(ProductContext);
 
   const fetchFields = [
     "email",

@@ -9,12 +9,12 @@ import Cart from "./cart";
 import SearchButton from "./search-button";
 import { ProductContext } from "../utilities/ContextManager";
 import { useNavigate } from "react-router-dom";
+import isLoggedIn from "../utilities/isLoggedIn";
 
 const Sidebar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const nav = useNavigate();
-  const isLoggedIn = document.cookie.includes("sessionId");
   const { userInfo } = useContext(ProductContext);
   const sections = [
     {

@@ -9,12 +9,12 @@ import CartItemList from "../components/cart-components/cartItemsList";
 import useFetchServerData from "../components/utilities/getDataFromServer";
 import CartSummary from "../components/cart-components/cartSummary";
 import returnProduct from "../components/utilities/returnProduct";
+import isLoggedIn from "../components/utilities/isLoggedIn";
 
 const CartPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { isLoggedIn } = useContext(ProductContext);
   const [cart, setCart] = useState([]);
 
   useEffect(() => {

@@ -8,7 +8,7 @@ import Sidebar from "./header-components/sidebar";
 import { useLocation } from "react-router-dom";
 import { useState, useRef, useEffect, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import isLoggedIn from "./utilities/isLoggedIn";
 import useFetchServerData from "../components/utilities/getDataFromServer";
 
 import { ProductContext } from "../components/utilities/ContextManager";
@@ -21,9 +21,6 @@ const opacityVariants = {
 const Header = () => {
   const [isVisible, setVisible] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    document.cookie.includes("sessionId")
-  );
 
   const location = useLocation();
   const timeoutRef = useRef(null);
@@ -89,15 +86,12 @@ const Header = () => {
     if (!isLoading && data && isLoggedIn) {
       const cookies = document.cookie;
 
-      if (cookies.includes("sessionId")) {
-        setIsLoggedIn(true);
-        console.log("hi");
+      if (isLoggedIn) {
         refetch({
           queries: ["cart", "firstName"],
           auth: { isLoggedIn },
         });
       } else {
-        setIsLoggedIn(false);
         setUserInfo({});
       }
     }
