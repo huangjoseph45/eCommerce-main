@@ -14,6 +14,7 @@ import ProfilePage from "./pages/ProfilePage";
 import CartPage from "./pages/CartPage";
 import SuccessPage from "./pages/SuccessPage";
 import SearchResultsPage from "./pages/SearchResultsPage";
+import HomePage from "./pages/HomePage";
 
 const createProduct = async (product) => {
   try {
@@ -87,12 +88,13 @@ function App() {
       >
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Shopping />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/s/" element={<Shopping />} />
             <Route path="*" element={<NoPage />} />
-            <Route path="/login" element={<LoginPage />}></Route>
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/cart" element={<CartPage />} />
-            <Route path="/success" element={<SuccessPage />} />
+            <Route path="/order" element={<SuccessPage />} />
             <Route path="/search" element={<SearchResultsPage />} />
             {products &&
               Array.isArray(products) &&
@@ -118,7 +120,12 @@ function App() {
                   <Route
                     key={`category-${index}`}
                     path={`/${encodeURIComponent(category.header)}`}
-                    element={<Shopping category={category.name} />}
+                    element={
+                      <Shopping
+                        categoryName={category.name}
+                        categoryId={category.header}
+                      />
+                    }
                   />
                 );
               })}

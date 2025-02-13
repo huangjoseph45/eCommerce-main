@@ -19,7 +19,6 @@ const useFetchProducts = () => {
           },
         }
       );
-
       const data = await response.json();
       if (Array.isArray(data.products) && data.products.length > 0) {
         setProducts(data.products);

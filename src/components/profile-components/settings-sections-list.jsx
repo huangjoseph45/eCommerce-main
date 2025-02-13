@@ -84,7 +84,7 @@ const SettingsSectionsList = ({ sections, setSection }) => {
                 </motion.ul>
               )}
             </AnimatePresence>
-
+            <span className="m-2"></span>
             <LogoutButton />
           </motion.div>
         )}

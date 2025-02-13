@@ -118,38 +118,79 @@ const handleCheckout = async (req, res) => {
         };
       })
     );
-    // {
-    //   price_data: { currency: 'usd', unit_amount: 9000 },
-    //   quantity: 1,
-    //   productData: {
-    //     sku: 'SKU-1',
-    //     productName: 'Fancy Polo',
-    //     color: '{"colorName":"white","colorCode":"#ffffff","idMod":"whi"}',
-    //     size: 'L'
-    //   }
-    // }
+
     const filteredLineItems = lineItems.filter((item) => item !== null);
-    const metaDataLineItems = filteredLineItems.map((item) => {
-      const lineItem = structuredClone(item);
-      return {
-        sku: `${lineItem.productData.sku}-${
-          JSON.parse(lineItem.productData.color).idMod
-        }-${lineItem.productData.size}`,
-        q: lineItem.quantity,
-        p: lineItem.price_data.unit_amount,
-      };
-    });
+
     const stripeLineItems = filteredLineItems.map((item) => {
       const lineItem = structuredClone(item);
       delete lineItem.productData;
       return lineItem;
     });
 
+    // {
+    //   price_data: { currency: 'usd', unit_amount: 9000, product_data: [Object] },
+    //   quantity: 1,
+    //   productData: {
+    //     sku: 'SKU-1',
+    //     productName: 'Fancy Polo',
+    //     color: '{"colorName":"navy","colorCode":"#212e50","idMod":"nav"}',
+    //     size: 'S'
+    //   }
+    // }
+
+    const productInfoMap = await Promise.all(
+      lineItems.map(async (product) => {
+        const { sku, size, color, productName } = product.productData;
+        const { currency, unit_amount } = product.price_data;
+        const quantity = product.quantity;
+        if (
+          !sku ||
+          !color ||
+          !size ||
+          !productName ||
+          !currency ||
+          !unit_amount ||
+          !quantity
+        )
+          return null;
+        return {
+          paymentInfo: {
+            currency: currency,
+            unit_amount: unit_amount,
+          },
+          sku: sku,
+          quantity: quantity,
+          size: size,
+          color: JSON.parse(color),
+          name: productName,
+        };
+      })
+    );
+
+    if (productInfoMap.includes(null))
+      return res.status(500).json({ message: "Error creating payment intent" });
+
+    const shippingInfo = customer.shipping;
+
+    const newOrder = await Orders.create({
+      productInfo: productInfoMap,
+      shippingInfo: {
+        name: shippingInfo.name,
+        address: shippingInfo.address,
+      },
+      userInfo: {
+        userId: user._id,
+        email: user.email,
+      },
+      verified: false,
+      default: "processing",
+    });
+
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       line_items: stripeLineItems,
       mode: "payment",
-      success_url: `${process.env.VITE_CLIENT_PATH}/success`,
+      success_url: `${process.env.VITE_CLIENT_PATH}/order?q=${newOrder._id}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${CLIENT_DOMAIN}/cart`,
       billing_address_collection: "required",
       shipping_address_collection: {
@@ -163,17 +204,10 @@ const handleCheckout = async (req, res) => {
       },
       payment_intent_data: {
         metadata: {
-          session: JSON.stringify(req.session.user),
-          product: JSON.stringify(metaDataLineItems),
-          shipping: JSON.stringify({
-            name: `${user.firstName || ""} ${user.lastName || ""}`.trim(),
-            address: {
-              line1: user.address?.street || "",
-              city: user.address?.city || "",
-              state: user.address?.state || "",
-              postal_code: user.address?.zipCode || "",
-              country: user.address?.country || "",
-            },
+          orderId: JSON.stringify(newOrder._id),
+          userInfo: JSON.stringify({
+            userId: user._id,
+            email: user.email,
           }),
         },
       },
@@ -203,59 +237,33 @@ const webhook = async (req, res) => {
       (async () => {
         try {
           const paymentIntent = event.data.object;
-          const sessionData = JSON.parse(paymentIntent.metadata.session);
-          const productInfo = JSON.parse(paymentIntent.metadata.product);
-          const shippingInfo = JSON.parse(paymentIntent.metadata.shipping);
+          const orderId = paymentIntent.metadata.orderId.replace(/"/g, "");
+          const userInfo = JSON.parse(paymentIntent.metadata.userInfo);
+          console.log(userInfo);
+          const user = await User.findById(userInfo.userId);
+          if (!user || user.length < 1) {
+            return res.status(400).json({ message: "User could not be found" });
+          }
 
-          const productInfoMap = await Promise.all(
-            productInfo.map(async (product) => {
-              const [pre, post, colorMod, size] = product.sku.split("-");
-              const sku = `${pre}-${post}`;
-              const foundProduct = await Product.findOne({ sku: sku });
-
-              const color =
-                foundProduct.colors.find((color) => {
-                  return color.idMod === colorMod;
-                }) || null;
-
-              return {
-                paymentInfo: {
-                  currency: "usd",
-                  unit_amount: product.p,
-                },
-                sku: sku,
-                quantity: product.q,
-                size: size,
-                color: color,
-                name: foundProduct.productName,
-              };
-            })
+          const verifiedOrder = await Orders.updateOne(
+            { _id: orderId },
+            { verified: true }
           );
+          console.log(user);
+          let orders = user.orders;
+          orders.push(orderId);
 
-          const newOrder = await Orders.create({
-            productInfo: productInfoMap,
-            shippingInfo: {
-              name: shippingInfo.name,
-              address: shippingInfo.address,
+          const updatedUser = await Users.updateOne(
+            {
+              _id: userInfo.userId,
             },
-            userInfo: {
-              userId: sessionData.userId,
-              email: sessionData.email,
-            },
-          });
-
-          await Users.updateOne(
-            { _id: sessionData.userId },
-            { $push: { orders: newOrder._id } }
+            { orders: orders }
           );
 
-          res.redirect(
-            301,
-            `${process.env.VITE_CLIENT_PATH}/success?q=${newOrder._id}`
-          );
+          res.status(200).send();
         } catch (error) {
-          console.error("Error processing webhook:", error);
-          res.status(500).send("Internal Server Error");
+          console.error(error);
+          res.status(500).send();
         }
       })();
       break;
@@ -314,6 +322,9 @@ const syncProducts = async (req, res) => {
 const getOrders = async (req, res) => {
   const { orderIdList } = req.body;
   const userId = req.session.user.userId;
+  if (!orderIdList[0]) {
+    return res.status(400).json({ message: "Missing orders list" });
+  }
   try {
     if (!orderIdList || orderIdList.length < 1) {
       return res.status(400).json({ message: "Faulty id list" });
@@ -325,8 +336,9 @@ const getOrders = async (req, res) => {
     );
 
     const filteredList = ordersList.filter((item) => item !== null);
+
     if (filteredList) {
-      if (filteredList[0].userInfo.userId === userId) {
+      if (filteredList[0] && filteredList[0].userInfo.userId === userId) {
         return res
           .status(200)
           .json({ orders: filteredList, orderExists: true });

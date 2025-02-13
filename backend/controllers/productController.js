@@ -126,7 +126,7 @@ const fetchCategory = async (req, res) => {
               { description: { $regex: query, $options: "i" } },
             ],
           });
-
+    console.log(categories);
     return res.status(200).json({ products });
   } catch (error) {
     console.error("Error fetching product: " + error);

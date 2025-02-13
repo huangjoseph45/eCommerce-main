@@ -182,7 +182,7 @@ const fetchData = async (req, res) => {
     if (!validateFields([{ name: "email", value: email }], res)) return;
     const user = await User.findOne(
       { email },
-      "email firstName lastName age cart createdAt totalBalance address phoneNumber orders"
+      "email firstName lastName age cart createdAt totalBalance address phoneNumber orders verifiedEmail verifiedPhone"
     );
     if (!user || user._id.toString() !== userId) {
       req.session.destroy();
@@ -192,7 +192,6 @@ const fetchData = async (req, res) => {
     // Regenerate session
     req.session.user.ip = req.ip;
     req.session.user.userAgent = req.get("User-Agent");
-
     const validQueries = [
       "email",
       "firstName",
@@ -204,6 +203,8 @@ const fetchData = async (req, res) => {
       "address",
       "phoneNumber",
       "orders",
+      "verifiedEmail",
+      "verifiedPhone",
     ];
 
     let matched;
@@ -228,9 +229,10 @@ const fetchData = async (req, res) => {
         address: user.address,
         phoneNumber: user.phoneNumber,
         orders: user.orders,
+        verifiedEmail: user.verifiedEmail,
+        verifiedPhone: user.verifiedPhone,
       };
     }
-
     return res.status(200).json(matched);
   } catch (error) {
     console.error(`Error in setData: ${error.message}`, error);

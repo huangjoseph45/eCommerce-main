@@ -1,6 +1,6 @@
 import { useRef, useContext, useEffect, useState } from "react";
 import useFetchServerData from "../utilities/getDataFromServer";
-import useFetchProducts from "../utilities/useFetchMultipleProducts";
+import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
 import useFetchOrder from "../utilities/useFetchOrder";
 import { debounce } from "lodash";
@@ -12,6 +12,7 @@ const OrderHistory = () => {
   const { userInfo, setUserInfo } = useContext(ProductContext);
   const [showPurchases, setShowPurchases] = useState([]);
   const fetched = useRef(false);
+  const nav = useNavigate();
 
   const debouncedFetch = debounce((orders) => {
     handleFetch(orders);
@@ -82,17 +83,25 @@ const OrderHistory = () => {
                     >
                       {order.status}
                     </p>
-                    <div className="flex flex-row justify-between w-full pr-4">
+                    <div className="flex flex-row w-full pr-4 relative">
                       <p
                         className={`whitespace-nowrap capitalize text-textLight  cursor-pointer`}
                       >
                         {shippingInfo.name}
                       </p>
-                      {order.createdAt && (
-                        <p className="whitespace-nowrap capitalize text-gray-300">
-                          {new Date(order.createdAt).toDateString()}
-                        </p>
-                      )}
+                      <div className="absolute top-0 right-4 flex flex-col gap-1">
+                        <button
+                          className="hover:underline"
+                          onClick={() => nav(`/order?q=${order._id}`)}
+                        >
+                          View Order Summary
+                        </button>{" "}
+                        {order.createdAt && (
+                          <p className="whitespace-nowrap capitalize text-gray-300">
+                            {new Date(order.createdAt).toDateString()}
+                          </p>
+                        )}
+                      </div>
                     </div>
                     <p className="whitespace-nowrap capitalize ">{`${shippingInfo.address.line1}, ${shippingInfo.address.city} `}</p>
                   </div>{" "}

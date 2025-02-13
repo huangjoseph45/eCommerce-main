@@ -15,6 +15,7 @@ const Sidebar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const nav = useNavigate();
+  const loggedIn = isLoggedIn();
   const { userInfo } = useContext(ProductContext);
   const sections = [
     {
@@ -122,7 +123,7 @@ const Sidebar = () => {
                     ></path>
                   </svg>
                 </div>
-                {isLoggedIn ? (
+                {loggedIn ? (
                   <div
                     className="text-2xl text-bgExtraSecondaryLight cursor-pointer hover:text-bgExtraSecondaryLight/60"
                     onClick={() => nav("/profile")}

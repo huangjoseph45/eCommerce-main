@@ -16,6 +16,7 @@ const CartPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [cart, setCart] = useState([]);
+  const loggedIn = isLoggedIn();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -46,7 +47,7 @@ const CartPage = () => {
 
   const { isLoading, data } = useFetchServerData({
     queries: ["cart"],
-    auth: { isLoggedIn },
+    auth: { loggedIn },
   });
   useEffect(() => {
     if (data?.cart) {
@@ -57,7 +58,7 @@ const CartPage = () => {
   return (
     <ProductsContext.Provider value={{ products, setProducts }}>
       <Header />
-      <div className="flex flex-col lg:flex-row items-center lg:items-start justify-around w-[full] lg:mx-[10rem] xl:mx-[17%] relative gap-8 border">
+      <div className="flex flex-col lg:flex-row items-center lg:items-start justify-around w-[full] lg:mx-[10rem] xl:mx-[17%] relative gap-8">
         <div className="w-full mr-2">
           {isLoading ? (
             <p>Loading...</p>

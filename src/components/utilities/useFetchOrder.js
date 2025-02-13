@@ -1,12 +1,13 @@
 import { useState } from "react";
 
 const useFetchOrder = () => {
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
   const [orderData, setOrderData] = useState(null);
 
   const fetchOrder = async (orderIdList) => {
     const path = `${import.meta.env.VITE_PATH}/stripe/order`;
     setLoading(true);
+    if (!Array.isArray(orderIdList)) return;
     try {
       const response = await fetch(path, {
         method: "POST",

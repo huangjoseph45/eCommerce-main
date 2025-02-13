@@ -21,7 +21,7 @@ const opacityVariants = {
 const Header = () => {
   const [isVisible, setVisible] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
-
+  const loggedIn = isLoggedIn();
   const location = useLocation();
   const timeoutRef = useRef(null);
   const { setUserInfo, userInfo } = useContext(ProductContext);
@@ -48,10 +48,11 @@ const Header = () => {
   }, [location.pathname]);
 
   useEffect(() => {
+    const loggedIn = isLoggedIn();
     if (!data)
       refetch({
         queries: ["cart", "firstName"],
-        auth: { isLoggedIn },
+        auth: { loggedIn },
       });
   }, []);
 
@@ -80,27 +81,25 @@ const Header = () => {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [data, isLoggedIn]);
+  }, [data, loggedIn]);
 
   useEffect(() => {
-    if (!isLoading && data && isLoggedIn) {
-      const cookies = document.cookie;
-
-      if (isLoggedIn) {
+    if (!isLoading && data && loggedIn) {
+      if (loggedIn) {
         refetch({
           queries: ["cart", "firstName"],
-          auth: { isLoggedIn },
+          auth: { loggedIn },
         });
       } else {
         setUserInfo({});
       }
     }
-  }, [isLoggedIn]);
+  }, [loggedIn]);
 
   return (
     <>
       {" "}
-      {isLoggedIn && userInfo && data?.firstName && (
+      {loggedIn && userInfo && data?.firstName && (
         <div className="bg-bgSecondaryLight text-textLight p-2 text-xs  justify-end px-4 flex flex-row w-full relative z-40">
           <div className="">Welcome Back,&nbsp;</div>
           <a
@@ -113,14 +112,10 @@ const Header = () => {
         </div>
       )}
       <motion.div
-        className={`sticky top-0 bg-bgBase2 h-[4rem] flex px-4 py-2 flex-row justify-between min-h-[2rem] max-h-[5rem] z-40  border-b ${
-          isVisible ? "opacity-1" : "opacity-0"
-        }`}
+        className={`sticky top-0 h-[3.75rem] bg-bgBase2 flex px-2 flex-row justify-between w-full z-40  border-b m-0`}
         onMouseEnter={mouseEnter}
         onMouseLeave={mouseLeave}
         variants={opacityVariants}
-        animate={isVisible ? "visible" : "hidden"}
-        transition={{ duration: 0.15 }}
       >
         <div className="flex flex-row items-end h-fit my-auto gap-12">
           <Logo />

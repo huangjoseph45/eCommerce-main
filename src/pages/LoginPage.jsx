@@ -66,7 +66,7 @@ const LoginPage = () => {
           type="text"
           name="email"
           autoComplete="account-email"
-          className={`w-full border p-3 mb-4 ${
+          className={`w-full bg-bgBase border p-3 mb-4 ${
             errorState.isEmailInvalid ? "border-errorTrue" : "border-gray-400"
           }`}
           placeholder="Email"
@@ -81,7 +81,7 @@ const LoginPage = () => {
             type={showPassword ? "text" : "password"}
             name="password"
             autoComplete="account-password"
-            className={`w-full border p-3  ${
+            className={`w-full border bg-bgBase p-3  ${
               errorState.isPasswordInvalid
                 ? "border-errorTrue"
                 : "border-gray-400"

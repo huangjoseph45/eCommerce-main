@@ -14,7 +14,7 @@ const ProfilePage = () => {
   const [showProfileHeaders, setShowProfileHeaders] = useState(true);
   const [currentSection, setCurrentSection] = useState(0);
   const [userInfo, setUserInfo] = useState();
-
+  const loggedIn = isLoggedIn();
   const fetchFields = [
     "email",
     "firstName",
@@ -24,6 +24,8 @@ const ProfilePage = () => {
     "address",
     "phoneNumber",
     "orderHistory",
+    "verifiedEmail",
+    "verifiedPhone",
   ];
 
   const { isLoading, data, refetch } = useFetchServerData();
@@ -55,6 +57,7 @@ const ProfilePage = () => {
   const communicationFields = [
     {
       fieldName: "phoneNumber",
+      label: "phone number",
       type: "input",
       isRequired: false,
       prefix: "",
@@ -91,6 +94,7 @@ const ProfilePage = () => {
     },
     {
       fieldName: "zipCode",
+      label: "zip code",
       type: "input",
       isRequired: false,
       prefix: "address",
@@ -120,7 +124,7 @@ const ProfilePage = () => {
     if (!data) {
       refetch({
         queries: fetchFields,
-        auth: { isLoggedIn },
+        auth: { loggedIn },
       });
     }
 

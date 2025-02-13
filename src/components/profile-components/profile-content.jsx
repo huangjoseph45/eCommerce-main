@@ -10,6 +10,7 @@ import Select from "../select";
 import { Country, State, City } from "country-state-city";
 import { AnimatePresence, motion } from "motion/react";
 import OrderHistory from "./order-history";
+import VerifiedTag from "./verifiedTag";
 
 const ProfileContent = ({
   currentSection,
@@ -23,6 +24,8 @@ const ProfileContent = ({
   const [isChanged, setIsChanged] = useState(false);
   const [clonedInfo, setClonedInfo] = useState(fetchedUserData);
   const [alteredData, setAlteredData] = useState({});
+
+  console.log(clonedInfo);
 
   const countries = useRef(useMemo(() => Country.getAllCountries(), []));
   const [states, setStates] = useState(() => State.getAllStates());
@@ -150,8 +153,15 @@ const ProfileContent = ({
           key={field.fieldName}
           className="flex flex-row gap-3 items-center relative w-full"
         >
+          {((field.fieldName === "email" && !clonedInfo?.verifiedEmail) ||
+            (field.fieldName === "phoneNumber" &&
+              field.label &&
+              !clonedInfo?.verifiedPhone)) && (
+            <VerifiedTag tagName={field.label || field.fieldName} />
+          )}
+
           <label className="absolute -top-2 left-[.9rem] bg-bgBase px-1 text-xs flex gap-[0.1rem]">
-            {regularText}{" "}
+            {regularText}
             {field.isRequired && <p className="text-errorTrue">*</p>}
           </label>
           <input

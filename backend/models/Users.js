@@ -10,24 +10,6 @@ const addressSchema = new mongoose.Schema({
   zipCode: { type: String, default: "" },
 });
 
-// Define the Cart Item Subschema
-const cartItemSchema = new mongoose.Schema(
-  {
-    product: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Product",
-      required: true,
-    },
-    quantity: {
-      type: Number,
-      required: true,
-      default: 1,
-      min: [1, "Quantity cannot be less than 1"],
-    },
-  },
-  { _id: false }
-);
-
 // Define the User Schema
 const userSchema = new mongoose.Schema(
   {
@@ -96,6 +78,14 @@ const userSchema = new mongoose.Schema(
     orders: {
       type: [String],
       default: [],
+    },
+    verifiedEmail: {
+      type: Boolean,
+      default: false,
+    },
+    verifiedPhone: {
+      type: Boolean,
+      default: false,
     },
   },
   {

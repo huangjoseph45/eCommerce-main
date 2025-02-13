@@ -80,6 +80,10 @@ const orderSchema = new mongoose.Schema(
       userId: { type: String, trim: true, required: true },
       email: { type: String, trim: true },
     },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
     status: {
       type: String,
       default: "processing",

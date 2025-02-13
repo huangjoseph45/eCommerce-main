@@ -1,6 +1,4 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import { useMemo, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ProductContext } from "../utilities/ContextManager";
 import { useNavigate } from "react-router-dom";
 

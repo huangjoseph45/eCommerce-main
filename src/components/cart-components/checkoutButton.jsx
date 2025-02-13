@@ -4,7 +4,7 @@ import useHandleCheckout from "../utilities/useHandleCheckout";
 const CheckoutButton = ({ cart, products, promoCode }) => {
   const [isLoading, initiateCheckout] = useHandleCheckout();
   const [overCapacity, setOverCapacity] = useState(false);
-  const maxCapacity = 20;
+  const maxCapacity = 50;
   const checkOutData = useRef();
 
   const handleCheckout = () => {
