@@ -124,7 +124,7 @@ const LoginPage = () => {
               type={showPassword ? "text" : "password"}
               name="password2"
               autoComplete="account-password"
-              className={`w-full border p-3  ${
+              className={`w-full border p-3 bg-bgBase  ${
                 errorState.isPasswordInvalid
                   ? "border-errorTrue"
                   : "border-gray-400"

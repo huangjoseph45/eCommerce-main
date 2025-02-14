@@ -192,7 +192,7 @@ const ProfileContent = ({
     );
   });
   return (
-    <div className="flex flex-col w-2/3 lg:w-1/2 mx-auto lg:mx-0 pl-2">
+    <div className="flex flex-col w-3/4 lg:w-1/2 mx-auto lg:mx-0 pl-2">
       {!showProfileHeaders && (
         <button
           className="left-0 top-[6.5rem] w-fit  aspect-square  absolute rounded-full p-2 hover:bg-gray-100 transition-all duration-200"
@@ -220,7 +220,7 @@ const ProfileContent = ({
         className={` flex flex-col gap-4 min-h-[20rem] relative ${
           currentSection !== "Order History"
             ? " max-w-[30rem]"
-            : "max-w-[50rem]"
+            : "max-w-[55rem]"
         }`}
       >
         {currentSection !== "Order History" ? fields : <OrderHistory />}

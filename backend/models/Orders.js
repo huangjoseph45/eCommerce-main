@@ -79,6 +79,7 @@ const orderSchema = new mongoose.Schema(
     userInfo: {
       userId: { type: String, trim: true, required: true },
       email: { type: String, trim: true },
+      phoneNumber: { type: String, trim: true, default: "" },
     },
     verified: {
       type: Boolean,
@@ -86,8 +87,9 @@ const orderSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      default: "processing",
+      default: "unverified",
       enum: [
+        "unverified",
         "processing",
         "shipped",
         "delivered",

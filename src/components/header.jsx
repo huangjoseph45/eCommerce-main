@@ -18,8 +18,8 @@ const opacityVariants = {
   hidden: { opacity: 0 },
 };
 
-const Header = () => {
-  const [isVisible, setVisible] = useState(true);
+const Header = ({ showBackground = true }) => {
+  const [isVisible, setVisible] = useState(showBackground);
   const [isSearching, setIsSearching] = useState(false);
   const loggedIn = isLoggedIn();
   const location = useLocation();
@@ -27,6 +27,10 @@ const Header = () => {
   const { setUserInfo, userInfo } = useContext(ProductContext);
 
   const { isLoading, data, refetch } = useFetchServerData();
+
+  useEffect(() => {
+    setVisible(showBackground);
+  }, [showBackground]);
 
   useEffect(() => {
     const resizeEvent = () => {
@@ -64,11 +68,9 @@ const Header = () => {
   };
 
   const mouseLeave = () => {
-    if (location.pathname !== "/" && window.innerWidth >= 1024) {
-      timeoutRef.current = setTimeout(() => {
-        // setVisible(false);
-      }, 3000);
-    }
+    timeoutRef.current = setTimeout(() => {
+      setVisible(showBackground || false);
+    }, 300);
   };
 
   useEffect(() => {
@@ -112,7 +114,9 @@ const Header = () => {
         </div>
       )}
       <motion.div
-        className={`sticky top-0 h-[3.75rem] bg-bgBase2 flex px-2 flex-row justify-between w-full z-40  border-b m-0`}
+        className={`sticky top-0 h-[3.75rem] ${
+          isVisible ? "bg-bgBase2 text-textDark" : "bg-none text-textLight"
+        }  flex px-2 flex-row justify-between w-full z-40 m-0 transition-all duration-300`}
         onMouseEnter={mouseEnter}
         onMouseLeave={mouseLeave}
         variants={opacityVariants}

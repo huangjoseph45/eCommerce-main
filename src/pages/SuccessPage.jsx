@@ -28,17 +28,19 @@ const SuccessPage = () => {
   }, [totalPrice.current]);
 
   useEffect(() => {
-    refetch({ cart: [] });
-    setUserInfo({ ...userInfo, cart: [] });
     orderId.current = searchParams.get("q");
     sessionId.current = searchParams.get("session_id");
+    if (sessionId.current) {
+      refetch({ cart: [] });
+      setUserInfo({ ...userInfo, cart: [] });
+    }
     handleFetch([orderId.current]);
-  }, [searchParams]);
+  }, [searchParams, sessionId]);
 
   useEffect(() => {
     if (orderData) {
       totalPrice.current = orderData[0].productInfo.reduce((acc, product) => {
-        return acc + product.paymentInfo.unit_amount;
+        return acc + product.paymentInfo.unit_amount * product.quantity;
       }, 0);
     }
   }, [orderData]);
@@ -99,6 +101,9 @@ const SuccessPage = () => {
                           <p className="capitalize">Size: {product.size}</p>
                           <p className="capitalize">
                             Color: {product.color.colorName}
+                          </p>
+                          <p className="capitalize">
+                            Quantity: {product.quantity}
                           </p>
                         </div>
                       </div>

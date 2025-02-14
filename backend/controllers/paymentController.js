@@ -6,6 +6,7 @@ const { Product, Discount } = require("../models/Products.js");
 const User = require("../models/Users.js");
 const { Orders } = require("../models/Orders.js");
 const Users = require("../models/Users.js");
+const { createOrder } = require("../models/createOrder.js");
 
 const endpointSecret =
   "whsec_532019e6b33b8f33f4ca608a9c36356acb076993c972768d6fc5e4b7499206d8";
@@ -68,6 +69,7 @@ const handleCheckout = async (req, res) => {
       customerId = user.customerId;
     }
 
+    //gather data
     const lineItems = await Promise.all(
       products.map(async (product) => {
         const foundProduct = await Product.findOne({ sku: product.sku });
@@ -118,77 +120,24 @@ const handleCheckout = async (req, res) => {
         };
       })
     );
-
+    //filter null values
     const filteredLineItems = lineItems.filter((item) => item !== null);
-
+    //for stripe session
     const stripeLineItems = filteredLineItems.map((item) => {
       const lineItem = structuredClone(item);
       delete lineItem.productData;
       return lineItem;
     });
 
-    // {
-    //   price_data: { currency: 'usd', unit_amount: 9000, product_data: [Object] },
-    //   quantity: 1,
-    //   productData: {
-    //     sku: 'SKU-1',
-    //     productName: 'Fancy Polo',
-    //     color: '{"colorName":"navy","colorCode":"#212e50","idMod":"nav"}',
-    //     size: 'S'
-    //   }
-    // }
-
-    const productInfoMap = await Promise.all(
-      lineItems.map(async (product) => {
-        const { sku, size, color, productName } = product.productData;
-        const { currency, unit_amount } = product.price_data;
-        const quantity = product.quantity;
-        if (
-          !sku ||
-          !color ||
-          !size ||
-          !productName ||
-          !currency ||
-          !unit_amount ||
-          !quantity
-        )
-          return null;
-        return {
-          paymentInfo: {
-            currency: currency,
-            unit_amount: unit_amount,
-          },
-          sku: sku,
-          quantity: quantity,
-          size: size,
-          color: JSON.parse(color),
-          name: productName,
-        };
-      })
-    );
-
-    if (productInfoMap.includes(null))
-      return res.status(500).json({ message: "Error creating payment intent" });
-
-    const shippingInfo = customer.shipping;
-
-    const newOrder = await Orders.create({
-      productInfo: productInfoMap,
-      shippingInfo: {
-        name: shippingInfo.name,
-        address: shippingInfo.address,
-      },
-      userInfo: {
-        userId: user._id,
-        email: user.email,
-      },
-      verified: false,
-      default: "processing",
-    });
+    const newOrder = await createOrder(lineItems, customer, user);
+    if (!newOrder) {
+      return res.status(400).json({ message: "Missing required info" });
+    }
 
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       line_items: stripeLineItems,
+      phone_number_collection: { enabled: true },
       mode: "payment",
       success_url: `${process.env.VITE_CLIENT_PATH}/order?q=${newOrder._id}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${CLIENT_DOMAIN}/cart`,
@@ -231,51 +180,71 @@ const webhook = async (req, res) => {
     console.error("Error message: " + err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
-
-  switch (event.type) {
-    case "payment_intent.succeeded": {
-      (async () => {
+  res.status(200).send("OK");
+  setImmediate(async () => {
+    switch (event.type) {
+      case "payment_intent.succeeded": {
         try {
           const paymentIntent = event.data.object;
           const orderId = paymentIntent.metadata.orderId.replace(/"/g, "");
           const userInfo = JSON.parse(paymentIntent.metadata.userInfo);
-          console.log(userInfo);
+
           const user = await User.findById(userInfo.userId);
-          if (!user || user.length < 1) {
-            return res.status(400).json({ message: "User could not be found" });
+          if (!user) {
+            break;
+          }
+
+          if (paymentIntent.amount !== paymentIntent.amount_received) {
+            break;
           }
 
           const verifiedOrder = await Orders.updateOne(
             { _id: orderId },
-            { verified: true }
+            { verified: true, status: "processing" }
           );
-          console.log(user);
-          let orders = user.orders;
-          orders.push(orderId);
 
           const updatedUser = await Users.updateOne(
-            {
-              _id: userInfo.userId,
-            },
-            { orders: orders }
+            { _id: userInfo.userId },
+            { $push: { orders: orderId } }
           );
-
-          res.status(200).send();
+          break;
         } catch (error) {
           console.error(error);
-          res.status(500).send();
+          break;
         }
-      })();
-      break;
+      }
+
+      case "payment_intent.payment_failed":
+        console.log("PaymentIntent has failed", event.data.object);
+        break;
+
+      case "checkout.session.completed": {
+        try {
+          const session = event.data.object;
+          const paymentIntentId = session.payment_intent;
+          const paymentIntent = await stripe.paymentIntents.retrieve(
+            paymentIntentId
+          );
+          if (!paymentIntent) {
+            break;
+          }
+          const orderId = paymentIntent.metadata.orderId.replace(/"/g, "");
+          const phoneNumber = session.customer_details?.phone || "N/A";
+          const updateOrder = await Orders.updateOne(
+            { _id: orderId },
+            { $set: { "userInfo.phoneNumber": phoneNumber } }
+          );
+          console.log(updateOrder);
+          break;
+        } catch (error) {
+          break;
+        }
+      }
+
+      default:
+        console.log(`Unhandled event type ${event.type}`);
     }
-
-    case "payment_intent.payment_failed":
-      console.log("PaymentIntent has failed", event.data.object);
-      break;
-
-    default:
-      console.log(`Unhandled event type ${event.type}`);
-  }
+  });
 };
 
 const syncProducts = async (req, res) => {

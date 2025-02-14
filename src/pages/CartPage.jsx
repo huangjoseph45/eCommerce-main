@@ -58,7 +58,7 @@ const CartPage = () => {
   return (
     <ProductsContext.Provider value={{ products, setProducts }}>
       <Header />
-      <div className="flex flex-col lg:flex-row items-center lg:items-start justify-around w-[full] lg:mx-[10rem] xl:mx-[17%] relative gap-8">
+      <div className="flex flex-col lg:flex-row items-center lg:items-start justify-around w-[full] mx-4 md:mx-[4rem] lg:mx-[10rem] xl:mx-[17%] relative gap-8">
         <div className="w-full mr-2">
           {isLoading ? (
             <p>Loading...</p>

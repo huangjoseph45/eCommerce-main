@@ -12,11 +12,11 @@ const HomePage = () => {
   const onScroll = useCallback(() => {
     clearTimeout(timeoutId.current);
     timeoutId.current = setTimeout(() => {
-      if (window.scrollY > 500) setShowHeader(true);
+      if (window.scrollY > 50) setShowHeader(true);
       else {
         setShowHeader(false);
       }
-    }, 20); // Adjust debounce delay as needed
+    }, 0); // Adjust debounce delay as needed
   }, []);
 
   console.log(window.innerWidth);
@@ -33,19 +33,18 @@ const HomePage = () => {
   return (
     <>
       <AnimatePresence>
-        {showHeader && (
-          <motion.div
-            className="fixed top-0 w-full p-0 items-center justify-center flex flex-col h-[5rem] bg-red-500 z-10"
-            initial={{ height: 0 }}
-            animate={{ height: "fit-content", overflow: "hidden" }}
-            exit={{ height: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <Header />
-          </motion.div>
-        )}
+        <motion.div
+          className="fixed top-0 w-full p-0 items-center justify-center flex flex-col h-[5rem] z-10"
+          initial={{ height: 0 }}
+          animate={{ height: "fit-content", overflow: "hidden" }}
+          exit={{ height: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Header showBackground={showHeader} />
+        </motion.div>
       </AnimatePresence>
       <LandingSection />
+      <div className="h-screen"></div>
     </>
   );
 };

@@ -13,9 +13,6 @@ const LandingSection = () => {
         alt=""
         className="absolute object-cover w-full h-full"
       />
-      <div className="top-0 right-0 m-4 absolute z-10 border border-none text-lg w-fit h-fit bg-white rounded-lg">
-        <LogoutButton />
-      </div>
       <div className="absolute top-1/3 flex flex-col items-center justify-center gap-4">
         <FancyText text={"Imagine Collective"} />
         <h2

@@ -48,7 +48,7 @@ const OrderHistory = () => {
 
   return (
     <AnimatePresence>
-      <motion.ul className="flex flex-col gap-3">
+      <motion.ul className="flex flex-col gap-3 ">
         {orderData && orderData.length > 0 ? (
           orderData.map((order, index) => {
             if (!order) return;
@@ -67,7 +67,6 @@ const OrderHistory = () => {
                       );
                     }}
                   >
-                    {" "}
                     <p
                       className={`whitespace-nowrap capitalize text-lg font-semibold font-sans  ${
                         order.status === "processing"
@@ -103,7 +102,10 @@ const OrderHistory = () => {
                         )}
                       </div>
                     </div>
-                    <p className="whitespace-nowrap capitalize ">{`${shippingInfo.address.line1}, ${shippingInfo.address.city} `}</p>
+                    <p className="lg:whitespace-nowrap capitalize flex flex-col lg:flex-row">
+                      <p>{shippingInfo.address.line1},&nbsp;</p>
+                      <p> {shippingInfo.address.city} </p>
+                    </p>
                   </div>{" "}
                   <AnimatePresence>
                     {showPurchases[index] === true && productInfo && (
@@ -174,7 +176,11 @@ const OrderHistory = () => {
                       $
                       {(
                         productInfo.reduce((total, currentValue) => {
-                          return total + currentValue.paymentInfo.unit_amount;
+                          return (
+                            total +
+                            currentValue.paymentInfo.unit_amount *
+                              currentValue.quantity
+                          );
                         }, 0) / 100
                       ).toFixed(2)}
                     </p>
