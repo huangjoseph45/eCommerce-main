@@ -36,7 +36,15 @@ const ProductQuantity = ({ quantity, sku, deleteFunc }) => {
   );
 
   const handleClick = (modifier) => {
-    if (value > 0 || modifier > 0)
+    if (value > 0 || modifier > 0) {
+      setUserInfo({
+        ...userInfo,
+        cart: userInfo.cart.map((product) =>
+          product.sku === sku
+            ? { ...product, quantity: value + modifier }
+            : product
+        ),
+      });
       refetch({
         cart: userInfo.cart.map((product) => {
           return product.sku.split()[0] === sku
@@ -44,7 +52,9 @@ const ProductQuantity = ({ quantity, sku, deleteFunc }) => {
             : product;
         }),
       });
-    setValue(value + modifier);
+      setValue(value + modifier);
+    }
+
     if (value === 1 && modifier < 0) {
       handleDelete();
     }

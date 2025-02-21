@@ -19,6 +19,10 @@ const ProductImage = ({ product }) => {
     }
   }, [product, productInfo]);
 
+  useEffect(() => {
+    console.log(imgSrc);
+  }, [imgSrc]);
+
   return (
     <>
       <div className="w-full max-w-[35rem] mx-auto">

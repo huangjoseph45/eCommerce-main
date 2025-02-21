@@ -1,7 +1,10 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import Header from "../components/header";
 import Footer from "../components/footer";
-import { ProductsContext } from "../components/utilities/ContextManager";
+import {
+  ProductsContext,
+  ProductContext,
+} from "../components/utilities/ContextManager";
 import CartItemList from "../components/cart-components/cartItemsList";
 import CartSummary from "../components/cart-components/cartSummary";
 import returnProduct from "../components/utilities/returnProduct";
@@ -10,18 +13,18 @@ import useProductsForCart from "../components/utilities/getProductsForCart";
 const CartPage = () => {
   const [error, setError] = useState(null);
   const [cart, setCart] = useState([]);
+  const { userInfo } = useContext(ProductContext);
   const [loading, products, fetchProducts] = useProductsForCart();
-  const cachedInfo = JSON.parse(sessionStorage.getItem("userInfo")) || null;
 
   useEffect(() => {
-    if (cart) fetchProducts({ cart });
-  }, [cart]);
+    if (userInfo && userInfo.cart) setCart(userInfo.cart);
+  }, [JSON.stringify(userInfo)]);
 
   useEffect(() => {
-    if (cachedInfo?.cart) {
-      setCart(cachedInfo.cart);
+    if (cart) {
+      fetchProducts({ cart });
     }
-  }, [JSON.stringify(cachedInfo)]);
+  }, [cart]);
 
   return (
     <ProductsContext.Provider value={{ products }}>

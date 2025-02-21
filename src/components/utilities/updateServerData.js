@@ -21,23 +21,6 @@ const useUpdateServerData = ({ dataToUpdate = {} }) => {
       });
 
       if (!res.ok) setErrorCode(await res.json());
-      const cachedInfo = JSON.parse(sessionStorage.getItem("userInfo")) || null;
-
-      console.log(cachedInfo);
-      const updatedInfo = { ...cachedInfo, ...data };
-
-      console.log(updatedInfo);
-      sessionStorage.setItem(
-        "userDetails",
-        JSON.stringify({ ...cachedInfo, ...updatedInfo })
-      );
-      sessionStorage.setItem(
-        "userInfo",
-        JSON.stringify({
-          firstName: updatedInfo.firstName,
-          cart: updatedInfo.cart,
-        })
-      );
 
       setResponse(res);
     } catch (error) {

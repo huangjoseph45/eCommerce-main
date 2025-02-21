@@ -11,7 +11,7 @@ const CardGrid = ({ isLoading, products }) => {
   // need these new parameters: index, numProductsToGet, isEnd
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 w-full px-8 relative">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full px-8 relative">
         {!isLoading && products
           ? products.map((product, index) => {
               return (

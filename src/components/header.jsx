@@ -61,16 +61,14 @@ const Header = ({ showBackground = true }) => {
 
   useEffect(() => {
     const loggedIn = isLoggedIn();
-    const cachedInfo = JSON.parse(sessionStorage.getItem("userInfo")) || null;
 
-    if (!data && isEmpty(userInfo) && !cachedInfo) {
+    if (!data && isEmpty(userInfo)) {
       refetch({
         queries: ["cart", "firstName"],
         auth: { loggedIn },
       });
-    } else if (cachedInfo) {
-      setUserInfo(cachedInfo);
     }
+
     const cachedSections =
       sessionStorage.getItem("sections") !== "undefined"
         ? JSON.parse(sessionStorage.getItem("sections"))
@@ -107,7 +105,6 @@ const Header = ({ showBackground = true }) => {
     const timeoutId = setTimeout(() => {
       if (data) {
         setUserInfo(data);
-        sessionStorage.setItem("userInfo", JSON.stringify(data));
       }
     }, 100);
 

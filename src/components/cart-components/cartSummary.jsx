@@ -105,7 +105,7 @@ const CartSummary = ({ products, loading }) => {
       });
       setSubtotalCost(cost.toFixed(2));
     }
-  }, [products, userInfo?.cart]);
+  }, [products, JSON.stringify(userInfo)]);
 
   return (
     userInfo &&

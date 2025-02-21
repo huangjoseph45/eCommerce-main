@@ -47,7 +47,7 @@ const Card = ({
 
   return (
     <div
-      className="hover:shadow-md transition-all duration-100 rounded-sm w-full h-fit flex flex-col gap-1 cursor-pointer box-border pb-2 relative z-0 hover:bg-bgBase3
+      className="hover:shadow-md transition-all duration-100 rounded-sm w-full h-full max-h-[45rem] flex flex-col gap-1 cursor-pointer box-border pb-2 relative z-0 hover:bg-bgBase3
 "
       onMouseEnter={toggleShowArrows}
       onMouseLeave={toggleShowArrows}
@@ -81,7 +81,7 @@ const Card = ({
         )}
       </div>
       <Link to={stringURL} className="px-2">
-        <p className="font-semibold text-xl">{name}</p>
+        <p className="font-semibold text-base">{name}</p>
         <p className="text-gray-500 text-sm">{type}</p>
         <p className="text-gray-500 text-sm">{numPatterns} Patterns</p>
         <div className="flex flex-row items-center gap-2">

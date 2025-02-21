@@ -36,12 +36,6 @@ const AddToCart = ({ product }) => {
                 : item
             );
 
-      const cachedInfo = JSON.parse(sessionStorage.getItem("userInfo")) || null;
-
-      if (cachedInfo) {
-        const updatedInfo = { ...cachedInfo, cart: updatedCart };
-        sessionStorage.setItem("userInfo", JSON.stringify(updatedInfo));
-      }
       setUserInfo({ ...userInfo, cart: updatedCart });
       refetch({ cart: updatedCart });
       setShowPopup(true);

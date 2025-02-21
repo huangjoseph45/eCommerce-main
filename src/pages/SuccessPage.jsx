@@ -65,7 +65,8 @@ const SuccessPage = () => {
                     product.sku.toUpperCase() + "-" + product.color.idMod
                   }`;
                   const stringURL = (
-                    encodeURIComponent("p/" + product.name.replace(/ /g, "-")) +
+                    "p/" +
+                    encodeURIComponent(product.name.replace(/ /g, "-")) +
                     "/" +
                     product.sku
                   ).toLowerCase();

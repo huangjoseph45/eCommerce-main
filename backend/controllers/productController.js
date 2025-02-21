@@ -46,6 +46,12 @@ const createProduct = async (req, res) => {
         active: true,
       });
 
+      const stripePrice = await stripe.prices.create({
+        product: stripeProduct.id,
+        unit_amount: Math.round(price * 100), // Stripe expects price in cents
+        currency: "usd",
+      });
+
       const newStripeProduct = await StripeProduct.findOneAndUpdate(
         { stripeProductId: stripeProduct.id },
         {
@@ -53,6 +59,7 @@ const createProduct = async (req, res) => {
           productName,
           metadata: { sku },
           active: true,
+          stripePriceId: stripePrice.id,
         },
         { upsert: true, new: true, runValidators: true }
       );

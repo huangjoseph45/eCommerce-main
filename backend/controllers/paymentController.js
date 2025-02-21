@@ -288,12 +288,6 @@ const syncProducts = async (req, res) => {
         active: true,
       });
 
-      const price = await stripe.prices.create({
-        unit_amount: product.price * 100, // Convert to cents
-        currency: "usd",
-        product: stripeProduct.id,
-      });
-
       const stripePrice = await stripe.prices.create({
         product: stripeProduct.id,
         unit_amount: product.price * 100, // Stripe expects price in cents

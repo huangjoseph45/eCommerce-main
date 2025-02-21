@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { ProductContext } from "./components/utilities/ContextManager";
-import useUpdateServerData from "./components/utilities/updateServerData";
+import useCreateProduct from "./components/utilities/useCreateProduct";
 import useFetchProducts from "./components/utilities/useFetchMultipleProducts";
 import { useCreateSections } from "./components/utilities/useSectionFunctions";
 
@@ -17,52 +17,29 @@ import SuccessPage from "./pages/SuccessPage";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import HomePage from "./pages/HomePage";
 
-const createProduct = async (product) => {
-  try {
-    const response = await fetch(
-      "http://localhost:2000/api/products/create-product",
-      {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(product) || null,
-      }
-    );
-  } catch (e) {
-    console.error(e);
-  }
+const product = {
+  sku: "SKU-4",
+  colors: [
+    { colorName: "Dark Blue", colorCode: "#30364e", idMod: "dbl" },
+    { colorName: "Seafoam", colorCode: "#73a899", idMod: "sfm" },
+    { colorName: "Tan", colorCode: "#9c8d7b", idMod: "tan" },
+    { colorName: "White", colorCode: "#eaeaea", idMod: "whi" },
+  ],
+  description:
+    "We've brought back these 6-inch-inseam shorts from our archives and updated them with a comfortable drawstring waist and a touch of stretch.",
+  discount: 0,
+  price: 89.5,
+  productName: "6-Inch Polo Prepster Stretch Chino Short",
+  sizes: ["XS", "S", "M", "L", "XL"],
+  tags: ["new", "men"],
+  type: "Men's Clothing",
 };
 
 function App() {
   const [sections, setSections] = useState([]);
   const [isCreateSectionsLoading, tryCreateSection] = useCreateSections();
-  const productsList = [
-    {
-      productName: "Fancy Polo",
-      type: "Men's Clothing",
-      price: 100,
-      sku: "SKU-1",
-      tags: ["hi"],
-      discount: 10,
-      colors: [
-        {
-          colorName: "navy",
-          colorCode: "#212e50",
-          idMod: "nav",
-        },
-        {
-          colorName: "white",
-          colorCode: "#ffffff",
-          idMod: "whi",
-        },
-      ],
-      sizes: ["xs", "s", "m", "l", "xl"],
-      description:
-        "An American style standard since 1972, the Polo shirt has been imitated but never matched. Over the decades, Ralph Lauren has reimagined his signature style in a wide array of colors and fits, yet all retain the quality and attention to detail of the iconic original. This relaxed version is made with luxe cotton interlock that features an ultrasoft finish.",
-    },
-  ];
+  const { loadingProductsCreation, errorMessage, newProduct, createProduct } =
+    useCreateProduct();
   const [isLoading, products, refetchProducts] = useFetchProducts();
   const [userInfo, setUserInfo] = useState({});
 
@@ -103,6 +80,7 @@ function App() {
 
   useEffect(() => {
     console.log(sections);
+    createProduct(product);
   }, [sections]);
 
   return (

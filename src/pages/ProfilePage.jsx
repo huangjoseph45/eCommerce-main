@@ -121,21 +121,11 @@ const ProfilePage = () => {
     checkWindowWidth();
     window.addEventListener("resize", checkWindowWidth);
 
-    const cachedInfo =
-      JSON.parse(sessionStorage.getItem("userDetails")) || null;
-
-    if (
-      !data &&
-      (!cachedInfo ||
-        (!cachedInfo.firstName && !cachedInfo.email && !cachedInfo.age))
-    ) {
+    if (!data) {
       refetch({
         queries: fetchFields,
         auth: { loggedIn },
       });
-    } else {
-      console.log(cachedInfo);
-      setUserInfo(cachedInfo);
     }
 
     const cookies = document.cookie;
@@ -149,7 +139,6 @@ const ProfilePage = () => {
   useEffect(() => {
     if (data && data.email) {
       setUserInfo(data);
-      sessionStorage.setItem("userDetails", JSON.stringify(data));
     }
   }, [data]);
 
