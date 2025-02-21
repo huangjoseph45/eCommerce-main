@@ -9,207 +9,29 @@ const CardGrid = ({ isLoading, products }) => {
   // Get index for products returned from db
   // when at end of current products list, get more products starting from index
   // need these new parameters: index, numProductsToGet, isEnd
-
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 w-full px-8 relatives">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 w-full px-8 relative">
         {!isLoading && products
-          ? products.map((product) => {
+          ? products.map((product, index) => {
               return (
-                <>
-                  <Card
-                    key={product.sku}
-                    sku={product.sku}
-                    colors={product.colors}
-                    name={product.productName}
-                    price={product.price}
-                    type={product.type}
-                    numPatterns={product.colors.length}
-                    discount={product.discount}
-                  />
-                  <Card
-                    key={product.sku}
-                    sku={product.sku}
-                    colors={product.colors}
-                    name={product.productName}
-                    price={product.price}
-                    type={product.type}
-                    numPatterns={product.colors.length}
-                    discount={product.discount}
-                  />
-                  <Card
-                    key={product.sku}
-                    sku={product.sku}
-                    colors={product.colors}
-                    name={product.productName}
-                    price={product.price}
-                    type={product.type}
-                    numPatterns={product.colors.length}
-                    discount={product.discount}
-                  />
-                  <Card
-                    key={product.sku}
-                    sku={product.sku}
-                    colors={product.colors}
-                    name={product.productName}
-                    price={product.price}
-                    type={product.type}
-                    numPatterns={product.colors.length}
-                    discount={product.discount}
-                  />
-                  <Card
-                    key={product.sku}
-                    sku={product.sku}
-                    colors={product.colors}
-                    name={product.productName}
-                    price={product.price}
-                    type={product.type}
-                    numPatterns={product.colors.length}
-                    discount={product.discount}
-                  />
-                  <Card
-                    key={product.sku}
-                    sku={product.sku}
-                    colors={product.colors}
-                    name={product.productName}
-                    price={product.price}
-                    type={product.type}
-                    numPatterns={product.colors.length}
-                    discount={product.discount}
-                  />
-                  <Card
-                    key={product.sku}
-                    sku={product.sku}
-                    colors={product.colors}
-                    name={product.productName}
-                    price={product.price}
-                    type={product.type}
-                    numPatterns={product.colors.length}
-                    discount={product.discount}
-                  />
-                  <Card
-                    key={product.sku}
-                    sku={product.sku}
-                    colors={product.colors}
-                    name={product.productName}
-                    price={product.price}
-                    type={product.type}
-                    numPatterns={product.colors.length}
-                    discount={product.discount}
-                  />
-                  <Card
-                    key={product.sku}
-                    sku={product.sku}
-                    colors={product.colors}
-                    name={product.productName}
-                    price={product.price}
-                    type={product.type}
-                    numPatterns={product.colors.length}
-                    discount={product.discount}
-                  />
-                  <Card
-                    key={product.sku}
-                    sku={product.sku}
-                    colors={product.colors}
-                    name={product.productName}
-                    price={product.price}
-                    type={product.type}
-                    numPatterns={product.colors.length}
-                    discount={product.discount}
-                  />
-                  <Card
-                    key={product.sku}
-                    sku={product.sku}
-                    colors={product.colors}
-                    name={product.productName}
-                    price={product.price}
-                    type={product.type}
-                    numPatterns={product.colors.length}
-                    discount={product.discount}
-                  />
-                  <Card
-                    key={product.sku}
-                    sku={product.sku}
-                    colors={product.colors}
-                    name={product.productName}
-                    price={product.price}
-                    type={product.type}
-                    numPatterns={product.colors.length}
-                    discount={product.discount}
-                  />
-                  <Card
-                    key={product.sku}
-                    sku={product.sku}
-                    colors={product.colors}
-                    name={product.productName}
-                    price={product.price}
-                    type={product.type}
-                    numPatterns={product.colors.length}
-                    discount={product.discount}
-                  />
-                  <Card
-                    key={product.sku}
-                    sku={product.sku}
-                    colors={product.colors}
-                    name={product.productName}
-                    price={product.price}
-                    type={product.type}
-                    numPatterns={product.colors.length}
-                    discount={product.discount}
-                  />
-                  <Card
-                    key={product.sku}
-                    sku={product.sku}
-                    colors={product.colors}
-                    name={product.productName}
-                    price={product.price}
-                    type={product.type}
-                    numPatterns={product.colors.length}
-                    discount={product.discount}
-                  />
-                  <Card
-                    key={product.sku}
-                    sku={product.sku}
-                    colors={product.colors}
-                    name={product.productName}
-                    price={product.price}
-                    type={product.type}
-                    numPatterns={product.colors.length}
-                    discount={product.discount}
-                  />
-                  <Card
-                    key={product.sku}
-                    sku={product.sku}
-                    colors={product.colors}
-                    name={product.productName}
-                    price={product.price}
-                    type={product.type}
-                    numPatterns={product.colors.length}
-                    discount={product.discount}
-                  />
-                  <Card
-                    key={product.sku}
-                    sku={product.sku}
-                    colors={product.colors}
-                    name={product.productName}
-                    price={product.price}
-                    type={product.type}
-                    numPatterns={product.colors.length}
-                    discount={product.discount}
-                  />
-                </>
+                <Card
+                  key={product.sku + index + product._id}
+                  sku={product.sku}
+                  colors={product.colors}
+                  name={product.productName}
+                  price={product.price}
+                  type={product.type}
+                  numPatterns={product.colors.length}
+                  discount={product.discount}
+                />
               );
             })
           : isLoading && (
               <>
-                <CardPlaceHolder key={1} />
-                <CardPlaceHolder key={2} />
-                <CardPlaceHolder key={3} />
-                <CardPlaceHolder key={4} />
-                <CardPlaceHolder key={5} />
-                <CardPlaceHolder key={6} />
-                <CardPlaceHolder key={7} />
-                <CardPlaceHolder key={8} />
+                {[...Array(8)].map((_, index) => (
+                  <CardPlaceHolder key={index} />
+                ))}
               </>
             )}
         {isLoading && products && (

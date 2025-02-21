@@ -31,7 +31,7 @@ const Card = ({
     const encodedName = encodeURIComponent(
       name.replace(/ /g, "-")
     ).toLowerCase();
-    return `/${encodedName}/${sku}`.toLowerCase();
+    return `/p/${encodedName}/${sku}`.toLowerCase();
   }, [name, sku]);
 
   const modifyCardColor = (incrementor) => {

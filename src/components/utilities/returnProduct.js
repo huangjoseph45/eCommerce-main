@@ -8,7 +8,7 @@ const returnProduct = async (sku) => {
 
   const [prefix, skuNum, color, size] = sku.split("-");
   const fetchURL = `${import.meta.env.VITE_PATH}/products/fetch-product/${
-    prefix + "-" + skuNum + "-" + color + "-" + size
+    prefix + "-" + skuNum
   }`;
   try {
     const response = await fetch(fetchURL, {
@@ -56,4 +56,52 @@ const returnProduct = async (sku) => {
   }
 };
 
+const returnBaseProduct = async (sku) => {
+  if (isEmpty(sku)) {
+    console.error("Invalid SKU");
+    return;
+  }
+
+  const fetchURL = `${import.meta.env.VITE_PATH}/products/fetch-product/${sku}`;
+  try {
+    console.log(fetchURL);
+    const response = await fetch(fetchURL, {
+      method: "GET",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const {
+      createdAt,
+      description,
+      sku,
+      price,
+      productName,
+      type,
+      sizes,
+      discount,
+      colors,
+      stripePriceId,
+      stripeProductId,
+    } = await response.json();
+    return {
+      createdAt,
+      description,
+      sku,
+      price,
+      productName,
+      sizes,
+      type,
+      colors,
+      discount,
+      stripePriceId,
+      stripeProductId,
+    };
+  } catch (error) {
+    console.error("Error fetching product from server: " + error);
+    return;
+  }
+};
+
 export default returnProduct;
+export { returnBaseProduct };

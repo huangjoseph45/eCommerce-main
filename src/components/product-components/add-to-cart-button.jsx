@@ -5,7 +5,7 @@ import isEmpty from "../utilities/isEmpty";
 import { useNavigate } from "react-router-dom";
 import useUpdateServerData from "../utilities/updateServerData";
 
-const AddToCart = () => {
+const AddToCart = ({ product }) => {
   const { productInfo } = useContext(ProductInfoContext);
   const { userInfo, setUserInfo } = useContext(ProductContext);
   const [showPopup, setShowPopup] = useState(false);
@@ -25,6 +25,7 @@ const AddToCart = () => {
       const itemIndex = userInfo.cart.findIndex(
         (cartItem) => cartItem.sku === fullId
       );
+      console.log(cartInfo);
 
       const updatedCart =
         itemIndex === -1
@@ -35,10 +36,13 @@ const AddToCart = () => {
                 : item
             );
 
-      setUserInfo({
-        ...userInfo,
-        cart: updatedCart,
-      });
+      const cachedInfo = JSON.parse(sessionStorage.getItem("userInfo")) || null;
+
+      if (cachedInfo) {
+        const updatedInfo = { ...cachedInfo, cart: updatedCart };
+        sessionStorage.setItem("userInfo", JSON.stringify(updatedInfo));
+      }
+      setUserInfo({ ...userInfo, cart: updatedCart });
       refetch({ cart: updatedCart });
       setShowPopup(true);
     }

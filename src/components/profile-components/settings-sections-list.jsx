@@ -47,7 +47,7 @@ const SettingsSectionsList = ({ sections, setSection }) => {
     return (
       <li
         key={section}
-        className="list-none cursor-pointer lg:hover:text-xl hover:text-[1.9srem] hover:font-medium h-14 transition-all duration-100 flex items-center w-full justify-center lg:justify-start lg:text-lg text-2xl text-center hover:text-bgSecondary"
+        className="list-none cursor-pointer lg:hover:text-xl hover:text-[1.9srem] hover:font-medium h-14 transition-all duration-100 flex items-center w-full justify-center lg:justify-start lg:text-lg text-2xl text-center hover:text-bgTertiary"
         onClick={() => {
           setSection(index);
           if (window.innerWidth < 1024) {

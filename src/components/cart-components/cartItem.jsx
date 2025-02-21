@@ -1,5 +1,5 @@
 // CartItem.js
-import React, { memo, useEffect, useState, useRef } from "react";
+import React, { memo, useMemo, useEffect, useState, useRef } from "react";
 import ProductQuantity from "./productQuantity";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +15,7 @@ const CartItem = memo(
     type,
     size,
     description,
-    deleteFunc,
+    sidebar = false,
   }) => {
     const nav = useNavigate();
     const [isVisible, setIsVisible] = useState(true);
@@ -23,50 +23,51 @@ const CartItem = memo(
       setIsVisible(false);
     };
 
-    const baseId = useRef();
-
-    useEffect(() => {
-      if (sku !== undefined && sku.includes("-")) {
-        baseId.current =
-          sku.split("-")[0].toString() + "-" + sku.split("-")[1].toString();
-      }
+    const baseId = useMemo(() => {
+      return sku && sku.includes("-")
+        ? sku.split("-")[0] + "-" + sku.split("-")[1]
+        : "";
     }, [sku]);
-    console.log(baseId.current);
+
     const stringURL = (
+      "p/" +
       encodeURIComponent(productName.replace(/ /g, "-")) +
       "/" +
-      baseId.current
+      baseId
     ).toLowerCase();
 
     return (
       isVisible && (
-        <li className="list-none py-2 w-[20rem] sm:w-[25rem] lg:w-[30rem]">
-          <div className="flex gap-4">
-            <div className="flex flex-col gap-2">
+        <li className="relative list-none lg:h-[11rem] flex w-fit sm:w-[25rem] lg:w-[30rem] ">
+          <div className="flex gap-2 justify-centers items-start">
+            <div
+              className={`flex flex-col  ${
+                sidebar ? "h-[7rem]" : "w-[10rem] h-full"
+              } aspect-square lg:aspect-[3/4]`}
+            >
               {imageLink && (
                 <img
                   onClick={() => nav("/" + stringURL)}
                   src={imageLink}
                   alt={productName}
-                  className="w-[16rem] object-cover cursor-pointer"
+                  className="object-cover cursor-pointer h-full"
                 />
               )}{" "}
-              <ProductQuantity
-                quantity={quantity}
-                sku={sku}
-                deleteFunc={deleteItem}
-              />
             </div>
 
-            <div className="w-full flex flex-col gap-1">
-              <div className="flex flex-row w-full justify-between pr-4">
+            <div
+              className={`w-full h-full flex flex-col lg:gap-1 ${
+                !sidebar ? "pt-2" : "text-sm"
+              }`}
+            >
+              <div className="flex flex-row w-full justify-between relative">
                 <a
                   onClick={() => nav("/" + stringURL)}
                   className="text-lg font-semibold cursor-pointer"
                 >
                   {productName}
                 </a>
-                <div className="flex flex-col sm:flex-row sm:gap-4">
+                <div className="absolute right-0 flex flex-col items-end">
                   {discount && (
                     <p className="text-gray-700 line-through">
                       ${price.toFixed(2)}
@@ -78,10 +79,21 @@ const CartItem = memo(
                 </div>
               </div>
               <p className="capitalize text-gray-600">{type}</p>
-              <p className="capitalize text-gray-600">
-                {color && color.colorName && color.colorName}
-              </p>
-              <p className="uppercase text-gray-600">{size}</p>
+              <div className="flex lg:flex-col flex-row gap-1 mb-2">
+                <p className="capitalize text-gray-600">
+                  {color && color.colorName && color.colorName}
+                </p>
+                <p className="lg:hidden">&#47;</p>
+                <p className="uppercase text-gray-600">{size}</p>
+              </div>
+              <div className="h-full w-full flex items-end ">
+                {" "}
+                <ProductQuantity
+                  quantity={quantity}
+                  sku={sku}
+                  deleteFunc={deleteItem}
+                />
+              </div>
             </div>
           </div>
         </li>

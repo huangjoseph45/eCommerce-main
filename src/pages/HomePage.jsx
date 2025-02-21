@@ -44,6 +44,7 @@ const HomePage = () => {
         </motion.div>
       </AnimatePresence>
       <LandingSection />
+      <FeaturedSection />
       <div className="h-screen"></div>
     </>
   );

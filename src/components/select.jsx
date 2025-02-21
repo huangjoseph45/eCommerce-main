@@ -6,6 +6,8 @@ import isEmpty from "./utilities/isEmpty";
 const Select = ({ options, selectedValue, onSelect, field }) => {
   const [showElements, setShowElements] = useState(false);
   const list = useRef([]);
+  const containerRef = useRef(null);
+
   list.current = useMemo(() => {
     return options.map((option) => option.name);
   }, [options]);
@@ -42,6 +44,8 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
       },
     };
     onSelect(e, field);
+    setShowElements(false);
+
     setQuery(value ? value : query);
   };
 
@@ -56,7 +60,10 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
         className={`hover:outline outline-blue-400 p-3 rounded-md w-full ${
           selectedValue === value && "bg-blue-200"
         }`}
-        onClick={() => handleSelect(value)}
+        tabIndex={0}
+        onClick={() => {
+          handleSelect(value);
+        }}
         role="option"
         aria-selected="false"
       >
@@ -110,7 +117,27 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
       <label className="absolute -top-2 left-[.9rem] bg-bgBase px-1 text-xs flex gap-[0.1rem]">
         {label} {field.isRequired && <p className="text-errorTrue">*</p>}
       </label>
-      <div className=" rounded-lg w-full cursor-pointer">
+      <div
+        className=" rounded-lg w-full cursor-pointer"
+        ref={containerRef}
+        onBlur={(event) => {
+          if (containerRef.current.contains(event.relatedTarget)) {
+            return;
+          }
+
+          setQuery(list.current.includes(selectedValue) ? selectedValue : "");
+          if (
+            list.current.filter((listItem) => {
+              return (
+                listItem.toLowerCase().localeCompare(query.toLowerCase()) === 0
+              );
+            }).length > 0
+          ) {
+            handleSelect(query);
+          }
+          setShowElements(false);
+        }}
+      >
         <input
           type="text"
           autoCapitalize="on"
@@ -124,19 +151,6 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
           }}
           value={query}
           onFocus={() => setShowElements(true)}
-          onBlur={() => {
-            setShowElements(false);
-            setQuery(list.current.includes(selectedValue) ? selectedValue : "");
-            if (
-              list.current.filter((listItem) => {
-                return (
-                  listItem.toLowerCase().localeCompare(query.toLowerCase()) ===
-                  0
-                );
-              }).length > 0
-            )
-              handleSelect(query);
-          }}
           onChange={(e) => changeInput(e)}
           className="outline outline-gray-600 p-3 rounded-lg w-full cursor-pointe bg-bgBase"
         />

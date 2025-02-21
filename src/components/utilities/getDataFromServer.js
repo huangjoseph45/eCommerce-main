@@ -41,9 +41,10 @@ const useFetchServerData = (options = {}) => {
     if (!auth) {
       throw new Error(`User is not authorized`);
     }
-    try {
-      setLoading(false);
+    setLoading(true);
 
+    console.log(queries);
+    try {
       const response = await fetch(
         `${import.meta.env.VITE_PATH}/users/fetch-data`,
         {
@@ -57,27 +58,22 @@ const useFetchServerData = (options = {}) => {
       );
 
       if (!response.ok) {
+        setLoading(false);
         throw new Error(`Network response was not ok: ${response.statusText}`);
       }
 
       const new_data = await response.json();
+      console.log(new_data);
       setData(new_data);
     } catch (error) {
       setIsError(true);
       console.error("Failed to fetch data from server:", error);
       throw error;
     }
+    setLoading(false);
   };
 
-  useEffect(() => {
-    if (Array.isArray(queries)) {
-      getDataFunc(queries, auth);
-    }
-    setLoading(false);
-  }, []);
-
   const refetch = ({ queries, auth }) => {
-    setLoading(true);
     getDataFunc(queries, auth);
   };
 

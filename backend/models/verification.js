@@ -3,11 +3,9 @@ const verifyAdmin = (req, res, next) => {
     !req.session ||
     !req.session.user ||
     !req.session.user.role ||
-    !req.session.user.role
+    !req.session.user.role ||
+    req.session.user.role.toLowerCase() !== "admin"
   ) {
-    req.session.destroy((err) => {
-      if (err) console.error("Session destroy error:", err);
-    });
     return res.status(401).json({ message: "Unauthorized" });
   }
   next();

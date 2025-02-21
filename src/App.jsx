@@ -1,10 +1,11 @@
 import "./index.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { ProductContext } from "./components/utilities/ContextManager";
 import useUpdateServerData from "./components/utilities/updateServerData";
 import useFetchProducts from "./components/utilities/useFetchMultipleProducts";
+import { useCreateSections } from "./components/utilities/useSectionFunctions";
 
 import Shopping from "./pages/Shopping";
 import NoPage from "./pages/NoPage";
@@ -34,14 +35,9 @@ const createProduct = async (product) => {
   }
 };
 
-const basicCategories = [
-  { name: "New Arrivals", header: "new" },
-  { name: "Men's Clothing", header: "men" },
-  { name: "Women's Clothing", header: "women" },
-  { name: "Children's Clothing", header: "children" },
-];
-
 function App() {
+  const [sections, setSections] = useState([]);
+  const [isCreateSectionsLoading, tryCreateSection] = useCreateSections();
   const productsList = [
     {
       productName: "Fancy Polo",
@@ -69,61 +65,80 @@ function App() {
   ];
   const [isLoading, products, refetchProducts] = useFetchProducts();
   const [userInfo, setUserInfo] = useState({});
-  const { refetch } = useUpdateServerData({
-    dataToUpdate: null,
-  });
+
+  const productLinks = useRef();
+
+  // useEffect(() => {
+  //   tryCreateSection({
+  //     sectionTitle: "New Arrivals",
+  //     tags: ["new"],
+  //     imageURL:
+  //       "https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/SKU-1-nav",
+  //   });
+  //   if (!products || products.length < 1) refetchProducts("");
+  // }, []);
+
+  // useEffect(() => {
+  //   if (products && Array.isArray(products))
+  //     productLinks.current = products.map((product) => {
+  //       const stringURL = (
+  //         "p/" +
+  //         encodeURIComponent(product.productName.replace(/ /g, "-")) +
+  //         "/" +
+  //         product.sku
+  //       ).toLowerCase();
+
+  //       return (
+  //         <Route
+  //           key={product.sku}
+  //           path={`/${stringURL}`}
+  //           element={<ProductPage product={product} />}
+  //         />
+  //       );
+  //     });
+  //   else {
+  //     refetchProducts("");
+  //   }
+  // }, [products]);
 
   useEffect(() => {
-    refetch(userInfo);
-  }, [userInfo]);
-
-  useEffect(() => {
-    if (!products || products.length < 1) refetchProducts("");
-  }, []);
+    console.log(sections);
+  }, [sections]);
 
   return (
     <>
       <ProductContext.Provider
-        value={{ products, userInfo, setUserInfo, basicCategories }}
+        value={{ products, userInfo, setUserInfo, sections, setSections }}
       >
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/s/" element={<Shopping />} />
+            <Route path="/new" element={<Shopping />} />
+
             <Route path="*" element={<NoPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/order" element={<SuccessPage />} />
             <Route path="/search" element={<SearchResultsPage />} />
-            {products &&
-              Array.isArray(products) &&
-              products.length > 0 &&
-              products.map((product) => {
-                const stringURL = (
-                  encodeURIComponent(product.productName.replace(/ /g, "-")) +
-                  "/" +
-                  product.sku
-                ).toLowerCase();
+            <Route
+              path="/p/:productName/:productId"
+              element={<ProductPage />}
+            />
 
-                return (
-                  <Route
-                    key={product.sku}
-                    path={`/${stringURL}`}
-                    element={<ProductPage product={product} />}
-                  />
-                );
-              })}
-            {basicCategories &&
-              basicCategories.map((category, index) => {
+            {productLinks.current}
+            {sections &&
+              sections.map((category, index) => {
                 return (
                   <Route
                     key={`category-${index}`}
-                    path={`/${encodeURIComponent(category.header)}`}
+                    path={`/${encodeURIComponent(category.slug)}`}
                     element={
                       <Shopping
-                        categoryName={category.name}
-                        categoryId={category.header}
+                        categoryName={category.sectionTitle}
+                        categoryId={category._id}
+                        searchQuery={category.tags}
                       />
                     }
                   />

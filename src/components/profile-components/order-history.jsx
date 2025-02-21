@@ -82,7 +82,7 @@ const OrderHistory = () => {
                     >
                       {order.status}
                     </p>
-                    <div className="flex flex-row w-full pr-4 relative">
+                    <div className="flex flex-row w-full pr-4 relative ">
                       <p
                         className={`whitespace-nowrap capitalize text-textLight  cursor-pointer`}
                       >

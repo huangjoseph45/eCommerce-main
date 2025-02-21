@@ -6,40 +6,22 @@ import { useNavigate } from "react-router-dom";
 const SectionLinks = (sections, setShow = () => {}) => {
   const [hoverId, setHoverId] = useState(null);
   const nav = useNavigate();
+  if (!sections || sections.length < 1) return null;
   return sections.map((element, index) => {
     return (
       <div
-        key={isEmpty(element.id) ? index : element.id}
-        className="w-fit relative"
-        onMouseEnter={() => setHoverId(element.id)}
+        key={isEmpty(element._id) ? index : element._id}
+        className="w-fit relative cursor-pointer  hover:text-bgTertiary"
+        onMouseEnter={() => setHoverId(element._id)}
         onMouseLeave={() => setHoverId(null)}
         onClick={() => {
           setShow(false);
-          nav(`/${encodeURIComponent(element.href)}`);
+          nav(`/${encodeURIComponent(element.slug)}`);
         }}
       >
-        <li
-          href={element.href}
-          className="cursor-pointer select-none list-none hover:text-black/65"
-        >
-          {element.categoryName}
+        <li href={element.href} className="capitalize select-none list-none ">
+          {element.sectionTitle}
         </li>
-
-        {window.innerWidth > 1024 && (
-          <AnimatePresence>
-            {hoverId === element.id && (
-              <motion.div
-                className="absolute border border-black left-0 top-full z-10"
-                initial={{ width: 0 }}
-                animate={{ width: "100%" }}
-                exit={{ width: 0 }}
-                transition={{
-                  duration: 0.15,
-                }}
-              ></motion.div>
-            )}
-          </AnimatePresence>
-        )}
       </div>
     );
   });

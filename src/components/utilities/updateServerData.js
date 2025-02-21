@@ -12,7 +12,7 @@ const useUpdateServerData = ({ dataToUpdate = {} }) => {
     if (!data || isEmpty(data)) return;
     try {
       setLoading(true);
-
+      console.log(data);
       const res = await fetch(`${import.meta.env.VITE_PATH}/users/update`, {
         method: "POST",
         credentials: "include",
@@ -21,6 +21,24 @@ const useUpdateServerData = ({ dataToUpdate = {} }) => {
       });
 
       if (!res.ok) setErrorCode(await res.json());
+      const cachedInfo = JSON.parse(sessionStorage.getItem("userInfo")) || null;
+
+      console.log(cachedInfo);
+      const updatedInfo = { ...cachedInfo, ...data };
+
+      console.log(updatedInfo);
+      sessionStorage.setItem(
+        "userDetails",
+        JSON.stringify({ ...cachedInfo, ...updatedInfo })
+      );
+      sessionStorage.setItem(
+        "userInfo",
+        JSON.stringify({
+          firstName: updatedInfo.firstName,
+          cart: updatedInfo.cart,
+        })
+      );
+
       setResponse(res);
     } catch (error) {
       console.error("Failed to fetch data from server:", error);

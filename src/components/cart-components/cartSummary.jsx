@@ -6,7 +6,7 @@ import CheckoutButton from "./checkoutButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
-const CartSummary = ({ products }) => {
+const CartSummary = ({ products, loading }) => {
   const { userInfo } = useContext(ProductContext);
   const [subtotalCost, setSubtotalCost] = useState(0);
   const [discount, setDiscount] = useState({
@@ -94,9 +94,14 @@ const CartSummary = ({ products }) => {
         const sku = item.sku
           ? item.sku.split("-")[0] + "-" + item.sku.split("-")[1]
           : "";
-        const product = products.find((product) => product?.sku === sku);
-        if (product)
+        const product = products.find((product) => {
+          const productSKU = product.sku ? product.sku.toLowerCase() : null;
+          const cartSKU = sku ? sku.toLowerCase() : null;
+          return productSKU === cartSKU;
+        });
+        if (product) {
           cost += item.quantity * product.price * (1 - product.discount / 100);
+        }
       });
       setSubtotalCost(cost.toFixed(2));
     }
@@ -106,7 +111,7 @@ const CartSummary = ({ products }) => {
     userInfo &&
     userInfo.cart &&
     userInfo.cart.length > 0 && (
-      <div className="min-w-[20rem] w-full max-w-[30rem] lg:max-w-[25rem] sticky top-[7rem] z-10 flex flex-col gap-2 mt-6 lg:mt-0 cursor-pointer shadow-md p-4 rounded-md transition-all duration-200 bg-bgBase2 text-textDark">
+      <div className="min-w-[20rem] w-full max-w-[30rem] lg:max-w-[25rem] relative top-[1rem] z-10 flex flex-col gap-2 mt-6 lg:mt-0 cursor-pointer shadow-md p-4 rounded-md transition-all duration-200 bg-bgBase2 text-textDark">
         <h1 className="font-semibold text-lg">Summary</h1>
         <button
           className="text-left font-medium relative z-2"
@@ -165,10 +170,16 @@ const CartSummary = ({ products }) => {
           mainText={"Subtotal"}
           value={subtotalCost}
           zeroText={"Free"}
+          loading={loading}
         />
 
         <hr />
-        <CartSummaryHeader mainText={"Total"} value={total} zeroText={"Free"} />
+        <CartSummaryHeader
+          mainText={"Total"}
+          value={total}
+          zeroText={"Free"}
+          loading={loading}
+        />
         <hr />
         <CheckoutButton
           cart={userInfo && userInfo.cart}

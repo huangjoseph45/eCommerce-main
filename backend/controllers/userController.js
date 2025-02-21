@@ -39,8 +39,7 @@ const createSession = ({ req, res, user, remember = false }) => {
     console.error("Invalid user data provided for session creation.");
     return res.status(400).json({ status: 400, message: "Invalid user data" });
   }
-
-  const role = "customer";
+  const role = user.role || "customer";
 
   const sessionUser = {
     userId: user._id.toString(),

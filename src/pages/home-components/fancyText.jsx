@@ -12,6 +12,7 @@ const FancyText = ({ text }) => {
     "animate-rotateMove2",
     "animate-rotateMove3",
     "animate-rotateMove4",
+    "animate-rotateMove5",
   ];
 
   return (

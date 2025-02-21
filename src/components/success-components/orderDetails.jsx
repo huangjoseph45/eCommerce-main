@@ -11,7 +11,12 @@ const OrderDetails = ({ orderData }) => {
   return (
     <div className="flex flex-col w-fit justify-center">
       <div className="flex flex-col ">
-        <h1 className="text">{orderData._id}</h1>
+        <div className="relative flex">
+          <p className="absolute text-[.5rem] top-1 lg:top-2 -translate-y-full">
+            Order ID:
+          </p>
+          <p className="text">{orderData._id}</p>
+        </div>
         {orderData.verified ? (
           <div className="text text-errorFalse font-medium">
             Order is verified

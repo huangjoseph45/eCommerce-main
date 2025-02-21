@@ -16,6 +16,18 @@ input:focus {
   outline: 2px solid #1e293b;
 }
 
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(to right, red, yellow, green);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    transition: none;
+    -webkit-text-fill-color: transparent; /* Safari support */
+    will-change: background, color; /* Hint to the browser to optimize */
+  }
+}
+
 @layer components {
   /* HTML: <div class="loader"></div> */
   .loader {

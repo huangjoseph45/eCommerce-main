@@ -21,13 +21,12 @@ const Cart = () => {
 
   const handleClick = () => {
     const cookies = document.cookie;
-    if (cookies.includes("sessionId")) nav("/cart");
-    else nav("/login");
+    nav("/cart");
   };
 
   return (
     <button
-      className="flex items-center justify-center relative cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 rounded-full p-2  aspect-square"
+      className="flex items-center justify-center hover:text-bgTertiary relative cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 rounded-full p-2  aspect-square"
       aria-label="Cart"
       onClick={handleClick}
     >
@@ -48,7 +47,7 @@ const Cart = () => {
       </svg>
       {numItems > 0 && (
         <span
-          className="absolute text-textDark font-semibold text-[0.8rem] flex items-center justify-center rounded-full p-2  select-none translate-y-[5%]"
+          className="absolute   font-semibold text-[0.8rem] flex items-center justify-center rounded-full p-2  select-none translate-y-[5%]"
           aria-label={`${numItems} items in cart`}
         >
           {numItems}

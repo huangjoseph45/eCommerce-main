@@ -1,9 +1,13 @@
-import { useContext, useState, useRef, useEffect, useCallback } from "react";
+import { useContext, useState, useRef, useCallback } from "react";
 import { ProductContext } from "../utilities/ContextManager";
+import useUpdateServerData from "../utilities/updateServerData";
 
 const ProductQuantity = ({ quantity, sku, deleteFunc }) => {
   const { userInfo, setUserInfo } = useContext(ProductContext);
   const [value, setValue] = useState(quantity);
+  const { refetch } = useUpdateServerData({
+    dataToUpdate: null,
+  });
   const inputRef = useRef(null);
 
   const handleChange = (e) => {
@@ -16,8 +20,7 @@ const ProductQuantity = ({ quantity, sku, deleteFunc }) => {
   const submitForm = useCallback(
     (e = null) => {
       if (e.key === "Enter") {
-        setUserInfo({
-          ...userInfo,
+        refetch({
           cart: userInfo.cart.map((product) => {
             return product.sku.split()[0] === sku
               ? { ...product, quantity: value }
@@ -34,8 +37,7 @@ const ProductQuantity = ({ quantity, sku, deleteFunc }) => {
 
   const handleClick = (modifier) => {
     if (value > 0 || modifier > 0)
-      setUserInfo({
-        ...userInfo,
+      refetch({
         cart: userInfo.cart.map((product) => {
           return product.sku.split()[0] === sku
             ? { ...product, quantity: value + modifier }
@@ -49,8 +51,7 @@ const ProductQuantity = ({ quantity, sku, deleteFunc }) => {
   };
 
   const handleDelete = () => {
-    setUserInfo({
-      ...userInfo,
+    refetch({
       cart: userInfo.cart.filter((item) => {
         if (item.sku !== sku) console.log(item);
         return item.sku !== sku;
@@ -88,7 +89,8 @@ const ProductQuantity = ({ quantity, sku, deleteFunc }) => {
           type="text"
           ref={inputRef}
           value={value}
-          className="w-12 h-8 text-center  rounded-none relative box-border flex-grow bg-bgBase"
+          style={{ outlineStyle: "none" }}
+          className="w-10 h-8 text-center outline-none border-none  rounded-none relative box-border flex-grow bg-bgBase"
           maxLength={2}
           onChange={(e) => handleChange(e)}
           onKeyDown={(e) => submitForm(e)}

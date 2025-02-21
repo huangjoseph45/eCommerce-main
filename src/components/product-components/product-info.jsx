@@ -10,7 +10,6 @@ const ProductInfo = ({ product }) => {
     product.price,
     product.discount
   );
-
   const [currentColor, setCurrentColor] = useState(product.colors[0].colorName);
 
   useEffect(() => {
@@ -65,7 +64,7 @@ const ProductInfo = ({ product }) => {
         <div className="flex flex-row gap-6 lg:gap-4">{colorBoxes}</div>
       </div>
       <SizesDropdown product={product} />
-      <AddToCart />
+      <AddToCart product={product} />
       <p className="w-[90%]">{product.description}</p>
     </div>
   );

@@ -4,7 +4,7 @@ const SearchButton = ({ setSearch }) => {
       <div
         title="Search"
         onClick={() => setSearch(true)}
-        className="cursor-pointer aspect-square  hover:bg-slate-500 hover:bg-opacity-25 p-2 rounded-full"
+        className="cursor-pointer aspect-square  hover:bg-slate-500 hover:bg-opacity-25 p-2 rounded-full hover:text-bgTertiary"
       >
         {" "}
         <svg

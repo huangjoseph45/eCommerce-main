@@ -10,12 +10,9 @@ import ShippingDetails from "../components/success-components/shippingDetails";
 import OrderDetails from "../components/success-components/orderDetails";
 
 const SuccessPage = () => {
-  const { userInfo, setUserInfo } = useContext(ProductContext);
   const nav = useNavigate();
   const [searchParams] = useSearchParams();
-  const { refetch } = useUpdateServerData({
-    dataToUpdate: null,
-  });
+
   const [isLoading, orderData, handleFetch] = useFetchOrder();
   const orderId = useRef();
   const sessionId = useRef();
@@ -30,10 +27,7 @@ const SuccessPage = () => {
   useEffect(() => {
     orderId.current = searchParams.get("q");
     sessionId.current = searchParams.get("session_id");
-    if (sessionId.current) {
-      refetch({ cart: [] });
-      setUserInfo({ ...userInfo, cart: [] });
-    }
+
     handleFetch([orderId.current]);
   }, [searchParams, sessionId]);
 
@@ -62,9 +56,7 @@ const SuccessPage = () => {
               <ShippingDetails orderData={orderData[0]} />
               <OrderDetails orderData={orderData[0]} />
             </div>
-            <div className="flex flex-col justify-between p-4 border rounded-md shadow-md my-4 gap-2">
-              Total: ${(displayPrice / 100).toFixed(2)}
-            </div>
+
             <div className="flex flex-col justify-between p-4 border rounded-md shadow-md my-4 gap-2">
               {orderData &&
                 orderData[0] &&
@@ -73,7 +65,7 @@ const SuccessPage = () => {
                     product.sku.toUpperCase() + "-" + product.color.idMod
                   }`;
                   const stringURL = (
-                    encodeURIComponent(product.name.replace(/ /g, "-")) +
+                    encodeURIComponent("p/" + product.name.replace(/ /g, "-")) +
                     "/" +
                     product.sku
                   ).toLowerCase();
@@ -95,7 +87,7 @@ const SuccessPage = () => {
                         <div className="flex flex-col">
                           <p className="">{product.name}</p>
                           <p className="">
-                            ${" "}
+                            $
                             {(product.paymentInfo.unit_amount / 100).toFixed(2)}
                           </p>
                           <p className="capitalize">Size: {product.size}</p>
@@ -113,6 +105,9 @@ const SuccessPage = () => {
                     </li>
                   );
                 })}
+            </div>
+            <div className="flex flex-col justify-between p-4 border rounded-md shadow-md my-4 gap-2">
+              Total: ${(displayPrice / 100).toFixed(2)}
             </div>
           </>
         ) : (

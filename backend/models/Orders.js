@@ -57,22 +57,22 @@ const orderSchema = new mongoose.Schema(
         line1: {
           type: String,
           trim: true,
-          required: true,
+          default: "",
         },
         city: {
           type: String,
           trim: true,
-          required: true,
+          default: "",
         },
         state: {
           type: String,
           trim: true,
-          required: true,
+          default: "",
         },
         country: {
           type: String,
           trim: true,
-          required: true,
+          default: "",
         },
       },
     },

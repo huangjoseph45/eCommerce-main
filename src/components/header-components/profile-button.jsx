@@ -20,7 +20,7 @@ const ProfileButton = () => {
 
   return (
     <>
-      <div className="relative aspect-square rounded-full cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 p-2">
+      <div className="relative aspect-square rounded-full cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 p-2 hover:text-bgTertiary">
         <svg
           aria-hidden="true"
           focusable="false"

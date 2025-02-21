@@ -88,14 +88,11 @@ const createProduct = async (req, res) => {
 
 const fetchProduct = async (req, res) => {
   let { skuComplete } = req.params;
-
   if (!skuComplete) {
     return res.status(400).json({ message: "Missing SKU" });
   }
-
   try {
-    const [pre, post, color, size] = skuComplete.split("-");
-    const sku = pre + "-" + post;
+    const sku = skuComplete.split("-")[0] + "-" + skuComplete.split("-")[1];
 
     let product = await Product.findOne({
       sku: { $regex: `^${sku}$`, $options: "i" },
@@ -126,7 +123,6 @@ const fetchCategory = async (req, res) => {
               { description: { $regex: query, $options: "i" } },
             ],
           });
-    console.log(categories);
     return res.status(200).json({ products });
   } catch (error) {
     console.error("Error fetching product: " + error);

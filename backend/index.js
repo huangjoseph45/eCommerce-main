@@ -9,6 +9,7 @@ const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const paymentRoutes = require("./routes/paymentRoutes.js");
+const contentRoutes = require("./routes/contentRoutes.js");
 
 const app = express();
 const MONGO_URI = process.env.MONGO_URI;
@@ -52,6 +53,7 @@ app.use("/api/stripe", paymentRoutes);
 app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/content", contentRoutes);
 
 app.use("/", (req, res) => {
   res.send("Welcome");

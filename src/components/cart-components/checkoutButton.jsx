@@ -1,12 +1,11 @@
 import { useState, useRef } from "react";
 import useHandleCheckout from "../utilities/useHandleCheckout";
 
-const CheckoutButton = ({ cart, products, promoCode }) => {
+const CheckoutButton = ({ cart, products, promoCode = null }) => {
   const [isLoading, initiateCheckout] = useHandleCheckout();
   const [overCapacity, setOverCapacity] = useState(false);
   const maxCapacity = 50;
   const checkOutData = useRef();
-
   const handleCheckout = () => {
     if (!cart | (cart.length < 1)) {
       return false;
@@ -25,9 +24,12 @@ const CheckoutButton = ({ cart, products, promoCode }) => {
           const breakSKUApart = cartItem.sku.split("-");
           const SKU = breakSKUApart[0] + "-" + breakSKUApart[1];
 
-          const matchingProduct = products.find(
-            (product) => product.sku === SKU
-          );
+          const matchingProduct = products.find((product) => {
+            const productSKU = product.sku ? product.sku.toLowerCase() : null;
+            const cartSKU = SKU ? SKU.toLowerCase() : null;
+            return productSKU === cartSKU;
+          });
+
           const colorId = cartItem.sku.split("-")[2];
           const color = products.find(
             (product) => product.color.idMod === colorId
@@ -50,6 +52,8 @@ const CheckoutButton = ({ cart, products, promoCode }) => {
         }
       })
       .filter((e) => e);
+    sessionStorage.removeItem("userInfo");
+    sessionStorage.removeItem("userDetails");
 
     initiateCheckout(checkOutData.current);
   };

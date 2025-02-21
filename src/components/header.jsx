@@ -7,11 +7,13 @@ import ProfileButton from "./header-components/profile-button";
 import Sidebar from "./header-components/sidebar";
 import { useLocation } from "react-router-dom";
 import { useState, useRef, useEffect, useContext } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import isLoggedIn from "./utilities/isLoggedIn";
 import useFetchServerData from "../components/utilities/getDataFromServer";
+import { useFetchSections } from "./utilities/useSectionFunctions";
 
 import { ProductContext } from "../components/utilities/ContextManager";
+import { isEmpty } from "lodash";
 
 const opacityVariants = {
   visible: { opacity: 1 },
@@ -24,7 +26,13 @@ const Header = ({ showBackground = true }) => {
   const loggedIn = isLoggedIn();
   const location = useLocation();
   const timeoutRef = useRef(null);
-  const { setUserInfo, userInfo } = useContext(ProductContext);
+  const { setUserInfo, userInfo, setSections } = useContext(ProductContext);
+  const [
+    isFetchingSectionsLoading,
+    sectionResults,
+    setSectionResults,
+    tryFetchSections,
+  ] = useFetchSections();
 
   const { isLoading, data, refetch } = useFetchServerData();
 
@@ -53,12 +61,34 @@ const Header = ({ showBackground = true }) => {
 
   useEffect(() => {
     const loggedIn = isLoggedIn();
-    if (!data)
+    const cachedInfo = JSON.parse(sessionStorage.getItem("userInfo")) || null;
+
+    if (!data && isEmpty(userInfo) && !cachedInfo) {
       refetch({
         queries: ["cart", "firstName"],
         auth: { loggedIn },
       });
+    } else if (cachedInfo) {
+      setUserInfo(cachedInfo);
+    }
+    const cachedSections =
+      sessionStorage.getItem("sections") !== "undefined"
+        ? JSON.parse(sessionStorage.getItem("sections"))
+        : null;
+
+    if (!cachedSections) {
+      tryFetchSections();
+    } else {
+      setSectionResults(cachedSections);
+    }
   }, []);
+
+  useEffect(() => {
+    if (sectionResults) {
+      setSections(sectionResults);
+      sessionStorage.setItem("sections", JSON.stringify(sectionResults));
+    }
+  }, [sectionResults]);
 
   const mouseEnter = () => {
     if (!isVisible) {
@@ -70,13 +100,14 @@ const Header = ({ showBackground = true }) => {
   const mouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
       setVisible(showBackground || false);
-    }, 300);
+    }, 50);
   };
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (data) {
         setUserInfo(data);
+        sessionStorage.setItem("userInfo", JSON.stringify(data));
       }
     }, 100);
 
@@ -85,30 +116,21 @@ const Header = ({ showBackground = true }) => {
     };
   }, [data, loggedIn]);
 
-  useEffect(() => {
-    if (!isLoading && data && loggedIn) {
-      if (loggedIn) {
-        refetch({
-          queries: ["cart", "firstName"],
-          auth: { loggedIn },
-        });
-      } else {
-        setUserInfo({});
-      }
-    }
-  }, [loggedIn]);
-
   return (
     <>
       {" "}
-      {loggedIn && userInfo && data?.firstName && (
+      {loggedIn && userInfo && (
         <div className="bg-bgSecondaryLight text-textLight p-2 text-xs  justify-end px-4 flex flex-row w-full relative z-40">
           <div className="">Welcome Back,&nbsp;</div>
           <a
             href="/profile"
-            className="hover:underline transition-all duration-300 text-textLight cursor-pointer"
+            className="hover:underline hover:text-bgTertiary transition-all duration-100 text-textLight cursor-pointer"
           >
-            {data.firstName}
+            {data && data.firstName
+              ? data.firstName
+              : userInfo && userInfo.firstName
+              ? userInfo.firstName
+              : "User"}
           </a>
           <div className="">!</div>
         </div>
@@ -123,7 +145,7 @@ const Header = ({ showBackground = true }) => {
       >
         <div className="flex flex-row items-end h-fit my-auto gap-12">
           <Logo />
-          <HeaderTabs />
+          {sectionResults && <HeaderTabs sections={sectionResults} />}
         </div>
         <div className="hidden lg:flex gap-3 sm:gap-4 w-fit items-center ">
           {" "}
@@ -131,9 +153,8 @@ const Header = ({ showBackground = true }) => {
           <Cart />
           <ProfileButton />
         </div>
-        {/* Utility Items for PC/Large Screens */}
-        <div className="lg:hidden gap-3 sm:gap-4 w-fit justify-center items-center flex">
-          <Sidebar />
+        <div className="lg:hidden gap-3 sm:gap-4 w-fit justify-center items-center flex ">
+          <Sidebar sections={sectionResults} visible={isVisible} />
         </div>
 
         <SearchBar

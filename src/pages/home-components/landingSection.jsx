@@ -11,17 +11,17 @@ const LandingSection = () => {
       <img
         src="https://www.ralphlauren.com/on/demandware.static/-/Library-Sites-RalphLauren_NA_Library/default/dwb54d4127/img/202501/20250123-men-polo-active-club-plp/0123_m_polo_active_club_plp_c01_img.jpg"
         alt=""
-        className="absolute object-cover w-full h-full"
+        className="absolute object-cover w-full h-full select-none"
       />
       <div className="absolute top-1/3 flex flex-col items-center justify-center gap-4">
         <FancyText text={"Imagine Collective"} />
         <h2
-          className="text-2xl lg:text-3xl hover:text-bgTertiary transition-all duration-300 cursor-pointer"
+          className="text-2xl lg:text-3xl transition-all duration-300 cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70  bg-clip-text hover:text-transparent bg-[linear-gradient(to_right,theme(colors.indigo.400),theme(colors.indigo.100),theme(colors.sky.400),theme(colors.fuchsia.400),theme(colors.sky.400),theme(colors.indigo.100),theme(colors.indigo.400))] bg-[length:200%_auto] animate-gradient leading-[1.2] pb-6"
           onClick={() => {
             nav("/s");
           }}
         >
-          Shop New Arrivals
+          Explore New Arrivals
         </h2>
         <h1 className=" cursor-pointer" onClick={() => nav("/s")}></h1>
         {!loggedIn && (

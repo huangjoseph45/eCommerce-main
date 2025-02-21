@@ -10,12 +10,9 @@ const CartItemList = ({ cart, setCart, loading, products, error }) => {
 
   const purgeCart = () => {
     setCart(null);
-
+    sessionStorage.clear("userInfo");
     refetch({ cart: [] });
   };
-  if (loading) {
-    return <LoadingCart />;
-  }
 
   if (error) {
     return <p>{error}</p>;
@@ -26,38 +23,42 @@ const CartItemList = ({ cart, setCart, loading, products, error }) => {
   }
 
   return (
-    <ul className="w-fit flex flex-col items-center mx-auto">
+    <ul className="w-fit flex flex-col items-center mx-auto ">
       <h1 className="text-2xl my-2 mt-4 flex items-center self-start">Bag</h1>
-      {products.map((product, index) => {
-        const cartItem = cart[index]; // Corresponding cart item
-        if (!product) {
-          return (
-            <li
-              key={cartItem.sku}
-              className="list-none hover:bg-errorTrue/30 rounded-md cursor-pointer p-2 transition-all duration-100"
-              onClick={purgeCart}
-            >
-              Product details not available.
-            </li>
-          );
-        }
-        if (!cartItem) return;
-        return (
-          <CartItem
-            key={cartItem.sku}
-            sku={cartItem.sku}
-            imageLink={product.imageLink}
-            productName={product.productName}
-            quantity={cartItem.quantity}
-            price={product.price}
-            discount={product.discount}
-            color={product.color}
-            type={product.type}
-            size={product.size}
-            description={product.description}
-          />
-        );
-      })}
+      <ul className="flex flex-col gap-2">
+        {loading && <LoadingCart />}
+        {products &&
+          products.map((product, index) => {
+            const cartItem = cart[index]; // Corresponding cart item
+            if (!product) {
+              return (
+                <li
+                  key={cartItem.sku}
+                  className="list-none hover:bg-errorTrue/30 rounded-md cursor-pointer p-2 transition-all duration-100"
+                  onClick={purgeCart}
+                >
+                  Product details not available.
+                </li>
+              );
+            }
+            if (!cartItem) return;
+            return (
+              <CartItem
+                key={cartItem.sku}
+                sku={cartItem.sku}
+                imageLink={product.imageLink}
+                productName={product.productName}
+                quantity={cartItem.quantity}
+                price={product.price}
+                discount={product.discount}
+                color={product.color}
+                type={product.type}
+                size={product.size}
+                description={product.description}
+              />
+            );
+          })}
+      </ul>
     </ul>
   );
 };

@@ -25,8 +25,6 @@ const ProfileContent = ({
   const [clonedInfo, setClonedInfo] = useState(fetchedUserData);
   const [alteredData, setAlteredData] = useState({});
 
-  console.log(clonedInfo);
-
   const countries = useRef(useMemo(() => Country.getAllCountries(), []));
   const [states, setStates] = useState(() => State.getAllStates());
 
@@ -45,7 +43,7 @@ const ProfileContent = ({
         console.warn(
           `Country code not found for "${clonedInfo.address.country}"`
         );
-        setStates([]); // Optionally reset states if country not found
+        setStates([]);
       }
     }
   }, [clonedInfo, countries.current]);

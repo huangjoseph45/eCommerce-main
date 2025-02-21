@@ -3,10 +3,10 @@ const bcrypt = require("bcryptjs");
 
 // Define the Address Subschema
 const addressSchema = new mongoose.Schema({
-  country: { type: String, default: "United States" },
+  country: { type: String, default: "" },
   street: { type: String, default: "" },
   city: { type: String, default: "" },
-  state: { type: String, default: "New Jersey" },
+  state: { type: String, default: "" },
   zipCode: { type: String, default: "" },
 });
 
@@ -86,6 +86,11 @@ const userSchema = new mongoose.Schema(
     verifiedPhone: {
       type: Boolean,
       default: false,
+    },
+    role: {
+      type: String,
+      default: "customer",
+      required: true,
     },
   },
   {

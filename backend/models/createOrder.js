@@ -32,26 +32,27 @@ const createOrder = async (lineItems, customer, user) => {
 
   if (productInfoMap.includes(null)) return null;
 
-  const shippingInfo = customer.shipping;
+  const shippingInfo = customer?.shipping || null;
 
-  const newOrder = await Orders.create({
-    productInfo: productInfoMap,
-    shippingInfo: {
-      name: shippingInfo.name,
-      address: shippingInfo.address,
-    },
-    userInfo: {
-      userId: user._id,
-      email: user.email,
-    },
-    verified: false,
-    default: "processing",
-  });
-
-  if (!newOrder) {
+  try {
+    const newOrder = await Orders.create({
+      productInfo: productInfoMap,
+      shippingInfo: {
+        name: shippingInfo?.name || null,
+        address: shippingInfo?.address || null,
+      },
+      userInfo: {
+        userId: user._id,
+        email: user.email,
+      },
+      verified: false,
+      status: "processing", // Changed from `default` if that was the intent.
+    });
+    return newOrder;
+  } catch (error) {
+    console.error("Error creating order:", error);
     return null;
   }
-  return newOrder;
 };
 
 module.exports = { createOrder };

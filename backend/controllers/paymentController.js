@@ -1,4 +1,3 @@
-const express = require("express");
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 const SERVER_DOMAIN = process.env.VITE_PATH;
 const CLIENT_DOMAIN = process.env.VITE_CLIENT_PATH;
@@ -15,6 +14,8 @@ const handleCheckout = async (req, res) => {
   const { products } = req.body;
   const userId = req.session.user.userId;
   let customerId;
+  let customer;
+
   try {
     if (!products || products.length < 1) {
       return res.status(400).json({ message: "Request contains no products" });
@@ -22,7 +23,14 @@ const handleCheckout = async (req, res) => {
     if (!userId)
       return res.status(400).json({ message: "No user could be found" });
     const user = await User.findById(userId);
-    const customer = await stripe.customers.retrieve(user.customerId);
+    if (user.customerId) {
+      try {
+        customer = await stripe.customers.retrieve(user.customerId);
+      } catch (error) {
+        console.log("Customer does not exist");
+      }
+    }
+
     if (
       !customer ||
       customer.deleted ||
@@ -205,7 +213,10 @@ const webhook = async (req, res) => {
 
           const updatedUser = await Users.updateOne(
             { _id: userInfo.userId },
-            { $push: { orders: orderId } }
+            {
+              $push: { orders: orderId },
+              $set: { cart: [] },
+            }
           );
           break;
         } catch (error) {
@@ -222,6 +233,8 @@ const webhook = async (req, res) => {
         try {
           const session = event.data.object;
           const paymentIntentId = session.payment_intent;
+          console.log(session);
+          const shippingDetails = session.shipping_details;
           const paymentIntent = await stripe.paymentIntents.retrieve(
             paymentIntentId
           );
@@ -230,13 +243,26 @@ const webhook = async (req, res) => {
           }
           const orderId = paymentIntent.metadata.orderId.replace(/"/g, "");
           const phoneNumber = session.customer_details?.phone || "N/A";
+
           const updateOrder = await Orders.updateOne(
             { _id: orderId },
-            { $set: { "userInfo.phoneNumber": phoneNumber } }
+            {
+              $set: {
+                "userInfo.phoneNumber": phoneNumber,
+                "shippingInfo.name": shippingDetails.name,
+                "shippingInfo.address": {
+                  line1: shippingDetails.address.line1,
+                  city: shippingDetails.address.city,
+                  state: shippingDetails.address.state,
+                  country: shippingDetails.address.country,
+                },
+              },
+            }
           );
           console.log(updateOrder);
           break;
         } catch (error) {
+          console.log(error);
           break;
         }
       }
@@ -290,6 +316,9 @@ const syncProducts = async (req, res) => {
 
 const getOrders = async (req, res) => {
   const { orderIdList } = req.body;
+  if (!req.session || !req.session.user) {
+    return res.status(400).json({ message: "Could not verify identity" });
+  }
   const userId = req.session.user.userId;
   if (!orderIdList[0]) {
     return res.status(400).json({ message: "Missing orders list" });
@@ -304,7 +333,9 @@ const getOrders = async (req, res) => {
       })
     );
 
-    const filteredList = ordersList.filter((item) => item !== null);
+    const filteredList = ordersList
+      .filter((item) => item !== null)
+      .sort((a, b) => b.createdAt - a.createdAt);
 
     if (filteredList) {
       if (filteredList[0] && filteredList[0].userInfo.userId === userId) {
