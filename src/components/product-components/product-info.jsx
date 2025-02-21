@@ -12,6 +12,8 @@ const ProductInfo = ({ product }) => {
   );
   const [currentColor, setCurrentColor] = useState(product.colors[0].colorName);
 
+  console.log(product);
+
   useEffect(() => {
     const newColorInfo = product.colors.find(
       (color) => color.colorName.localeCompare(currentColor) === 0

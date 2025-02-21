@@ -55,8 +55,8 @@ export default {
       },
       keyframes: {
         pulseBg: {
-          "0%, 100%": { backgroundColor: "rgba(209, 213, 219, 0.5)" },
-          "50%": { backgroundColor: "rgba(160, 160, 160, 0.5)" },
+          "0%, 100%": { backgroundColor: "#a6a9ad" },
+          "50%": { backgroundColor: "rgba(160, 160, 160, 0.2)" },
         },
         rotateMove0: {
           "0%": {

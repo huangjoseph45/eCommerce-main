@@ -9,6 +9,15 @@ function Shopping({ categoryName, categoryId, searchQuery }) {
   const [isLoading, products, refetchProducts] = useFetchProducts();
   const [displayName, setDisplayName] = useState("");
   const [sortingInfo, setSortingInfo] = useState({});
+  const [loadingBuffer, setLoadingBuffer] = useState(true);
+
+  useEffect(() => {
+    const bufferId = setTimeout(() => {
+      setLoadingBuffer(false);
+    }, 125);
+
+    return () => clearTimeout(bufferId);
+  });
 
   useEffect(() => {
     console.log(sortingInfo);
@@ -33,17 +42,11 @@ function Shopping({ categoryName, categoryId, searchQuery }) {
             <Filter sortingInfo={sortingInfo} setSortingInfo={setSortingInfo} />
           </div>
         </div>
-        {products && products.length > 0 ? (
-          <>
-            <CardGrid isLoading={isLoading} products={products} />
-          </>
-        ) : (
-          !isLoading && (
-            <p className="mx-auto items-center flex justify-center text-4xl mt-16">
-              We could not find anything
-            </p>
-          )
-        )}
+        <CardGrid
+          loadingBuffer={loadingBuffer}
+          isLoading={isLoading}
+          products={products}
+        />
       </div>
       <Footer></Footer>
     </>

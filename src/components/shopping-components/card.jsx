@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronRight,
@@ -7,6 +7,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import parsePrice from "../utilities/parsePrice";
 import { Link, useNavigate } from "react-router-dom";
+import { AnimatePresence, motion } from "motion/react";
+import { cubicBezier } from "motion";
 
 const Card = ({
   sku,
@@ -23,9 +25,27 @@ const Card = ({
   const numImages = Array.isArray(colors) ? colors.length : 1;
 
   const [isShowingArrows, setShowingArrows] = useState(false);
+  const [isHovering, setHovering] = useState(false);
+
   const toggleShowArrows = () => {
+    setHovering(!isHovering);
     if (numImages > 1) setShowingArrows(!isShowingArrows);
   };
+
+  const colorBoxes = colors.map((color, index) => {
+    return (
+      <div
+        key={color.colorCode}
+        className={`w-12 h-12 lg:w-8 lg:h-8 outline outline-1 outline-bgSecondary hover:outline-blue-400 cursor-pointer  hover:scale-[110%] transition-all shadow-md duration-150 rounded-full ${
+          cardColor === index && "outline-blue-500 outline-[.15rem] "
+        }`}
+        style={{ backgroundColor: color.colorCode }}
+        onMouseEnter={() => {
+          setCardColor(index);
+        }}
+      ></div>
+    );
+  });
 
   const stringURL = useMemo(() => {
     const encodedName = encodeURIComponent(
@@ -47,12 +67,12 @@ const Card = ({
 
   return (
     <div
-      className="hover:shadow-md transition-all duration-100 rounded-sm w-full h-full max-h-[45rem] flex flex-col gap-1 cursor-pointer box-border pb-2 relative z-0 hover:bg-bgBase3
+      className="hover:shadow-md transition-all duration-100 rounded-sm w-full h-full max-h-[45rem] flex flex-col cursor-pointer box-border mb-2 relative hover:bg-bgBase3 bg-bgBase
 "
       onMouseEnter={toggleShowArrows}
       onMouseLeave={toggleShowArrows}
     >
-      <div className="relative">
+      <div className="relative z-[0]">
         <img
           src={`https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
             sku + "-" + colors[cardColor].idMod
@@ -60,8 +80,24 @@ const Card = ({
           alt={name}
           onClick={() => nav(stringURL)}
           loading="lazy"
-          className="w-full  select-none object-cover aspect-[3/4]"
+          className="w-full select-none object-cover aspect-[4/5]"
         />
+        <AnimatePresence>
+          {isHovering && (
+            <motion.div
+              className="absolute  w-full p-[.375rem] bg-bgBase/85 bg-blur-lg z-auto flex flex-row justify-between py-2 px-4"
+              initial={{ translateY: 0 }}
+              animate={{ translateY: "-100%" }}
+              exit={{ translateY: 0 }}
+              transition={{
+                duration: 0.1,
+                ease: cubicBezier(0.17, 0.54, 0.48, 0.94),
+              }}
+            >
+              <ul className="flex flex-row gap-2">{colorBoxes}</ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {isShowingArrows && (
           <>
@@ -80,7 +116,10 @@ const Card = ({
           </>
         )}
       </div>
-      <Link to={stringURL} className="px-2">
+      <Link
+        to={stringURL}
+        className="px-2 relative z-[10] bg-inherit h-full py-2"
+      >
         <p className="font-semibold text-base">{name}</p>
         <p className="text-gray-500 text-sm">{type}</p>
         <p className="text-gray-500 text-sm">{numPatterns} Patterns</p>

@@ -42,7 +42,7 @@ const SuccessPage = () => {
   return (
     <div className="">
       <Header></Header>
-      <div className="w-[95%] md:w-3/4 lg:w-[60%] mx-auto mt-8">
+      <div className="w-[95%] md:w-3/4 lg:w-[60%] mx-auto mt-8 ">
         {" "}
         <p className="text-3xl">Order Details</p>
         {isLoading ? (
@@ -52,64 +52,67 @@ const SuccessPage = () => {
           </div>
         ) : orderData && orderData[0] ? (
           <>
-            <div className="flex flex-row justify-between p-4 border rounded-md shadow-md my-4 text-xs lg:text-base">
-              <ShippingDetails orderData={orderData[0]} />
-              <OrderDetails orderData={orderData[0]} />
-            </div>
+            <div className="flex flex-row justify-between my-4 text-xs lg:text-base gap-1">
+              {" "}
+              <div className="flex flex-col justify-between p-4 border rounded-md shadow-md gap-2 w-[70%]">
+                <ShippingDetails orderData={orderData[0]} />
 
-            <div className="flex flex-col justify-between p-4 border rounded-md shadow-md my-4 gap-2">
-              {orderData &&
-                orderData[0] &&
-                orderData[0].productInfo.map((product, index) => {
-                  const imageLink = `https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
-                    product.sku.toUpperCase() + "-" + product.color.idMod
-                  }`;
-                  const stringURL = (
-                    "p/" +
-                    encodeURIComponent(product.name.replace(/ /g, "-")) +
-                    "/" +
-                    product.sku
-                  ).toLowerCase();
+                {orderData &&
+                  orderData[0] &&
+                  orderData[0].productInfo.map((product, index) => {
+                    const imageLink = `https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
+                      product.sku.toUpperCase() + "-" + product.color.idMod
+                    }`;
+                    const stringURL = (
+                      "p/" +
+                      encodeURIComponent(product.name.replace(/ /g, "-")) +
+                      "/" +
+                      product.sku
+                    ).toLowerCase();
 
-                  return (
-                    <li
-                      key={product._id}
-                      className="list-none flex flex-row gap-2 justify-between w-full"
-                    >
-                      <div
-                        className="flex gap-4 cursor-pointer"
-                        onClick={() => nav(`/${stringURL}`)}
+                    return (
+                      <li
+                        key={product._id}
+                        className="list-none flex flex-row gap-2 justify-between w-full"
                       >
-                        <img
-                          src={imageLink}
-                          alt=""
-                          className="aspect-[3/4] object-cover rounded-sm shadow-md h-[9rem]"
-                        />
-                        <div className="flex flex-col">
-                          <p className="">{product.name}</p>
-                          <p className="">
-                            $
-                            {(product.paymentInfo.unit_amount / 100).toFixed(2)}
-                          </p>
-                          <p className="capitalize">Size: {product.size}</p>
-                          <p className="capitalize">
-                            Color: {product.color.colorName}
-                          </p>
-                          <p className="capitalize">
-                            Quantity: {product.quantity}
-                          </p>
+                        <div
+                          className="flex gap-4 cursor-pointer"
+                          onClick={() => nav(`/${stringURL}`)}
+                        >
+                          <img
+                            src={imageLink}
+                            alt=""
+                            className="aspect-[3/4] object-cover rounded-sm shadow-md h-[9rem]"
+                          />
+                          <div className="flex flex-col">
+                            <p className="">{product.name}</p>
+                            <p className="">
+                              $
+                              {(product.paymentInfo.unit_amount / 100).toFixed(
+                                2
+                              )}
+                            </p>
+                            <p className="capitalize">Size: {product.size}</p>
+                            <p className="capitalize">
+                              Color: {product.color.colorName}
+                            </p>
+                            <p className="capitalize">
+                              Quantity: {product.quantity}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                      <div className="uppercase px-8">
-                        <p>{product.sku}</p>
-                      </div>
-                    </li>
-                  );
-                })}
-            </div>
-            <div className="flex flex-col justify-between p-4 border rounded-md shadow-md my-4 gap-2">
-              Total: ${(displayPrice / 100).toFixed(2)}
-            </div>
+                        <div className="uppercase px-8">
+                          <p>{product.sku}</p>
+                        </div>
+                      </li>
+                    );
+                  })}
+              </div>
+              <div className="flex flex-col p-4 py-6 border rounded-md shadow-md gap-2 w-[30%]">
+                <OrderDetails orderData={orderData[0]} />
+                Total: ${(displayPrice / 100).toFixed(2)}
+              </div>
+            </div>{" "}
           </>
         ) : (
           <p>No Data Found</p>
