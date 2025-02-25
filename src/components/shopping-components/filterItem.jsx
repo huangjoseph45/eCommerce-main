@@ -12,9 +12,10 @@ const FilterItem = ({
 }) => {
   const [selectType, setSelectType] = useState(type);
   if (
-    selectType &&
-    selectType.toLowerCase() !== "single" &&
-    selectType.toLowerCase() !== "multi"
+    !selectType ||
+    (selectType &&
+      selectType.toLowerCase() !== "single" &&
+      selectType.toLowerCase() !== "multi")
   )
     setSelectType("single");
 

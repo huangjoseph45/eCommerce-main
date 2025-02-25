@@ -21,9 +21,8 @@ const useFetchProducts = () => {
       );
       const data = await response.json();
       let products = data.products;
-
       if (Array.isArray(products) && products.length > 0) {
-        if (filter.prices) {
+        if (filter && filter.prices) {
           products = products.filter((product) => {
             const productPrice =
               product.price *

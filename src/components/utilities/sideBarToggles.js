@@ -6,8 +6,21 @@ const useSideBarToggle = ({
   showSidebar,
 }) => {
   useEffect(() => {
-    document.body.style.overflow = showSidebar ? "hidden" : "scroll";
+    const resizeFunc = () => {
+      if (window.innerWidth > 1024) {
+        document.body.style.overflow = "scroll";
+      } else {
+        document.body.style.overflow = showSidebar ? "hidden" : "scroll";
+      }
+    };
+
+    resizeFunc();
+
+    window.addEventListener("resize", resizeFunc);
+
+    return () => window.removeEventListener("resize", resizeFunc);
   }, [showSidebar]);
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) {

@@ -35,18 +35,22 @@ function Shopping({ categoryName, categoryId, searchQuery }) {
     <>
       <Header />
 
-      <div className="w-full mx-auto bg-bgBase lg:px-[4rem]">
-        <div className="px-8 text-3xl py-8 capitalize">{displayName}</div>
-        <div className="flex flex-row">
-          <div className="px-8">
+      <div className="w-full mx-auto bg-bgBase lg:pr-[2rem]">
+        <div className="lg:px-4 px-8 text-3xl py-8 capitalize">
+          {displayName}
+        </div>
+        <div className="flex lg:flex-row flex-col">
+          <div className="px-8 lg:pl-4  w-fit relative mb-2">
             <Filter sortingInfo={sortingInfo} setSortingInfo={setSortingInfo} />
           </div>
+          <div className="flex flex-col w-full">
+            <CardGrid
+              loadingBuffer={loadingBuffer}
+              isLoading={isLoading}
+              products={products}
+            />
+          </div>
         </div>
-        <CardGrid
-          loadingBuffer={loadingBuffer}
-          isLoading={isLoading}
-          products={products}
-        />
       </div>
       <Footer></Footer>
     </>
