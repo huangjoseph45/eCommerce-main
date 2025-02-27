@@ -5,36 +5,38 @@ import ProductImage from "../components/product-components/product-image";
 import ProductInfo from "../components/product-components/product-info";
 import { ProductInfoContext } from "../components/utilities/ContextManager";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { returnBaseProduct } from "../components/utilities/returnProduct";
 
 const ProductPage = () => {
   const [productInfo, setProductInfo] = useState({});
-  const { productName, productId } = useParams();
+  const { productName, productId, color, size } = useParams();
   const params = useParams();
   const [product, setProduct] = useState(null);
+  const nav = useNavigate();
 
   const fetchProduct = async () => {
-    console.log(params);
     const returnedProduct = await returnBaseProduct(productId);
-    console.log(returnedProduct);
     setProduct(returnedProduct);
   };
 
   useEffect(() => {
     fetchProduct();
-  }, []);
+    if (!color && productInfo?.colorInfo) {
+      nav(`/p/${productName}/${productId}/${productInfo.colorInfo.idMod}`);
+    }
+  }, [JSON.stringify(productInfo)]);
 
   useEffect(() => {
     if (product) {
-      console.log(product);
+      const foundColor = product.colors.find((c) => color === c.idMod);
       setProductInfo({
         sku: productId,
-        colorInfo: product.colors[0],
-        sizeInfo: null,
+        colorInfo: foundColor || product.colors[0],
+        sizeInfo: size,
       });
     }
-  }, [product]);
+  }, [product, JSON.stringify(params)]);
 
   return (
     <>
@@ -50,8 +52,16 @@ const ProductPage = () => {
               value={{ productInfo, setProductInfo }}
             >
               <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-0  md:w-full xl:w-4/5 m-auto">
-                <ProductImage product={product} />
-                <ProductInfo product={product} />
+                <ProductImage
+                  product={product}
+                  pageColor={color}
+                  urlSize={size}
+                />
+                <ProductInfo
+                  product={product}
+                  pageColor={color}
+                  urlSize={size}
+                />
               </div>
             </ProductInfoContext.Provider>
           )}

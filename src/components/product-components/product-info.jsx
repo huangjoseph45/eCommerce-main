@@ -3,23 +3,22 @@ import { useState, useEffect, useContext } from "react";
 import AddToCart from "./add-to-cart-button";
 import SizesDropdown from "./size-dropdown";
 import { ProductInfoContext } from "../utilities/ContextManager";
+import { useNavigate } from "react-router-dom";
 
-const ProductInfo = ({ product }) => {
+const ProductInfo = ({ product, pageColor = null, urlSize }) => {
+  const nav = useNavigate();
   const { setProductInfo } = useContext(ProductInfoContext);
   const { initialPrice, finalPrice } = parsePrice(
     product.price,
     product.discount
   );
-  const [currentColor, setCurrentColor] = useState(product.colors[0].colorName);
-
-  console.log(product);
+  const [currentColor, setCurrentColor] = useState();
 
   useEffect(() => {
     const newColorInfo = product.colors.find(
-      (color) => color.colorName.localeCompare(currentColor) === 0
+      (colorL) => colorL.idMod === pageColor
     );
     if (newColorInfo && newColorInfo !== currentColor) {
-      setCurrentColor(newColorInfo.colorName);
       setProductInfo((prevInfo) => ({
         ...prevInfo,
         colorInfo: newColorInfo,
@@ -31,11 +30,18 @@ const ProductInfo = ({ product }) => {
     <div
       key={color.colorCode}
       className={`w-12 h-12 lg:w-8 lg:h-8 border hover:border-blue-400 hover:border-2 cursor-pointer  hover:scale-[110%] transition-all shadow-md duration-150 rounded-full ${
-        currentColor.localeCompare(color.colorName) === 0 &&
+        pageColor &&
+        pageColor === color.idMod &&
         "border-blue-500 border-[.15rem] "
       }`}
       style={{ backgroundColor: color.colorCode }}
-      onClick={() => setCurrentColor(color.colorName)}
+      onClick={() =>
+        nav(
+          `/p/${product.productName}/${product.sku}/${color && color.idMod}${
+            urlSize ? `/${urlSize}` : ""
+          }`
+        )
+      }
     ></div>
   ));
 
@@ -65,7 +71,7 @@ const ProductInfo = ({ product }) => {
         </div>
         <div className="flex flex-row gap-6 lg:gap-4">{colorBoxes}</div>
       </div>
-      <SizesDropdown product={product} />
+      <SizesDropdown product={product} urlSize={urlSize} />
       <AddToCart product={product} />
       <p className="w-[90%]">{product.description}</p>
     </div>

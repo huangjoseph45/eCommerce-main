@@ -103,7 +103,7 @@ const Filter = ({ sortingInfo, setSortingInfo }) => {
             <motion.div
               className={`${
                 showFilterButton
-                  ? "min-w-[25rem] right-0 z-50 p-4 h-[100vh] fixed top-0"
+                  ? "min-w-[20rem] right-0 z-50 p-4 h-[100vh] fixed top-0"
                   : " w-[12rem] left-0  h-fit"
               } bg-bgBase py-8 flex flex-col gap-6`}
               initial={showFilterButton ? { x: "100%" } : {}}

@@ -43,6 +43,7 @@ const Card = ({
         onMouseEnter={() => {
           setCardColor(index);
         }}
+        onClick={() => nav(`${stringURL}/${color.idMod}`)}
       ></div>
     );
   });

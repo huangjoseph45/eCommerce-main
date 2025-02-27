@@ -172,6 +172,15 @@ const CartSummary = ({ products, loading }) => {
           zeroText={"Free"}
           loading={loading}
         />
+        {discount && discount.amount > 0 && (
+          <CartSummaryHeader
+            mainText={"Discount"}
+            prefix="-$"
+            value={((subtotalCost * discount.amount) / 100).toFixed(2)}
+            zeroText={"0"}
+            loading={loading}
+          />
+        )}
 
         <hr />
         <CartSummaryHeader

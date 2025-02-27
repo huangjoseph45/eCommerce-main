@@ -25,7 +25,7 @@ const CartItemList = ({ cart, setCart, loading, products, error }) => {
   return (
     <ul className="w-fit flex flex-col items-center mx-auto ">
       <h1 className="text-2xl my-2 mt-4 flex items-center self-start">Bag</h1>
-      <ul className="flex flex-col gap-2">
+      <ul className="flex flex-col gap-2 h-fit">
         {loading && (!products || (products.length < 1 && <LoadingCart />))}
         {products &&
           products.map((product, index) => {

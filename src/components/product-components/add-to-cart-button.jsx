@@ -25,7 +25,6 @@ const AddToCart = ({ product }) => {
       const itemIndex = userInfo.cart.findIndex(
         (cartItem) => cartItem.sku === fullId
       );
-      console.log(cartInfo);
 
       const updatedCart =
         itemIndex === -1

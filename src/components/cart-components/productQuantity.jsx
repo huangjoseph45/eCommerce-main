@@ -1,11 +1,11 @@
-import { useContext, useState, useRef, useCallback } from "react";
+import { useContext, useState, useRef, useCallback, useEffect } from "react";
 import { ProductContext } from "../utilities/ContextManager";
 import useUpdateServerData from "../utilities/updateServerData";
 
 const ProductQuantity = ({ quantity, sku, deleteFunc }) => {
   const { userInfo, setUserInfo } = useContext(ProductContext);
   const [value, setValue] = useState(quantity);
-  const { refetch } = useUpdateServerData({
+  const { isLoading, refetch } = useUpdateServerData({
     dataToUpdate: null,
   });
   const inputRef = useRef(null);
@@ -61,14 +61,15 @@ const ProductQuantity = ({ quantity, sku, deleteFunc }) => {
   };
 
   const handleDelete = () => {
-    refetch({
-      cart: userInfo.cart.filter((item) => {
-        if (item.sku !== sku) console.log(item);
-        return item.sku !== sku;
-      }),
+    setUserInfo((prevUserInfo) => {
+      const updatedCart = prevUserInfo.cart.filter((item) => item.sku !== sku);
+
+      refetch({ cart: updatedCart });
+
+      return { ...prevUserInfo, cart: updatedCart };
     });
-    console.log(sku);
-    deleteFunc(sku);
+
+    deleteFunc(sku, isLoading);
   };
 
   return (

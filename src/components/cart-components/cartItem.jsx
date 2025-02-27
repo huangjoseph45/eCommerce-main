@@ -19,7 +19,7 @@ const CartItem = memo(
   }) => {
     const nav = useNavigate();
     const [isVisible, setIsVisible] = useState(true);
-    const deleteItem = () => {
+    const deleteItem = (sku, isLoading) => {
       setIsVisible(false);
     };
 
@@ -38,11 +38,13 @@ const CartItem = memo(
 
     return (
       isVisible && (
-        <li className="relative list-none lg:h-[11rem] flex w-fit sm:w-[25rem] lg:w-[30rem] ">
+        <li className="relative list-none h-fit flex w-fit sm:w-[25rem] lg:w-[30rem]">
           <div className="flex gap-2 justify-centers items-start">
             <div
               className={`flex flex-col  ${
-                sidebar ? "h-[7rem]" : "w-[10rem] h-full"
+                sidebar
+                  ? "h-[7rem]"
+                  : "w-[7rem] sm:w-[8rem] lg:w-[9rem] xl:w-[10rem] h-full"
               } aspect-square lg:aspect-[3/4]`}
             >
               {imageLink && (
@@ -63,15 +65,17 @@ const CartItem = memo(
               <div className="flex flex-row w-full justify-between relative">
                 <a
                   onClick={() => nav("/" + stringURL)}
-                  className="text-lg font-semibold cursor-pointer"
+                  className="text-base sm:text-lg font-semibold cursor-pointer"
                 >
                   {productName}
                 </a>
-                <div className="absolute right-0 flex flex-col items-end">
-                  {discount && (
+                <div className="right-0 flex flex-col items-end">
+                  {discount && discount > 0 ? (
                     <p className="text-gray-700 line-through">
                       ${price.toFixed(2)}
                     </p>
+                  ) : (
+                    ""
                   )}
                   <p className="text-textDark">
                     ${(price * (1 - discount / 100)).toFixed(2)}
@@ -86,8 +90,7 @@ const CartItem = memo(
                 <p className="lg:hidden">&#47;</p>
                 <p className="uppercase text-gray-600">{size}</p>
               </div>
-              <div className="h-full w-full flex items-end ">
-                {" "}
+              <div className="h-full w-full flex items-end">
                 <ProductQuantity
                   quantity={quantity}
                   sku={sku}

@@ -3,17 +3,25 @@ import { motion, AnimatePresence } from "framer-motion";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { ProductInfoContext } from "../utilities/ContextManager";
+import { useNavigate } from "react-router-dom";
 
-const SizesDropdown = ({ product, defaultSelector = "Select" }) => {
+const SizesDropdown = ({
+  product,
+  defaultSelector = "Select",
+  urlSize = null,
+}) => {
+  const nav = useNavigate();
   const [showElement, setShowElement] = useState(false);
-  const [selected, setSelected] = useState(defaultSelector);
-  const { productInfo, setProductInfo } = useContext(ProductInfoContext);
+  const [selected, setSelected] = useState(urlSize || defaultSelector);
+  const { productInfo } = useContext(ProductInfoContext);
 
   const showFunc = () => {
     setShowElement(!showElement);
   };
 
   const dropdownRef = useRef(null);
+
+  console.log(productInfo);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -28,6 +36,8 @@ const SizesDropdown = ({ product, defaultSelector = "Select" }) => {
       }
     };
 
+    setSelected(urlSize || defaultSelector);
+
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
 
@@ -35,15 +45,12 @@ const SizesDropdown = ({ product, defaultSelector = "Select" }) => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
-
+  }, [urlSize]);
   const selectSize = (size) => {
-    setSelected(size);
+    nav(
+      `/p/${product.productName}/${product.sku}/${productInfo.colorInfo.idMod}/${size}`
+    );
     setShowElement(false);
-    setProductInfo((prevInfo) => ({
-      ...prevInfo,
-      sizeInfo: size,
-    }));
   };
 
   const sizes = product.sizes.map((size) => {

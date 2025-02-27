@@ -101,7 +101,7 @@ function App() {
             <Route path="/order" element={<SuccessPage />} />
             <Route path="/search" element={<SearchResultsPage />} />
             <Route
-              path="/p/:productName/:productId"
+              path="/p/:productName/:productId/:color?/:size?"
               element={<ProductPage />}
             />
 

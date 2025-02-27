@@ -4,15 +4,19 @@ const CartSummaryHeader = ({
   value,
   zeroText,
   type = "$",
+  prefix = "$",
+  postfix,
   loading,
 }) => {
   return (
     <div className="flex justify-between">
       <p>{mainText}</p>
-      {type === "$" && value && value > 0 ? (
-        <p>${value}</p>
-      ) : type === "%" && value && value > 0 ? (
-        <p>{value}%</p>
+      {value && value > 0 ? (
+        <p>
+          {prefix && prefix}
+          {value}
+          {postfix && postfix}
+        </p>
       ) : loading ? (
         <div className="w-[5rem]">
           {" "}

@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { ProductInfoContext } from "../utilities/ContextManager";
 
-const ProductImage = ({ product }) => {
+const ProductImage = ({ product, pageColor = null }) => {
   const { productInfo } = useContext(ProductInfoContext);
   const [imgSrc, setImgSrc] = useState(null);
 
@@ -9,7 +9,7 @@ const ProductImage = ({ product }) => {
     if (product && productInfo) {
       try {
         const src = `https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
-          product.sku + "-" + productInfo.colorInfo?.idMod
+          product.sku + "-" + pageColor
         }`;
         setImgSrc(src);
       } catch (error) {
