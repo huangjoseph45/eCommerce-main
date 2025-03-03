@@ -109,7 +109,7 @@ const Sidebar = ({ sections, visible }) => {
                   </div>
                   {loggedIn ? (
                     <div
-                      className=" text-2xl text-bgExtraSecondaryLight cursor-pointer hover:text-bgExtraSecondaryLight/60"
+                      className="text-2xl text-bgExtraSecondaryLight cursor-pointer hover:text-bgExtraSecondaryLight/60"
                       onClick={() => nav("/profile")}
                     >
                       {userInfo.firstName
@@ -117,17 +117,17 @@ const Sidebar = ({ sections, visible }) => {
                         : ` Welcome, User`}
                     </div>
                   ) : (
-                    <div className="flex flex-col gap-2 pb-4">
+                    <div className="mt-10 flex flex-col gap-2 pb-4 w-[20rem]">
                       <p> Become a Member or Login Today</p>
                       <div className="flex flex-row gap-2">
                         <button
-                          className="w-fit rounded-full px-4 py-2 bg-bgSecondary text-textLight text-base"
+                          className="w-fit rounded-full px-4 py-2 bg-bgSecondary text-textLight text-base hover:bg-bgSecondary/95"
                           onClick={() => nav(`/login?q=sign-up`)}
                         >
                           Join Us
                         </button>
                         <button
-                          className="w-fit rounded-full px-4 py-2 bg-bgBase text-textDark outline outline-1 outline-gray-400 text-base"
+                          className="w-fit rounded-full px-4 py-2 bg-bgBase text-textDark outline outline-1 outline-gray-400 hover:bg-bgSecondary/5 text-base"
                           onClick={() => nav("/login")}
                         >
                           Sign In

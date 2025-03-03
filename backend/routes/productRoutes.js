@@ -15,8 +15,12 @@ router.post(
   verifyAdmin,
   createProduct
 );
-router.get("/fetch-product/:skuComplete", fetchProduct);
-router.get("/fetch/:query", fetchCategory);
+router.get(
+  "/fetch-product/:skuComplete/:test?",
+  express.json({ type: "application/json" }),
+  fetchProduct
+);
+router.post("/fetch", fetchCategory);
 router.get("/discount/:code", findPromo);
 router.post(
   "/discount/create",

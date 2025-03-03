@@ -4,52 +4,30 @@ const useFetchProducts = () => {
   const [isLoading, setLoading] = useState(false);
   const [products, setProducts] = useState();
 
-  const getProducts = async (tags, filter = null) => {
+  const getProducts = async (tags, filter = null, enableTest = false) => {
+    console.log(enableTest);
     try {
       setLoading(true);
       const response = await fetch(
-        `${import.meta.env.VITE_PATH}/products/fetch${
-          tags ? "/" + tags : "/*"
-        }`,
+        `${import.meta.env.VITE_PATH}/products/fetch`,
         {
-          method: "GET",
+          method: "POST",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({
+            test: enableTest,
+            tags: tags,
+            filter: {
+              prices: filter.prices,
+            },
+          }),
         }
       );
       const data = await response.json();
       let products = data.products;
       if (Array.isArray(products) && products.length > 0) {
-        if (filter && filter.prices) {
-          products = products.filter((product) => {
-            const productPrice =
-              product.price *
-              (1 -
-                (product.discount < 1
-                  ? product.discount
-                  : product.discount / 100));
-            return Object.keys(filter.prices).some((key) => {
-              const range = key.split("-");
-              if (range.length === 2) {
-                const min = parseInt(range[0], 10);
-                const max = parseInt(range[1], 10);
-
-                return (
-                  productPrice >= min &&
-                  productPrice <= max &&
-                  filter.prices[key]
-                );
-              }
-              if (key === "100+") {
-                console.log(filter.prices[key]);
-                return productPrice >= 100 && filter.prices[key];
-              }
-              return false;
-            });
-          });
-        }
         products = products.sort((a, b) => {
           const { newest, lowToHigh, highToLow } = filter?.sort || {};
 
@@ -68,8 +46,8 @@ const useFetchProducts = () => {
     }
   };
 
-  const refetchProducts = async (tag, filter = null) => {
-    getProducts(tag, filter);
+  const refetchProducts = async (tag, filter = null, enableTest) => {
+    getProducts(tag, filter, enableTest);
   };
 
   return [isLoading, products, refetchProducts];

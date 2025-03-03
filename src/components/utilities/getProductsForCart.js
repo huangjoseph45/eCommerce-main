@@ -5,13 +5,14 @@ import { useState } from "react";
 const useProductsForCart = () => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState(null);
+  const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
 
   const fetchProducts = async ({ cart }) => {
     try {
       setLoading(true);
 
       const productPromises = cart.map((cartItem) => {
-        return returnProduct(cartItem.sku);
+        return returnProduct(cartItem.sku, enableTest);
       });
 
       const fetchedProducts = await Promise.all(productPromises);

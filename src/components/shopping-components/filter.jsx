@@ -95,7 +95,7 @@ const Filter = ({ sortingInfo, setSortingInfo }) => {
                 transition={{
                   duration: 0.3, // Applies to initial and animate by default
                 }}
-                className="fixed h-[100vh] w-[100vw] min-w-[20rem] bg-bgBlack/35 top-0 right-0 z-50"
+                className="fixed h-[200vh] w-[100vw] min-w-[20rem] bg-bgBlack/35 left-0 top-0 z-50"
                 onClick={() => setShowFilters(false)}
               ></motion.div>
             )}
@@ -120,7 +120,6 @@ const Filter = ({ sortingInfo, setSortingInfo }) => {
                     className={`top-6 text-textDark cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 p-2 rounded-full transition-all duration-300 absolute right-4 flex aspect-square w-fit z-[100]`}
                     title={"Close"}
                     onClick={() => {
-                      console.log(showFilters);
                       setShowFilters(!showFilters);
                     }}
                   >

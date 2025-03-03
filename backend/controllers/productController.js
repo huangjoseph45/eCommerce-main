@@ -1,6 +1,7 @@
 const MONGO_URI = process.env.MONGO_URI;
 const { default: mongoose } = require("mongoose");
 const { Product, StripeProduct, Discount } = require("../models/Products");
+const { TestProduct, StripeTestProduct } = require("../models/TestProducts.js");
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 const createProduct = async (req, res) => {
@@ -14,7 +15,10 @@ const createProduct = async (req, res) => {
     sizes,
     description,
     tags,
+    test,
   } = req.body;
+
+  const useTestProducts = test || false;
 
   if (
     typeof productName !== "string" ||
@@ -34,11 +38,13 @@ const createProduct = async (req, res) => {
   sizes = sizes.map((size) => size.toUpperCase());
 
   try {
-    // Check if the product already exists
-    let existingProduct = await Product.findOne({ sku });
+    console.log(sku);
+    let existingProduct = await (useTestProducts
+      ? TestProduct
+      : Product
+    ).findOne({ sku });
 
     if (!existingProduct) {
-      // Create a new product in Stripe
       const stripeProduct = await stripe.products.create({
         name: productName,
         description: description,
@@ -52,7 +58,10 @@ const createProduct = async (req, res) => {
         currency: "usd",
       });
 
-      const newStripeProduct = await StripeProduct.findOneAndUpdate(
+      const newStripeProduct = await (useTestProducts
+        ? StripeTestProduct
+        : StripeProduct
+      ).findOneAndUpdate(
         { stripeProductId: stripeProduct.id },
         {
           stripeProductId: stripeProduct.id,
@@ -65,7 +74,10 @@ const createProduct = async (req, res) => {
       );
 
       // Store the product in the database
-      const newProduct = await Product.findOneAndUpdate(
+      const newProduct = await (useTestProducts
+        ? TestProduct
+        : Product
+      ).findOneAndUpdate(
         { sku },
         {
           productName,
@@ -94,14 +106,15 @@ const createProduct = async (req, res) => {
 };
 
 const fetchProduct = async (req, res) => {
-  let { skuComplete } = req.params;
+  let { skuComplete, test } = req.params;
+  const useTestProducts = test || false;
   if (!skuComplete) {
     return res.status(400).json({ message: "Missing SKU" });
   }
   try {
     const sku = skuComplete.split("-")[0] + "-" + skuComplete.split("-")[1];
 
-    let product = await Product.findOne({
+    let product = await (useTestProducts ? TestProduct : Product).findOne({
       sku: { $regex: `^${sku}$`, $options: "i" },
     });
 
@@ -115,27 +128,76 @@ const fetchProduct = async (req, res) => {
 };
 
 const fetchCategory = async (req, res) => {
-  const { query } = req.params;
+  const { tags, filter, num, test } = req.body;
+  const useTestProducts = test || false;
 
-  const categories = query.split("-");
+  let numItems = num || 20;
+
+  const pricesFilter =
+    filter && filter.prices
+      ? Object.keys(filter.prices)
+          .map((key) => {
+            const value = filter.prices[key];
+            if (!value) return null;
+
+            if (key === "100+") {
+              return { finalPrice: { $gte: 100 } };
+            }
+
+            const [min, max] = key.split("-").map(Number);
+            if (isNaN(min) || isNaN(max)) {
+              return null;
+            }
+
+            return { finalPrice: { $gte: min, $lt: max } };
+          })
+          .filter(Boolean)
+      : [{ price: { $gte: 0 } }];
+
+  const filterQuery = {
+    $or:
+      pricesFilter.length > 0 ? pricesFilter : { finalPrice: { $gte: 99999 } },
+  };
 
   try {
-    const products =
-      categories[0] === "*"
-        ? await Product.find()
-        : await Product.find({
-            $or: [
-              { tags: { $regex: categories.join("|"), $options: "i" } },
-              { productName: { $regex: query, $options: "i" } },
-              { description: { $regex: query, $options: "i" } },
-            ],
-          });
+    const joinedTags = tags.join("|");
+
+    const products = tags.includes("*")
+      ? await (useTestProducts ? TestProduct : Product)
+          .find({ $and: [{ $or: pricesFilter }] })
+          .limit(numItems)
+      : await (useTestProducts ? TestProduct : Product).aggregate([
+          {
+            $addFields: {
+              finalPrice: {
+                $multiply: [
+                  "$price",
+                  { $subtract: [1, { $divide: ["$discount", 100] }] },
+                ],
+              },
+            },
+          },
+          {
+            $match: {
+              $and: [
+                {
+                  $or: [
+                    { tags: { $regex: joinedTags, $options: "i" } },
+                    { productName: { $regex: joinedTags, $options: "i" } },
+                    { description: { $regex: joinedTags, $options: "i" } },
+                  ],
+                },
+                filterQuery,
+              ],
+            },
+          },
+          { $limit: numItems },
+        ]);
+
     return res.status(200).json({ products });
   } catch (error) {
     console.error("Error fetching product: " + error);
-    return res
-      .status(500)
-      .json({ message: "could not fetch product with id " + query });
+    return res.status(500).json({ message: "Unable to fetch products" });
   }
 };
 

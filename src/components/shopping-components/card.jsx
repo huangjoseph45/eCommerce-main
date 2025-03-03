@@ -34,17 +34,20 @@ const Card = ({
 
   const colorBoxes = colors.map((color, index) => {
     return (
-      <div
-        key={color.colorCode}
-        className={`w-12 h-12 lg:w-8 lg:h-8 outline outline-1 outline-bgSecondary hover:outline-blue-400 cursor-pointer  hover:scale-[110%] transition-all shadow-md duration-150 rounded-full ${
-          cardColor === index && "outline-blue-500 outline-[.15rem] "
-        }`}
-        style={{ backgroundColor: color.colorCode }}
-        onMouseEnter={() => {
-          setCardColor(index);
-        }}
-        onClick={() => nav(`${stringURL}/${color.idMod}`)}
-      ></div>
+      <>
+        <div
+          key={color.colorCode}
+          className={`w-6 h-6 lg:w-8 lg:h-8 outline outline-1 outline-bgSecondary hover:outline-blue-400 cursor-pointer  hover:scale-[110%] transition-all shadow-md duration-150 rounded-full ${
+            cardColor === index &&
+            "outline-blue-500 outline-[.15rem] flex-shrink-0"
+          }`}
+          style={{ backgroundColor: color.colorCode }}
+          onMouseEnter={() => {
+            setCardColor(index);
+          }}
+          onClick={() => nav(`${stringURL}/${color.idMod}`)}
+        ></div>
+      </>
     );
   });
 
@@ -86,7 +89,7 @@ const Card = ({
         <AnimatePresence>
           {isHovering && (
             <motion.div
-              className="absolute  w-full p-[.375rem] bg-bgBase/85 bg-blur-lg z-auto flex flex-row justify-between py-2 px-4"
+              className="absolute  w-full p-[.375rem] bg-bgBase/85 bg-blur-lg z-auto flex flex-row justify-between "
               initial={{ translateY: 0 }}
               animate={{ translateY: "-100%" }}
               exit={{ translateY: 0 }}
@@ -95,7 +98,9 @@ const Card = ({
                 ease: cubicBezier(0.17, 0.54, 0.48, 0.94),
               }}
             >
-              <ul className="flex flex-row gap-2">{colorBoxes}</ul>
+              <ul className="flex flex-row gap-2 w-full overflow-auto py-2 px-4">
+                {colorBoxes}
+              </ul>
             </motion.div>
           )}
         </AnimatePresence>
@@ -103,13 +108,13 @@ const Card = ({
         {isShowingArrows && (
           <>
             <span
-              className="absolute inset-y-1/2 left-2  w-4 h-4 p-4 rounded-full flex items-center justify-center hover:bg-bgBlack/10 shadow-md  transition-colors duration-[0.4s] filter: bg-blur-sm"
+              className="absolute inset-y-1/2 left-2  w-4 h-4 p-4 rounded-full flex items-center justify-center hover:bg-bgBlack/5 shadow-md  transition-colors duration-[0.4s] filter: bg-blur-sm"
               onClick={() => modifyCardColor(-1)}
             >
               <FontAwesomeIcon icon={faChevronLeft} />
             </span>
             <span
-              className="absolute inset-y-1/2 right-2  w-4 h-4 p-4 rounded-full flex items-center justify-center hover:bg-bgBlack/10 shadow-md transition-colors duration-[0.4s] filter: bg-blur-sm"
+              className="absolute inset-y-1/2 right-2  w-4 h-4 p-4 rounded-full flex items-center justify-center hover:bg-bgBlack/5 shadow-md transition-colors duration-[0.4s] filter: bg-blur-sm"
               onClick={() => modifyCardColor(1)}
             >
               <FontAwesomeIcon icon={faChevronRight} />

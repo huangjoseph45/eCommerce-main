@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Filter from "../components/shopping-components/filter";
 
 function SearchResultsPage() {
+  const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
   const [searchParams] = useSearchParams();
   const nav = useNavigate();
   const [isLoading, products, refetchProducts] = useFetchProducts();
@@ -25,7 +26,7 @@ function SearchResultsPage() {
 
   useEffect(() => {
     if (searchQuery) {
-      refetchProducts(searchQuery, sortingInfo);
+      refetchProducts(searchQuery, sortingInfo, enableTest);
       displayQuery.current = searchQuery
         .split(" ")
         .map((word) => {

@@ -35,9 +35,11 @@ const CardGrid = ({ loadingBuffer, isLoading, products }) => {
             ))}
           </>
         ) : (
-          <p className="mx-auto items-center flex justify-center text-4xl mt-4 absolute w-full">
-            We could not find anything
-          </p>
+          <div className="w-full h-[10rem]">
+            <p className="mx-auto items-center flex justify-center text-4xl mt-4 absolute w-full">
+              We could not find anything
+            </p>
+          </div>
         )}
         {isLoading && products && (
           <p className="text-sm lg:text-base absolute right-0 top-full p-2 whitespace-nowrap">

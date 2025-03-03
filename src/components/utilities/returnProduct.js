@@ -1,15 +1,17 @@
 import isEmpty from "./isEmpty";
 
-const returnProduct = async (sku) => {
+const returnProduct = async (sku, enableTest = false) => {
   if (isEmpty(sku)) {
     console.error("Invalid SKU");
     return;
   }
 
+  if (typeof enableTest !== "boolean") return;
+
   const [prefix, skuNum, color, size] = sku.split("-");
   const fetchURL = `${import.meta.env.VITE_PATH}/products/fetch-product/${
     prefix + "-" + skuNum
-  }`;
+  }/${enableTest}`;
   try {
     const response = await fetch(fetchURL, {
       method: "GET",
@@ -56,13 +58,15 @@ const returnProduct = async (sku) => {
   }
 };
 
-const returnBaseProduct = async (sku) => {
+const returnBaseProduct = async (sku, enableTest = false) => {
   if (isEmpty(sku)) {
     console.error("Invalid SKU");
     return;
   }
 
-  const fetchURL = `${import.meta.env.VITE_PATH}/products/fetch-product/${sku}`;
+  const fetchURL = `${
+    import.meta.env.VITE_PATH
+  }/products/fetch-product/${sku}/${enableTest}`;
   try {
     console.log(fetchURL);
     const response = await fetch(fetchURL, {

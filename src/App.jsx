@@ -3,7 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { ProductContext } from "./components/utilities/ContextManager";
-import useCreateProduct from "./components/utilities/useCreateProduct";
+import useCreateProduct, {
+  useCreateTestProducts,
+} from "./components/utilities/useCreateProduct";
 import useFetchProducts from "./components/utilities/useFetchMultipleProducts";
 import { useCreateSections } from "./components/utilities/useSectionFunctions";
 
@@ -40,7 +42,7 @@ function App() {
   const [isCreateSectionsLoading, tryCreateSection] = useCreateSections();
   const { loadingProductsCreation, errorMessage, newProduct, createProduct } =
     useCreateProduct();
-  const [isLoading, products, refetchProducts] = useFetchProducts();
+  const { createTestProducts } = useCreateTestProducts();
   const [userInfo, setUserInfo] = useState({});
 
   const productLinks = useRef();
@@ -78,15 +80,10 @@ function App() {
   //   }
   // }, [products]);
 
-  useEffect(() => {
-    console.log(sections);
-    createProduct(product);
-  }, [sections]);
-
   return (
     <>
       <ProductContext.Provider
-        value={{ products, userInfo, setUserInfo, sections, setSections }}
+        value={{ userInfo, setUserInfo, sections, setSections }}
       >
         <BrowserRouter>
           <Routes>

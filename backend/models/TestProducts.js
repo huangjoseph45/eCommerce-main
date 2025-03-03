@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
-const testColorSchema = new mongoose.Schema(
+// Define the Color Subschema
+const colorSchema = new mongoose.Schema(
   {
     colorName: {
       type: String,
@@ -19,28 +20,9 @@ const testColorSchema = new mongoose.Schema(
     },
   },
   { _id: false }
-);
+); // Prevent creation of separate _id for subdocuments
 
-const discountSchema = new mongoose.Schema({
-  code: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    uppercase: true,
-  },
-  value: {
-    type: Number,
-    required: true,
-  },
-  validProducts: {
-    type: [String],
-    set: (tags) => tags.map((tag) => tag.trim().toLowerCase()), // Ensure tags are both trimmed and lowercase
-    default: [],
-  },
-});
-
-const stripeProductSchema = new mongoose.Schema({
+const stripeTestProductSchema = new mongoose.Schema({
   stripeProductId: { type: String, required: true, unique: true }, // Stripe product ID
   name: { type: String, required: true },
   description: { type: String },
@@ -54,7 +36,7 @@ const stripeProductSchema = new mongoose.Schema({
 });
 
 // Define the Product Schema
-const productSchema = new mongoose.Schema(
+const testProductSchema = new mongoose.Schema(
   {
     productName: {
       type: String,
@@ -105,7 +87,7 @@ const productSchema = new mongoose.Schema(
       max: [100, "Discount cannot exceed 100%"],
     },
     colors: {
-      type: [testColorSchema],
+      type: [colorSchema],
       validate: [arrayLimit, "A product must have at least one color"],
     },
     sizes: {
@@ -146,12 +128,14 @@ function arrayLimit(val) {
 }
 
 // Create Indexes
-productSchema.index({ productName: "text", description: "text" }); // For text search
+testProductSchema.index({ productName: "text", description: "text" }); // For text search
 
 // Export the Product Model
 
-const Product = mongoose.model("Product", productSchema);
-const StripeProduct = mongoose.model("StripeProduct", stripeProductSchema);
-const Discount = mongoose.model("Discount", discountSchema);
+const TestProduct = mongoose.model("TestProduct", testProductSchema);
+const StripeTestProduct = mongoose.model(
+  "StripeTestProduct",
+  stripeTestProductSchema
+);
 
-module.exports = { Product, StripeProduct, Discount };
+module.exports = { TestProduct, StripeTestProduct };

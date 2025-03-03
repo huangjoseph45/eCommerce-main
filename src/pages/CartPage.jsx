@@ -7,7 +7,6 @@ import {
 } from "../components/utilities/ContextManager";
 import CartItemList from "../components/cart-components/cartItemsList";
 import CartSummary from "../components/cart-components/cartSummary";
-import returnProduct from "../components/utilities/returnProduct";
 import useProductsForCart from "../components/utilities/getProductsForCart";
 
 const CartPage = () => {

@@ -10,19 +10,21 @@ function Shopping({ categoryName, categoryId, searchQuery }) {
   const [displayName, setDisplayName] = useState("");
   const [sortingInfo, setSortingInfo] = useState({});
   const [loadingBuffer, setLoadingBuffer] = useState(true);
+  const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
+  console.log(enableTest);
 
   useEffect(() => {
     const bufferId = setTimeout(() => {
       setLoadingBuffer(false);
-    }, 125);
+    }, 200);
 
     return () => clearTimeout(bufferId);
   });
 
   useEffect(() => {
-    console.log(sortingInfo);
-    const fetchQuery = searchQuery || "new";
-    refetchProducts(fetchQuery[0], sortingInfo);
+    const fetchQuery = searchQuery || ["new"];
+    setLoadingBuffer(true);
+    refetchProducts(fetchQuery, sortingInfo, enableTest);
 
     if (categoryName) {
       setDisplayName(categoryName);
