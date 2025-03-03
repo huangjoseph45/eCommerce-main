@@ -6,6 +6,7 @@ import useFetchProducts from "../components/utilities/useFetchMultipleProducts";
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Filter from "../components/shopping-components/filter";
+import IntersectionObject from "../components/shopping-components/intersectionObject";
 
 function SearchResultsPage() {
   const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
@@ -15,6 +16,16 @@ function SearchResultsPage() {
   const [searchQuery, setSearchQuery] = useState();
   const displayQuery = useRef();
   const [sortingInfo, setSortingInfo] = useState({});
+  const [cursor, setCursor] = useState(0);
+  const [loadingBuffer, setLoadingBuffer] = useState(true);
+
+  useEffect(() => {
+    const bufferId = setTimeout(() => {
+      setLoadingBuffer(false);
+    }, 200);
+
+    return () => clearTimeout(bufferId);
+  });
 
   useEffect(() => {
     if (searchParams.size < 1) {
@@ -26,7 +37,7 @@ function SearchResultsPage() {
 
   useEffect(() => {
     if (searchQuery) {
-      refetchProducts(searchQuery, sortingInfo, enableTest);
+      refetchProducts([searchQuery], sortingInfo, enableTest, cursor);
       displayQuery.current = searchQuery
         .split(" ")
         .map((word) => {
@@ -34,7 +45,7 @@ function SearchResultsPage() {
         })
         .join(" ");
     }
-  }, [searchQuery, sortingInfo]);
+  }, [searchQuery, sortingInfo, cursor]);
 
   return (
     <>
@@ -69,6 +80,13 @@ function SearchResultsPage() {
           </div>
         </>
       </div>
+      <IntersectionObject
+        products={products}
+        isLoading={isLoading}
+        loadingBuffer={loadingBuffer}
+        setCursor={setCursor}
+        sortingInfo={sortingInfo}
+      />
       <Footer></Footer>
     </>
   );

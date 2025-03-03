@@ -160,7 +160,7 @@ const Filter = ({ sortingInfo, setSortingInfo }) => {
                       filterFunc={filterFunc}
                       type="single"
                       group="sort"
-                      filterId={"lowToHigh"}
+                      filterId={"highToLow"}
                       filter={filter}
                     />
                     <FilterItem
@@ -168,7 +168,7 @@ const Filter = ({ sortingInfo, setSortingInfo }) => {
                       filterFunc={filterFunc}
                       type="single"
                       group="sort"
-                      filterId={"highToLow"}
+                      filterId={"lowToHigh"}
                       filter={filter}
                     />
                   </li>

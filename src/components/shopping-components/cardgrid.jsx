@@ -1,5 +1,5 @@
 import Card from "./card";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CardPlaceHolder from "./cardPlaceholder";
 
 const CardGrid = ({ loadingBuffer, isLoading, products }) => {
@@ -9,10 +9,11 @@ const CardGrid = ({ loadingBuffer, isLoading, products }) => {
   // Get index for products returned from db
   // when at end of current products list, get more products starting from index
   // need these new parameters: index, numProductsToGet, isEnd
+  console.log(products);
   return (
     <>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full px-8 relative">
-        {!isLoading && products && products.length > 0 && !loadingBuffer ? (
+        {products && products.length > 0 && products[0].sku ? (
           products.map((product, index) => {
             return (
               <Card
@@ -22,28 +23,31 @@ const CardGrid = ({ loadingBuffer, isLoading, products }) => {
                 name={product.productName}
                 price={product.price}
                 type={product.type}
-                numPatterns={product.colors.length}
+                numPatterns={product.colors && product.colors.length}
                 discount={product.discount}
                 product={product}
               />
             );
           })
-        ) : isLoading || loadingBuffer ? (
+        ) : (!products || products.length < 1) &&
+          (isLoading || loadingBuffer) ? (
           <>
             {[...Array(8)].map((_, index) => (
               <CardPlaceHolder key={index} />
             ))}
           </>
         ) : (
-          <div className="w-full h-[10rem]">
-            <p className="mx-auto items-center flex justify-center text-4xl mt-4 absolute w-full">
-              We could not find anything
-            </p>
-          </div>
+          (!products || products.length < 1 || !products[0].sku) && (
+            <div className="w-full h-[10rem]">
+              <p className="mx-auto items-center flex justify-center text-4xl mt-4 absolute w-full">
+                We could not find anything
+              </p>
+            </div>
+          )
         )}
-        {isLoading && products && (
+        {!isLoading && products && (
           <p className="text-sm lg:text-base absolute right-0 top-full p-2 whitespace-nowrap">
-            Showing {showNum} out of {products.length}
+            {/* Showing {showNum} out of {products.length} */}
           </p>
         )}
       </div>

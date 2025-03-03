@@ -38,7 +38,6 @@ const createProduct = async (req, res) => {
   sizes = sizes.map((size) => size.toUpperCase());
 
   try {
-    console.log(sku);
     let existingProduct = await (useTestProducts
       ? TestProduct
       : Product
@@ -128,10 +127,11 @@ const fetchProduct = async (req, res) => {
 };
 
 const fetchCategory = async (req, res) => {
-  const { tags, filter, num, test } = req.body;
+  const { tags, filter, cursor, test } = req.body;
   const useTestProducts = test || false;
+  const cursorIncrement = parseInt(process.env.VITE_CURSOR_INCREMENT);
 
-  let numItems = num || 20;
+  let numItems = cursor + cursorIncrement || cursorIncrement;
 
   const pricesFilter =
     filter && filter.prices
@@ -153,6 +153,20 @@ const fetchCategory = async (req, res) => {
           })
           .filter(Boolean)
       : [{ price: { $gte: 0 } }];
+  const sortQuery = {
+    $sort: (() => {
+      if (!filter || !filter.sort) {
+        return { _id: 1 };
+      } else if (filter.sort.newest) {
+        return { createdAt: -1 };
+      } else if (filter.sort.lowToHigh) {
+        return { price: 1 };
+      } else if (filter.sort.highToLow) {
+        return { price: -1 };
+      }
+      return { _id: 1 }; // Default case
+    })(),
+  };
 
   const filterQuery = {
     $or:
@@ -160,39 +174,36 @@ const fetchCategory = async (req, res) => {
   };
 
   try {
-    const joinedTags = tags.join("|");
+    const joinedTags = tags.includes("*") ? tags.join("|") : "";
 
-    const products = tags.includes("*")
-      ? await (useTestProducts ? TestProduct : Product)
-          .find({ $and: [{ $or: pricesFilter }] })
-          .limit(numItems)
-      : await (useTestProducts ? TestProduct : Product).aggregate([
-          {
-            $addFields: {
-              finalPrice: {
-                $multiply: [
-                  "$price",
-                  { $subtract: [1, { $divide: ["$discount", 100] }] },
-                ],
-              },
-            },
+    const products = await (useTestProducts ? TestProduct : Product).aggregate([
+      {
+        $addFields: {
+          finalPrice: {
+            $multiply: [
+              "$price",
+              { $subtract: [1, { $divide: ["$discount", 100] }] },
+            ],
           },
-          {
-            $match: {
-              $and: [
-                {
-                  $or: [
-                    { tags: { $regex: joinedTags, $options: "i" } },
-                    { productName: { $regex: joinedTags, $options: "i" } },
-                    { description: { $regex: joinedTags, $options: "i" } },
-                  ],
-                },
-                filterQuery,
+        },
+      },
+      {
+        $match: {
+          $and: [
+            {
+              $or: [
+                { tags: { $regex: joinedTags, $options: "i" } },
+                { productName: { $regex: joinedTags, $options: "i" } },
+                { description: { $regex: joinedTags, $options: "i" } },
               ],
             },
-          },
-          { $limit: numItems },
-        ]);
+            filterQuery,
+          ],
+        },
+      },
+      sortQuery,
+      { $limit: numItems },
+    ]);
 
     return res.status(200).json({ products });
   } catch (error) {

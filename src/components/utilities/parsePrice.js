@@ -1,5 +1,7 @@
 export default function parsePrice(price, discount) {
-  let initialPrice = parseFloat(price % 1 !== 0 ? price.toFixed(2) : price);
+  let initialPrice = price
+    ? parseFloat(price % 1 !== 0 ? price.toFixed(2) : price)
+    : 0;
   initialPrice =
     initialPrice % 1 === 0 ? initialPrice : initialPrice.toFixed(2);
   let finalPrice = price;

@@ -4,8 +4,12 @@ const useFetchProducts = () => {
   const [isLoading, setLoading] = useState(false);
   const [products, setProducts] = useState();
 
-  const getProducts = async (tags, filter = null, enableTest = false) => {
-    console.log(enableTest);
+  const getProducts = async (
+    tags,
+    filter = null,
+    enableTest = false,
+    cursor = 0
+  ) => {
     try {
       setLoading(true);
       const response = await fetch(
@@ -19,7 +23,9 @@ const useFetchProducts = () => {
           body: JSON.stringify({
             test: enableTest,
             tags: tags,
+            cursor: cursor,
             filter: {
+              sort: filter.sort,
               prices: filter.prices,
             },
           }),
@@ -27,17 +33,17 @@ const useFetchProducts = () => {
       );
       const data = await response.json();
       let products = data.products;
-      if (Array.isArray(products) && products.length > 0) {
-        products = products.sort((a, b) => {
-          const { newest, lowToHigh, highToLow } = filter?.sort || {};
+      // if (Array.isArray(products) && products.length > 0) {
+      //   products = products.sort((a, b) => {
+      //     const { newest, lowToHigh, highToLow } = filter?.sort || {};
 
-          if (newest) return sortProducts(a, b, "newest");
-          if (lowToHigh) return sortProducts(a, b, "lowToHigh");
-          if (highToLow) return sortProducts(a, b, "highToLow");
+      //     if (newest) return sortProducts(a, b, "newest");
+      //     if (lowToHigh) return sortProducts(a, b, "lowToHigh");
+      //     if (highToLow) return sortProducts(a, b, "highToLow");
 
-          return sortProducts(a, b, "newest");
-        });
-      }
+      //     return sortProducts(a, b, "newest");
+      //   });
+      // }
       setProducts(products);
       setLoading(false);
     } catch (e) {
@@ -46,8 +52,8 @@ const useFetchProducts = () => {
     }
   };
 
-  const refetchProducts = async (tag, filter = null, enableTest) => {
-    getProducts(tag, filter, enableTest);
+  const refetchProducts = async (tag, filter = null, enableTest, cursor) => {
+    getProducts(tag, filter, enableTest, cursor);
   };
 
   return [isLoading, products, refetchProducts];
