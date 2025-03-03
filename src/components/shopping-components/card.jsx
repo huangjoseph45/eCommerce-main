@@ -82,9 +82,7 @@ const Card = ({
           {colors && (
             <img
               src={`https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
-                sku + "-" + colors &&
-                colors.length > 0 &&
-                colors[cardColor].idMod
+                sku + "-" + colors[cardColor].idMod
               }`}
               alt={name}
               onClick={() => nav(stringURL)}

@@ -156,7 +156,7 @@ const fetchCategory = async (req, res) => {
   const sortQuery = {
     $sort: (() => {
       if (!filter || !filter.sort) {
-        return { _id: 1 };
+        return { createdAt: -1 };
       } else if (filter.sort.newest) {
         return { createdAt: -1 };
       } else if (filter.sort.lowToHigh) {
@@ -164,7 +164,7 @@ const fetchCategory = async (req, res) => {
       } else if (filter.sort.highToLow) {
         return { price: -1 };
       }
-      return { _id: 1 }; // Default case
+      return { createdAt: -1 }; // Default case
     })(),
   };
 

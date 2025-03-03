@@ -31,13 +31,17 @@ const IntersectionObject = ({
           );
           obs.unobserve(entry.target);
         } else if (oldProducts.current === products) {
-          counter.current = counter.current + 1;
+          setTimeout(() => {
+            counter.current = counter.current + 1;
+          }, 100);
+
           console.log(counter.current);
-          if (counter.current >= 3) {
+          if (counter.current >= 10) {
             setIsAtEnd(true);
           }
         } else {
           intersectingState.current = false;
+          setIsAtEnd(false);
         }
       });
     };
