@@ -8,6 +8,7 @@ const IntersectionObject = ({
   sortingInfo,
   cursor,
   fetchQuery,
+  filter,
 }) => {
   const cursorIncrement = parseInt(import.meta.env.VITE_CURSOR_INCREMENT);
   const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
@@ -21,7 +22,7 @@ const IntersectionObject = ({
     if (!observerRef.current) return;
 
     const observerOptions = {
-      threshold: 1,
+      threshold: 0.7,
     };
 
     const observerCallback = (entries, obs) => {
@@ -88,7 +89,10 @@ const IntersectionObject = ({
     products &&
     products.length > 0 &&
     products[0].sku ? (
-    <div className="w-full h-[5rem]" ref={observerRef}></div>
+    <div
+      className="absolute bg-red-500 w-full h-[5rem] translate-y-[10rem] "
+      ref={observerRef}
+    ></div>
   ) : (
     !isAtEnd && products && products.length > 0 && products[0].sku && (
       <p className="loader mx-auto my-16"></p>

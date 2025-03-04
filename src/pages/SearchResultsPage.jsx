@@ -17,15 +17,7 @@ function SearchResultsPage() {
   const displayQuery = useRef();
   const [sortingInfo, setSortingInfo] = useState({});
   const [cursor, setCursor] = useState(0);
-  const [loadingBuffer, setLoadingBuffer] = useState(true);
-
-  useEffect(() => {
-    const bufferId = setTimeout(() => {
-      setLoadingBuffer(false);
-    }, 200);
-
-    return () => clearTimeout(bufferId);
-  });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (searchParams.size < 1) {
@@ -36,8 +28,18 @@ function SearchResultsPage() {
   }, [searchParams]);
 
   useEffect(() => {
+    refetchProducts(fetchQuery.current, sortingInfo, enableTest, cursor);
+  }, [cursor]);
+
+  useEffect(() => {
+    if (!isLoading) setLoading(false);
+  }, [isLoading]);
+
+  useEffect(() => {
     if (searchQuery) {
       refetchProducts([searchQuery], sortingInfo, enableTest, cursor);
+      setLoading(true);
+
       displayQuery.current = searchQuery
         .split(" ")
         .map((word) => {
@@ -45,7 +47,7 @@ function SearchResultsPage() {
         })
         .join(" ");
     }
-  }, [searchQuery, sortingInfo, cursor]);
+  }, [searchQuery, sortingInfo]);
 
   return (
     <>

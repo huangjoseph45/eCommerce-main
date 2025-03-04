@@ -12,7 +12,13 @@ const CardGrid = ({ isLoading, products }) => {
   return (
     <>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full px-8 relative">
-        {products && products.length > 0 && products[0].sku ? (
+        {isLoading ? (
+          <>
+            {[...Array(products?.length || 8)].map((_, index) => (
+              <CardPlaceHolder key={index} />
+            ))}
+          </>
+        ) : products && products.length > 0 && products[0].sku ? (
           products.map((product, index) => {
             return (
               <Card
@@ -28,12 +34,6 @@ const CardGrid = ({ isLoading, products }) => {
               />
             );
           })
-        ) : (!products || products.length < 1) && isLoading ? (
-          <>
-            {[...Array(8)].map((_, index) => (
-              <CardPlaceHolder key={index} />
-            ))}
-          </>
         ) : (
           (!products || products.length < 1 || !products[0].sku) && (
             <div className="w-full h-[10rem]">

@@ -11,6 +11,7 @@ function Shopping({ categoryName, categoryId, searchQuery }) {
   const [displayName, setDisplayName] = useState("");
   const [sortingInfo, setSortingInfo] = useState({});
   const [cursor, setCursor] = useState(0);
+  const [loading, setLoading] = useState(false);
   const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
   const fetchQuery = useRef();
 
@@ -20,23 +21,24 @@ function Shopping({ categoryName, categoryId, searchQuery }) {
   }, [sortingInfo]);
 
   useEffect(() => {
-    const bufferId = setTimeout(() => {
-      setLoadingBuffer(false);
-    }, 200);
-
-    return () => clearTimeout(bufferId);
-  });
+    refetchProducts(fetchQuery.current, sortingInfo, enableTest, cursor);
+  }, [cursor]);
 
   useEffect(() => {
     fetchQuery.current = searchQuery || ["new"];
     refetchProducts(fetchQuery.current, sortingInfo, enableTest, cursor);
+    setLoading(true);
 
     if (categoryName) {
       setDisplayName(categoryName);
     } else {
       setDisplayName("New Arrivals");
     }
-  }, [categoryName, categoryId, JSON.stringify(sortingInfo), cursor]);
+  }, [categoryName, categoryId, JSON.stringify(sortingInfo)]);
+
+  useEffect(() => {
+    if (!isLoading) setLoading(false);
+  }, [isLoading]);
 
   return (
     <>
@@ -50,7 +52,7 @@ function Shopping({ categoryName, categoryId, searchQuery }) {
             <Filter sortingInfo={sortingInfo} setSortingInfo={setSortingInfo} />
           </div>
           <div className="flex flex-col w-full">
-            <CardGrid isLoading={isLoading} products={products} />
+            <CardGrid isLoading={loading} products={products} />
           </div>
         </div>
       </div>{" "}
