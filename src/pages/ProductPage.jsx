@@ -52,7 +52,7 @@ const ProductPage = () => {
             <ProductInfoContext.Provider
               value={{ productInfo, setProductInfo }}
             >
-              <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-0  md:w-full xl:w-4/5 m-auto">
+              <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-0  md:w-full xl:w-4/5 m-auto h-fit min-h-[40rem]">
                 <ProductImage
                   product={product}
                   pageColor={color}

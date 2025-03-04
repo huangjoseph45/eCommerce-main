@@ -56,7 +56,8 @@ function SearchResultsPage() {
             {" "}
             <p className="text-base">Search results for </p>
             <p className="text-3xl">
-              {displayQuery.current}&nbsp;({(products && products.length) || 0})
+              {displayQuery.current}&nbsp;
+              {/* ({(products && products.length) || 0}) */}
             </p>
           </div>
           <div className="flex lg:flex-row flex-col">
@@ -66,7 +67,7 @@ function SearchResultsPage() {
                 setSortingInfo={setSortingInfo}
               />
             </div>
-            {products && products.length > 0 ? (
+            {isLoading || (products && products.length) > 0 ? (
               <CardGrid isLoading={isLoading} products={products} />
             ) : (
               <div className="flex justify-center w-full">
@@ -82,10 +83,11 @@ function SearchResultsPage() {
       </div>
       <IntersectionObject
         products={products}
-        isLoading={isLoading}
-        loadingBuffer={loadingBuffer}
+        loading={isLoading}
         setCursor={setCursor}
         sortingInfo={sortingInfo}
+        cursor={cursor}
+        fetchQuery={[searchQuery]}
       />
       <Footer></Footer>
     </>

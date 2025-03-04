@@ -10,9 +10,9 @@ function Shopping({ categoryName, categoryId, searchQuery }) {
   const [isLoading, products, refetchProducts] = useFetchProducts();
   const [displayName, setDisplayName] = useState("");
   const [sortingInfo, setSortingInfo] = useState({});
-  const [loadingBuffer, setLoadingBuffer] = useState(true);
   const [cursor, setCursor] = useState(0);
   const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
+  const fetchQuery = useRef();
 
   useEffect(() => {
     setCursor(0);
@@ -28,9 +28,8 @@ function Shopping({ categoryName, categoryId, searchQuery }) {
   });
 
   useEffect(() => {
-    const fetchQuery = searchQuery || ["new"];
-    setLoadingBuffer(true);
-    refetchProducts(fetchQuery, sortingInfo, enableTest, cursor);
+    fetchQuery.current = searchQuery || ["new"];
+    refetchProducts(fetchQuery.current, sortingInfo, enableTest, cursor);
 
     if (categoryName) {
       setDisplayName(categoryName);
@@ -51,20 +50,17 @@ function Shopping({ categoryName, categoryId, searchQuery }) {
             <Filter sortingInfo={sortingInfo} setSortingInfo={setSortingInfo} />
           </div>
           <div className="flex flex-col w-full">
-            <CardGrid
-              loadingBuffer={loadingBuffer}
-              isLoading={isLoading}
-              products={products}
-            />
+            <CardGrid isLoading={isLoading} products={products} />
           </div>
         </div>
       </div>{" "}
       <IntersectionObject
         products={products}
-        isLoading={isLoading}
-        loadingBuffer={loadingBuffer}
+        loading={isLoading}
         setCursor={setCursor}
         sortingInfo={sortingInfo}
+        cursor={cursor}
+        fetchQuery={fetchQuery.current}
       />
       <Footer></Footer>
     </>

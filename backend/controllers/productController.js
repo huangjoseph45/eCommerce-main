@@ -174,8 +174,7 @@ const fetchCategory = async (req, res) => {
   };
 
   try {
-    const joinedTags = tags.includes("*") ? tags.join("|") : "";
-
+    const joinedTags = tags && !tags.includes("*") ? tags.join("|") : "";
     const products = await (useTestProducts ? TestProduct : Product).aggregate([
       {
         $addFields: {

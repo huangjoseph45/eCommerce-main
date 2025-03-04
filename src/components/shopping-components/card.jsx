@@ -19,6 +19,7 @@ const Card = ({
   colors,
   discount = 0,
 }) => {
+  const isTesting = import.meta.env.VITE_ENABLE_TEST === "1";
   const nav = useNavigate();
   const { initialPrice, finalPrice } = parsePrice(price, discount);
   const [cardColor, setCardColor] = useState(0);
@@ -73,8 +74,10 @@ const Card = ({
   return (
     sku && (
       <div
-        className="hover:shadow-md transition-all duration-100 rounded-sm w-full h-full max-h-[45rem] flex flex-col cursor-pointer box-border mb-2 relative hover:bg-bgBase3 bg-bgBase
-"
+        className={`hover:shadow-md transition-all duration-100 rounded-sm w-full h-full max-h-[45rem] flex flex-col cursor-pointer box-border mb-2 relative hover:bg-bgBase3  ${
+          isTesting ? "bg-bgBase3" : "bg-bgBase"
+        }
+`}
         onMouseEnter={toggleShowArrows}
         onMouseLeave={toggleShowArrows}
       >

@@ -11,6 +11,7 @@ const useFetchProducts = () => {
     cursor = 0
   ) => {
     try {
+      const then = Date.now();
       setLoading(true);
       const response = await fetch(
         `${import.meta.env.VITE_PATH}/products/fetch`,
@@ -44,8 +45,10 @@ const useFetchProducts = () => {
       //     return sortProducts(a, b, "newest");
       //   });
       // }
-      setProducts(products);
-      setLoading(false);
+      setTimeout(() => {
+        setProducts(products);
+        setLoading(false);
+      }, Math.random() * 500 + 200 - (Date.now() - then) || 0);
     } catch (e) {
       console.error(e);
       setLoading(false);

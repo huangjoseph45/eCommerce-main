@@ -2,14 +2,13 @@ import Card from "./card";
 import { useEffect, useRef, useState } from "react";
 import CardPlaceHolder from "./cardPlaceholder";
 
-const CardGrid = ({ loadingBuffer, isLoading, products }) => {
+const CardGrid = ({ isLoading, products }) => {
   const [showNum, setShowNum] = useState(1);
 
   // Ideas for cursor based pagination:
   // Get index for products returned from db
   // when at end of current products list, get more products starting from index
   // need these new parameters: index, numProductsToGet, isEnd
-  console.log(products);
   return (
     <>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full px-8 relative">
@@ -29,8 +28,7 @@ const CardGrid = ({ loadingBuffer, isLoading, products }) => {
               />
             );
           })
-        ) : (!products || products.length < 1) &&
-          (isLoading || loadingBuffer) ? (
+        ) : (!products || products.length < 1) && isLoading ? (
           <>
             {[...Array(8)].map((_, index) => (
               <CardPlaceHolder key={index} />

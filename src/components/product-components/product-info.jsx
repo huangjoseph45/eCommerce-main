@@ -46,7 +46,7 @@ const ProductInfo = ({ product, pageColor = null, urlSize }) => {
   ));
 
   return (
-    <div className="mx-8 flex flex-col justify-start xl:h-fit w-full xl:w-1/2">
+    <div className="mx-8 flex flex-col justify-start xl:h-fit w-full xl:w-1/2 mt-2">
       <h1 className="text-3xl font-semibold">{product.productName}</h1>
       <p className="text-base text-slate-500 pb-3">{product.type}</p>
       <div className="pb-4">
