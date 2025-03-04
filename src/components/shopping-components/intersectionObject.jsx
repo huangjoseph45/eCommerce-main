@@ -90,7 +90,7 @@ const IntersectionObject = ({
     products.length > 0 &&
     products[0].sku ? (
     <div
-      className="absolute bg-red-500 w-full h-[5rem] translate-y-[10rem] "
+      className="absolute w-full h-[5rem] translate-y-[10rem] "
       ref={observerRef}
     ></div>
   ) : (
