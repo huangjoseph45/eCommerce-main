@@ -21,6 +21,7 @@ function Shopping({ categoryName, categoryId, searchQuery }) {
   }, [sortingInfo]);
 
   useEffect(() => {
+    if(cursor === 0) return;
     refetchProducts(fetchQuery.current, sortingInfo, enableTest, cursor);
   }, [cursor]);
 
@@ -55,8 +56,9 @@ function Shopping({ categoryName, categoryId, searchQuery }) {
             <CardGrid isLoading={loading} products={products} />
           </div>
         </div>
-      </div>{" "}
-      <IntersectionObject
+      </div>
+      {
+        products && !loading &&  <IntersectionObject
         products={products}
         loading={isLoading}
         setCursor={setCursor}
@@ -64,6 +66,8 @@ function Shopping({ categoryName, categoryId, searchQuery }) {
         cursor={cursor}
         fetchQuery={fetchQuery.current}
       />
+      }
+     
       <Footer></Footer>
     </>
   );

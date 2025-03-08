@@ -15,8 +15,10 @@ const ProductPage = () => {
   const [product, setProduct] = useState(null);
   const nav = useNavigate();
   const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
+  console.log(enableTest)
 
   const fetchProduct = async () => {
+    
     const returnedProduct = await returnBaseProduct(productId, enableTest);
     setProduct(returnedProduct);
   };

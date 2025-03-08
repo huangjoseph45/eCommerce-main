@@ -26,6 +26,7 @@ const ProductInfo = ({ product, pageColor = null, urlSize }) => {
     }
   }, [currentColor, product.colors]);
 
+
   const colorBoxes = product.colors.map((color) => (
     <div
       key={color.colorCode}

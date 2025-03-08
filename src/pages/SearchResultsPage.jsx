@@ -18,6 +18,8 @@ function SearchResultsPage() {
   const [sortingInfo, setSortingInfo] = useState({});
   const [cursor, setCursor] = useState(0);
   const [loading, setLoading] = useState(false);
+  const fetchQuery = useRef();
+
 
   useEffect(() => {
     if (searchParams.size < 1) {
@@ -28,6 +30,7 @@ function SearchResultsPage() {
   }, [searchParams]);
 
   useEffect(() => {
+    if(cursor === 0) return
     refetchProducts(fetchQuery.current, sortingInfo, enableTest, cursor);
   }, [cursor]);
 
@@ -70,7 +73,7 @@ function SearchResultsPage() {
               />
             </div>
             {isLoading || (products && products.length) > 0 ? (
-              <CardGrid isLoading={isLoading} products={products} />
+              <CardGrid isLoading={loading} products={products} />
             ) : (
               <div className="flex justify-center w-full">
                 <p className="text-3xl w-fit py-8 mx-2">

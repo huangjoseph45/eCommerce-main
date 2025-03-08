@@ -18,7 +18,7 @@ const createProduct = async (req, res) => {
     test,
   } = req.body;
 
-  const useTestProducts = test || false;
+const useTestProducts = test === "true";
 
   if (
     typeof productName !== "string" ||
@@ -106,7 +106,7 @@ const createProduct = async (req, res) => {
 
 const fetchProduct = async (req, res) => {
   let { skuComplete, test } = req.params;
-  const useTestProducts = test || false;
+const useTestProducts = test === "true";
   if (!skuComplete) {
     return res.status(400).json({ message: "Missing SKU" });
   }
@@ -128,7 +128,7 @@ const fetchProduct = async (req, res) => {
 
 const fetchCategory = async (req, res) => {
   const { tags, filter, cursor, test } = req.body;
-  const useTestProducts = test || false;
+  const useTestProducts = test === "true";
   const cursorIncrement = parseInt(process.env.VITE_CURSOR_INCREMENT);
 
   let numItems = cursor + cursorIncrement || cursorIncrement;

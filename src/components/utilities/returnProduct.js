@@ -1,6 +1,7 @@
 import isEmpty from "./isEmpty";
 
 const returnProduct = async (sku, enableTest = false) => {
+
   if (isEmpty(sku)) {
     console.error("Invalid SKU");
     return;
@@ -69,6 +70,8 @@ const returnBaseProduct = async (sku, enableTest = false) => {
   }/products/fetch-product/${sku}/${enableTest}`;
   try {
     console.log(fetchURL);
+    console.log(enableTest)
+
     const response = await fetch(fetchURL, {
       method: "GET",
       credentials: "include",

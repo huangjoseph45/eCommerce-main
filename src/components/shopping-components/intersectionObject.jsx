@@ -56,8 +56,10 @@ const IntersectionObject = ({
   });
 
   useEffect(() => {
-    console.log(products);
     console.log(nextProducts);
+
+    if(!nextProducts) return;
+    console.log(products);
     if (
       !isLoading &&
       nextProducts &&
