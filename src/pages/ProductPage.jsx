@@ -15,10 +15,9 @@ const ProductPage = () => {
   const [product, setProduct] = useState(null);
   const nav = useNavigate();
   const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
-  console.log(enableTest)
+  console.log(enableTest);
 
   const fetchProduct = async () => {
-    
     const returnedProduct = await returnBaseProduct(productId, enableTest);
     setProduct(returnedProduct);
   };
@@ -54,15 +53,15 @@ const ProductPage = () => {
             <ProductInfoContext.Provider
               value={{ productInfo, setProductInfo }}
             >
-              <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-0  md:w-full xl:w-4/5 m-auto h-fit min-h-[40rem]">
+              <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-0  md:w-full xl:w-4/5 m-auto h-fit min-h-[40rem] overflow-visible">
                 <ProductImage
                   product={product}
-                  pageColor={color}
+                  productColor={color}
                   urlSize={size}
                 />
                 <ProductInfo
                   product={product}
-                  pageColor={color}
+                  productColor={color}
                   urlSize={size}
                 />
               </div>

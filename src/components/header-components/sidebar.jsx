@@ -69,7 +69,7 @@ const Sidebar = ({ sections, visible, setShowLogin, showLogin }) => {
           {showSidebar && (
             <div className="bg-bgBase2 text-textDark">
               <motion.div
-                className="w-full right-0 -top-[2rem] bg-bgBlack/35 fixed h-[110vh] z-100"
+                className="w-full right-0 -top-[2rem] bg-bgBlack/35 fixed h-[110vh] z-100 backdrop-blur-sm"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -83,10 +83,14 @@ const Sidebar = ({ sections, visible, setShowLogin, showLogin }) => {
               <motion.ul
                 className="fixed right-0 pt-8 top-0 w-[22rem] h-full bg-bgBase pl-7 text-xl "
                 initial={{ x: "100%" }}
-                animate={{ x: 0 }}
+                animate={{ x: 5 }}
                 exit={{ x: "100%" }}
                 transition={{
-                  duration: 0.15, // Applies to initial and animate by default
+                  duration: 0.15,
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 25,
+                  mass: 0.75,
                 }}
               >
                 <div className="relative flex flex-col gap-4 h-full">

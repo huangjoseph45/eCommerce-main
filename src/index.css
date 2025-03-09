@@ -6,6 +6,8 @@
 
 body {
   @apply font-spectral;
+  position: relative;
+  z-index: 1;
 }
 
 input {

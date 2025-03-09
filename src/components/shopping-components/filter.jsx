@@ -93,25 +93,29 @@ const Filter = ({ sortingInfo, setSortingInfo }) => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{
-                  duration: 0.3, // Applies to initial and animate by default
+                  duration: 0.3,
                 }}
-                className="fixed h-[200vh] w-[100vw] min-w-[20rem] bg-bgBlack/35 left-0 top-0 z-50"
+                className="fixed h-[200vh] w-[100vw] min-w-[20rem] bg-bgBlack/35 left-0 top-0 z-50 backdrop-blur-sm"
                 onClick={() => setShowFilters(false)}
               ></motion.div>
             )}
 
             <motion.div
+              initial={showFilterButton ? { x: "100%" } : {}}
+              animate={{ x: 5 }}
+              exit={showFilterButton ? { x: "100%" } : {}}
+              transition={{
+                duration: 0.1,
+                type: "spring",
+                stiffness: 300,
+                damping: 25,
+                mass: 0.75,
+              }}
               className={`${
                 showFilterButton
                   ? "min-w-[20rem] right-0 z-50 p-4 h-[100vh] fixed top-0"
                   : " w-[12rem] left-0  h-fit"
               } bg-bgBase py-8 flex flex-col gap-6`}
-              initial={showFilterButton ? { x: "100%" } : {}}
-              animate={{ x: 0 }}
-              exit={showFilterButton ? { x: "100%" } : {}}
-              transition={{
-                duration: 0.15,
-              }}
             >
               {showFilterButton && (
                 <>

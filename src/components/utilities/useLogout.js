@@ -28,10 +28,20 @@ const useLogout = () => {
       setUserInfo({}); // Clear user info in context
       nav("/"); // Redirect to login page
     } catch (error) {
+      document.cookie.split(";").forEach(function (cookie) {
+        let cookieName = cookie.split("=")[0].trim();
+        document.cookie =
+          cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      });
       setResult(false);
       console.error("Logout Error: ", error);
-      // Optionally, show a user-friendly error message
+      nav("/");
     } finally {
+      document.cookie.split(";").forEach(function (cookie) {
+        let cookieName = cookie.split("=")[0].trim();
+        document.cookie =
+          cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      });
       setIsLoading(false);
     }
   };

@@ -8,7 +8,7 @@ const SectionSchema = new mongoose.Schema(
       unique: true,
       require: true,
       trim: true,
-      lowerCase: true,
+      lowercase: true,
     },
     tags: {
       type: [String],

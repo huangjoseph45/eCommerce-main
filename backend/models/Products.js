@@ -131,6 +131,11 @@ const productSchema = new mongoose.Schema(
       },
       trim: true,
     },
+    clicks: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
     stripeProductId: String,
     stripePriceId: String,
     stripePrice: Object,

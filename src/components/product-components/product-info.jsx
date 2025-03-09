@@ -5,7 +5,7 @@ import SizesDropdown from "./size-dropdown";
 import { ProductInfoContext } from "../utilities/ContextManager";
 import { useNavigate } from "react-router-dom";
 
-const ProductInfo = ({ product, pageColor = null, urlSize }) => {
+const ProductInfo = ({ product, productColor = null, urlSize }) => {
   const nav = useNavigate();
   const { setProductInfo } = useContext(ProductInfoContext);
   const { initialPrice, finalPrice } = parsePrice(
@@ -16,7 +16,7 @@ const ProductInfo = ({ product, pageColor = null, urlSize }) => {
 
   useEffect(() => {
     const newColorInfo = product.colors.find(
-      (colorL) => colorL.idMod === pageColor
+      (colorL) => colorL.idMod === productColor
     );
     if (newColorInfo && newColorInfo !== currentColor) {
       setProductInfo((prevInfo) => ({
@@ -30,8 +30,8 @@ const ProductInfo = ({ product, pageColor = null, urlSize }) => {
     <div
       key={color.colorCode}
       className={`w-12 h-12 lg:w-8 lg:h-8 border hover:border-blue-400 hover:border-2 cursor-pointer  hover:scale-[110%] transition-all shadow-md duration-150 rounded-full ${
-        pageColor &&
-        pageColor === color.idMod &&
+        productColor &&
+        productColor === color.idMod &&
         "border-blue-500 border-[.15rem] "
       }`}
       style={{ backgroundColor: color.colorCode }}

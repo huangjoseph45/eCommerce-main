@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import useAuthenticate from "../components/utilities/useAuthenticate";
 import { AnimatePresence, motion } from "motion/react";
 import ErrorMessage from "../components/login-components/error-message";
@@ -89,7 +90,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
   return (
     <AnimatePresence>
       {showLogin !== false && (
-        <div className={`fixed z-40 select-none`}>
+        <div className={`text-sm select-none`}>
           <motion.div
             onClick={() => setShowLogin(false)}
             initial={{ opacity: 0 }}
@@ -105,8 +106,8 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
             animate={"show"}
             exit={"leave"}
             onSubmit={handleSubmit}
-            className={`flex flex-col h-fit m-auto w-[100vw] max-w-[30rem]  gap-1 absolute shadow-md p-16 rounded-lg top-[20%]
-             bg-bgBase left-1/2 -translate-x-1/2`}
+            className={`flex flex-col h-fit m-auto w-[100vw] max-w-[30rem]  gap-1  shadow-md p-16 rounded-lg top-[20%]
+         bg-bgBase left-1/2 -translate-x-1/2 fixed`}
           >
             <div
               className={`cursor-pointer absolute top-0 right-0 p-2 rounded-full m-2 hover:bg-bgBlack/15 transition-all duration-150`}

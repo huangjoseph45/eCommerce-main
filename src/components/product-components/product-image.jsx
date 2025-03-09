@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { ProductInfoContext } from "../utilities/ContextManager";
 
-const ProductImage = ({ product, pageColor = null }) => {
+const ProductImage = ({ product, productColor = null }) => {
   const { productInfo } = useContext(ProductInfoContext);
   const [imgSrc, setImgSrc] = useState(null);
 
@@ -9,7 +9,7 @@ const ProductImage = ({ product, pageColor = null }) => {
     if (product && productInfo) {
       try {
         const src = `https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
-          product.sku + "-" + pageColor
+          product.sku + "-" + productColor
         }`;
         setImgSrc(src);
       } catch (error) {
@@ -28,7 +28,7 @@ const ProductImage = ({ product, pageColor = null }) => {
       <div className="w-full max-w-[35rem] mx-auto">
         <img
           src={imgSrc}
-          alt={product?.id || "Product Image"}
+          alt={product?.sku || "Product Image"}
           loading="lazy"
           className="object-cover rounded-b-md w-fit h-fit max-h-full object-top mx-auto aspect-[3/4]"
         />

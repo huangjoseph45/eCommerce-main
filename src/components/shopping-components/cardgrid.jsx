@@ -6,7 +6,6 @@ const CardGrid = ({ isLoading, products }) => {
   const [showNum, setShowNum] = useState(1);
   const [messageVisible, setMessageVisible] = useState(false);
 
-
   useEffect(() => {
     if (!products || products.length < 1 || !products[0].sku) {
       setTimeout(() => {
@@ -17,6 +16,8 @@ const CardGrid = ({ isLoading, products }) => {
     }
   }, [products]);
 
+  console.log(messageVisible);
+
   // Ideas for cursor based pagination:
   // Get index for products returned from db
   // when at end of current products list, get more products starting from index
@@ -24,7 +25,7 @@ const CardGrid = ({ isLoading, products }) => {
   return (
     <>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full px-8 relative">
-        {messageVisible || isLoading ? (
+        {isLoading ? (
           <>
             {[...Array(products?.length || 8)].map((_, index) => (
               <CardPlaceHolder key={index} />
@@ -47,8 +48,8 @@ const CardGrid = ({ isLoading, products }) => {
             );
           })
         ) : (
-          ((!products || products.length < 1 || !products[0].sku) && messageVisible) && (
-            
+          (!products || products.length < 1 || !products[0].sku) &&
+          messageVisible && (
             <div className="w-full h-[10rem]">
               <p className="mx-auto items-center flex justify-center text-4xl mt-4 absolute w-full">
                 We could not find anything

@@ -93,36 +93,37 @@ const SearchBar = ({
             initial={
               window.innerWidth > 1024
                 ? {
-                    opacity: 0.5,
+                    opacity: 1,
                     scale: 1,
                     x: "-50%",
                     y: "-100%",
                   }
                 : {
-                    opacity: 0.5,
+                    opacity: 1,
                     scale: 1,
                     x: "100%",
                   }
             }
             animate={
               window.innerWidth > 1024
-                ? { opacity: 1, scale: 1, y: 0 }
+                ? { opacity: 1, scale: 1, y: -20 }
                 : { opacity: 1, scale: 1, x: 0 }
             }
             exit={
               window.innerWidth > 1024
-                ? { opacity: 0.5, scale: 1, y: "-100%" }
-                : { opacity: 0.5, scale: 1, x: "100%" }
+                ? { opacity: 1, scale: 1, y: "-100%" }
+                : { opacity: 1, scale: 1, x: "100%" }
             }
             transition={{
-              duration: 0.1, // Applies to initial and animate by default
+              duration: 0.2,
+              type: "spring",
             }}
             className=" -top-[4rem] lg:top-0 fixed left-0 lg:left-1/2 w-screen lg:w-full flex justify-center p-2 h-[120vh] lg:h-[25vh] min-h-[13rem] z-10 bg-bgBase"
           >
-            <div className="absolute top-0 left-0 p-4">
+            <div className="absolute top-4 left-0 p-4">
               <Logo />
             </div>
-            <div className=" absolute top-[5rem] lg:top-0 w-full flex items-center px-4 lg:justify-center pt-4">
+            <div className="absolute top-[5rem] lg:top-4 w-full flex items-center px-4 lg:justify-center pt-4">
               <div className="relative">
                 <button
                   className="absolute left-0 top-1/2 -translate-y-1/2 h-full box-border cursor-pointer aspect-square rounded-md  bg-bgSecondary/5 text-textHollow flex items-center justify-center"
@@ -155,7 +156,7 @@ const SearchBar = ({
                 />
               </div>
             </div>
-            <div className="absolute top-[5rem] lg:top-0 w-fit flex items-center justify-center pt-4 right-0 xs:right-4 -translate-x-1/3">
+            <div className="absolute top-[5rem] lg:top-4 w-fit flex items-center justify-center pt-4 right-0 xs:right-4 -translate-x-1/3">
               <FontAwesomeIcon
                 icon={window.innerWidth > 1024 ? faXmark : faChevronRight}
                 size="lg"

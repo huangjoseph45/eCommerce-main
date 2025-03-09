@@ -18,7 +18,7 @@ const createProduct = async (req, res) => {
     test,
   } = req.body;
 
-const useTestProducts = test === "true";
+  const useTestProducts = test === "true";
 
   if (
     typeof productName !== "string" ||
@@ -106,23 +106,31 @@ const useTestProducts = test === "true";
 
 const fetchProduct = async (req, res) => {
   let { skuComplete, test } = req.params;
-const useTestProducts = test === "true";
+  const useTestProducts = test === "true";
+
   if (!skuComplete) {
     return res.status(400).json({ message: "Missing SKU" });
   }
-  try {
-    const sku = skuComplete.split("-")[0] + "-" + skuComplete.split("-")[1];
 
-    let product = await (useTestProducts ? TestProduct : Product).findOne({
-      sku: { $regex: `^${sku}$`, $options: "i" },
-    });
+  try {
+    const [first, second] = skuComplete.split("-");
+    const sku = `${first}-${second}`;
+
+    let product = await (useTestProducts
+      ? TestProduct
+      : Product
+    ).findOneAndUpdate(
+      { sku: { $regex: `^${sku}$`, $options: "i" } },
+      { $inc: { clicks: 1 } },
+      { new: true }
+    );
 
     return res.status(200).json(product);
   } catch (error) {
-    console.error("Error fetching product: " + error);
+    console.error("Error fetching product:", error);
     return res
       .status(500)
-      .json({ message: "could not fetch product with SKU " + sku });
+      .json({ message: "Could not fetch product with SKU " + skuComplete });
   }
 };
 

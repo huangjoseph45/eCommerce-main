@@ -52,9 +52,9 @@ const SuccessPage = () => {
           </div>
         ) : orderData && orderData[0] ? (
           <>
-            <div className="flex flex-row justify-between my-4 text-xs lg:text-base gap-1">
+            <div className="flex flex-col md:flex-row justify-between my-4 text-xs lg:text-base gap-1">
               {" "}
-              <div className="flex flex-col justify-between p-4 border rounded-md shadow-md gap-2 w-[70%]">
+              <div className="flex flex-col justify-between p-4 border rounded-md shadow-md gap-2 md:w-[70%]">
                 <ShippingDetails orderData={orderData[0]} />
 
                 {orderData &&
@@ -108,7 +108,7 @@ const SuccessPage = () => {
                     );
                   })}
               </div>
-              <div className="flex flex-col p-4 py-6 border rounded-md shadow-md gap-2 w-[30%]">
+              <div className="flex flex-col p-4 py-6 border rounded-md shadow-md gap-2 md:w-[30%]">
                 <OrderDetails orderData={orderData[0]} />
                 Total: ${(displayPrice / 100).toFixed(2)}
               </div>
