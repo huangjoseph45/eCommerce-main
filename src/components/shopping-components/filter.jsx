@@ -145,70 +145,66 @@ const Filter = ({ sortingInfo, setSortingInfo }) => {
 
               <div className="flex flex-col">
                 <h2 className="text-xl border-b-2 mb-2 w-4/5">Sort By</h2>
-                <ul className="mb-6">
-                  <li className="flex flex-col items-start justify-center w-full gap-1">
-                    <FilterItem
-                      filterName="Newest"
-                      filterFunc={filterFunc}
-                      type="single"
-                      group="sort"
-                      filterId={"newest"}
-                      filter={filter}
-                    />
-                    <FilterItem
-                      filterName="Price: High to Low"
-                      filterFunc={filterFunc}
-                      type="single"
-                      group="sort"
-                      filterId={"highToLow"}
-                      filter={filter}
-                    />
-                    <FilterItem
-                      filterName="Price: Low to High"
-                      filterFunc={filterFunc}
-                      type="single"
-                      group="sort"
-                      filterId={"lowToHigh"}
-                      filter={filter}
-                    />
-                  </li>
+                <ul className="mb-6 flex flex-col items-start justify-center w-full gap-1">
+                  <FilterItem
+                    filterName="Newest"
+                    filterFunc={filterFunc}
+                    type="single"
+                    group="sort"
+                    filterId={"newest"}
+                    filter={filter}
+                  />
+                  <FilterItem
+                    filterName="Price: High to Low"
+                    filterFunc={filterFunc}
+                    type="single"
+                    group="sort"
+                    filterId={"highToLow"}
+                    filter={filter}
+                  />
+                  <FilterItem
+                    filterName="Price: Low to High"
+                    filterFunc={filterFunc}
+                    type="single"
+                    group="sort"
+                    filterId={"lowToHigh"}
+                    filter={filter}
+                  />
                 </ul>
                 <h2 className="text-xl border-b-2 mb-2 w-4/5">Price</h2>
-                <ul className="mb-6">
-                  <li className="flex flex-col items-start justify-center w-full gap-1">
-                    <FilterItem
-                      filterName="$0 - $25"
-                      filterFunc={filterFunc}
-                      type="multi"
-                      group="prices"
-                      filterId={"0-25"}
-                      filter={filter}
-                    />
-                    <FilterItem
-                      filterName="$25 - $50"
-                      filterFunc={filterFunc}
-                      type="multi"
-                      group="prices"
-                      filterId={"25-50"}
-                      filter={filter}
-                    />
-                    <FilterItem
-                      filterName="$50 - $100"
-                      filterFunc={filterFunc}
-                      type="multi"
-                      group="prices"
-                      filterId={"50-100"}
-                      filter={filter}
-                    />
-                    <FilterItem
-                      filterName="$100+"
-                      filterFunc={filterFunc}
-                      type="multi"
-                      group="prices"
-                      filterId={"100+"}
-                      filter={filter}
-                    />
-                  </li>
+                <ul className="mb-6 flex flex-col items-start justify-center w-full gap-1">
+                  <FilterItem
+                    filterName="$0 - $25"
+                    filterFunc={filterFunc}
+                    type="multi"
+                    group="prices"
+                    filterId={"0-25"}
+                    filter={filter}
+                  />
+                  <FilterItem
+                    filterName="$25 - $50"
+                    filterFunc={filterFunc}
+                    type="multi"
+                    group="prices"
+                    filterId={"25-50"}
+                    filter={filter}
+                  />
+                  <FilterItem
+                    filterName="$50 - $100"
+                    filterFunc={filterFunc}
+                    type="multi"
+                    group="prices"
+                    filterId={"50-100"}
+                    filter={filter}
+                  />
+                  <FilterItem
+                    filterName="$100+"
+                    filterFunc={filterFunc}
+                    type="multi"
+                    group="prices"
+                    filterId={"100+"}
+                    filter={filter}
+                  />
                 </ul>
               </div>
             </motion.div>

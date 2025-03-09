@@ -11,6 +11,7 @@ import { Country, State, City } from "country-state-city";
 import { AnimatePresence, motion } from "motion/react";
 import OrderHistory from "./order-history";
 import VerifiedTag from "./verifiedTag";
+import InputBox from "../inputbox";
 
 const ProfileContent = ({
   currentSection,
@@ -90,24 +91,19 @@ const ProfileContent = ({
   };
 
   const fields = fieldData.map((field) => {
-    let regularText = field.fieldName;
-    let textValue;
-    if (field && field.isDate) {
-      textValue = new Date(clonedInfo?.createdAt).toDateString();
-      regularText = parseCamelCase(field.fieldName);
-    } else {
-      regularText = parseCamelCase(field.fieldName);
-      if (field.prefix)
-        textValue = clonedInfo?.[field.prefix]?.[field.fieldName];
-      else textValue = clonedInfo?.[field.fieldName];
-    }
+    const { fieldName, isDate, prefix, type, label, isRequired } = field;
+    const commonClass = "flex flex-row gap-3 items-center relative w-full";
+    const regularText = parseCamelCase(fieldName);
+    const textValue = isDate
+      ? new Date(clonedInfo?.createdAt).toDateString()
+      : prefix
+      ? clonedInfo?.[prefix]?.[fieldName]
+      : clonedInfo?.[fieldName];
 
-    if (field.fieldName === "country") {
+    // Special handling for "country" and "state"
+    if (fieldName === "country") {
       return (
-        <li
-          key={field.fieldName}
-          className="flex flex-row gap-3 items-center relative w-full"
-        >
+        <li key={fieldName} className={commonClass}>
           <Select
             options={countries.current}
             selectedValue={clonedInfo?.address?.country}
@@ -117,13 +113,9 @@ const ProfileContent = ({
         </li>
       );
     }
-
-    if (field.fieldName === "state") {
+    if (fieldName === "state") {
       return (
-        <li
-          key={field.fieldName}
-          className="flex flex-row gap-3 p items-center relative w-full"
-        >
+        <li key={fieldName} className={commonClass}>
           <Select
             options={states}
             selectedValue={clonedInfo?.address?.state}
@@ -134,61 +126,55 @@ const ProfileContent = ({
       );
     }
 
-    if (field.type === "password") {
+    // Handle type-specific fields
+    if (type === "password") {
       return (
-        <li
-          key={field.fieldName}
-          className="flex flex-row gap-3 items-center relative w-full"
-        >
+        <li key={fieldName} className={commonClass}>
           <PasswordField />
         </li>
       );
     }
-
-    if (field.type === "input") {
+    if (type === "input") {
       return (
-        <li
-          key={field.fieldName}
-          className="flex flex-row gap-3 items-center relative w-full"
-        >
-          {((field.fieldName === "email" && !clonedInfo?.verifiedEmail) ||
-            (field.fieldName === "phoneNumber" &&
-              field.label &&
+        <li key={fieldName} className={commonClass}>
+          {((fieldName === "email" && !clonedInfo?.verifiedEmail) ||
+            (fieldName === "phoneNumber" &&
+              label &&
               !clonedInfo?.verifiedPhone)) && (
-            <VerifiedTag tagName={field.label || field.fieldName} />
+            <VerifiedTag tagName={label || fieldName} />
           )}
-
           <label className="absolute -top-2 left-[.9rem] bg-bgBase px-1 text-xs flex gap-[0.1rem]">
             {regularText}
-            {field.isRequired && <p className="text-errorTrue">*</p>}
+            {isRequired && <span className="text-errorTrue">*</span>}
           </label>
-          <input
-            type="text"
-            defaultValue={textValue}
-            className="outline outline-gray-600 p-3 rounded-lg w-full bg-bgBase"
-            onChange={(e) => editfetchedUserData(e, field)}
-            maxLength={field.fieldName === "zipCode" ? 5 : 50}
-          />
+          <InputBox
+            changeFunc={(e) => editfetchedUserData(e, field)}
+            maxLength={fieldName === "zipCode" ? 5 : 50}
+          >
+            {textValue}
+          </InputBox>
         </li>
       );
     }
 
+    // Fallback render
     return (
       <li
-        key={field.fieldName}
+        key={fieldName}
         className="flex flex-row gap-3 p-2 items-center relative w-full"
       >
         <div className="flex flex-col">
-          <label htmlFor={field.fieldName} className="capitalize font-semibold">
+          <label htmlFor={fieldName} className="capitalize font-semibold">
             {regularText}
           </label>
-          <p className=" p-3 rounded-lg w-full" name={field.fieldName}>
+          <p className="p-3 rounded-lg w-full" name={fieldName}>
             {textValue}
           </p>
         </div>
       </li>
     );
   });
+
   return (
     <div className="flex flex-col w-3/4 lg:w-1/2 mx-auto lg:mx-0 pl-2">
       {!showProfileHeaders && (

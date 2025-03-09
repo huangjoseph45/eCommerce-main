@@ -26,7 +26,7 @@ const useLogout = () => {
 
       setResult(true);
       setUserInfo({}); // Clear user info in context
-      nav("/login"); // Redirect to login page
+      nav("/"); // Redirect to login page
     } catch (error) {
       setResult(false);
       console.error("Logout Error: ", error);

@@ -16,12 +16,14 @@ const SectionLinks = (sections, setShow = () => {}) => {
         onMouseLeave={() => setHoverId(null)}
         onClick={() => {
           setShow(false);
-          nav(`/${encodeURIComponent(element.slug)}`);
         }}
       >
-        <li href={element.href} className="capitalize select-none list-none ">
+        <a
+          href={`/${encodeURIComponent(element.slug)}`}
+          className="capitalize select-none list-none "
+        >
           {element.sectionTitle}
-        </li>
+        </a>
       </div>
     );
   });

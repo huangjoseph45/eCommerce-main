@@ -39,8 +39,8 @@ const Card = ({
       return (
         <>
           <div
-            key={color.colorCode+sku}
-            className={`w-6 h-6 lg:w-8 lg:h-8 outline outline-1 outline-bgSecondary hover:outline-blue-400 cursor-pointer  hover:scale-[110%] transition-all shadow-md duration-150 rounded-full ${
+            key={color.colorCode + sku}
+            className={`w-6 h-6 lg:w-8 lg:h-8 outline outline-1 outline-bgSecondary hover:outline-blue-400 cursor-pointer  hover:scale-[110%] transition-all shadow-md duration-250 rounded-full ${
               cardColor === index &&
               "outline-blue-500 outline-[.15rem] flex-shrink-0"
             }`}
@@ -78,10 +78,12 @@ const Card = ({
           isTesting ? "bg-bgBase3" : "bg-bgBase"
         }
 `}
-        onMouseEnter={toggleShowArrows}
-        onMouseLeave={toggleShowArrows}
       >
-        <div className="relative z-[0]">
+        <div
+          className="relative z-[0]"
+          onMouseEnter={toggleShowArrows}
+          onMouseLeave={toggleShowArrows}
+        >
           {colors && (
             <img
               src={`https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${

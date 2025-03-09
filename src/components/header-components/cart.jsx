@@ -19,16 +19,11 @@ const Cart = () => {
     }
   }, [userInfo]);
 
-  const handleClick = () => {
-    const cookies = document.cookie;
-    nav("/cart");
-  };
-
   return (
-    <button
+    <a
       className="flex items-center justify-center hover:text-bgTertiary relative cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 rounded-full p-2  aspect-square"
       aria-label="Cart"
-      onClick={handleClick}
+      href="/cart"
     >
       <svg
         aria-hidden="true"
@@ -53,7 +48,7 @@ const Cart = () => {
           {numItems}
         </span>
       )}
-    </button>
+    </a>
   );
 };
 

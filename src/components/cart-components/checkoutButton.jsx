@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import useHandleCheckout from "../utilities/useHandleCheckout";
+import Button from "../button";
 
 const CheckoutButton = ({ cart, products, promoCode = null }) => {
   const [isLoading, initiateCheckout] = useHandleCheckout();
@@ -60,20 +61,13 @@ const CheckoutButton = ({ cart, products, promoCode = null }) => {
 
   return (
     <>
-      <button
-        onClick={() => handleCheckout()}
-        className="border rounded-md p-2 bg-bgBlack text-textLight hover:bg-bgSecondary/95 my-2 w-full hover:shadow-md flex items-center justify-center gap-2"
-        disabled={(cart && cart.length === 0) || isLoading}
-      >
-        {isLoading ? (
-          <>
-            Redirecting{" "}
-            <div className="loader border border-textLight border-[2px] h-4 w-4"></div>
-          </>
-        ) : (
-          "Checkout"
-        )}
-      </button>
+      <Button
+        buttonFunc={handleCheckout}
+        buttonText={"Checkout"}
+        invert={true}
+        loading={isLoading}
+      />
+
       {overCapacity && (
         <div
           className="text-errorTrue bg-errorTrue/15 p-2 rounded-md"

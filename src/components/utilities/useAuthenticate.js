@@ -80,13 +80,6 @@ const useAuthenticate = ({
     }
   };
 
-  useEffect(() => {
-    const cookies = document.cookie;
-    if (cookies.includes("sessionId")) {
-      nav("/");
-    }
-  });
-
   const onAuthenticate = (event) => {
     handleAuthenticate(event);
   };

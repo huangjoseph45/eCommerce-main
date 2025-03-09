@@ -53,88 +53,6 @@ export default {
         top: "0 -1px 0 #3f3f46",
         bottom: "0px 1px 0px #3f3f46",
       },
-      keyframes: {
-        pulseBg: {
-          "0%, 100%": { backgroundColor: "#a6a9ad" },
-          "50%": { backgroundColor: "rgba(160, 160, 160, 0.2)" },
-        },
-        rotateMove0: {
-          "0%": {
-            transform: "rotate(10deg) translateX(-13px) translateY(11px)",
-            animationTimingFunction: "ease-out",
-          },
-          "84%": {
-            transform: "rotate(14deg) translateX(-19px) translateY(22px)",
-            animationTimingFunction: "cubic-bezier(.83,.09,14,.1)",
-          },
-          "100%": { transform: "rotate(0deg) translateX(0px)" },
-        },
-        rotateMove1: {
-          "0%": {
-            transform: "rotate(21deg) translateX(-30px) translateY(-34px)",
-            animationTimingFunction: "ease-out",
-          },
-          "82%": {
-            transform: "rotate(18deg) translateX(-27px) translateY(-41px)",
-            animationTimingFunction: "cubic-bezier(.83,.09,14,.1)",
-          },
-          "100%": { transform: "rotate(0deg) translateX(0px)" },
-        },
-        rotateMove2: {
-          "0%": {
-            transform: "rotate(14deg) translateX(16px) translateY(-17px)",
-            animationTimingFunction: "ease-out",
-          },
-          "79%": {
-            transform: "rotate(19deg) translateX(18px) translateY(-13px)",
-            animationTimingFunction: "cubic-bezier(.83,.09,14,.1)",
-          },
-          "100%": { transform: "rotate(0deg) translateX(0px)" },
-        },
-        rotateMove3: {
-          "0%": {
-            transform: "rotate(-25deg) translateX(-52px) translateY(23px)",
-            animationTimingFunction: "ease-out",
-          },
-          "76%": {
-            transform: "rotate(-23deg) translateX(-47px) translateY(32px)",
-            animationTimingFunction: "cubic-bezier(.83,.09,14,.1)",
-          },
-          "100%": { transform: "rotate(0deg) translateX(0px)" },
-        },
-
-        rotateMove4: {
-          "0%": {
-            transform: "rotate(21deg) translateX(63px) translateY(5px)",
-            animationTimingFunction: "ease-out",
-          },
-          "83%": {
-            transform: "rotate(11deg) translateX(84px) translateY(17px)",
-            animationTimingFunction: "cubic-bezier(.83,.09,14,.1)",
-          },
-          "100%": { transform: "rotate(0deg) translateX(0px)" },
-        },
-        rotateMove5: {
-          "0%": {
-            transform: "rotate(18deg) translateX(-43px) translateY(-19px)",
-            animationTimingFunction: "ease-out",
-          },
-          "74%": {
-            transform: "rotate(11deg) translateX(-48px) translateY(-27px)",
-            animationTimingFunction: "cubic-bezier(.83,.09,14,.1)",
-          },
-          "100%": { transform: "rotate(0deg) translateX(0px)" },
-        },
-      },
-      animation: {
-        pulseBg: "pulseBg 3s infinite",
-        rotateMove0: "rotateMove0 .7s 1",
-        rotateMove1: "rotateMove1 .7s 1",
-        rotateMove2: "rotateMove2 .7s 1",
-        rotateMove3: "rotateMove3 .7s 1",
-        rotateMove4: "rotateMove4 .7s 1",
-        rotateMove5: "rotateMove5 .7s 1",
-      },
     },
   },
   plugins: [],
@@ -146,3 +64,86 @@ export default {
     "hover:text-amber-400",
   ],
 };
+
+// keyframes: {
+//   pulseBg: {
+//     "0%, 100%": { backgroundColor: "#a6a9ad" },
+//     "50%": { backgroundColor: "rgba(160, 160, 160, 0.2)" },
+//   },
+//   rotateMove0: {
+//     "0%": {
+//       transform: "rotate(10deg) translateX(-13px) translateY(11px)",
+//       animationTimingFunction: "ease-out",
+//     },
+//     "84%": {
+//       transform: "rotate(14deg) translateX(-19px) translateY(22px)",
+//       animationTimingFunction: "cubic-bezier(.83,.09,14,.1)",
+//     },
+//     "100%": { transform: "rotate(0deg) translateX(0px)" },
+//   },
+//   rotateMove1: {
+//     "0%": {
+//       transform: "rotate(21deg) translateX(-30px) translateY(-34px)",
+//       animationTimingFunction: "ease-out",
+//     },
+//     "82%": {
+//       transform: "rotate(18deg) translateX(-27px) translateY(-41px)",
+//       animationTimingFunction: "cubic-bezier(.83,.09,14,.1)",
+//     },
+//     "100%": { transform: "rotate(0deg) translateX(0px)" },
+//   },
+//   rotateMove2: {
+//     "0%": {
+//       transform: "rotate(14deg) translateX(16px) translateY(-17px)",
+//       animationTimingFunction: "ease-out",
+//     },
+//     "79%": {
+//       transform: "rotate(19deg) translateX(18px) translateY(-13px)",
+//       animationTimingFunction: "cubic-bezier(.83,.09,14,.1)",
+//     },
+//     "100%": { transform: "rotate(0deg) translateX(0px)" },
+//   },
+//   rotateMove3: {
+//     "0%": {
+//       transform: "rotate(-25deg) translateX(-52px) translateY(23px)",
+//       animationTimingFunction: "ease-out",
+//     },
+//     "76%": {
+//       transform: "rotate(-23deg) translateX(-47px) translateY(32px)",
+//       animationTimingFunction: "cubic-bezier(.83,.09,14,.1)",
+//     },
+//     "100%": { transform: "rotate(0deg) translateX(0px)" },
+//   },
+
+//   rotateMove4: {
+//     "0%": {
+//       transform: "rotate(21deg) translateX(63px) translateY(5px)",
+//       animationTimingFunction: "ease-out",
+//     },
+//     "83%": {
+//       transform: "rotate(11deg) translateX(84px) translateY(17px)",
+//       animationTimingFunction: "cubic-bezier(.83,.09,14,.1)",
+//     },
+//     "100%": { transform: "rotate(0deg) translateX(0px)" },
+//   },
+//   rotateMove5: {
+//     "0%": {
+//       transform: "rotate(18deg) translateX(-43px) translateY(-19px)",
+//       animationTimingFunction: "ease-out",
+//     },
+//     "74%": {
+//       transform: "rotate(11deg) translateX(-48px) translateY(-27px)",
+//       animationTimingFunction: "cubic-bezier(.83,.09,14,.1)",
+//     },
+//     "100%": { transform: "rotate(0deg) translateX(0px)" },
+//   },
+// },
+// animation: {
+//   pulseBg: "pulseBg 3s infinite",
+//   rotateMove0: "rotateMove0 .7s 1",
+//   rotateMove1: "rotateMove1 .7s 1",
+//   rotateMove2: "rotateMove2 .7s 1",
+//   rotateMove3: "rotateMove3 .7s 1",
+//   rotateMove4: "rotateMove4 .7s 1",
+//   rotateMove5: "rotateMove5 .7s 1",
+// },

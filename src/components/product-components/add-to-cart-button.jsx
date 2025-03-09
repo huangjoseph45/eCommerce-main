@@ -4,6 +4,8 @@ import { ProductContext } from "../utilities/ContextManager";
 import isEmpty from "../utilities/isEmpty";
 import { useNavigate } from "react-router-dom";
 import useUpdateServerData from "../utilities/updateServerData";
+import { motion, spring } from "motion/react";
+import Button from "../button";
 
 const AddToCart = ({ product }) => {
   const { productInfo } = useContext(ProductInfoContext);
@@ -63,13 +65,12 @@ const AddToCart = ({ product }) => {
         >
           Added to Cart
         </span>
-      )}
-      <button
-        className="rounded-lg bg-slate-50 text-black w-[90%] p-3 text-sm hover:bg-bgSecondary hover:text-textLight outline outline-2 outline-bgSecondary hover:scale-[102.5%] transition-all duration-0.3 mb-8"
-        onClick={addToCartFunction}
-      >
-        Add to Cart
-      </button>
+      )}{" "}
+      <Button
+        buttonFunc={addToCartFunction}
+        invert={false}
+        buttonText={"Add to Cart"}
+      />
     </>
   );
 };

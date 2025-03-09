@@ -14,7 +14,7 @@ import useProductsForCart from "../utilities/getProductsForCart";
 
 import useSideBarToggle from "../utilities/sideBarToggles";
 
-const Sidebar = ({ sections, visible }) => {
+const Sidebar = ({ sections, visible, setShowLogin, showLogin }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const nav = useNavigate();
@@ -60,7 +60,10 @@ const Sidebar = ({ sections, visible }) => {
           } `}
           icon={showSidebar ? faXmark : faBars}
           title={showSidebar ? "Close" : "Menu"}
-          onClick={() => setShowSidebar(!showSidebar)}
+          onClick={() => {
+            setShowSidebar(!showSidebar);
+            setShowLogin(false);
+          }}
         />
         <AnimatePresence>
           {showSidebar && (
@@ -73,7 +76,9 @@ const Sidebar = ({ sections, visible }) => {
                 transition={{
                   duration: 0.3, // Applies to initial and animate by default
                 }}
-                onClick={() => setShowSidebar(false)}
+                onClick={() => {
+                  setShowSidebar(false);
+                }}
               ></motion.div>
               <motion.ul
                 className="fixed right-0 pt-8 top-0 w-[22rem] h-full bg-bgBase pl-7 text-xl "
@@ -122,13 +127,19 @@ const Sidebar = ({ sections, visible }) => {
                       <div className="flex flex-row gap-2">
                         <button
                           className="w-fit rounded-full px-4 py-2 bg-bgSecondary text-textLight text-base hover:bg-bgSecondary/95"
-                          onClick={() => nav(`/login?q=sign-up`)}
+                          onClick={() => {
+                            setShowLogin("create");
+                            setShowSidebar(false);
+                          }}
                         >
                           Join Us
                         </button>
                         <button
                           className="w-fit rounded-full px-4 py-2 bg-bgBase text-textDark outline outline-1 outline-gray-400 hover:bg-bgSecondary/5 text-base"
-                          onClick={() => nav("/login")}
+                          onClick={() => {
+                            setShowLogin("login");
+                            setShowSidebar(false);
+                          }}
                         >
                           Sign In
                         </button>
@@ -140,7 +151,7 @@ const Sidebar = ({ sections, visible }) => {
                     {sectionElements &&
                       sectionElements.map((section) => {
                         return (
-                          <li key={section} className="border-b p-2 mr-4">
+                          <li key={section.key} className="border-b p-2 mr-4">
                             {section}
                           </li>
                         );
@@ -149,7 +160,11 @@ const Sidebar = ({ sections, visible }) => {
                   <div className="h-full flex-shrink flex gap-3 sm:gap-4 items-end justify-between w-full box-border left-0 px-8">
                     <SearchButton setSearch={setIsSearching} />
                     <Cart />
-                    <ProfileButton />
+                    <ProfileButton
+                      setShowLogin={setShowLogin}
+                      showLogin={showLogin}
+                      setShowSidebar={setShowSidebar}
+                    />
                   </div>
                   <SearchBar
                     isSearching={isSearching}

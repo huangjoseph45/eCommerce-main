@@ -1,26 +1,27 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
-import { ProductContext } from "../utilities/ContextManager";
+import isLoggedIn from "../utilities/isLoggedIn";
 
-const ProfileButton = () => {
-  const nav = useNavigate();
-  const { isLoggedIn } = useContext(ProductContext);
-  const [showDropdown, setShowDropdown] = useState(false);
+const ProfileButton = ({ showLogin, setShowLogin, setShowSidebar }) => {
+  const loggedIn = isLoggedIn();
 
   const clickedFunc = () => {
-    const cookies = document.cookie;
-    if (!cookies.includes("sessionId")) {
-      nav("/login");
-    } else {
-      nav("/profile");
+    if (!loggedIn) {
+      console.log(setShowLogin);
+      setShowLogin(!showLogin);
+      console.log(setShowSidebar);
+      if (setShowSidebar) {
+        setShowSidebar(false);
+      }
     }
   };
 
   return (
     <>
-      <div className="relative aspect-square rounded-full cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 p-2 hover:text-bgTertiary">
+      <a
+        className="relative aspect-square rounded-full cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 p-2 hover:text-bgTertiary"
+        href={loggedIn ? "/profile" : undefined} // Properly conditionally set href
+        onClick={clickedFunc}
+      >
         <svg
           aria-hidden="true"
           focusable="false"
@@ -39,7 +40,7 @@ const ProfileButton = () => {
             d="M7.5 42v-6a7.5 7.5 0 017.5-7.5h18a7.5 7.5 0 017.5 7.5v6m-9-27a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"
           ></path>
         </svg>
-      </div>
+      </a>
     </>
   );
 };

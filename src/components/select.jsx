@@ -152,7 +152,7 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
           value={query}
           onFocus={() => setShowElements(true)}
           onChange={(e) => changeInput(e)}
-          className="outline outline-gray-600 p-3 rounded-lg w-full cursor-pointe bg-bgBase"
+          className="outline outline-1 outline-gray-600 p-3 rounded-md w-full cursor-pointer bg-bgBase"
         />
 
         <AnimatePresence>
