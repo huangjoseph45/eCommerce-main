@@ -3,7 +3,7 @@ import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionLinks from "./sectionlinks";
-import SearchBar from "./searchBar";
+import SearchBar from "./searchbar";
 import ProfileButton from "./profile-button";
 import Cart from "./cart";
 import SearchButton from "./search-button";
