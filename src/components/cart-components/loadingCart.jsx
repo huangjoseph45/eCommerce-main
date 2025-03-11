@@ -12,9 +12,8 @@ const LoadingCart = () => {
 
   return (
     <ul>
-      {userInfo?.cart &&
-        userInfo.cart.length > 0 &&
-        userInfo.cart.map((item, index) => (
+      {(cartLength ? Array(cartLength).fill(0) : [0, 1, 2, 3, 4, 5, 6, 7]).map(
+        (item, index) => (
           <li
             key={index}
             className="list-none py-2 w-[20rem] sm:w-[25rem] lg:w-[30rem] mx-auto borderp-2"
@@ -58,7 +57,8 @@ const LoadingCart = () => {
               </div>
             </div>
           </li>
-        ))}
+        )
+      )}
     </ul>
   );
 };

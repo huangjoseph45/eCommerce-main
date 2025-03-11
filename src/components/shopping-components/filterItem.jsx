@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { AnimatePresence, motion } from "motion/react";
 
 const FilterItem = ({
   filterName,
@@ -25,11 +24,27 @@ const FilterItem = ({
       onClick={() => filterFunc({ group, filterId, type })}
     >
       <p className="text-base flex">{filterName}</p>
-      {filter && filter[group] && filter[group][filterId] && (
-        <p>
-          <FontAwesomeIcon icon={faCheck} />
-        </p>
-      )}
+
+      <div
+        className={`outline outline-bgExtraSecondaryLight aspect-square size-[0rem] flex items-center justify-center p-[0.6rem] ${
+          type === "single" ? "rounded-full" : "rounded-sm"
+        }`}
+      >
+        <AnimatePresence>
+          {" "}
+          {filter && filter[group] && filter[group][filterId] && (
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ duration: 0.3, type: "spring" }}
+              className={`bg-bgExtraSecondaryLight aspect-square flex items-center justify-center p-[.5rem] ${
+                type === "single" ? "rounded-full" : "rounded-sm"
+              }`}
+            ></motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </li>
   );
 };

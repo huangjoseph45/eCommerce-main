@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { ProductInfoContext } from "../utilities/ContextManager";
 
-const ProductImage = ({ product, productColor = null }) => {
+const ProductImage = ({ product, productColor = null, loading = false }) => {
   const { productInfo } = useContext(ProductInfoContext);
   const [imgSrc, setImgSrc] = useState(null);
 
@@ -26,12 +26,16 @@ const ProductImage = ({ product, productColor = null }) => {
   return (
     <>
       <div className="w-full max-w-[35rem] mx-auto">
-        <img
-          src={imgSrc}
-          alt={product?.sku || "Product Image"}
-          loading="lazy"
-          className="object-cover rounded-b-md w-fit h-fit max-h-full object-top mx-auto aspect-[3/4]"
-        />
+        {loading ? (
+          <div className="object-cover rounded-b-md w-fit h-full object-top mx-auto aspect-[3/4] bg-bgBase3 animate-pulseBg "></div>
+        ) : (
+          <img
+            src={imgSrc}
+            alt={product?.sku || "Product Image"}
+            loading="lazy"
+            className="object-cover rounded-b-md w-fit h-fit max-h-full object-top mx-auto aspect-[3/4]"
+          />
+        )}
       </div>
     </>
   );

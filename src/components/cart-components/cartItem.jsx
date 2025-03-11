@@ -45,7 +45,11 @@ const CartItem = memo(
       "p/" +
       encodeURIComponent(productName.replace(/ /g, "-")) +
       "/" +
-      baseId
+      baseId +
+      "/" +
+      color?.idMod +
+      "/" +
+      size
     ).toLowerCase();
 
     return (
@@ -58,7 +62,7 @@ const CartItem = memo(
             exit={"hidden"}
             className="relative list-none h-fit flex w-fit sm:w-[25rem] lg:w-[30rem]"
           >
-            <div className="flex gap-2 justify-centers items-start">
+            <div className="flex gap-2 justify-centers items-start w-full">
               <div
                 className={`flex flex-col  ${
                   sidebar
@@ -73,7 +77,7 @@ const CartItem = memo(
                     alt={productName}
                     className="object-cover cursor-pointer h-full"
                   />
-                )}{" "}
+                )}
               </div>
 
               <div

@@ -128,8 +128,7 @@ const ProfilePage = () => {
       });
     }
 
-    const cookies = document.cookie;
-    if (!cookies.includes("sessionId")) {
+    if (!isLoggedIn) {
       nav("/");
     }
 

@@ -29,7 +29,7 @@ const useSideBarToggle = ({
     };
 
     const handleKeyPress = (e) => {
-      if (e.key === "Escape" && !isSearching) {
+      if (e.key === "Escape" && !isSearching && window.innerWidth < 1024) {
         setShowSidebar(false);
       }
     };

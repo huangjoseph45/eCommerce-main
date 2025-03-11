@@ -1,17 +1,19 @@
-import { useNavigate } from "react-router-dom";
 import isLoggedIn from "../../components/utilities/isLoggedIn";
 import FancyText from "./fancyText";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import LoginModal from "../loginModal";
 
-const LandingSection = ({ setShowLoginModal, showLoginModal }) => {
+const LandingSection = () => {
   const loggedIn = isLoggedIn();
-  const nav = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
   return (
     <div className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl items-center h-screen justify-center flex  border relative before:content-[''] before:h-full before:w-full before:bg-bgBlack/5 border-none text-bgBase2 overflow-hidden">
+      <LoginModal showLogin={showLoginModal} setShowLogin={setShowLoginModal} />
       <img
         src="https://www.ralphlauren.com/on/demandware.static/-/Library-Sites-RalphLauren_NA_Library/default/dwb54d4127/img/202501/20250123-men-polo-active-club-plp/0123_m_polo_active_club_plp_c01_img.jpg"
         alt=""

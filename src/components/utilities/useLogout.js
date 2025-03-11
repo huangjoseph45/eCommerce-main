@@ -25,8 +25,8 @@ const useLogout = () => {
       }
 
       setResult(true);
-      setUserInfo({}); // Clear user info in context
-      nav("/"); // Redirect to login page
+      setUserInfo({});
+      nav("/");
     } catch (error) {
       document.cookie.split(";").forEach(function (cookie) {
         let cookieName = cookie.split("=")[0].trim();

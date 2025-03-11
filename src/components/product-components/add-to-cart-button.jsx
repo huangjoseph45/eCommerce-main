@@ -4,8 +4,10 @@ import { ProductContext } from "../utilities/ContextManager";
 import isEmpty from "../utilities/isEmpty";
 import { useNavigate } from "react-router-dom";
 import useUpdateServerData from "../utilities/updateServerData";
-import { motion, spring } from "motion/react";
 import Button from "../button";
+import ProductPopup from "./addedproductpopup";
+import isLoggedIn from "../utilities/isLoggedIn";
+import LoginModal from "../loginModal";
 
 const AddToCart = ({ product }) => {
   const { productInfo } = useContext(ProductInfoContext);
@@ -15,11 +17,15 @@ const AddToCart = ({ product }) => {
   const { refetch } = useUpdateServerData({
     dataToUpdate: null,
   });
+  const loggedIn = isLoggedIn();
+  const [showLogin, setShowLogin] = useState(false);
+
+  const [popupProduct, setPopupProduct] = useState();
 
   const addToCartFunction = useCallback(() => {
-    const cookies = document.cookie;
-    if (!cookies.includes("sessionId")) {
-      nav("/login");
+    if (!loggedIn) {
+      setShowLogin(true);
+      return;
     }
     if (!isEmpty(productInfo.sizeInfo) && !isEmpty(productInfo.colorInfo)) {
       const cartInfo = structuredClone(productInfo);
@@ -39,6 +45,7 @@ const AddToCart = ({ product }) => {
 
       setUserInfo({ ...userInfo, cart: updatedCart });
       refetch({ cart: updatedCart });
+      setPopupProduct({ product: product, productInfo: productInfo });
       setShowPopup(true);
     }
   }, [productInfo, setUserInfo, userInfo]);
@@ -48,24 +55,23 @@ const AddToCart = ({ product }) => {
     if (showPopup === true) {
       timeoutId = setTimeout(() => {
         setShowPopup(false);
-      }, [3000]);
+      }, [10000]);
     }
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [showPopup]);
+  }, [showPopup, JSON.stringify(userInfo)]);
 
   return (
     <>
-      {showPopup && (
-        <span
-          className={
-            "fixed bottom-[1rem] right-[1rem] bg-bgBase shadow-md border rounded-full p-3 cursor-pointer"
-          }
-        >
-          Added to Cart
-        </span>
-      )}{" "}
+      <LoginModal showLogin={showLogin} setShowLogin={setShowLogin} />
+      <ProductPopup
+        setShowPopup={setShowPopup}
+        showPopup={showPopup}
+        product={popupProduct?.product}
+        productInfo={popupProduct?.productInfo}
+        addToCartFunction={addToCartFunction}
+      />
       <Button
         buttonFunc={addToCartFunction}
         invert={false}

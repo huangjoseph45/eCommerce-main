@@ -8,7 +8,6 @@ import FeaturedSection from "../components/home-components/featuredSection";
 const HomePage = () => {
   const timeoutId = useRef(null);
   const [showHeader, setShowHeader] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const onScroll = useCallback(() => {
     clearTimeout(timeoutId.current);
@@ -17,7 +16,7 @@ const HomePage = () => {
       else {
         setShowHeader(false);
       }
-    }, 0); // Adjust debounce delay as needed
+    }, 0);
   }, []);
 
   console.log(window.innerWidth);
@@ -42,17 +41,10 @@ const HomePage = () => {
             exit={{ height: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Header
-              showBackground={showHeader}
-              showLoginModal={showLoginModal}
-              setShowLoginModal={setShowLoginModal}
-            />
+            <Header showBackground={showHeader} />
           </motion.div>
         </AnimatePresence>
-        <LandingSection
-          showLoginModal={showLoginModal}
-          setShowLoginModal={setShowLoginModal}
-        />
+        <LandingSection />
         <FeaturedSection />
         <div className="h-screen"></div>
       </div>

@@ -10,7 +10,6 @@ const useAuthenticate = ({
   userInfo,
   isModeSignIn = true,
 }) => {
-  const nav = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [loading, result, tryLogout] = useLogout();
   const [errorMessage, setErrorMessage] = useState("");
@@ -23,7 +22,7 @@ const useAuthenticate = ({
 
     data["cart"] = userInfo;
     data["remember"] = checked;
-    tryLogout();
+    // tryLogout();
 
     try {
       const validatedEmail = validateEmail(data.email);
@@ -69,7 +68,7 @@ const useAuthenticate = ({
       }
 
       setIsLoading(false);
-      nav("/");
+      window.location.reload();
     } catch (error) {
       setIsLoading(false);
       setErrorState((prev) => ({

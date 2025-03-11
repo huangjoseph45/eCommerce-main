@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const useFetchProducts = () => {
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const [products, setProducts] = useState();
 
   const getProducts = async (

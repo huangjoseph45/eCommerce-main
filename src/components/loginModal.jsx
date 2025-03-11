@@ -13,7 +13,7 @@ import useSideBarToggle from "./utilities/sideBarToggles";
 const formVariants = {
   first: {
     x: "-50%",
-    scale: 1,
+    scale: 0,
     y: "-100%",
     opacity: 0,
   },
@@ -21,19 +21,21 @@ const formVariants = {
     x: "-50%",
     scale: 1,
     y: "0%",
-    opacity: 1, // Add opacity to control fading in
+    opacity: 1,
     transition: {
       type: "spring",
-      duration: 0.5,
+      stiffness: 300,
+      damping: 20,
+      mass: 0.75,
     },
   },
   leave: {
-    scale: 1,
-    y: "200%",
+    scale: 0,
+    y: "100%",
     opacity: 0,
     transition: {
       type: "tween",
-      duration: 0.3,
+      duration: 0.15,
     },
   },
 };
@@ -65,7 +67,6 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
 
   const handleSubmit = async (event) => {
     onAuthenticate(event);
-    setShowLogin(false);
   };
   useEffect(() => {
     setModeSignIn(showLogin !== "create");
@@ -87,7 +88,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
     );
   };
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {showLogin !== false && (
         <div className={`text-sm select-none`}>
@@ -97,7 +98,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0.15 }}
             transition={{ duration: 0.2, ease: "easeInOut" }}
-            className="w-screen h-screen bg-bgBase/45 backdrop-blur-sm"
+            className="w-screen h-screen bg-bgBase/15 backdrop-blur-sm fixed top-0 z-30"
           ></motion.div>
 
           <motion.form
@@ -106,8 +107,8 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
             animate={"show"}
             exit={"leave"}
             onSubmit={handleSubmit}
-            className={`flex flex-col h-fit m-auto w-[100vw] max-w-[30rem]  gap-1  shadow-md p-16 rounded-lg top-[20%]
-         bg-bgBase left-1/2 -translate-x-1/2 fixed`}
+            className={`flex flex-col h-fit m-auto w-[100vw] max-w-[30rem]  gap-1  shadow-md p-16 rounded-lg top-[20%] z-40
+       bg-bgBase left-1/2 -translate-x-1/2 fixed`}
           >
             <div
               className={`cursor-pointer absolute top-0 right-0 p-2 rounded-full m-2 hover:bg-bgBlack/15 transition-all duration-150`}
@@ -271,7 +272,8 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
           </motion.form>
         </div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
 

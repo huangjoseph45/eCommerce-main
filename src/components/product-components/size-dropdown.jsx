@@ -72,12 +72,12 @@ const SizesDropdown = ({
   }, [urlSize]);
   const selectSize = (size) => {
     nav(
-      `/p/${product.productName}/${product.sku}/${productInfo.colorInfo.idMod}/${size}`
+      `/p/${product?.productName}/${product?.sku}/${productInfo.colorInfo.idMod}/${size}`
     );
     setShowElement(false);
   };
 
-  const sizes = product.sizes.map((size) => {
+  const sizes = product?.sizes.map((size) => {
     return (
       <motion.li
         {...item}
@@ -116,7 +116,7 @@ const SizesDropdown = ({
               initial="closed"
               animate={showElement ? "open" : "closed"}
               exit={"closed"}
-              className="mt-2 flex bg-bgBase items-center m-auto flex-col gap-2 border border-textDark rounded-md w-fit p-1 absolute top-full left-0 z-20"
+              className="mt-2 flex bg-bgBase items-center m-auto flex-col gap-2 border border-textDark rounded-md w-fit p-1 absolute top-full left-0 z-10 overflow-scroll max-h-[12rem]"
             >
               {sizes}
             </motion.div>

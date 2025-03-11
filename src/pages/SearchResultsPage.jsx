@@ -17,9 +17,8 @@ function SearchResultsPage() {
   const displayQuery = useRef();
   const [sortingInfo, setSortingInfo] = useState({});
   const [cursor, setCursor] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const fetchQuery = useRef();
-
 
   useEffect(() => {
     if (searchParams.size < 1) {
@@ -30,7 +29,7 @@ function SearchResultsPage() {
   }, [searchParams]);
 
   useEffect(() => {
-    if(cursor === 0) return
+    if (cursor === 0) return;
     refetchProducts(fetchQuery.current, sortingInfo, enableTest, cursor);
   }, [cursor]);
 

@@ -15,6 +15,7 @@ import LoginModal from "./loginModal";
 
 import { ProductContext } from "../components/utilities/ContextManager";
 import { isEmpty } from "lodash";
+import useDynamicComponent from "./utilities/useDynamicComponent";
 
 const opacityVariants = {
   visible: { opacity: 1 },
@@ -47,10 +48,6 @@ const Header = ({
   }, [showBackground]);
 
   useEffect(() => {
-    if (location.pathname.includes("login")) {
-      setShowLogin("login");
-      if (setShowLoginModal) setShowLoginModal("login");
-    }
     const resizeEvent = () => {
       if (window.innerWidth < 1024) {
         mouseEnter();
@@ -125,10 +122,7 @@ const Header = ({
 
   return (
     <>
-      <LoginModal
-        showLogin={showLoginModal || showLogin}
-        setShowLogin={setShowLoginModal || setShowLogin}
-      />
+      <LoginModal showLogin={showLogin} setShowLogin={setShowLogin} />
 
       {loggedIn && userInfo && (
         <div className="bg-bgSecondaryLight text-textLight p-2 text-xs  justify-end px-4 flex flex-row w-full relative z-40">
@@ -164,17 +158,14 @@ const Header = ({
           {" "}
           <SearchButton setSearch={setIsSearching} />
           <Cart />
-          <ProfileButton
-            showLogin={showLoginModal || showLogin}
-            setShowLogin={setShowLoginModal || setShowLogin}
-          />
+          <ProfileButton showLogin={showLogin} setShowLogin={setShowLogin} />
         </div>
         <div className="lg:hidden gap-3 sm:gap-4 w-fit justify-center items-center flex ">
           <Sidebar
             sections={sectionResults}
             visible={isVisible}
-            setShowLogin={setShowLoginModal || setShowLogin}
-            showLogin={showLoginModal || showLogin}
+            setShowLogin={setShowLogin}
+            showLogin={showLogin}
           />
         </div>
 

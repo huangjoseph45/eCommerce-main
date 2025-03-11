@@ -33,6 +33,15 @@ export default {
       fontFamily: {
         spectral: ["Spectral", "serif"],
       },
+      keyframes: {
+        pulseBg: {
+          "0%, 100%": { backgroundColor: "#c7c7c7" },
+          "50%": { backgroundColor: "rgba(160, 160, 160, 0.05)" },
+        },
+      },
+      animation: {
+        pulseBg: "pulseBg 4s infinite",
+      },
       colors: {
         bgBase: "#fffffc",
         bgBase2: "#f8f9fa",
@@ -43,7 +52,7 @@ export default {
         bgExtraSecondaryLight: "#334155",
         bgTertiary: "#b57c43",
         textLight: "white",
-        textHollow: "#9ca3af",
+        textHollow: "#575b61",
         textDark: "black",
         errorTrue: "#b91c1c",
         errorFalse: "#16A34A",

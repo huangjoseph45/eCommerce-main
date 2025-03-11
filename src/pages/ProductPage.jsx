@@ -15,11 +15,13 @@ const ProductPage = () => {
   const [product, setProduct] = useState(null);
   const nav = useNavigate();
   const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
-  console.log(enableTest);
+  const [loading, setLoading] = useState(true);
 
   const fetchProduct = async () => {
+    setLoading(true);
     const returnedProduct = await returnBaseProduct(productId, enableTest);
     setProduct(returnedProduct);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -45,28 +47,33 @@ const ProductPage = () => {
       {" "}
       <Header></Header>
       <div className="w-full md:w-[95%] mx-auto *:h-fit overflow-x-hidden">
-        {productInfo &&
+        {loading ||
+        (productInfo &&
           product &&
           product.colors &&
           product.productName &&
-          product.sku && (
-            <ProductInfoContext.Provider
-              value={{ productInfo, setProductInfo }}
-            >
-              <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-0  md:w-full xl:w-4/5 m-auto h-fit min-h-[40rem] overflow-visible">
-                <ProductImage
-                  product={product}
-                  productColor={color}
-                  urlSize={size}
-                />
-                <ProductInfo
-                  product={product}
-                  productColor={color}
-                  urlSize={size}
-                />
-              </div>
-            </ProductInfoContext.Provider>
-          )}
+          product.sku) ? (
+          <ProductInfoContext.Provider value={{ productInfo, setProductInfo }}>
+            <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-0  md:w-full xl:w-4/5 m-auto h-fit min-h-[40rem] overflow-visible">
+              <ProductImage
+                product={product}
+                productColor={color}
+                urlSize={size}
+                loading={loading}
+              />
+              <ProductInfo
+                product={product}
+                productColor={color}
+                urlSize={size}
+                loading={loading}
+              />
+            </div>
+          </ProductInfoContext.Provider>
+        ) : (
+          <h1 className="text-3xl mx-auto flex items-center justify-center py-20">
+            Product Not Found
+          </h1>
+        )}
       </div>
       <Footer></Footer>
     </>

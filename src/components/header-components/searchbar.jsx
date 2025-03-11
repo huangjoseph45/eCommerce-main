@@ -8,18 +8,20 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import useDynamicComponent from "../utilities/useDynamicComponent";
+import { createPortal } from "react-dom";
 
 const SearchBar = ({
   isSearching,
   setIsSearching,
   setSideBarVisible = () => {},
 }) => {
+  useDynamicComponent({ setVisible: setIsSearching });
   const [value, setValue] = useState("");
   const storedSearches = JSON.parse(sessionStorage.getItem("storedSearches"));
   const [pastSearches, setPastSearches] = useState(
     storedSearches ? JSON.parse(sessionStorage.getItem("storedSearches")) : []
   );
-  const searchRef = useRef();
   const nav = useNavigate();
 
   const handleSubmit = () => {
@@ -41,55 +43,25 @@ const SearchBar = ({
     }
   };
 
-  useEffect(() => {
-    setValue("");
-
-    const checkEscape = (e) => {
-      if (e.key === "Escape") {
-        setTimeout(() => {
-          if (isSearching) setIsSearching(false);
-        }, 50);
-      }
-    };
-
-    const handleOutsideClick = (e) => {
-      if (searchRef.current && !searchRef.current.contains(e.target)) {
-        setTimeout(() => {
-          if (isSearching) setIsSearching(false);
-        }, 50);
-      }
-    };
-
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        setIsSearching(false);
-      }
-    };
-
-    window.addEventListener("keydown", checkEscape);
-    window.addEventListener("mousedown", handleOutsideClick);
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("keydown", checkEscape);
-      window.removeEventListener("mousedown", handleOutsideClick);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [isSearching]);
-
   const checkHideBar = () => {
     setTimeout(() => {
       if (isSearching) setIsSearching(false);
     }, 50);
   };
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {isSearching && (
         <>
-          {" "}
           <motion.div
-            ref={searchRef}
+            onClick={() => setIsSearching(false)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.1, ease: "easeInOut" }}
+            className="w-screen h-screen bg-none backdrop-blur-sm fixed top-0 z-30 bg-bgSecondary/5"
+          ></motion.div>
+          <motion.div
             initial={
               window.innerWidth > 1024
                 ? {
@@ -112,13 +84,13 @@ const SearchBar = ({
             exit={
               window.innerWidth > 1024
                 ? { opacity: 1, scale: 1, y: "-100%" }
-                : { opacity: 1, scale: 1, x: "100%" }
+                : { opacity: 0, scale: 1, x: "100%" }
             }
             transition={{
               duration: 0.2,
               type: "spring",
             }}
-            className=" -top-[4rem] lg:top-0 fixed left-0 lg:left-1/2 w-screen lg:w-full flex justify-center p-2 h-[120vh] lg:h-[25vh] min-h-[13rem] z-10 bg-bgBase"
+            className="-top-[4rem] lg:top-0 fixed left-0 lg:left-1/2 w-screen lg:w-full flex justify-center p-2 h-[120vh] lg:h-[25vh] min-h-[13rem] bg-bgBase z-40"
           >
             <div className="absolute top-4 left-0 p-4">
               <Logo />
@@ -184,10 +156,10 @@ const SearchBar = ({
               </ul>
             </div>
           </motion.div>
-          <div className="content-[''] w-[100vw] h-[100vh] fixed bg-bgBlack/30 top-0 left-0 -z-10 box-border border-none"></div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
 

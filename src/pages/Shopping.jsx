@@ -11,7 +11,7 @@ function Shopping({ categoryName, categoryId, searchQuery }) {
   const [displayName, setDisplayName] = useState("");
   const [sortingInfo, setSortingInfo] = useState({});
   const [cursor, setCursor] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
   const fetchQuery = useRef();
 
@@ -21,7 +21,7 @@ function Shopping({ categoryName, categoryId, searchQuery }) {
   }, [sortingInfo]);
 
   useEffect(() => {
-    if(cursor === 0) return;
+    if (cursor === 0) return;
     refetchProducts(fetchQuery.current, sortingInfo, enableTest, cursor);
   }, [cursor]);
 
@@ -57,17 +57,17 @@ function Shopping({ categoryName, categoryId, searchQuery }) {
           </div>
         </div>
       </div>
-      {
-        products && !loading &&  <IntersectionObject
-        products={products}
-        loading={isLoading}
-        setCursor={setCursor}
-        sortingInfo={sortingInfo}
-        cursor={cursor}
-        fetchQuery={fetchQuery.current}
-      />
-      }
-     
+      {products && !loading && (
+        <IntersectionObject
+          products={products}
+          loading={isLoading}
+          setCursor={setCursor}
+          sortingInfo={sortingInfo}
+          cursor={cursor}
+          fetchQuery={fetchQuery.current}
+        />
+      )}
+
       <Footer></Footer>
     </>
   );

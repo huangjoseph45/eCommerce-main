@@ -3,7 +3,7 @@ import returnProduct from "../utilities/returnProduct";
 import { useState } from "react";
 
 const useProductsForCart = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState(null);
   const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
 

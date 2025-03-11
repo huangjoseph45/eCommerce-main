@@ -13,7 +13,17 @@ const CartPage = () => {
   const [error, setError] = useState(null);
   const [cart, setCart] = useState([]);
   const { userInfo } = useContext(ProductContext);
+  const [isLoading, setLoading] = useState(true);
   const [loading, products, fetchProducts] = useProductsForCart();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    if (loading == false) {
+      setLoading(false);
+    }
+  }, [loading]);
 
   useEffect(() => {
     if (userInfo && userInfo.cart) setCart(userInfo.cart);
@@ -34,13 +44,12 @@ const CartPage = () => {
             cart={cart}
             setCart={setCart}
             products={products}
-            loading={loading}
+            loading={isLoading}
             error={error}
+            userInfo={userInfo}
           />
         </div>{" "}
-        {cart && cart.length > 0 && (
-          <CartSummary products={products} loading={loading} />
-        )}
+        <CartSummary products={products} loading={isLoading} cart={cart} />
       </div>
       <Footer />
     </ProductsContext.Provider>

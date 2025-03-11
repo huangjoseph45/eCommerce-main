@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import useSideBarToggle from "../utilities/sideBarToggles";
 import { AnimatePresence, motion } from "motion/react";
 import FilterItem from "./filterItem";
+import { createPortal } from "react-dom";
 
 const Filter = ({ sortingInfo, setSortingInfo }) => {
   const [showFilters, setShowFilters] = useState(false);
@@ -93,7 +94,7 @@ const Filter = ({ sortingInfo, setSortingInfo }) => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{
-                  duration: 0.3,
+                  duration: 0.2,
                 }}
                 className="fixed h-[200vh] w-[100vw] min-w-[20rem] bg-bgBlack/35 left-0 top-0 z-50 backdrop-blur-sm"
                 onClick={() => setShowFilters(false)}
@@ -102,26 +103,26 @@ const Filter = ({ sortingInfo, setSortingInfo }) => {
 
             <motion.div
               initial={showFilterButton ? { x: "100%" } : {}}
-              animate={{ x: 5 }}
+              animate={{ x: showFilterButton ? "4rem" : 0 }}
               exit={showFilterButton ? { x: "100%" } : {}}
               transition={{
                 duration: 0.1,
                 type: "spring",
-                stiffness: 300,
-                damping: 25,
-                mass: 0.75,
+                stiffness: 500,
+                damping: 20,
+                mass: 0.5,
               }}
               className={`${
                 showFilterButton
-                  ? "min-w-[20rem] right-0 z-50 p-4 h-[100vh] fixed top-0"
+                  ? "min-w-[20rem] right-0 z-50 p-4 h-[100vh] fixed top-0 pr-[4.5rem]"
                   : " w-[12rem] left-0  h-fit"
-              } bg-bgBase py-8 flex flex-col gap-6`}
+              } bg-bgBase py-8 flex flex-col gap-6 `}
             >
               {showFilterButton && (
                 <>
                   {" "}
                   <div
-                    className={`top-6 text-textDark cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 p-2 rounded-full transition-all duration-300 absolute right-4 flex aspect-square w-fit z-[100]`}
+                    className={`top-6 text-textDark cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 p-2 rounded-full transition-all duration-300 absolute right-16 flex aspect-square w-fit z-[100]`}
                     title={"Close"}
                     onClick={() => {
                       setShowFilters(!showFilters);
