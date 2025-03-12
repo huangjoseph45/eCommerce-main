@@ -55,8 +55,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/content", contentRoutes);
 
-app.use("/", (req, res) => {
-  res.send("Welcome");
+app.get("/", (req, res) => {
+  res.send("Hello World!");
 });
 
 // Start server
