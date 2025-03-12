@@ -59,6 +59,7 @@ const useFetchServerData = (options = {}) => {
 
       if (!response.ok) {
         setLoading(false);
+        console.error(response);
         throw new Error(`Network response was not ok: ${response.statusText}`);
       }
 

@@ -61,7 +61,7 @@ const CartItemList = ({
                 />
               );
             })
-          ) : userInfo?.cart?.length == 0 && cart.length == 0 ? (
+          ) : !loading && (userInfo?.cart?.length == 0 || cart.length == 0) ? (
             <p className="my-4 text-base">Your cart is empty.</p>
           ) : (
             <LoadingCart />

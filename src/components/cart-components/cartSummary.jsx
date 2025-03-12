@@ -110,6 +110,13 @@ const CartSummary = ({ products, loading = true, cart }) => {
   return (
     <div
       className={`min-w-[20rem] w-full max-w-[30rem] lg:max-w-[25rem] relative top-[1rem] z-10 flex flex-col gap-2 mt-6 lg:mt-0 cursor-pointer shadow-md p-4 rounded-md transition-all duration-200 bg-bgBase2 text-textDark min-h-[8rem] ${
+        !loading &&
+        (cart.length > 0 ||
+          userInfo ||
+          userInfo.cart ||
+          userInfo.cart.length > 0) &&
+        "hidden"
+      } ${
         !loading
           ? "h-fit animate-none"
           : "animate-pulseBg h-[8rem] lg:h-[12rem]"

@@ -8,12 +8,14 @@ import {
 import CartItemList from "../components/cart-components/cartItemsList";
 import CartSummary from "../components/cart-components/cartSummary";
 import useProductsForCart from "../components/utilities/getProductsForCart";
+import isLoggedIn from "../components/utilities/isLoggedIn";
 
 const CartPage = () => {
+  const loggedIn = isLoggedIn();
   const [error, setError] = useState(null);
   const [cart, setCart] = useState([]);
   const { userInfo } = useContext(ProductContext);
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(loggedIn);
   const [loading, products, fetchProducts] = useProductsForCart();
   useEffect(() => {
     window.scrollTo(0, 0);

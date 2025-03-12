@@ -27,7 +27,7 @@ const ProductImage = ({ product, productColor = null, loading = false }) => {
     <>
       <div className="w-full max-w-[35rem] mx-auto">
         {loading ? (
-          <div className="object-cover rounded-b-md w-fit h-full object-top mx-auto aspect-[3/4] bg-bgBase3 animate-pulseBg "></div>
+          <div className="object-cover rounded-b-md w-fit h-full object-top mx-auto aspect-[3/4] animate-pulseBg opacity-40"></div>
         ) : (
           <img
             src={imgSrc}
