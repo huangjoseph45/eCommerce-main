@@ -42,6 +42,16 @@ const Header = ({
   ] = useFetchSections();
   const [showLogin, setShowLogin] = useState(showLoginModal);
   const { isLoading, data, refetch } = useFetchServerData();
+  const [showCart, setShowCart] = useState(false);
+  const url = window.location.href;
+
+  useEffect(() => {
+    if (url.indexOf("/p/") > -1) {
+      setShowCart(true);
+    } else {
+      setShowCart(false);
+    }
+  }, [url]);
 
   useEffect(() => {
     setVisible(showBackground);
@@ -161,6 +171,7 @@ const Header = ({
           <ProfileButton showLogin={showLogin} setShowLogin={setShowLogin} />
         </div>
         <div className="lg:hidden gap-3 sm:gap-4 w-fit justify-center items-center flex ">
+          {showCart && <Cart />}
           <Sidebar
             sections={sectionResults}
             visible={isVisible}

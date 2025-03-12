@@ -17,13 +17,12 @@ const CartSummaryHeader = ({
           {value}
           {postfix && postfix}
         </p>
-      ) : loading ? (
-        <div className="w-[5rem]">
-          {" "}
-          <SquigglyText />
-        </div>
-      ) : (
+      ) : !loading && !value ? (
         <p>{zeroText}</p>
+
+      ) : ( <div className="w-[5rem]">
+        <SquigglyText />
+      </div>
       )}
     </div>
   );

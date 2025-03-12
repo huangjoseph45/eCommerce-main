@@ -20,6 +20,12 @@ const ProductQuantity = ({ quantity, sku, deleteFunc }) => {
   const submitForm = useCallback(
     (e = null) => {
       if (e.key === "Enter") {
+        setUserInfo({
+          ...userInfo,
+          cart: userInfo.cart.map((product) =>
+            product.sku === sku ? { ...product, quantity: value } : product
+          ),
+        });
         refetch({
           cart: userInfo.cart.map((product) => {
             return product.sku.split()[0] === sku
@@ -27,6 +33,9 @@ const ProductQuantity = ({ quantity, sku, deleteFunc }) => {
               : product;
           }),
         });
+        if (value === 0) {
+          handleDelete();
+        }
         inputRef.current.blur();
       } else {
         return;

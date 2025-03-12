@@ -27,6 +27,7 @@ const settingHeader = {
     x: "-100%",
     transition: {
       duration: 0.15,
+      type: "spring",
     },
   },
 };

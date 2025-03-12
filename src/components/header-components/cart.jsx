@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { ProductContext } from "../utilities/ContextManager";
 import { useNavigate } from "react-router-dom";
+import { motion } from "motion/react";
 
 const Cart = () => {
   const { userInfo } = useContext(ProductContext);
@@ -20,7 +21,11 @@ const Cart = () => {
   }, [userInfo]);
 
   return (
-    <a
+    <motion.a
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      exit={{ scale: 0 }}
+      transition={{ type: "spring", stiffness: 400, damping: 20, mass: 0.5 }}
       className="flex items-center justify-center hover:text-bgTertiary relative cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 rounded-full p-2  aspect-square"
       aria-label="Cart"
       href="/cart"
@@ -48,7 +53,7 @@ const Cart = () => {
           {numItems}
         </span>
       )}
-    </a>
+    </motion.a>
   );
 };
 

@@ -1,10 +1,13 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { ProductContext } from "../utilities/ContextManager";
 import { createPortal } from "react-dom";
 import parsePrice from "../utilities/parsePrice";
 import Button from "../button";
 import { useNavigate } from "react-router-dom";
 import useDynamicComponent from "../utilities/useDynamicComponent";
+
+const ELEMENT_SIZE_REM = 20;
 
 const ProductPopup = ({
   setShowPopup,
@@ -23,12 +26,17 @@ const ProductPopup = ({
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
 
   useEffect(() => {
-    const handleResize = () => setIsDesktop(window.innerWidth > 768);
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth > 768);
+    };
+    console.log();
+    window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [isDesktop]);
 
   const productPrice = parsePrice(product?.price, product?.discount);
   const nav = useNavigate();
+  console.log(isDesktop);
 
   return createPortal(
     <AnimatePresence>
@@ -37,21 +45,29 @@ const ProductPopup = ({
           initial={{
             scale: 0,
             y: "-100%",
-            x: `${isDesktop ? "205%" : 0}`,
+            x: `${
+              isDesktop ? `${window.innerWidth - ELEMENT_SIZE_REM * 16}px` : 0
+            }`,
           }}
           animate={{
             scale: 1,
             y: "-1rem",
-            x: `${isDesktop ? "205%" : 0}`,
+            x: `${
+              isDesktop ? `${window.innerWidth - ELEMENT_SIZE_REM * 16}px` : 0
+            }`,
           }}
-          exit={{ scale: 0, y: "-100%", x: `${isDesktop ? "240%" : 0}` }}
+          exit={{
+            scale: 0,
+            y: "-100%",
+            x: `${
+              isDesktop ? `${window.innerWidth - ELEMENT_SIZE_REM * 16}px` : 0
+            }`,
+          }}
           transition={{
             type: "spring",
             mass: 0.5,
           }}
-          className={
-            "fixed -top-[1rem] bg-bgBase shadow-md  cursor-pointer pt-[8rem] p-3 rounded-b-xl px-6 w-full md:w-[30rem] z-20"
-          }
+          className={`fixed -top-[1rem] bg-bgBase shadow-md  cursor-pointer pt-[8rem] p-3 rounded-b-xl px-6 w-full md:w-[${ELEMENT_SIZE_REM}rem] z-20`}
         >
           <div className=" max-w-[30rem] justify-center items-center flex flex-col gap-2  mx-auto">
             {" "}

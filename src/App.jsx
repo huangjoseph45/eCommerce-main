@@ -44,6 +44,7 @@ function App() {
     useCreateProduct();
   const { createTestProducts } = useCreateTestProducts();
   const [userInfo, setUserInfo] = useState({});
+  const headerRef = useRef();
 
   const productLinks = useRef();
 

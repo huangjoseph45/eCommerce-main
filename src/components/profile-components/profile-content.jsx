@@ -216,7 +216,11 @@ const ProfileContent = ({
             animate={{ opacity: 1, scale: 1, zIndex: 10 }}
             exit={{ opacity: 0.7, scale: 0 }}
             transition={{
-              duration: 0.1, // Applies to initial and animate by default
+              duration: 0.1,
+              type: "spring",
+              stiffness: 200,
+              damping: 15,
+              mass: 0.5,
             }}
             className="mt-4 w-fit mx-2"
           >
