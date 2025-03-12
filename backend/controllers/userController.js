@@ -25,6 +25,7 @@ const validateFields = (fields, res) => {
  */
 const findUserByEmail = async (email, res) => {
   const user = await User.findOne({ email }).select("+password");
+
   if (!user) {
     return null;
   }
@@ -90,6 +91,7 @@ const checkUser = async (req, res) => {
       return;
 
     // Find user by email
+
     const user = await findUserByEmail(email, res);
     if (!user) return;
 

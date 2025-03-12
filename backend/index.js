@@ -15,7 +15,6 @@ const app = express();
 const MONGO_URI = process.env.MONGO_URI;
 const SECRET = process.env.SECRET;
 console.log(MONGO_URI);
-
 mongoose
   .connect(MONGO_URI)
   .then(() => console.log("Connected to MongoDB"))
@@ -23,9 +22,7 @@ mongoose
 
 app.use(
   cors({
-    origin: (origin, callback) => {
-      callback(null, origin || "*"); // Allow any origin
-    },
+    origin: process.env.VITE_CLIENT_PATH,
     credentials: true, // Allow cookies & authentication headers
     methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
@@ -55,10 +52,13 @@ app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/content", contentRoutes);
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.use("/", (req, res) => {
+  res.send("Welcome");
 });
 
 // Start server
-const port = process.env.PORT || 2000;
-app.listen(port, () => console.log(`Server running on Port ${port}`));
+const PORT = 2000;
+app.listen(PORT, () => {
+  console.log(`Server running on Port ${PORT}`);
+  console.log(process.env.VITE_PATH);
+});
