@@ -6,8 +6,8 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
 const mongoose = require("mongoose");
-const userRoutes = require("./routes/userRoutes");
-const productRoutes = require("./routes/productRoutes");
+const userRoutes = require("./routes/userRoutes.js");
+const productRoutes = require("./routes/productRoutes.js");
 const paymentRoutes = require("./routes/paymentRoutes.js");
 const contentRoutes = require("./routes/contentRoutes.js");
 
