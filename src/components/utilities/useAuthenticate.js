@@ -13,6 +13,7 @@ const useAuthenticate = ({
   const [isLoading, setIsLoading] = useState(false);
   const [loading, result, tryLogout] = useLogout();
   const [errorMessage, setErrorMessage] = useState("");
+  const url = `${import.meta.env.VITE_PATH}/users`;
 
   const handleAuthenticate = async (event) => {
     setIsLoading(true);
@@ -36,9 +37,7 @@ const useAuthenticate = ({
 
       if (!validatedEmail || !validatedPassword) return;
 
-      const endpoint = isModeSignIn
-        ? "http://localhost:2000/api/users/signin"
-        : "http://localhost:2000/api/users/createuser";
+      const endpoint = isModeSignIn ? `${url}/signin` : `${url}/createuser`;
 
       const response = await fetch(endpoint, {
         method: "POST",

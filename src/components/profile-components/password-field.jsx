@@ -12,6 +12,7 @@ const PasswordField = () => {
     confirmationField: "",
   });
   const [message, setMessage] = useState("");
+  const url = `${import.meta.env.VITE_PATH}/users/update-sensitive-data`;
 
   const fieldSelected = () => {
     setIsSelected(true);
@@ -38,18 +39,15 @@ const PasswordField = () => {
     let response;
     let data;
     try {
-      const response = await fetch(
-        "http://localhost:2000/api/users/update-sensitive-data",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            oldPassword: fieldValue.oldField,
-            password: fieldValue.primaryField,
-          }),
-        }
-      );
+      const response = await fetch(url, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          oldPassword: fieldValue.oldField,
+          password: fieldValue.primaryField,
+        }),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
