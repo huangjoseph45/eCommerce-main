@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "server": "nodemon /Users/josephhuang/Desktop/VSCode/eCommerce-main/backend/index.js",
+    "server": "nodemon backend/api/index.js",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
