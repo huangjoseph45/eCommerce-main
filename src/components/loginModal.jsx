@@ -68,6 +68,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
   const handleSubmit = async (event) => {
     onAuthenticate(event);
   };
+
   useEffect(() => {
     setModeSignIn(showLogin !== "create");
     if (showLogin) {

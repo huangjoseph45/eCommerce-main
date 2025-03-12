@@ -3,6 +3,7 @@ import useLogout from "./useLogout";
 import validateEmail from "./validateEmail";
 import validatePassword from "./validatePassword";
 import { useNavigate } from "react-router-dom";
+import isLoggedIn from "./isLoggedIn";
 
 const useAuthenticate = ({
   setErrorState,
@@ -26,6 +27,7 @@ const useAuthenticate = ({
     // tryLogout();
 
     try {
+      console.log("hi");
       const validatedEmail = validateEmail(data.email);
       const validatedPassword = validatePassword(data.password);
 
@@ -67,7 +69,7 @@ const useAuthenticate = ({
       }
 
       setIsLoading(false);
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       setIsLoading(false);
       setErrorState((prev) => ({
