@@ -40,6 +40,7 @@ app.use(
     saveUninitialized: false,
     rolling: true,
     cookie: {
+      domain: PROD ? ".vercel.app" : "",
       sameSite: PROD ? "none" : false,
       secure: PROD,
       maxAge: 1000 * 60 * 60 * 36, // 36 hours

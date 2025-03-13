@@ -25,6 +25,7 @@ const AuthProvider = ({ children }) => {
 
 const getCookie = (name) => {
   const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
+  console.log(document.cookie);
   return match ? match[2] : null;
 };
 
