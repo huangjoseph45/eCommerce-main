@@ -27,7 +27,7 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
-
+app.set("trust proxy", 1); // trust first proxy
 app.use(
   session({
     store: MongoStore.create({ mongoUrl: MONGO_URI }),
@@ -37,7 +37,7 @@ app.use(
     saveUninitialized: false,
     rolling: true,
     cookie: {
-      domain: "onrender.com", // Backend's domain
+      domain: ".vercel.app",
       sameSite: "none", // Allows cross-origin cookies
       secure: true,
       maxAge: 1000 * 60 * 60 * 36, // 36 hours
