@@ -37,10 +37,10 @@ app.use(
     saveUninitialized: false,
     rolling: true,
     cookie: {
-      secure: false,
-      httpOnly: false,
+      domain: "onrender.com", // Backend's domain
+      sameSite: "none", // Allows cross-origin cookies
+      secure: true,
       maxAge: 1000 * 60 * 60 * 36, // 36 hours
-      sameSite: "lax",
     },
   })
 );
