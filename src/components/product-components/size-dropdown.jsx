@@ -92,7 +92,7 @@ const SizesDropdown = ({
 
   return (
     <>
-      <p className="text-lg mb-1">Size:</p>
+      <p className="text-base mb-1">Size:</p>
       <div
         className="flex flex-col  items-center justify-center w-fit relative mb-6"
         ref={dropdownRef}
@@ -102,7 +102,7 @@ const SizesDropdown = ({
           className="handle group flex items-center justify-center bg-bgBase w-fit m-auto px-4 py-2 cursor-pointer hover:bg-bgSecondaryLight box-border outline outline-1 border-bgSecondaryLight rounded-md"
         >
           <p
-            className={`text-xl text-textDark group-hover:text-textLight select-none transition-all duration-300 ${
+            className={`text-lg text-textDark group-hover:text-textLight select-none transition-all duration-300 ${
               selected !== defaultSelector && "uppercase"
             }`}
           >

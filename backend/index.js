@@ -40,7 +40,7 @@ app.use(
     saveUninitialized: false,
     rolling: true,
     cookie: {
-      // sameSite: PROD ? "none" : "none",
+      sameSite: PROD ? "lax" : false,
       secure: PROD,
       maxAge: 1000 * 60 * 60 * 36, // 36 hours
       httpOnly: false,
