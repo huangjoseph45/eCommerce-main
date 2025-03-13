@@ -2,12 +2,17 @@ import { useEffect, useState } from "react";
 import { AuthContext } from "./ContextManager";
 
 const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(getCookie("sessionId") !== null);
 
   useEffect(() => {
-    if (getCookie("sessionId") !== null) {
-      setIsLoggedIn(true);
-    }
+    const checkCookie = () => {
+      const hasSession = getCookie("sessionId") !== null;
+      setIsLoggedIn(hasSession);
+    };
+
+    const interval = setInterval(checkCookie, 1000);
+
+    return () => clearInterval(interval); // Cleanup on unmount
   }, []);
 
   return (

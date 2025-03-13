@@ -99,7 +99,7 @@ const SizesDropdown = ({
       >
         <div
           onClick={showFunc}
-          className="handle group flex items-center justify-center bg-bgBase w-fit m-auto px-4 py-2 cursor-pointer hover:bg-bgSecondaryLight box-border outline  border-bgSecondaryLight rounded-md"
+          className="handle group flex items-center justify-center bg-bgBase w-fit m-auto px-4 py-2 cursor-pointer hover:bg-bgSecondaryLight box-border outline outline-1 border-bgSecondaryLight rounded-md"
         >
           <p
             className={`text-xl text-textDark group-hover:text-textLight select-none transition-all duration-300 ${

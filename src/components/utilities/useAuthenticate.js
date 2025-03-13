@@ -66,6 +66,7 @@ const useAuthenticate = ({
       }
 
       setIsLoading(false);
+      window.location.reload();
     } catch (error) {
       setIsLoading(false);
       setErrorState((prev) => ({
