@@ -7,6 +7,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkCookie = () => {
       const hasSession = getCookie("sessionId") !== null;
+      console.log("HAS SESSION: " + hasSession);
       setIsLoggedIn(hasSession);
     };
 
