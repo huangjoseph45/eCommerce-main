@@ -9,6 +9,7 @@ import { useLocation } from "react-router-dom";
 import { useState, useRef, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
 import isLoggedIn from "./utilities/isLoggedIn";
+import useAuth from "./utilities/useAuth";
 import useFetchServerData from "../components/utilities/getDataFromServer";
 import { useFetchSections } from "./utilities/useSectionFunctions";
 import LoginModal from "./loginModal";
@@ -30,7 +31,7 @@ const Header = ({
 }) => {
   const [isVisible, setVisible] = useState(showBackground);
   const [isSearching, setIsSearching] = useState(false);
-  const loggedIn = isLoggedIn();
+  const loggedIn = useAuth();
   const location = useLocation();
   const timeoutRef = useRef(null);
   const { setUserInfo, userInfo, setSections } = useContext(ProductContext);
@@ -44,6 +45,8 @@ const Header = ({
   const { isLoading, data, refetch } = useFetchServerData();
   const [showCart, setShowCart] = useState(false);
   const url = window.location.href;
+
+  console.log(loggedIn);
 
   useEffect(() => {
     if (url.indexOf("/p/") > -1) {
@@ -77,8 +80,6 @@ const Header = ({
   }, [location.pathname]);
 
   useEffect(() => {
-    const loggedIn = isLoggedIn();
-
     if (!data && isEmpty(userInfo)) {
       refetch({
         queries: ["cart", "firstName"],

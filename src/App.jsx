@@ -1,5 +1,5 @@
 import "./index.css";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { ProductContext } from "./components/utilities/ContextManager";
@@ -8,11 +8,10 @@ import useCreateProduct, {
 } from "./components/utilities/useCreateProduct";
 import useFetchProducts from "./components/utilities/useFetchMultipleProducts";
 import { useCreateSections } from "./components/utilities/useSectionFunctions";
-
+import AuthProvider from "./components/utilities/AuthProvider";
 import Shopping from "./pages/Shopping";
 import NoPage from "./pages/NoPage";
 import ProductPage from "./pages/ProductPage";
-import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import CartPage from "./pages/CartPage";
 import SuccessPage from "./pages/SuccessPage";
@@ -98,45 +97,47 @@ function App() {
 
   return (
     <>
-      <ProductContext.Provider
-        value={{ userInfo, setUserInfo, sections, setSections }}
-      >
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/s/" element={<Shopping />} />
-            <Route path="/new" element={<Shopping />} />
+      <AuthProvider>
+        <ProductContext.Provider
+          value={{ userInfo, setUserInfo, sections, setSections }}
+        >
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/s/" element={<Shopping />} />
+              <Route path="/new" element={<Shopping />} />
 
-            <Route path="*" element={<NoPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/order" element={<SuccessPage />} />
-            <Route path="/search" element={<SearchResultsPage />} />
-            <Route
-              path="/p/:productName/:productId/:color?/:size?"
-              element={<ProductPage />}
-            />
+              <Route path="*" element={<NoPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/order" element={<SuccessPage />} />
+              <Route path="/search" element={<SearchResultsPage />} />
+              <Route
+                path="/p/:productName/:productId/:color?/:size?"
+                element={<ProductPage />}
+              />
 
-            {productLinks.current}
-            {sections &&
-              sections.map((category, index) => {
-                return (
-                  <Route
-                    key={`category-${index}`}
-                    path={`/${encodeURIComponent(category.slug)}`}
-                    element={
-                      <Shopping
-                        categoryName={category.sectionTitle}
-                        categoryId={category._id}
-                        searchQuery={category.tags}
-                      />
-                    }
-                  />
-                );
-              })}
-          </Routes>
-        </BrowserRouter>
-      </ProductContext.Provider>
+              {productLinks.current}
+              {sections &&
+                sections.map((category, index) => {
+                  return (
+                    <Route
+                      key={`category-${index}`}
+                      path={`/${encodeURIComponent(category.slug)}`}
+                      element={
+                        <Shopping
+                          categoryName={category.sectionTitle}
+                          categoryId={category._id}
+                          searchQuery={category.tags}
+                        />
+                      }
+                    />
+                  );
+                })}
+            </Routes>
+          </BrowserRouter>
+        </ProductContext.Provider>
+      </AuthProvider>
     </>
   );
 }

@@ -6,7 +6,6 @@ const InputBox = ({
   changeFunc,
   maxLength = 999,
 }) => {
-  console.log(children);
   return (
     <>
       {!isEmpty && !children ? (

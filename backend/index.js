@@ -14,6 +14,8 @@ const contentRoutes = require("./routes/contentRoutes.js");
 const app = express();
 const MONGO_URI = process.env.MONGO_URI;
 const SECRET = process.env.SECRET;
+const PROD = process.env.PROD?.toLowerCase() === "true";
+
 console.log(MONGO_URI);
 mongoose
   .connect(MONGO_URI)
@@ -37,8 +39,8 @@ app.use(
     saveUninitialized: false,
     rolling: true,
     cookie: {
-      sameSite: "none",
-      secure: true,
+      // sameSite: PROD ? "none" : "none",
+      secure: PROD,
       maxAge: 1000 * 60 * 60 * 36, // 36 hours
       httpOnly: false,
     },

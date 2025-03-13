@@ -59,8 +59,6 @@ const createSession = ({ req, res, user, remember = false }) => {
   } else {
     req.session.cookie.maxAge = 2 * 60 * 60 * 1000;
   }
-  console.log(user);
-  console.log(req.session);
 
   req.session.save((err) => {
     if (err) {

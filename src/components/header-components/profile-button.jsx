@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router-dom";
+import useAuth from "../utilities/useAuth";
 import isLoggedIn from "../utilities/isLoggedIn";
 import { motion } from "motion/react";
 
 const ProfileButton = ({ showLogin, setShowLogin, setShowSidebar }) => {
-  const loggedIn = isLoggedIn();
+  const loggedIn = useAuth();
 
   const clickedFunc = () => {
     if (!loggedIn) {

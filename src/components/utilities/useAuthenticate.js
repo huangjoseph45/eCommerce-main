@@ -3,7 +3,6 @@ import useLogout from "./useLogout";
 import validateEmail from "./validateEmail";
 import validatePassword from "./validatePassword";
 import { useNavigate } from "react-router-dom";
-import isLoggedIn from "./isLoggedIn";
 
 const useAuthenticate = ({
   setErrorState,

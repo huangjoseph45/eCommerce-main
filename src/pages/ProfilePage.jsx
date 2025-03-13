@@ -8,13 +8,12 @@ import { useNavigate } from "react-router-dom";
 import { ShowProfileContext } from "../components/utilities/ContextManager.js";
 import Footer from "../components/footer.jsx";
 import useFetchServerData from "../components/utilities/getDataFromServer.js";
-import isLoggedIn from "../components/utilities/isLoggedIn.js";
-
+import useAuth from "../components/utilities/useAuth.jsx";
 const ProfilePage = () => {
   const [showProfileHeaders, setShowProfileHeaders] = useState(true);
   const [currentSection, setCurrentSection] = useState(0);
   const [userInfo, setUserInfo] = useState();
-  const loggedIn = isLoggedIn();
+  const loggedIn = useAuth();
   const fetchFields = [
     "email",
     "firstName",
@@ -128,7 +127,7 @@ const ProfilePage = () => {
       });
     }
 
-    if (!isLoggedIn) {
+    if (!loggedIn) {
       nav("/");
     }
 

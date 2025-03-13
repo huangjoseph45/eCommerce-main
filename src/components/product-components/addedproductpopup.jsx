@@ -67,10 +67,9 @@ const ProductPopup = ({
             type: "spring",
             mass: 0.5,
           }}
-          className={`fixed -top-[1rem] bg-bgBase shadow-md  cursor-pointer pt-[8rem] p-3 rounded-b-xl px-6 w-full md:w-[${ELEMENT_SIZE_REM}rem] z-20`}
+          className={`fixed -top-[1rem] bg-bgBase shadow-md  cursor-pointer pt-[8rem] p-3 rounded-b-xl px-6 w-full md:w-[20rem] z-20 `}
         >
-          <div className=" max-w-[30rem] justify-center items-center flex flex-col gap-2  mx-auto">
-            {" "}
+          <div className="w-full justify-center items-center flex flex-col gap-2  mx-auto">
             <div className="flex items-center gap-2 py-2  w-full">
               <svg
                 aria-hidden="true"

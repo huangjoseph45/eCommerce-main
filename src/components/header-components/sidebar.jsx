@@ -9,7 +9,7 @@ import Cart from "./cart";
 import SearchButton from "./search-button";
 import { ProductContext } from "../utilities/ContextManager";
 import { useNavigate } from "react-router-dom";
-import isLoggedIn from "../utilities/isLoggedIn";
+import useAuth from "../utilities/useAuth";
 import useProductsForCart from "../utilities/getProductsForCart";
 
 import useSideBarToggle from "../utilities/sideBarToggles";
@@ -18,7 +18,7 @@ const Sidebar = ({ sections, visible, setShowLogin, showLogin }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const nav = useNavigate();
-  const loggedIn = isLoggedIn();
+  const loggedIn = useAuth();
   const { userInfo } = useContext(ProductContext);
   const [loading, products, fetchProducts] = useProductsForCart();
   const [cart, setCart] = useState();
@@ -81,9 +81,9 @@ const Sidebar = ({ sections, visible, setShowLogin, showLogin }) => {
                 }}
               ></motion.div>
               <motion.ul
-                className="fixed right-0 pt-8 top-0 w-[22rem] h-full bg-bgBase pl-7 text-xl "
+                className="fixed right-0 pt-8 top-0 w-[22rem] h-full bg-bgBase px-4 text-xl "
                 initial={{ x: "100%" }}
-                animate={{ x: 5 }}
+                animate={{ x: 0 }}
                 exit={{ x: "100%" }}
                 transition={{
                   duration: 0.15,
@@ -155,7 +155,7 @@ const Sidebar = ({ sections, visible, setShowLogin, showLogin }) => {
                     {sectionElements &&
                       sectionElements.map((section) => {
                         return (
-                          <li key={section.key} className="border-b p-2 mr-4">
+                          <li key={section.key} className="border-b py-2 mr-4">
                             {section}
                           </li>
                         );

@@ -1,7 +1,7 @@
 // getDataFromServer.js
 import _ from "lodash";
 import { useContext, useEffect, useState, useCallback } from "react";
-import isLoggedIn from "./isLoggedIn";
+
 // const getDataFromServer = async ({ setUserInfo = null, userInfo }) => {
 //   try {
 //     const dataResponse = await fetch(
@@ -36,14 +36,11 @@ const useFetchServerData = (options = {}) => {
   const [isError, setIsError] = useState(false);
 
   const getDataFunc = async (queries, auth) => {
-    const loggedIn = isLoggedIn();
-
-    if (!auth || !loggedIn) {
+    if (!auth) {
       throw new Error(`User is not authorized`);
     }
     setLoading(true);
 
-    console.log(queries);
     try {
       const response = await fetch(
         `${import.meta.env.VITE_PATH}/users/fetch-data`,

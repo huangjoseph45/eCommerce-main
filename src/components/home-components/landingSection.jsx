@@ -1,10 +1,10 @@
-import isLoggedIn from "../../components/utilities/isLoggedIn";
+import useAuth from "../utilities/useAuth";
 import FancyText from "./fancyText";
 import { useEffect, useState } from "react";
 import LoginModal from "../loginModal";
 
 const LandingSection = () => {
-  const loggedIn = isLoggedIn();
+  const loggedIn = useAuth();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -17,7 +17,7 @@ const LandingSection = () => {
       <img
         src="https://www.ralphlauren.com/on/demandware.static/-/Library-Sites-RalphLauren_NA_Library/default/dwb54d4127/img/202501/20250123-men-polo-active-club-plp/0123_m_polo_active_club_plp_c01_img.jpg"
         alt=""
-        className="absolute object-cover w-full h-full select-none z-0"
+        className="absolute object-cover w-full h-full select-none -z-10"
       />
       <div className="absolute top-1/3 flex flex-col items-center justify-center gap-4">
         <FancyText text={"Imagine Collective"} />

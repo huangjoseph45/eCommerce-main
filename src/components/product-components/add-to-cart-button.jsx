@@ -2,22 +2,20 @@ import { useContext, useCallback, useState, useEffect } from "react";
 import { ProductInfoContext } from "../utilities/ContextManager";
 import { ProductContext } from "../utilities/ContextManager";
 import isEmpty from "../utilities/isEmpty";
-import { useNavigate } from "react-router-dom";
 import useUpdateServerData from "../utilities/updateServerData";
 import Button from "../button";
 import ProductPopup from "./addedproductpopup";
-import isLoggedIn from "../utilities/isLoggedIn";
+import useAuth from "../utilities/useAuth";
 import LoginModal from "../loginModal";
 
 const AddToCart = ({ product }) => {
   const { productInfo } = useContext(ProductInfoContext);
   const { userInfo, setUserInfo } = useContext(ProductContext);
   const [showPopup, setShowPopup] = useState(false);
-  const nav = useNavigate();
   const { refetch } = useUpdateServerData({
     dataToUpdate: null,
   });
-  const loggedIn = isLoggedIn();
+  const loggedIn = useAuth();
   const [showLogin, setShowLogin] = useState(false);
 
   const [popupProduct, setPopupProduct] = useState();
