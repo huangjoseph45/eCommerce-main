@@ -8,7 +8,6 @@ import Sidebar from "./header-components/sidebar";
 import { useLocation } from "react-router-dom";
 import { useState, useRef, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
-import isLoggedIn from "./utilities/isLoggedIn";
 import useAuth from "./utilities/useAuth";
 import useFetchServerData from "../components/utilities/getDataFromServer";
 import { useFetchSections } from "./utilities/useSectionFunctions";
@@ -17,6 +16,7 @@ import LoginModal from "./loginModal";
 import { ProductContext } from "../components/utilities/ContextManager";
 import { isEmpty } from "lodash";
 import useDynamicComponent from "./utilities/useDynamicComponent";
+import SquigglyText from "./cart-components/squigglyText";
 
 const opacityVariants = {
   visible: { opacity: 1 },
@@ -31,7 +31,7 @@ const Header = ({
 }) => {
   const [isVisible, setVisible] = useState(showBackground);
   const [isSearching, setIsSearching] = useState(false);
-  const loggedIn = useAuth();
+  const { loggedIn } = useAuth();
   const location = useLocation();
   const timeoutRef = useRef(null);
   const { setUserInfo, userInfo, setSections } = useContext(ProductContext);
@@ -45,8 +45,6 @@ const Header = ({
   const { isLoading, data, refetch } = useFetchServerData();
   const [showCart, setShowCart] = useState(false);
   const url = window.location.href;
-
-  console.log(loggedIn);
 
   useEffect(() => {
     if (url.indexOf("/p/") > -1) {
@@ -97,7 +95,11 @@ const Header = ({
     } else {
       setSectionResults(cachedSections);
     }
-  }, []);
+
+    if (userInfo.firstName) {
+      sessionStorage.setItem("name", userInfo.firstName);
+    }
+  }, [loggedIn, JSON.stringify(userInfo)]);
 
   useEffect(() => {
     if (sectionResults) {
@@ -142,13 +144,14 @@ const Header = ({
             href="/profile"
             className="hover:underline hover:text-bgTertiary transition-all duration-100 text-textLight cursor-pointer"
           >
-            {data && data.firstName
-              ? data.firstName
+            {sessionStorage.getItem("name")
+              ? `${sessionStorage.getItem("name")}!`
+              : data && data.firstName
+              ? `${data.firstName}!`
               : userInfo && userInfo.firstName
-              ? userInfo.firstName
-              : "User"}
+              ? `${userInfo.firstName}!`
+              : "User!"}
           </a>
-          <div className="">!</div>
         </div>
       )}
       <motion.div

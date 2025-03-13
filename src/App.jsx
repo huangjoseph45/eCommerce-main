@@ -56,8 +56,6 @@ function App() {
         credentials: "include",
         headers: { "Content-Type": "application/json" },
       });
-
-      console.log(response);
     };
     handleAuth();
   }, []);

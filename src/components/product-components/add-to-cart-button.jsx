@@ -15,7 +15,7 @@ const AddToCart = ({ product }) => {
   const { refetch } = useUpdateServerData({
     dataToUpdate: null,
   });
-  const loggedIn = useAuth();
+  const { loggedIn } = useAuth();
   const [showLogin, setShowLogin] = useState(false);
 
   const [popupProduct, setPopupProduct] = useState();

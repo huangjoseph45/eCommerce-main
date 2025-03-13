@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import LoginModal from "../loginModal";
 
 const LandingSection = () => {
-  const loggedIn = useAuth();
+  const { loggedIn } = useAuth();
 
   useEffect(() => {
     window.scrollTo(0, 0);

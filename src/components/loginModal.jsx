@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { ProductContext } from "../components/utilities/ContextManager";
 import useSideBarToggle from "./utilities/sideBarToggles";
+import useAuth from "./utilities/useAuth";
 
 // FIND SOME WAY TO USE PORTALS???
 
@@ -41,6 +42,7 @@ const formVariants = {
 };
 
 const LoginModal = ({ showLogin, setShowLogin }) => {
+  const { loggedIn } = useAuth();
   const [isModeSignIn, setModeSignIn] = useState();
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -57,6 +59,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
     userInfo,
     isModeSignIn,
   });
+
   useSideBarToggle({ setShowSidebar: setShowLogin, showSidebar: showLogin });
 
   //   const [searchParams] = useSearchParams();
@@ -75,6 +78,12 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
       document.body.style.overflow = "hidden";
     }
   }, [showLogin]);
+
+  useEffect(() => {
+    if (loggedIn) {
+      setShowLogin(false);
+    }
+  }, [loggedIn, isLoading]);
 
   const renderErrorMessage = (condition, message, resetStateKey) => {
     return (

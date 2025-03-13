@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import useLogout from "./useLogout";
 import validateEmail from "./validateEmail";
 import validatePassword from "./validatePassword";
-import { useNavigate } from "react-router-dom";
+import { AuthContext } from "./ContextManager";
 
 const useAuthenticate = ({
   setErrorState,
@@ -14,6 +14,7 @@ const useAuthenticate = ({
   const [loading, result, tryLogout] = useLogout();
   const [errorMessage, setErrorMessage] = useState("");
   const url = `${import.meta.env.VITE_PATH}/users`;
+  const { setIsLoggedIn } = useContext(AuthContext);
 
   const handleAuthenticate = async (event) => {
     setIsLoading(true);
@@ -34,7 +35,11 @@ const useAuthenticate = ({
         isError: false,
       });
 
-      if (!validatedEmail || !validatedPassword) return;
+      if (!validatedEmail || !validatedPassword) {
+        setIsLoading(false);
+
+        return;
+      }
 
       const endpoint = isModeSignIn ? `${url}/signin` : `${url}/createuser`;
 
@@ -60,21 +65,18 @@ const useAuthenticate = ({
           errorMessage: "Invalid Email or Password",
         }));
         setErrorMessage("Invalid Email or Password");
-        setIsLoading(false);
-
-        return;
+        setIsLoggedIn(true);
       }
-
-      setIsLoading(false);
-      window.location.reload();
     } catch (error) {
-      setIsLoading(false);
       setErrorState((prev) => ({
         ...prev,
         isError: true,
       }));
       setErrorMessage("Internal Server Error");
     }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   };
 
   const onAuthenticate = (event) => {

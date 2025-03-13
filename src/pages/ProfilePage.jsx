@@ -13,7 +13,7 @@ const ProfilePage = () => {
   const [showProfileHeaders, setShowProfileHeaders] = useState(true);
   const [currentSection, setCurrentSection] = useState(0);
   const [userInfo, setUserInfo] = useState();
-  const loggedIn = useAuth();
+  const { loggedIn } = useAuth();
   const fetchFields = [
     "email",
     "firstName",

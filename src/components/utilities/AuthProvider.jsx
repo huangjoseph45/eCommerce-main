@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { AuthContext } from "./ContextManager";
 
 const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(getCookie("sessionId") !== null);
+  const [loggedIn, setIsLoggedIn] = useState(getCookie("sessionId") !== null);
 
   useEffect(() => {
     const checkCookie = () => {
@@ -16,7 +16,9 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={isLoggedIn}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ loggedIn, setIsLoggedIn }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 

@@ -6,9 +6,9 @@ import { motion } from "motion/react";
 const Cart = () => {
   const { userInfo } = useContext(ProductContext);
   const [numItems, setNumItems] = useState(0);
-  const nav = useNavigate();
 
   useEffect(() => {
+    console.log(userInfo);
     if (userInfo?.cart && Array.isArray(userInfo.cart)) {
       const num = userInfo.cart.reduce((total, item) => {
         return item !== undefined && typeof item.quantity === "number"

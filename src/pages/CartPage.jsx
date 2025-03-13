@@ -11,7 +11,7 @@ import useProductsForCart from "../components/utilities/getProductsForCart";
 import useAuth from "../components/utilities/useAuth";
 
 const CartPage = () => {
-  const loggedIn = useAuth();
+  const { loggedIn } = useAuth();
   const [error, setError] = useState(null);
   const [cart, setCart] = useState([]);
   const { userInfo } = useContext(ProductContext);

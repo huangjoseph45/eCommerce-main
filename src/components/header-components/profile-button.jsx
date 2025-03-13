@@ -1,9 +1,8 @@
 import useAuth from "../utilities/useAuth";
-import isLoggedIn from "../utilities/isLoggedIn";
 import { motion } from "motion/react";
 
 const ProfileButton = ({ showLogin, setShowLogin, setShowSidebar }) => {
-  const loggedIn = useAuth();
+  const { loggedIn } = useAuth();
 
   const clickedFunc = () => {
     if (!loggedIn) {

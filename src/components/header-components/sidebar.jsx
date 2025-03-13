@@ -18,7 +18,7 @@ const Sidebar = ({ sections, visible, setShowLogin, showLogin }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const nav = useNavigate();
-  const loggedIn = useAuth();
+  const { loggedIn } = useAuth();
   const { userInfo } = useContext(ProductContext);
   const [loading, products, fetchProducts] = useProductsForCart();
   const [cart, setCart] = useState();
