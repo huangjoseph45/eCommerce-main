@@ -15,6 +15,7 @@ const app = express();
 const MONGO_URI = process.env.MONGO_URI;
 const SECRET = process.env.SECRET;
 const PROD = process.env.PROD?.toLowerCase() === "true";
+console.log(PROD);
 
 console.log(MONGO_URI);
 mongoose
