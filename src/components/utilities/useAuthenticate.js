@@ -24,10 +24,8 @@ const useAuthenticate = ({
 
     data["cart"] = userInfo;
     data["remember"] = checked;
-    // tryLogout();
 
     try {
-      console.log("hi");
       const validatedEmail = validateEmail(data.email);
       const validatedPassword = validatePassword(data.password);
 
@@ -69,7 +67,6 @@ const useAuthenticate = ({
       }
 
       setIsLoading(false);
-      // window.location.reload();
     } catch (error) {
       setIsLoading(false);
       setErrorState((prev) => ({

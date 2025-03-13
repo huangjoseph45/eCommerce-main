@@ -131,6 +131,20 @@ const checkUser = async (req, res) => {
   }
 };
 
+const authCheck = async (req, res) => {
+  if (req.session) {
+    const user = await User.find({ _id: req.session.user.id });
+    req.session.save();
+    return res.status(200).send({
+      hasSession: true,
+    });
+  } else {
+    return res
+      .status(400)
+      .send({ msg: "No session started.", hasSession: false });
+  }
+};
+
 /**
  * Handler to register a new user.
  */
@@ -394,4 +408,5 @@ module.exports = {
   handleLogout,
   handleDataUpdate,
   updateSensitiveData,
+  authCheck,
 };

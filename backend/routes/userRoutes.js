@@ -8,9 +8,17 @@ const {
   handleLogout,
   handleDataUpdate,
   updateSensitiveData,
+  authCheck,
 } = require("../controllers/userController.js");
 
 router.post("/signin", express.json({ type: "application/json" }), checkUser);
+
+router.get(
+  "/auth",
+  verifySession,
+  express.json({ type: "application/json" }),
+  authCheck
+);
 
 router.post("/createuser", express.json({ type: "application/json" }), newUser);
 

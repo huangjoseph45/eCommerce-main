@@ -48,6 +48,21 @@ function App() {
 
   const productLinks = useRef();
 
+  useEffect(() => {
+    const endpoint = `${import.meta.env.VITE_PATH}/users/auth`;
+
+    const handleAuth = async () => {
+      const response = await fetch(endpoint, {
+        method: "GET",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      console.log(response);
+    };
+    handleAuth();
+  }, []);
+
   // useEffect(() => {
   //   tryCreateSection({
   //     sectionTitle: "New Arrivals",
