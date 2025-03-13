@@ -37,8 +37,7 @@ app.use(
     saveUninitialized: false,
     rolling: true,
     cookie: {
-      domain: ".vercel.app",
-      sameSite: "none", // Allows cross-origin cookies
+      sameSite: "none",
       secure: true,
       maxAge: 1000 * 60 * 60 * 36, // 36 hours
     },
