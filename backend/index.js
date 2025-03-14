@@ -1,4 +1,5 @@
-require("dotenv").config();
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
 const express = require("express");
 const cors = require("cors"); // Import the CORS middleware
@@ -15,13 +16,13 @@ const app = express();
 const MONGO_URI = process.env.MONGO_URI;
 const SECRET = process.env.SECRET;
 const PROD = process.env.PROD?.toLowerCase() === "true";
-console.log(PROD);
 
-console.log(MONGO_URI);
 mongoose
   .connect(MONGO_URI)
   .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+  .catch((err) => console.error("MongoDB connection error:", err.message));
+
+app.use(express.json());
 
 app.use(
   cors({
@@ -50,7 +51,6 @@ app.use(
 );
 app.set("trust proxy", true);
 app.use("/api/stripe", paymentRoutes);
-app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/content", contentRoutes);
@@ -60,8 +60,8 @@ app.use("/", (req, res) => {
 });
 
 // Start server
-const PORT = 2000;
+const PORT = process.env.PORT || 2000;
 app.listen(PORT, () => {
   console.log(`Server running on Port ${PORT}`);
-  console.log(process.env.VITE_PATH);
+  console.log(PORT);
 });

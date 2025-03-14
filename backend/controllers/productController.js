@@ -1,5 +1,4 @@
 const MONGO_URI = process.env.MONGO_URI;
-const { default: mongoose } = require("mongoose");
 const { Product, StripeProduct, Discount } = require("../models/Products");
 const { TestProduct, StripeTestProduct } = require("../models/TestProducts.js");
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
@@ -135,6 +134,7 @@ const fetchProduct = async (req, res) => {
 };
 
 const fetchCategory = async (req, res) => {
+  console.log("FETCHINGs");
   const { tags, filter, cursor, test } = req.body;
   const useTestProducts = test === "true";
   const cursorIncrement = parseInt(process.env.VITE_CURSOR_INCREMENT);
