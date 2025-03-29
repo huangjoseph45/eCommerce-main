@@ -26,7 +26,7 @@ const FilterItem = ({
       <p className="text-base flex">{filterName}</p>
 
       <div
-        className={`outline outline-bgExtraSecondaryLight aspect-square size-[0rem] flex items-center justify-center p-[0.6rem] ${
+        className={`outline outline-bgExtraSecondaryLight aspect-square size-[0rem] flex items-center justify-center p-[0.4rem] ${
           type === "single" ? "rounded-full" : "rounded-sm"
         }`}
       >
@@ -38,7 +38,7 @@ const FilterItem = ({
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
               transition={{ duration: 0.3, type: "spring" }}
-              className={`bg-bgExtraSecondaryLight aspect-square flex items-center justify-center p-[.5rem] ${
+              className={`bg-bgExtraSecondaryLight aspect-square flex items-center justify-center p-[.35rem] ${
                 type === "single" ? "rounded-full" : "rounded-sm"
               }`}
             ></motion.div>

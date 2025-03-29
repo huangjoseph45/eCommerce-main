@@ -26,7 +26,7 @@ const CartItemList = ({
   }
 
   return (
-    <ul className="w-full flex flex-col items-center mx-auto">
+    <ul className="flex flex-col items-center mx-auto min-w-[20rem] w-full max-w-[30rem]">
       <h1 className="text-2xl my-2 mt-4 flex items-center self-start">Bag</h1>
       <ul className="flex flex-col gap-2 h-fit w-full">
         {!loading ? (

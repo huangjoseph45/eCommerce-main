@@ -7,6 +7,7 @@ const {
   fetchCategory,
   findPromo,
   createDiscount,
+  fetchTopProducts,
 } = require("../controllers/productController.js");
 
 router.post(
@@ -20,6 +21,9 @@ router.get(
   express.json({ type: "application/json" }),
   fetchProduct
 );
+
+router.post("/fetch-top", fetchTopProducts);
+
 router.post("/fetch", fetchCategory);
 router.get("/discount/:code", findPromo);
 router.post(

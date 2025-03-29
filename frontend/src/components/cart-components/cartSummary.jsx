@@ -5,8 +5,10 @@ import { AnimatePresence, motion } from "motion/react";
 import CheckoutButton from "./checkoutButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import useAuth from "../utilities/useAuth";
 
 const CartSummary = ({ products, loading = true, cart }) => {
+  const { loggedIn } = useAuth();
   const { userInfo } = useContext(ProductContext);
   const [subtotalCost, setSubtotalCost] = useState(0);
   const [discount, setDiscount] = useState({
@@ -106,121 +108,120 @@ const CartSummary = ({ products, loading = true, cart }) => {
       setSubtotalCost(cost.toFixed(2));
     }
   }, [products, JSON.stringify(userInfo)]);
+  console.log(
+    loggedIn &&
+      ((cart && cart.length > 0) ||
+        (userInfo.cart && userInfo.cart.length > 0)) &&
+      !loading
+  );
 
   return (
     <div
-      className={`min-w-[20rem] w-full max-w-[30rem] lg:max-w-[25rem] relative top-[1rem] z-10 flex flex-col gap-2 mt-6 lg:mt-0 cursor-pointer shadow-md p-4 rounded-md transition-all duration-200 bg-bgBase2 text-textDark min-h-[8rem] ${
-        !loading &&
-        (cart.length > 0 ||
-          userInfo ||
-          userInfo.cart ||
-          userInfo.cart.length > 0) &&
-        "hidden"
-      } ${
-        !loading
-          ? "h-fit animate-none"
-          : "animate-pulseBg h-[8rem] lg:h-[12rem]"
-      }`}
+      className={`min-w-[20rem] w-full max-w-[30rem] lg:max-w-[25rem] relative top-[1rem] z-10 flex-col gap-2 mt-6 lg:mt-0 cursor-pointer shadow-md p-4 rounded-md transition-all duration-200 bg-bgBase2 text-textDark min-h-[8rem] flex ${
+        !loading && (cart.length == 0 || userInfo?.cart?.length == 0)
+          ? "hidden"
+          : ""
+      } `}
     >
-      {cart &&
-        cart.length > 0 &&
-        userInfo &&
-        userInfo.cart &&
-        userInfo.cart.length > 0 &&
-        !loading && (
-          <>
-            {" "}
-            <h1 className="font-semibold text-lg">Summary</h1>
-            <button
-              className="text-left font-medium relative z-2"
-              onClick={() => setDiscount({ ...discount, show: !discount.show })}
-            >
-              Do you have a Promo Code?{" "}
-              <FontAwesomeIcon
-                icon={faChevronDown}
-                className={`transition-all duration-200 ${
-                  discount.show && "rotate-180 "
-                }`}
-              />
-            </button>
-            <AnimatePresence>
-              {discount.show && (
-                <motion.div
-                  className="flex flex-col"
-                  initial={{ opacity: 0.95, height: 0, top: 0 }}
-                  animate={{
-                    opacity: 1,
-                    height: "5rem",
-                    overflow: "hidden",
-                  }}
-                  exit={{ opacity: 0.95, height: 0 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 18,
-                    mass: 0.5,
-                  }}
-                >
-                  <div className="flex flex-row gap-2 py-2 px-1 z-0 relative items-center justify-center ">
-                    <input
-                      type="text"
-                      className="shadow-md border p-2 w-full rounded-md z-0 relative uppercase  bg-bgBase"
-                      placeholder="Code"
-                      value={discount.code}
-                      onChange={(event) => handleChangeDiscount(event)}
-                      onKeyDown={(e) => handleKeyDown(e)}
-                    />
-                    <button
-                      className="border px-4 p-2 rounded-full bg-bgSecondaryLight text-bgBase focus:outline focus:outline-2 focus:outline-bgExtraSecondaryLight hover:bg-bgExtraSecondaryLight transition-all duration-150 "
-                      onClick={applyDiscount}
-                    >
-                      Apply
-                    </button>
-                  </div>
-                  {discountStatus && discountStatus.show && (
-                    <p
-                      className={`${
-                        !discountStatus.ok
-                          ? "text-errorTrue"
-                          : "text-errorFalse"
-                      }`}
-                    >
-                      {discountStatus.message}
-                    </p>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-            <CartSummaryHeader
-              mainText={"Subtotal"}
-              value={subtotalCost}
-              zeroText={"Free"}
-              loading={loading}
+      {(loggedIn &&
+        ((cart && cart.length > 0) ||
+          (userInfo.cart && userInfo.cart.length > 0))) ||
+      loading ? (
+        <>
+          <h1 className="font-semibold text-lg">Summary</h1>
+          <button
+            className="text-left font-medium relative z-2"
+            onClick={() => setDiscount({ ...discount, show: !discount.show })}
+          >
+            Do you have a Promo Code?{" "}
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              className={`transition-all duration-200 ${
+                discount.show && "rotate-180 "
+              }`}
             />
-            {discount && discount.amount > 0 && (
-              <CartSummaryHeader
-                mainText={"Discount"}
-                prefix="-$"
-                value={((subtotalCost * discount.amount) / 100).toFixed(2)}
-                zeroText={"0"}
-                loading={loading}
-              />
+          </button>
+          <AnimatePresence>
+            {discount.show && (
+              <motion.div
+                className="flex flex-col"
+                initial={{ opacity: 0.95, height: 0, top: 0 }}
+                animate={{
+                  opacity: 1,
+                  height: "5rem",
+                  overflow: "hidden",
+                }}
+                exit={{ opacity: 0.95, height: 0 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 18,
+                  mass: 0.5,
+                }}
+              >
+                <div className="flex flex-row gap-2 py-2 px-1 z-0 relative items-center justify-center ">
+                  <input
+                    type="text"
+                    className="shadow-md border p-2 w-full rounded-md z-0 relative uppercase  bg-bgBase"
+                    placeholder="Code"
+                    value={discount.code}
+                    onChange={(event) => handleChangeDiscount(event)}
+                    onKeyDown={(e) => handleKeyDown(e)}
+                  />
+                  <button
+                    className="border px-4 p-2 rounded-full bg-bgSecondaryLight text-bgBase focus:outline focus:outline-2 focus:outline-bgExtraSecondaryLight hover:bg-bgExtraSecondaryLight transition-all duration-150 "
+                    onClick={applyDiscount}
+                  >
+                    Apply
+                  </button>
+                </div>
+                {discountStatus && discountStatus.show && (
+                  <p
+                    className={`${
+                      !discountStatus.ok ? "text-errorTrue" : "text-errorFalse"
+                    }`}
+                  >
+                    {discountStatus.message}
+                  </p>
+                )}
+              </motion.div>
             )}
-            <hr />
+          </AnimatePresence>
+          <CartSummaryHeader
+            mainText={"Subtotal"}
+            value={subtotalCost}
+            zeroText={"Free"}
+            loading={loading}
+          />
+          {discount && discount.amount > 0 && (
             <CartSummaryHeader
-              mainText={"Total"}
-              value={total}
-              zeroText={"Free"}
+              mainText={"Discount"}
+              prefix="-$"
+              value={((subtotalCost * discount.amount) / 100).toFixed(2)}
+              zeroText={"0"}
               loading={loading}
             />
-            <hr />
-            <CheckoutButton
-              cart={userInfo && userInfo.cart}
-              products={products}
-              promoCode={discount.code}
-            />
-          </>
-        )}
+          )}
+          <hr />
+          <CartSummaryHeader
+            mainText={"Total"}
+            value={total}
+            zeroText={"Free"}
+            loading={loading}
+          />
+          <hr />
+          <CheckoutButton
+            cart={userInfo && userInfo.cart}
+            products={products}
+            promoCode={discount.code}
+          />
+          <img
+            src="https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/logo-full"
+            alt=""
+            className="mt-4 hidden lg:block rounded-sm"
+          />
+        </>
+      ) : null}
     </div>
   );
 };

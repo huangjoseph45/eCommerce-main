@@ -15,8 +15,6 @@ import LoginModal from "./loginModal";
 
 import { ProductContext } from "./utilities/ContextManager";
 import { isEmpty } from "lodash";
-import useDynamicComponent from "./utilities/useDynamicComponent";
-import SquigglyText from "./cart-components/squigglyText";
 
 const opacityVariants = {
   visible: { opacity: 1 },
@@ -164,8 +162,24 @@ const Header = ({
         onMouseLeave={mouseLeave}
         variants={opacityVariants}
       >
-        <div className="flex flex-row items-end h-fit my-auto gap-12">
-          <Logo />
+        <div className="flex flex-row items-end h-fit my-auto gap-12 justify-between lg:justify-start  w-full">
+          <div className="z-[10] lg:hidden gap-3 sm:gap-4 w-fit justify-center items-center flex ">
+            <Sidebar
+              sections={sectionResults}
+              visible={isVisible}
+              setShowLogin={setShowLogin}
+              showLogin={showLogin}
+            />
+          </div>
+          <div className="z-0 absolute left-1/2 -translate-x-1/2  top-1/2  -translate-y-1/2 lg:translate-x-0 lg:translate-y-0 lg:static h-[2rem] ">
+            <Logo />
+          </div>
+
+          <div className="lg:hidden gap-1 sm:gap-4 w-fit justify-center items-center flex">
+            <Cart />
+            <ProfileButton />
+          </div>
+
           {sectionResults && <HeaderTabs sections={sectionResults} />}
         </div>
         <div className="hidden lg:flex gap-3 sm:gap-4 w-fit items-center ">
@@ -173,15 +187,6 @@ const Header = ({
           <SearchButton setSearch={setIsSearching} />
           <Cart />
           <ProfileButton showLogin={showLogin} setShowLogin={setShowLogin} />
-        </div>
-        <div className="lg:hidden gap-3 sm:gap-4 w-fit justify-center items-center flex ">
-          {showCart && <Cart />}
-          <Sidebar
-            sections={sectionResults}
-            visible={isVisible}
-            setShowLogin={setShowLogin}
-            showLogin={showLogin}
-          />
         </div>
 
         <SearchBar

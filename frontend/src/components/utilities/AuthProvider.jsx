@@ -7,11 +7,10 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkCookie = () => {
       const hasSession = getCookie("sessionId") !== null;
-      console.log("HAS SESSION: " + hasSession);
       setIsLoggedIn(hasSession);
     };
 
-    const interval = setInterval(checkCookie, 1000);
+    const interval = setInterval(checkCookie, 3000);
 
     return () => clearInterval(interval); // Cleanup on unmount
   }, []);

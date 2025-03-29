@@ -218,9 +218,9 @@ const ProfileContent = ({
             transition={{
               duration: 0.1,
               type: "spring",
-              stiffness: 200,
-              damping: 15,
-              mass: 0.5,
+              stiffness: 400,
+              damping: 20,
+              mass: 0.4,
             }}
             className="mt-4 w-fit mx-2"
           >

@@ -143,7 +143,7 @@ const ProductInfo = ({
         <>
           {" "}
           <AddToCart product={product} />
-          <p className="mt-8 w-[90%]">{product?.description}</p>
+          <p className="mt-8 w-[90%] mb-12">{product?.description}</p>
         </>
       )}
     </div>

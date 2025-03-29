@@ -31,8 +31,8 @@ const ProfileButton = ({ showLogin, setShowLogin, setShowSidebar }) => {
           focusable="false"
           viewBox="0 0 48 48"
           role="img"
-          width="40px"
-          height="40px"
+          width="32px"
+          height="32px"
           fill="none"
           title="Profile"
           onClick={clickedFunc}
@@ -40,7 +40,7 @@ const ProfileButton = ({ showLogin, setShowLogin, setShowSidebar }) => {
         >
           <path
             stroke="currentColor"
-            strokeWidth="3"
+            strokeWidth="2"
             d="M7.5 42v-6a7.5 7.5 0 017.5-7.5h18a7.5 7.5 0 017.5 7.5v6m-9-27a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"
           ></path>
         </svg>

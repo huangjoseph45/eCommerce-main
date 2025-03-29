@@ -134,7 +134,6 @@ const fetchProduct = async (req, res) => {
 };
 
 const fetchCategory = async (req, res) => {
-  console.log("FETCHINGs");
   const { tags, filter, cursor, test } = req.body;
   const useTestProducts = test === "true";
   const cursorIncrement = parseInt(process.env.VITE_CURSOR_INCREMENT);
@@ -219,6 +218,42 @@ const fetchCategory = async (req, res) => {
   }
 };
 
+// In progress
+// Fetches top products for a set of tags. Chooses the product with most clicks that also abides by the tags filter
+const fetchTopProducts = async (req, res) => {
+  const { test, tagArray, numProductsPerTag } = req.body;
+  const useTestProducts = test === "true";
+
+  if (!tagArray || tagArray.length < 1 || numProductsPerTag < 1) {
+    return res.status(400).json({ error: "Invalid Operation" });
+  }
+
+  try {
+    const foundProducts = await (useTestProducts
+      ? TestProduct
+      : Product
+    ).aggregate([
+      {
+        $match: {
+          $and: tagArray.map((tag) => ({
+            $or: [{ tags: { $regex: tag, $options: "i" } }],
+          })),
+        },
+      },
+      { $sort: { clicks: -1 } },
+      { $limit: numProductsPerTag },
+    ]);
+
+    if (foundProducts.length < 1) {
+      return res.status(400).json({ error: "No products found" });
+    }
+    return res.status(200).json({ foundProducts });
+  } catch (error) {
+    console.error("ERROR: " + error);
+    return res.status(500).json({ error: error });
+  }
+};
+
 const findPromo = async (req, res) => {
   const { code } = req.params;
   try {
@@ -256,4 +291,5 @@ module.exports = {
   fetchCategory,
   findPromo,
   createDiscount,
+  fetchTopProducts,
 };

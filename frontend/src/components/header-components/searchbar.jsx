@@ -26,12 +26,18 @@ const SearchBar = ({
 
   const handleSubmit = () => {
     if (value.trim()) {
-      setPastSearches([...pastSearches, value]);
+      let searchesList = pastSearches;
+      if (!searchesList.includes(value.trim())) {
+        console.log("not includes");
+        searchesList = [...pastSearches, value];
+      }
+      if (searchesList.length > 10) {
+        console.log(pastSearches.slice(0, 10));
+        searchesList = searchesList.slice(-10);
+      }
+      setPastSearches(searchesList);
       setSideBarVisible(false);
-      sessionStorage.setItem(
-        "storedSearches",
-        JSON.stringify([...pastSearches, value])
-      );
+      sessionStorage.setItem("storedSearches", JSON.stringify(searchesList));
       nav(`/search?q=${encodeURIComponent(value)}`);
       setIsSearching(false);
     }
@@ -65,13 +71,13 @@ const SearchBar = ({
             initial={
               window.innerWidth > 1024
                 ? {
-                    opacity: 1,
+                    opacity: 0,
                     scale: 1,
                     x: "-50%",
                     y: "-100%",
                   }
                 : {
-                    opacity: 1,
+                    opacity: 0,
                     scale: 1,
                     x: "100%",
                   }
@@ -83,16 +89,16 @@ const SearchBar = ({
             }
             exit={
               window.innerWidth > 1024
-                ? { opacity: 1, scale: 1, y: "-100%" }
+                ? { opacity: 0, scale: 1, y: "-100%" }
                 : { opacity: 0, scale: 1, x: "100%" }
             }
             transition={{
-              duration: 0.2,
-              type: "spring",
+              duration: 0.15,
+              type: "ease-in-out",
             }}
             className="-top-[4rem] lg:top-0 fixed left-0 lg:left-1/2 w-screen lg:w-full flex justify-center p-2 h-[120vh] lg:h-[25vh] min-h-[13rem] bg-bgBase z-40"
           >
-            <div className="absolute top-4 left-0 p-4">
+            <div className="absolute top-4 left-0 p-4 h-[4rem] ">
               <Logo />
             </div>
             <div className="absolute top-[5rem] lg:top-4 w-full flex items-center px-4 lg:justify-center pt-4">
@@ -136,7 +142,7 @@ const SearchBar = ({
                 onClick={checkHideBar}
               />
             </div>
-            <div className="flex flex-col w-full lg:ml-0 mt-[10rem] lg:mt-[4rem] px-4 ">
+            <div className="flex flex-col w-full lg:ml-0 mt-[10rem] lg:mt-[4rem] px-2 ">
               <h1 className="text-lg">Your Searches</h1>
               <ul className="grid grid-rows-2 grid-flow-col gap-2 w-fit">
                 {pastSearches &&
@@ -148,7 +154,7 @@ const SearchBar = ({
                         setIsSearching(false);
                         nav(`/search?q=${encodeURIComponent(searchValue)}`);
                       }}
-                      className="p-2 border rounded w-fit shadow-md cursor-pointer hover:scale-105 transition-all duration-200 hover:bg-bgBlack/5 flex justify-center items-center h-fit"
+                      className="p-2 border rounded  shadow-md cursor-pointer hover:scale-105 transition-all duration-200 hover:bg-bgBlack/5  justify-center items-center h-fit max-w-[5rem] overflow-hidden text-ellipsis text-nowrap block"
                     >
                       {searchValue}
                     </li>

@@ -146,7 +146,7 @@ const ProfilePage = () => {
     >
       {" "}
       <Header></Header>
-      <div className="flex flex-row pt-4  border-t-[.1rem] lg:border-t-0 border-t-black">
+      <div className="flex flex-row pt-4  lg:border-t-0 border-t-black">
         <SettingsSectionsList
           sections={accountSections}
           setSection={setCurrentSection}

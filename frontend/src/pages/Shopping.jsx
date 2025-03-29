@@ -5,13 +5,18 @@ import { useEffect, useState, useRef } from "react";
 import useFetchProducts from "../components/utilities/useFetchMultipleProducts";
 import Filter from "../components/shopping-components/filter";
 import IntersectionObject from "../components/shopping-components/intersectionObject";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
-function Shopping({ categoryName, categoryId, searchQuery }) {
+function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
   const [isLoading, products, refetchProducts] = useFetchProducts();
   const [displayName, setDisplayName] = useState("");
   const [sortingInfo, setSortingInfo] = useState({});
   const [cursor, setCursor] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [searchParams] = useSearchParams();
+
+  const nav = useNavigate();
+
   const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
   const fetchQuery = useRef();
 
@@ -26,16 +31,32 @@ function Shopping({ categoryName, categoryId, searchQuery }) {
   }, [cursor]);
 
   useEffect(() => {
-    fetchQuery.current = searchQuery || ["new"];
-    refetchProducts(fetchQuery.current, sortingInfo, enableTest, cursor);
-    setLoading(true);
+    fetchQuery.current = !isSearch ? tags || ["new"] : [searchParams.get("q")];
+    if (
+      (isSearch && searchParams.get("q") && fetchQuery.current) ||
+      !isSearch
+    ) {
+      console.log(fetchQuery.current);
+      refetchProducts(fetchQuery.current, sortingInfo, enableTest, cursor);
+      setLoading(true);
+    }
 
     if (categoryName) {
       setDisplayName(categoryName);
+    } else if (isSearch && searchParams.get("q")) {
+      setDisplayName(
+        searchParams
+          .get("q")
+          .split(" ")
+          .map((word) => {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+          })
+          .join(" ")
+      );
     } else {
       setDisplayName("New Arrivals");
     }
-  }, [categoryName, categoryId, JSON.stringify(sortingInfo)]);
+  }, [categoryName, categoryId, JSON.stringify(sortingInfo), searchParams]);
 
   useEffect(() => {
     if (!isLoading) setLoading(false);
@@ -45,8 +66,19 @@ function Shopping({ categoryName, categoryId, searchQuery }) {
     <>
       <Header />
       <div className="w-full mx-auto bg-bgBase lg:pr-[2rem]">
-        <div className="lg:px-4 px-8 text-3xl py-8 capitalize">
-          {displayName}
+        <div className="lg:px-4 px-8 text-3xl py-2 lg:py-4 capitalize">
+          {isSearch ? (
+            <div className="flex flex-col w-fit">
+              {" "}
+              <p className="text-base">Search results for </p>
+              <p className="text-3xl">
+                {displayName} &nbsp;
+                {/* ({(products && products.length) || 0}) */}
+              </p>
+            </div>
+          ) : (
+            displayName
+          )}
         </div>
         <div className="flex lg:flex-row flex-col">
           <div className="px-8 lg:pl-4  w-fit relative mb-2">

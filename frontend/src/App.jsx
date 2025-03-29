@@ -15,26 +15,25 @@ import ProductPage from "./pages/ProductPage";
 import ProfilePage from "./pages/ProfilePage";
 import CartPage from "./pages/CartPage";
 import SuccessPage from "./pages/SuccessPage";
-import SearchResultsPage from "./pages/SearchResultsPage";
 import HomePage from "./pages/HomePage";
 
-const product = {
-  sku: "SKU-4",
-  colors: [
-    { colorName: "Dark Blue", colorCode: "#30364e", idMod: "dbl" },
-    { colorName: "Seafoam", colorCode: "#73a899", idMod: "sfm" },
-    { colorName: "Tan", colorCode: "#9c8d7b", idMod: "tan" },
-    { colorName: "White", colorCode: "#eaeaea", idMod: "whi" },
-  ],
-  description:
-    "We've brought back these 6-inch-inseam shorts from our archives and updated them with a comfortable drawstring waist and a touch of stretch.",
-  discount: 0,
-  price: 89.5,
-  productName: "6-Inch Polo Prepster Stretch Chino Short",
-  sizes: ["XS", "S", "M", "L", "XL"],
-  tags: ["new", "men"],
-  type: "Men's Clothing",
-};
+// const product = {
+//   sku: "SKU-4",
+//   colors: [
+//     { colorName: "Dark Blue", colorCode: "#30364e", idMod: "dbl" },
+//     { colorName: "Seafoam", colorCode: "#73a899", idMod: "sfm" },
+//     { colorName: "Tan", colorCode: "#9c8d7b", idMod: "tan" },
+//     { colorName: "White", colorCode: "#eaeaea", idMod: "whi" },
+//   ],
+//   description:
+//     "We've brought back these 6-inch-inseam shorts from our archives and updated them with a comfortable drawstring waist and a touch of stretch.",
+//   discount: 0,
+//   price: 89.5,
+//   productName: "6-Inch Polo Prepster Stretch Chino Short",
+//   sizes: ["XS", "S", "M", "L", "XL"],
+//   tags: ["new", "men"],
+//   type: "Men's Clothing",
+// };
 
 function App() {
   const [sections, setSections] = useState([]);
@@ -109,7 +108,7 @@ function App() {
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/order" element={<SuccessPage />} />
-              <Route path="/search" element={<SearchResultsPage />} />
+              <Route path="/search" element={<Shopping isSearch={true} />} />
               <Route
                 path="/p/:productName/:productId/:color?/:size?"
                 element={<ProductPage />}
@@ -126,7 +125,7 @@ function App() {
                         <Shopping
                           categoryName={category.sectionTitle}
                           categoryId={category._id}
-                          searchQuery={category.tags}
+                          tags={category.tags}
                         />
                       }
                     />

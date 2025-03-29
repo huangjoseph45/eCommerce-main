@@ -31,7 +31,7 @@ export default {
 
     extend: {
       fontFamily: {
-        spectral: ["Spectral", "serif"],
+        afacad: ["Afacad Flux", "sans-serif"],
       },
       keyframes: {
         pulseBg: {
@@ -64,7 +64,7 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide")],
 
   safelist: [
     "text-purple-300",

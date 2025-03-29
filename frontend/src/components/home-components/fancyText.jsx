@@ -24,14 +24,14 @@ const AnimatedText = ({ text, size = "large" }) => {
         return (
           <motion.span
             key={`${char}-${index}`}
-            initial={{ y: -10, opacity: 0, rotate: -10 }}
-            animate={showAnimation ? { y: 0, opacity: 1, rotate: 0 } : {}}
+            initial={{ opacity: 0, scale: -1 }}
+            animate={showAnimation ? { opacity: 1, scale: 1 } : {}}
             transition={{
               type: "spring",
               stiffness: 100,
               damping: 8,
               mass: 0.5,
-              delay: index * 0.03, // Adds stagger effect
+              delay: index * 0.005, // Adds stagger effect
             }}
             className="inline-block select-none"
           >

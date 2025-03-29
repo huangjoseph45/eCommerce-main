@@ -9,38 +9,31 @@ const HomePage = () => {
   const timeoutId = useRef(null);
   const [showHeader, setShowHeader] = useState(false);
 
-  const onScroll = useCallback(() => {
-    clearTimeout(timeoutId.current);
-    timeoutId.current = setTimeout(() => {
-      if (window.scrollY > 50) setShowHeader(true);
-      else {
-        setShowHeader(false);
-      }
-    }, 0);
-  }, []);
-
   console.log(window.innerWidth);
 
+  const onScroll = useCallback(() => {
+    setShowHeader((prev) => {
+      return window.scrollY > 50 !== prev ? window.scrollY > 50 : prev;
+    });
+  }, [showHeader]);
   useEffect(() => {
     window.addEventListener("scroll", onScroll);
+    setShowHeader(window.scrollY > 50);
 
     return () => {
       window.removeEventListener("scroll", onScroll);
-      clearTimeout(timeoutId.current);
     };
   }, [onScroll]);
+
+  useEffect(() => {
+    console.log(showHeader);
+  }, [showHeader]);
 
   return (
     <>
       <div className="relative">
         <AnimatePresence>
-          <motion.div
-            className="fixed top-0 w-full p-0  flex flex-col z-10"
-            initial={{ height: 0 }}
-            animate={{ height: "fit-content", overflow: "hidden" }}
-            exit={{ height: 0 }}
-            transition={{ duration: 0.3 }}
-          >
+          <motion.div className="fixed top-0 w-full p-0  flex flex-col z-10">
             <Header showBackground={showHeader} />
           </motion.div>
         </AnimatePresence>

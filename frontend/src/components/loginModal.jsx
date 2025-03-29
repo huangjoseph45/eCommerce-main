@@ -8,6 +8,7 @@ import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { ProductContext } from "./utilities/ContextManager";
 import useSideBarToggle from "./utilities/sideBarToggles";
 import useAuth from "./utilities/useAuth";
+import Logo from "./header-components/logo";
 
 // FIND SOME WAY TO USE PORTALS???
 
@@ -15,24 +16,21 @@ const formVariants = {
   first: {
     x: "-50%",
     scale: 0,
-    y: "-100%",
     opacity: 0,
   },
   show: {
     x: "-50%",
     scale: 1,
-    y: "0%",
     opacity: 1,
     transition: {
       type: "spring",
-      stiffness: 300,
+      stiffness: 500,
       damping: 20,
-      mass: 0.75,
+      mass: 0.4,
     },
   },
   leave: {
     scale: 0,
-    y: "100%",
     opacity: 0,
     transition: {
       type: "tween",
@@ -120,6 +118,9 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
             className={`flex flex-col h-fit m-auto w-[100vw] max-w-[30rem]  gap-1  shadow-md p-16 rounded-lg top-[20%] z-40
        bg-bgBase left-1/2 -translate-x-1/2 fixed`}
           >
+            <div className="w-fit mx-auto mb-4 h-[3rem] ">
+              <Logo></Logo>
+            </div>
             <div
               className={`cursor-pointer absolute top-0 right-0 p-2 rounded-full m-2 hover:bg-bgBlack/15 transition-all duration-150`}
               title={"Close"}
@@ -151,7 +152,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
               type="text"
               name="email"
               autoComplete="account-email"
-              className={`w-full bg-bgBase border p-3 mb-4 ${
+              className={`rounded-md w-full bg-bgBase border p-3 mb-4 ${
                 errorState.isEmailInvalid
                   ? "border-errorTrue"
                   : "border-gray-400"
@@ -163,12 +164,12 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
               "Invalid Email",
               "isEmailInvalid"
             )}
-            <div className="relative border mb-2">
+            <div className="relative mb-2">
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
                 autoComplete="account-password"
-                className={`w-full border bg-bgBase p-3  ${
+                className={`rounded-md w-full border bg-bgBase p-3  ${
                   errorState.isPasswordInvalid
                     ? "border-errorTrue"
                     : "border-gray-400"
@@ -206,12 +207,12 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
               </AnimatePresence>
             </div>
             {!isModeSignIn && (
-              <div className="relative border mb-2">
+              <div className="relative mb-2">
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password2"
                   autoComplete="account-password"
-                  className={`w-full border p-3 bg-bgBase  ${
+                  className={`rounded-md w-full border p-3 bg-bgBase  ${
                     errorState.isPasswordInvalid
                       ? "border-errorTrue"
                       : "border-gray-400"

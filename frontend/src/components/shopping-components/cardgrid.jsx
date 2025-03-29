@@ -50,17 +50,12 @@ const CardGrid = ({ isLoading, products }) => {
         ) : (
           (!products || products.length < 1 || !products[0].sku) &&
           messageVisible && (
-            <div className="w-full h-[10rem]">
-              <p className="mx-auto items-center flex justify-center text-4xl mt-4 absolute w-full">
+            <div className="w-screen   h-[10rem]">
+              <p className="mx-auto items-center flex justify-center text-4xl mt-4 w-fit">
                 We could not find anything
               </p>
             </div>
           )
-        )}
-        {!isLoading && products && (
-          <p className="text-sm lg:text-base absolute right-0 top-full p-2 whitespace-nowrap">
-            {/* Showing {showNum} out of {products.length} */}
-          </p>
         )}
       </div>
     </>

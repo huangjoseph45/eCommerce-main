@@ -84,7 +84,7 @@ const SettingsSectionsList = ({ sections, setSection }) => {
       <motion.li
         key={section}
         {...sectionItem}
-        className="list-none cursor-pointer lg:hover:text-xl hover:text-[1.9srem] hover:font-medium h-14 transition-all duration-100 flex items-center w-full justify-center lg:justify-start lg:text-lg text-2xl text-center hover:text-bgTertiary"
+        className="list-none cursor-pointer   hover:font-medium h-14 transition-all duration-100 flex items-center w-fit justify-center lg:justify-start lg:text-lg text-2xl text-center lg:text-left hover:underline hover:font-normal"
         onClick={() => {
           setSection(index);
           if (window.innerWidth < 1024) {
@@ -106,7 +106,7 @@ const SettingsSectionsList = ({ sections, setSection }) => {
             variants={settingHeader}
             animate={show ? "open" : "closed"}
             exit={!showProfileHeaders ? "closed" : "slide"}
-            className="flex flex-col w-full lg:w-1/4 p-4 pt-32 lg:pt-[4rem] absolute bg-bgBase lg:bg-none lg:static top-[0rem] overscroll-contain items-center lg:items-start z-30 h-full lg:h-fit lg:ml-6"
+            className="flex flex-col w-full lg:w-[14rem] mr-12 p-4 mt-28 lg:mt-[4rem] absolute bg-bgBase lg:bg-none lg:static top-[0rem] overscroll-contain items-center lg:items-start z-30 h-full lg:h-fit lg:ml-6 lg:border-r lg:border-r-1"
           >
             {show && accountSections}
             <span className="m-2"></span>

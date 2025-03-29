@@ -12,14 +12,14 @@ const LandingSection = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   return (
-    <div className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl items-center h-screen justify-center flex  border relative before:content-[''] before:h-full before:w-full before:bg-bgBlack/5 border-none text-bgBase2 overflow-hidden">
+    <div className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl items-center min-h-[40rem] h-screen justify-center flex  border relative before:content-[''] before:h-full before:w-full before:bg-bgBlack/5 border-none text-bgBase2 overflow-hidden">
       <LoginModal showLogin={showLoginModal} setShowLogin={setShowLoginModal} />
       <img
         src="https://www.ralphlauren.com/on/demandware.static/-/Library-Sites-RalphLauren_NA_Library/default/dwb54d4127/img/202501/20250123-men-polo-active-club-plp/0123_m_polo_active_club_plp_c01_img.jpg"
         alt=""
         className="absolute object-cover w-full h-full select-none -z-10"
       />
-      <div className="absolute top-1/3 flex flex-col items-center justify-center gap-4">
+      <div className="absolute top-[38%] flex flex-col items-center justify-center gap-4">
         <FancyText text={"Imagine Collective"} />
         <a className="text-2xl mb-6" href="/s">
           <FancyText text={"Explore New Arrivals"} size="2xl" />
