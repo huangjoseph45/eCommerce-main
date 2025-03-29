@@ -4,7 +4,7 @@ const Logo = () => {
   return (
     <Link
       to="/"
-      className="group flex flex-row cursor-pointer m-auto gap-2 h-full  justify-center"
+      className="group flex flex-row cursor-pointer m-auto gap-2 h-full justify-center"
     >
       {/* <h2 className="select-none text-2xl">Imagine</h2>
       <h2 className="select-none text-2xl">Collective</h2> */}

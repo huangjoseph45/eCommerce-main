@@ -1,6 +1,6 @@
 import SectionLinks from "./sectionlinks";
 
-const HeaderTabs = ({ sections }) => {
+const HeaderTabs = ({ sections, headerRef }) => {
   // const sections = [
   //   {
   //     categoryName: "New Arrivals",

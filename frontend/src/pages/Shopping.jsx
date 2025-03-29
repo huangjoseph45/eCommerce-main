@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import useFetchProducts from "../components/utilities/useFetchMultipleProducts";
 import Filter from "../components/shopping-components/filter";
 import IntersectionObject from "../components/shopping-components/intersectionObject";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, useParams } from "react-router-dom";
 
 function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
   const [isLoading, products, refetchProducts] = useFetchProducts();
@@ -14,6 +14,7 @@ function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
   const [cursor, setCursor] = useState(0);
   const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
+  const { subsection } = useParams();
 
   const nav = useNavigate();
 
@@ -36,7 +37,9 @@ function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
       (isSearch && searchParams.get("q") && fetchQuery.current) ||
       !isSearch
     ) {
-      console.log(fetchQuery.current);
+      if (subsection) {
+        fetchQuery.current = [...fetchQuery.current, subsection];
+      }
       refetchProducts(fetchQuery.current, sortingInfo, enableTest, cursor);
       setLoading(true);
     }

@@ -5,6 +5,8 @@ import { AnimatePresence, motion } from "motion/react";
 import LandingSection from "../components/home-components/landingSection.jsx";
 import FeaturedSection from "../components/home-components/featuredSection.jsx";
 
+const minYOffsetHeader = 100;
+
 const HomePage = () => {
   const timeoutId = useRef(null);
   const [showHeader, setShowHeader] = useState(false);
@@ -13,12 +15,14 @@ const HomePage = () => {
 
   const onScroll = useCallback(() => {
     setShowHeader((prev) => {
-      return window.scrollY > 50 !== prev ? window.scrollY > 50 : prev;
+      return window.scrollY > minYOffsetHeader !== prev
+        ? window.scrollY > minYOffsetHeader
+        : prev;
     });
   }, [showHeader]);
   useEffect(() => {
     window.addEventListener("scroll", onScroll);
-    setShowHeader(window.scrollY > 50);
+    setShowHeader(window.scrollY > minYOffsetHeader);
 
     return () => {
       window.removeEventListener("scroll", onScroll);

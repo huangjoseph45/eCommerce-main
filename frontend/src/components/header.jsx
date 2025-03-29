@@ -41,16 +41,6 @@ const Header = ({
   ] = useFetchSections();
   const [showLogin, setShowLogin] = useState(showLoginModal);
   const { isLoading, data, refetch } = useFetchServerData();
-  const [showCart, setShowCart] = useState(false);
-  const url = window.location.href;
-
-  useEffect(() => {
-    if (url.indexOf("/p/") > -1) {
-      setShowCart(true);
-    } else {
-      setShowCart(false);
-    }
-  }, [url]);
 
   useEffect(() => {
     setVisible(showBackground);
@@ -171,7 +161,7 @@ const Header = ({
               showLogin={showLogin}
             />
           </div>
-          <div className="z-0 absolute left-1/2 -translate-x-1/2  top-1/2  -translate-y-1/2 lg:translate-x-0 lg:translate-y-0 lg:static h-[2rem] ">
+          <div className="z-0 absolute left-1/2 -translate-x-1/2  top-1/2 -translate-y-1/2 lg:translate-x-0 lg:translate-y-0 lg:static h-[2rem] ">
             <Logo />
           </div>
 

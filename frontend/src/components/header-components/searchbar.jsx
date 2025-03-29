@@ -94,7 +94,6 @@ const SearchBar = ({
             }
             transition={{
               duration: 0.15,
-              type: "ease-in-out",
             }}
             className="-top-[4rem] lg:top-0 fixed left-0 lg:left-1/2 w-screen lg:w-full flex justify-center p-2 h-[120vh] lg:h-[25vh] min-h-[13rem] bg-bgBase z-40"
           >

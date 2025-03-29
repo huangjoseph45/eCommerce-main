@@ -182,6 +182,9 @@ const fetchCategory = async (req, res) => {
 
   try {
     const joinedTags = tags && !tags.includes("*") ? tags.join("|") : "";
+    const regexPattern = tags.map((tag) => new RegExp(tag, "i"));
+    console.log(tags);
+
     const products = await (useTestProducts ? TestProduct : Product).aggregate([
       {
         $addFields: {
@@ -198,9 +201,11 @@ const fetchCategory = async (req, res) => {
           $and: [
             {
               $or: [
-                { tags: { $regex: joinedTags, $options: "i" } },
-                { productName: { $regex: joinedTags, $options: "i" } },
-                { description: { $regex: joinedTags, $options: "i" } },
+                {
+                  tags: {
+                    $all: tags.map((tag) => new RegExp(tag, "i")), // Using regular expression for loose match
+                  },
+                },
               ],
             },
             filterQuery,

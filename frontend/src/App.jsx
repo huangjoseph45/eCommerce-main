@@ -42,7 +42,6 @@ function App() {
     useCreateProduct();
   const { createTestProducts } = useCreateTestProducts();
   const [userInfo, setUserInfo] = useState({});
-  const headerRef = useRef();
 
   const productLinks = useRef();
 
@@ -120,7 +119,9 @@ function App() {
                   return (
                     <Route
                       key={`category-${index}`}
-                      path={`/${encodeURIComponent(category.slug)}`}
+                      path={`/${encodeURIComponent(
+                        category.slug
+                      )}/:subsection?`}
                       element={
                         <Shopping
                           categoryName={category.sectionTitle}

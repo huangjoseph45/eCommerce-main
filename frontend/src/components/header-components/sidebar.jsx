@@ -13,7 +13,6 @@ import useAuth from "../utilities/useAuth";
 import useProductsForCart from "../utilities/getProductsForCart";
 
 import useSideBarToggle from "../utilities/sideBarToggles";
-import { createPortal } from "react-dom";
 
 const Sidebar = ({ sections, visible, setShowLogin, showLogin }) => {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -21,31 +20,9 @@ const Sidebar = ({ sections, visible, setShowLogin, showLogin }) => {
   const nav = useNavigate();
   const { loggedIn } = useAuth();
   const { userInfo } = useContext(ProductContext);
-  const [loading, products, fetchProducts] = useProductsForCart();
   const [cart, setCart] = useState();
   const sectionElements = SectionLinks(sections, setShowSidebar);
-  const [subtotalCost, setSubtotalCost] = useState(0);
   useSideBarToggle({ setShowSidebar, isSearching, showSidebar });
-
-  // useEffect(() => {
-  //   if (userInfo && userInfo !== undefined && userInfo.cart && products) {
-  //     let cost = 0;
-  //     userInfo.cart.forEach((item) => {
-  //       const sku = item.sku
-  //         ? item.sku.split("-")[0] + "-" + item.sku.split("-")[1]
-  //         : "";
-  //       const product = products.find((product) => {
-  //         const productSKU = product.sku ? product.sku.toLowerCase() : null;
-  //         const cartSKU = sku ? sku.toLowerCase() : null;
-  //         return productSKU === cartSKU;
-  //       });
-  //       if (product) {
-  //         cost += item.quantity * product.price * (1 - product.discount / 100);
-  //       }
-  //     });
-  //     setSubtotalCost(cost.toFixed(2));
-  //   }
-  // }, [products, userInfo?.cart]);
 
   useEffect(() => {
     if (userInfo && userInfo.cart && userInfo.cart !== cart)
@@ -166,10 +143,7 @@ const Sidebar = ({ sections, visible, setShowLogin, showLogin }) => {
                     {sectionElements &&
                       sectionElements.map((section) => {
                         return (
-                          <li
-                            key={section.key}
-                            className="text-lg border-b py-2 mr-4"
-                          >
+                          <li key={section.key} className="text-lg mr-4">
                             {section}
                           </li>
                         );

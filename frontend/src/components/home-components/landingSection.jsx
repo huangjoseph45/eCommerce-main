@@ -20,9 +20,8 @@ const LandingSection = () => {
         className="absolute object-cover w-full h-full select-none -z-10"
       />
       <div className="absolute top-[38%] flex flex-col items-center justify-center gap-4">
-        <FancyText text={"Imagine Collective"} />
-        <a className="text-2xl mb-6" href="/s">
-          <FancyText text={"Explore New Arrivals"} size="2xl" />
+        <a className="text-4xl mb-6" href="/s">
+          <FancyText text={"EXPLORE NEW ARRIVALS"} size="2xl" />
         </a>
 
         {!loggedIn && (
