@@ -5,8 +5,8 @@ const SectionSchema = new mongoose.Schema(
   {
     sectionTitle: {
       type: String,
+      required: true, // Fixed typo
       unique: true,
-      require: true,
       trim: true,
       lowercase: true,
     },
@@ -22,6 +22,9 @@ const SectionSchema = new mongoose.Schema(
     },
     slug: {
       type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
     },
     isActive: {
       type: Boolean,
@@ -31,11 +34,30 @@ const SectionSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    subsections: {
+      type: [
+        {
+          name: {
+            type: String,
+            required: true,
+            lowercase: true,
+          },
+          slug: {
+            type: String,
+            lowercase: true,
+            unique: false,
+            set: (name) => name.split(" ").join("-"),
+          },
+        },
+      ],
+      default: [],
+    },
   },
   { timestamps: true }
 );
 
-SectionSchema.pre("save", function (next) {
+// Automatically generate slug when `sectionTitle` is modified
+SectionSchema.pre("validate", function (next) {
   if (this.isModified("sectionTitle")) {
     this.slug = slugify(this.sectionTitle, { lower: true, strict: true });
   }

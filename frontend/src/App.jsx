@@ -58,15 +58,15 @@ function App() {
     handleAuth();
   }, []);
 
-  // useEffect(() => {
-  //   tryCreateSection({
-  //     sectionTitle: "New Arrivals",
-  //     tags: ["new"],
-  //     imageURL:
-  //       "https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/SKU-1-nav",
-  //   });
-  //   if (!products || products.length < 1) refetchProducts("");
-  // }, []);
+  useEffect(() => {
+    tryCreateSection({
+      sectionTitle: "Hot Releases",
+      tags: [""],
+      imageURL:
+        "https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/SKU-1-nav",
+      subsections: [{ name: "New" }, { name: "Men" }, { name: "Women" }],
+    });
+  }, []);
 
   // useEffect(() => {
   //   if (products && Array.isArray(products))

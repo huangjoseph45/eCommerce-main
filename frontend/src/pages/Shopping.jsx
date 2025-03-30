@@ -10,13 +10,12 @@ import { useSearchParams, useNavigate, useParams } from "react-router-dom";
 function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
   const [isLoading, products, refetchProducts] = useFetchProducts();
   const [displayName, setDisplayName] = useState("");
+  const [subtitle, setSubtitle] = useState("");
   const [sortingInfo, setSortingInfo] = useState({});
   const [cursor, setCursor] = useState(0);
   const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
   const { subsection } = useParams();
-
-  const nav = useNavigate();
 
   const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
   const fetchQuery = useRef();
@@ -44,6 +43,8 @@ function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
       setLoading(true);
     }
 
+    setSubtitle(subsection ? subsection : "");
+
     if (categoryName) {
       setDisplayName(categoryName);
     } else if (isSearch && searchParams.get("q")) {
@@ -69,7 +70,7 @@ function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
     <>
       <Header />
       <div className="w-full mx-auto bg-bgBase lg:pr-[2rem]">
-        <div className="lg:px-4 px-8 text-3xl py-2 lg:py-4 capitalize">
+        <div className="lg:px-4 px-8 text-3xl capitalize pt-2">
           {isSearch ? (
             <div className="flex flex-col w-fit">
               {" "}
@@ -83,6 +84,9 @@ function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
             displayName
           )}
         </div>
+        <h2 className="capitalize lg:px-4 px-8 pb-2 lg:pb-4 text-xl text-textHollow/65">
+          {subsection}
+        </h2>
         <div className="flex lg:flex-row flex-col">
           <div className="px-8 lg:pl-4  w-fit relative mb-2">
             <Filter sortingInfo={sortingInfo} setSortingInfo={setSortingInfo} />

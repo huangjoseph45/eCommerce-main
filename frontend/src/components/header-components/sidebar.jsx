@@ -73,7 +73,7 @@ const Sidebar = ({ sections, visible, setShowLogin, showLogin }) => {
                 }}
               ></motion.div>
               <motion.ul
-                className="fixed left-0 pt-8 top-0 w-[22rem] h-full bg-bgBase px-4 text-xl "
+                className="fixed left-0 pt-8 top-0 w-[22rem] h-full bg-bgBase  px-4 text-xl "
                 initial={{ x: "-100%", opacity: 0 }}
                 animate={{ x: "0", opacity: 1 }}
                 exit={{ x: "-100%", opacity: 0 }}

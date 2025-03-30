@@ -4,17 +4,11 @@ import { createPortal } from "react-dom";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const subSections = [
-  { id: 1, name: "Explore All", tagName: "" },
-  { id: 1, name: "New Arrivals", tagName: "new" },
-  { id: 2, name: "Shirts", tagName: "shirt" },
-  { id: 3, name: "Hoodies", tagName: "hoodie" },
-  { id: 4, name: "Pants", tagName: "pants" },
-];
-
 const CLIENT_PATH = import.meta.env.VITE_CLIENT_PATH;
 
 const SectionDropdown = ({ showDropdown, section, setShowDropdown }) => {
+  console.log(section);
+
   return (
     <AnimatePresence>
       {showDropdown && window.innerWidth > 1024 ? (
@@ -40,19 +34,20 @@ const SectionDropdown = ({ showDropdown, section, setShowDropdown }) => {
               mass: 0.2,
             }}
           >
-            {subSections.map((subsection) => {
-              return (
-                <a
-                  href={`${CLIENT_PATH}/${encodeURIComponent(
-                    section.slug
-                  )}/${encodeURIComponent(subsection.tagName)}`}
-                  key={subsection.id}
-                  className="text-textHollow hover:text-textDark w-fit"
-                >
-                  {subsection.name}
-                </a>
-              );
-            })}
+            {section &&
+              section.subsections.map((subsection) => {
+                return (
+                  <a
+                    href={`${CLIENT_PATH}/${encodeURIComponent(
+                      section.slug
+                    )}/${encodeURIComponent(subsection.slug)}`}
+                    key={section._id + subsection.slug + subsection.name}
+                    className="text-textHollow hover:text-textDark w-fit capitalize"
+                  >
+                    {subsection.name}
+                  </a>
+                );
+              })}
           </motion.div>
         </>
       ) : showDropdown ? (
@@ -69,19 +64,20 @@ const SectionDropdown = ({ showDropdown, section, setShowDropdown }) => {
             onClick={() => setShowDropdown(false)}
           />
           <ul className="flex flex-col px-2 mt-4">
-            {subSections.map((subsection) => {
-              return (
-                <a
-                  href={`${CLIENT_PATH}/${encodeURIComponent(
-                    section.slug
-                  )}/${encodeURIComponent(subsection.tagName)}`}
-                  key={subsection.id}
-                  className="text-textHollow hover:text-textDark w-fit"
-                >
-                  {subsection.name}
-                </a>
-              );
-            })}
+            {section &&
+              section.subsections.map((subsection) => {
+                return (
+                  <a
+                    href={`${CLIENT_PATH}/${encodeURIComponent(
+                      section.slug
+                    )}/${encodeURIComponent(subsection.slug)}`}
+                    key={section._id + subsection.slug}
+                    className="text-textHollow hover:text-textDark w-fit capitalize"
+                  >
+                    {subsection.name}
+                  </a>
+                );
+              })}
           </ul>
         </motion.div>
       ) : null}

@@ -24,7 +24,7 @@ const useFetchSections = () => {
       setSectionResults(fetchedSections.returnSections);
       setFetchingSectionsLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setFetchingSectionsLoading(false);
     }
   };
@@ -49,7 +49,6 @@ const useCreateSections = () => {
 
     try {
       setCreateSectionsLoading(true);
-      console.log("fetching");
       const response = await fetch(path, {
         method: "POST",
         credentials: "include",
@@ -58,7 +57,6 @@ const useCreateSections = () => {
           rawData: JSON.stringify(sectionData),
         }),
       });
-      console.log(sectionData);
       if (!response.ok) {
         setCreateSectionsLoading(false);
         console.error("Fetching sections is not ok");

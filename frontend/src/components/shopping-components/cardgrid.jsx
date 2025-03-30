@@ -16,8 +16,6 @@ const CardGrid = ({ isLoading, products }) => {
     }
   }, [products]);
 
-  console.log(messageVisible);
-
   // Ideas for cursor based pagination:
   // Get index for products returned from db
   // when at end of current products list, get more products starting from index

@@ -8,12 +8,17 @@ import useLogout from "../utilities/useLogout";
 
 const settingHeader = {
   closed: {
+    opacity: 0,
     scale: 0,
     transition: {
       delay: 0.5,
     },
   },
   open: {
+    x: "0%",
+
+    opacity: 1,
+
     scale: 1,
     transition: {
       type: "spring",
@@ -24,11 +29,8 @@ const settingHeader = {
   },
   slide: {
     scale: 1,
+    opacity: 0,
     x: "-100%",
-    transition: {
-      duration: 0.15,
-      type: "spring",
-    },
   },
 };
 
@@ -84,7 +86,7 @@ const SettingsSectionsList = ({ sections, setSection }) => {
       <motion.li
         key={section}
         {...sectionItem}
-        className="list-none cursor-pointer   hover:font-medium h-14 transition-all duration-100 flex items-center w-fit justify-center lg:justify-start lg:text-lg text-2xl text-center lg:text-left hover:underline hover:font-normal"
+        className="list-none cursor-pointer h-14 transition-all duration-100 flex items-center w-fit justify-center lg:justify-start lg:text-lg text-2xl text-center lg:text-left hover:underline hover:font-normal"
         onClick={() => {
           setSection(index);
           if (window.innerWidth < 1024) {

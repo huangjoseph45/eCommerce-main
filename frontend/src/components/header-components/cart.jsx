@@ -8,7 +8,6 @@ const Cart = () => {
   const [numItems, setNumItems] = useState(0);
 
   useEffect(() => {
-    console.log(userInfo);
     if (userInfo?.cart && Array.isArray(userInfo.cart)) {
       const num = userInfo.cart.reduce((total, item) => {
         return item !== undefined && typeof item.quantity === "number"

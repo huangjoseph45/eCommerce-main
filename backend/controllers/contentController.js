@@ -10,7 +10,8 @@ const createSection = async (req, res) => {
       !sectionInfo ||
       !sectionInfo.sectionTitle ||
       !sectionInfo.tags ||
-      !Array.isArray(sectionInfo.tags)
+      !Array.isArray(sectionInfo.tags) ||
+      (sectionInfo.subsections && sectionInfo.subsections.length === 0)
     ) {
       console.log("could not create section");
       return res
@@ -18,15 +19,22 @@ const createSection = async (req, res) => {
         .json({ error: "Body must be formatted correctly" });
     }
 
-    const updateData = {
-      ...sectionInfo,
-    };
-
-    if (sectionInfo.sectionTitle) {
-      updateData.slug = slugify(sectionInfo.sectionTitle, {
-        lower: true,
-        strict: true,
+    // Validates subsections
+    if (sectionInfo.subsections) {
+      let validateSubsections = true;
+      sectionInfo.subsections.forEach((subsection) => {
+        if (!subsection.name || subsection.name.length === 0) {
+          validateSubsections = false;
+        } else {
+          subsection.slug = subsection.name.split(" ").join("-");
+        }
       });
+      console.log(validateSubsections);
+      if (!validateSubsections) {
+        return res
+          .status(400)
+          .json({ error: "Subsection must be formatted correctly" });
+      }
     }
 
     const createdSection = await Section.findOneAndUpdate(
@@ -37,6 +45,7 @@ const createSection = async (req, res) => {
           imageUrl: sectionInfo.imageURL || "",
           isActive: sectionInfo.isActive ?? true,
           description: sectionInfo.description || "",
+          subsections: sectionInfo.subsections || [],
         },
       },
       { upsert: true, new: true }
@@ -65,7 +74,7 @@ const fetchSections = async (req, res) => {
             { _id: section._id },
             { $set: { slug: slugVal } }
           );
-
+          console.log(section);
           return { ...section, slug: slugVal };
         }
 
