@@ -112,7 +112,7 @@ const ProductPopup = ({
             </div>
             <div className="flex flex-row gap-2 w-full">
               <img src={imgSrc} alt={productInfo?.sku} className="h-[6.5rem]" />
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-1 w-full">
                 <p className="truncate w-2/3">{product?.productName}</p>
                 <p className="text-textHollow">{product?.type}</p>
                 <p className="text-textHollow">

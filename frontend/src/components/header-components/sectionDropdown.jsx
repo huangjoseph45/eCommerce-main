@@ -15,7 +15,7 @@ const SectionDropdown = ({ showDropdown, section, setShowDropdown }) => {
         <>
           {createPortal(
             <motion.div
-              className="fixed w-screen h-screen bg-bgBlack/5 backdrop-blur-sm left-0 top-0 -z-1"
+              className="fixed w-screen h-screen bg-bgBlack/5 backdrop-blur-sm left-0 top-0"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -23,7 +23,7 @@ const SectionDropdown = ({ showDropdown, section, setShowDropdown }) => {
             document.body
           )}
           <motion.div
-            className="absolute lg:py-[.875rem] bg-bgBase2 px-4 origin-top w-screen top-full   left-0 flex flex-col"
+            className="absolute lg:pt-[.875rem] bg-bgBase2 px-4 origin-top w-screen top-full   left-0 flex flex-col pb-6"
             initial={{ scaleY: 0, opacity: 0 }}
             animate={{ scaleY: 1, opacity: 1 }}
             exit={{ scaleY: 0, opacity: 0 }}

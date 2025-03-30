@@ -22,7 +22,13 @@ const CardGrid = ({ isLoading, products }) => {
   // need these new parameters: index, numProductsToGet, isEnd
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full px-8 relative">
+      <div
+        className={`${
+          isLoading || (products && products.length > 0 && products[0].sku)
+            ? "grid grid-cols-2 md:grid-cols-3"
+            : null
+        } gap-4 w-full px-8 relative medium`}
+      >
         {isLoading ? (
           <>
             {[...Array(products?.length || 8)].map((_, index) => (
@@ -45,16 +51,14 @@ const CardGrid = ({ isLoading, products }) => {
               />
             );
           })
-        ) : (
-          (!products || products.length < 1 || !products[0].sku) &&
-          messageVisible && (
-            <div className="w-screen   h-[10rem]">
-              <p className="mx-auto items-center flex justify-center text-4xl mt-4 w-fit">
-                We could not find anything
-              </p>
-            </div>
-          )
-        )}
+        ) : (!products || products.length < 1 || !products[0].sku) &&
+          messageVisible ? (
+          <div className="h-[10rem] medium">
+            <p className="mx-auto items-center flex justify-center text-4xl mt-4 w-fit">
+              We could not find anything
+            </p>
+          </div>
+        ) : null}
       </div>
     </>
   );

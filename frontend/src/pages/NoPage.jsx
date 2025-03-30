@@ -3,6 +3,7 @@ import Footer from "../components/footer";
 import "../index.css";
 import CardPlaceHolder from "../components/shopping-components/cardPlaceholder";
 import { useEffect, useState } from "react";
+import AdditionalProducts from "../components/additionalProducts";
 
 const NoPage = () => {
   const [timer, setTimer] = useState(0.1);
@@ -37,6 +38,9 @@ const NoPage = () => {
           <CardPlaceHolder key={8} />
         </div>
       )}
+      <div className="md:gap-0 md:w-full mx-auto mt-6">
+        <AdditionalProducts tags={[""]} ignoreSKUList={[]} />
+      </div>
       <Footer />
     </>
   );

@@ -3,6 +3,8 @@ const { Product, StripeProduct, Discount } = require("../models/Products");
 const { TestProduct, StripeTestProduct } = require("../models/TestProducts.js");
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
+const useTestProducts = false;
+
 const createProduct = async (req, res) => {
   let {
     productName,
@@ -16,8 +18,6 @@ const createProduct = async (req, res) => {
     tags,
     test,
   } = req.body;
-
-  const useTestProducts = test === "true";
 
   if (
     typeof productName !== "string" ||
@@ -105,7 +105,6 @@ const createProduct = async (req, res) => {
 
 const fetchProduct = async (req, res) => {
   let { skuComplete, test } = req.params;
-  const useTestProducts = test === "true";
 
   if (!skuComplete) {
     return res.status(400).json({ message: "Missing SKU" });
@@ -135,10 +134,10 @@ const fetchProduct = async (req, res) => {
 
 const fetchCategory = async (req, res) => {
   const { tags, filter, cursor, test } = req.body;
-  const useTestProducts = test === "true";
   const cursorIncrement = parseInt(process.env.VITE_CURSOR_INCREMENT);
 
   let numItems = cursor + cursorIncrement || cursorIncrement;
+  console.log("TEST" + useTestProducts);
 
   const pricesFilter =
     filter && filter.prices
@@ -226,8 +225,7 @@ const fetchCategory = async (req, res) => {
 // In progress
 // Fetches top products for a set of tags. Chooses the product with most clicks that also abides by the tags filter
 const fetchTopProducts = async (req, res) => {
-  const { test, tagArray, numProductsPerTag } = req.body;
-  const useTestProducts = test === "true";
+  const { test, tagArray, numProductsPerTag, strict } = req.body;
 
   if (!tagArray || tagArray.length < 1 || numProductsPerTag < 1) {
     return res.status(400).json({ error: "Invalid Operation" });
@@ -239,11 +237,17 @@ const fetchTopProducts = async (req, res) => {
       : Product
     ).aggregate([
       {
-        $match: {
-          $and: tagArray.map((tag) => ({
-            $or: [{ tags: { $regex: tag, $options: "i" } }],
-          })),
-        },
+        $match: strict
+          ? {
+              $and: tagArray.map((tag) => ({
+                tags: { $regex: tag, $options: "i" },
+              })),
+            }
+          : {
+              $or: tagArray.map((tag) => ({
+                tags: { $regex: tag, $options: "i" },
+              })),
+            },
       },
       { $sort: { clicks: -1 } },
       { $limit: numProductsPerTag },

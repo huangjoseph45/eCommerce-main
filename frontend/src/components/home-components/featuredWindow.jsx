@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import FeaturedCard from "./featuredCard";
 const FeaturedWindow = () => {
   const featuredTags = [["men"], ["women"], ["Children"]];

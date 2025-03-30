@@ -24,7 +24,7 @@ const SectionLink = ({ element, setShow }) => {
           if (window.innerWidth > 1024) setShow(false);
         }}
       >
-        <div className="relative w-full p-2 lg:my-2 lg:p-0  lg:m-0 cursor-pointer">
+        <div className="relative w-full p-2 lg:my-2 lg:p-0 lg:px-0  lg:m-0 cursor-pointer">
           {" "}
           <h2
             className="capitalize select-none list-none "
@@ -41,15 +41,15 @@ const SectionLink = ({ element, setShow }) => {
           <AnimatePresence>
             {showDropdown ? (
               <motion.div
-                className="bg-textDark h-[2px] absolute"
-                initial={{ width: 0 }}
-                animate={{ width: "100%" }}
-                exit={{ width: 0 }}
+                className="bg-textDark h-[2px] absolute w-full origin-left"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                exit={{ scaleX: 0 }}
                 transition={{
                   duration: 0.2,
                   type: "spring",
                   stiffness: 200,
-                  mass: 0.2,
+                  mass: 0.15,
                 }}
               ></motion.div>
             ) : null}

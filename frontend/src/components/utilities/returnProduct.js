@@ -1,7 +1,6 @@
 import isEmpty from "./isEmpty";
 
 const returnProduct = async (sku, enableTest = false) => {
-
   if (isEmpty(sku)) {
     console.error("Invalid SKU");
     return;
@@ -28,6 +27,9 @@ const returnProduct = async (sku, enableTest = false) => {
       productName,
       type,
       discount,
+      tags,
+      clicks,
+
       colors,
       stripePriceId,
       stripeProductId,
@@ -47,6 +49,8 @@ const returnProduct = async (sku, enableTest = false) => {
       productName,
       size,
       type,
+      tags,
+      clicks,
       color: colorObj,
       imageLink,
       discount,
@@ -70,7 +74,7 @@ const returnBaseProduct = async (sku, enableTest = false) => {
   }/products/fetch-product/${sku}/${enableTest}`;
   try {
     console.log(fetchURL);
-    console.log(enableTest)
+    console.log(enableTest);
 
     const response = await fetch(fetchURL, {
       method: "GET",
@@ -86,6 +90,9 @@ const returnBaseProduct = async (sku, enableTest = false) => {
       productName,
       type,
       sizes,
+      tags,
+      clicks,
+
       discount,
       colors,
       stripePriceId,
@@ -98,6 +105,8 @@ const returnBaseProduct = async (sku, enableTest = false) => {
       price,
       productName,
       sizes,
+      tags,
+      clicks,
       type,
       colors,
       discount,

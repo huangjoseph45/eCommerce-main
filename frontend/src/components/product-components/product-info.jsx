@@ -52,7 +52,7 @@ const ProductInfo = ({
   ));
 
   return (
-    <div className="p-6 mx-auto flex flex-col justify-start xl:h-fit w-full xl:w-1/2 mt-2">
+    <div className="px-4 mx-auto flex flex-col justify-start xl:h-fit w-full xl:w-1/2 mt-4">
       <h1 className="text-3xl font-semibold ">
         {loading && !product ? (
           <div className="h-[2rem]">

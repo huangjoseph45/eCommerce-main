@@ -19,15 +19,11 @@ const ProductImage = ({ product, productColor = null, loading = false }) => {
     }
   }, [product, productInfo]);
 
-  useEffect(() => {
-    console.log(imgSrc);
-  }, [imgSrc]);
-
   return (
     <>
-      <div className="w-full max-w-[35rem] mx-auto">
+      <div className="w-full max-w-[35rem] mx-auto h-fit md:mt-4">
         {loading && !imgSrc ? (
-          <div className="object-cover rounded-b-md w-fit h-full object-top mx-auto aspect-[3/4] animate-pulseBg opacity-40"></div>
+          <div className="object-cover rounded-b-md w-full h-full object-top mx-auto animate-pulseBg opacity-40"></div>
         ) : (
           <img
             src={imgSrc}

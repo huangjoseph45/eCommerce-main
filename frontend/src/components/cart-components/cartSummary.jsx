@@ -153,10 +153,8 @@ const CartSummary = ({ products, loading = true, cart }) => {
                 }}
                 exit={{ opacity: 0.95, height: 0 }}
                 transition={{
-                  type: "spring",
-                  stiffness: 300,
-                  damping: 18,
-                  mass: 0.5,
+                  ease: "easeInOut",
+                  duration: 0.15,
                 }}
               >
                 <div className="flex flex-row gap-2 py-2 px-1 z-0 relative items-center justify-center ">

@@ -100,7 +100,7 @@ const SearchBar = ({
             <div className="absolute top-4 left-0 p-4 h-[4rem] ">
               <Logo />
             </div>
-            <div className="absolute top-[5rem] lg:top-4 w-full flex items-center px-4 lg:justify-center pt-4">
+            <div className="absolute top-[5rem] lg:top-4 w-full flex items-center px-4 lg:justify-center mt-4 h-12">
               <div className="relative">
                 <button
                   className="absolute left-0 top-1/2 -translate-y-1/2 h-full box-border cursor-pointer aspect-square rounded-md  bg-bgSecondary/5 text-textHollow flex items-center justify-center"
@@ -124,7 +124,7 @@ const SearchBar = ({
                 </button>
 
                 <input
-                  className="focus:bg-bgSecondary/10 bg-bgSecondary/5 px-4 py-2 rounded-md min-w-[15rem] w-[80vw] lg:w-[30vw] text-start max-w-[64rem] z-2 pl-14 outline-none"
+                  className="focus:bg-bgSecondary/10 bg-bgSecondary/5 px-4 py-2 rounded-md min-w-[12rem] w-[80vw] lg:w-[30vw] text-start max-w-[64rem] z-2 pl-14 outline-none"
                   placeholder={"Search"}
                   autoFocus={false}
                   value={value}
@@ -133,11 +133,11 @@ const SearchBar = ({
                 />
               </div>
             </div>
-            <div className="absolute top-[5rem] lg:top-4 w-fit flex items-center justify-center pt-4 right-0 xs:right-4 -translate-x-1/3">
+            <div className="absolute top-[5rem] lg:top-4 mt-4 right-4 h-12 flex items-center justify-center">
               <FontAwesomeIcon
                 icon={window.innerWidth > 1024 ? faXmark : faChevronRight}
                 size="lg"
-                className=" text-textDark p-2 h-6 aspect-square rounded-full cursor-pointer hover:bg-bgBlack/10 shadow-md transition-all duration-200 bg-opacity-55"
+                className=" text-textDark p-2 h-4 aspect-square rounded-full cursor-pointer hover:bg-bgBlack/10 shadow-md transition-all duration-200 bg-opacity-55"
                 onClick={checkHideBar}
               />
             </div>

@@ -9,6 +9,7 @@ import CartItemList from "../components/cart-components/cartItemsList";
 import CartSummary from "../components/cart-components/cartSummary";
 import useProductsForCart from "../components/utilities/getProductsForCart";
 import useAuth from "../components/utilities/useAuth";
+import AdditionalProducts from "../components/additionalProducts";
 
 const CartPage = () => {
   const { loggedIn } = useAuth();
@@ -16,6 +17,7 @@ const CartPage = () => {
   const [cart, setCart] = useState([]);
   const { userInfo } = useContext(ProductContext);
   const [isLoading, setLoading] = useState(loggedIn);
+  const [aggregateTags, setAggregateTags] = useState([]);
   const [loading, products, fetchProducts] = useProductsForCart();
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -39,6 +41,20 @@ const CartPage = () => {
     }
   }, [cart]);
 
+  useEffect(() => {
+    if (!loading && products && products.length > 0) {
+      let filteredTags = [];
+      products.forEach((product) => {
+        product.tags.forEach((tag) => {
+          if (!filteredTags.includes(tag)) {
+            filteredTags.push(tag);
+          }
+        });
+      });
+      setAggregateTags(filteredTags);
+    }
+  }, [products, loading]);
+
   return (
     <ProductsContext.Provider value={{ products }}>
       <Header />
@@ -55,6 +71,15 @@ const CartPage = () => {
         </div>{" "}
         <CartSummary products={products} loading={isLoading} cart={cart} />
       </div>
+      <div className="mx-auto">
+        {" "}
+        {aggregateTags && aggregateTags.length > 0 ? (
+          <AdditionalProducts tags={aggregateTags} ignoreSKUList={[]} />
+        ) : (
+          <AdditionalProducts tags={[""]} ignoreSKUList={[]} />
+        )}
+      </div>
+
       <Footer />
     </ProductsContext.Provider>
   );

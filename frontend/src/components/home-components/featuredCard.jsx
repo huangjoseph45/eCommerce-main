@@ -39,30 +39,11 @@ const FeaturedCard = ({ tagArray, index }) => {
     }
   }, [products]);
 
-  useEffect(() => {
-    console.log(imgSrc);
-  }, [imgSrc]);
-
   return (
     <div
       ref={middleElement}
       className="flex flex-col cursor-pointer"
-      onClick={() =>
-        nav(
-          "/" + products && products[0]
-            ? (
-                "p/" +
-                encodeURIComponent(products[0].productName.replace(/ /g, "-")) +
-                "/" +
-                products[0].sku +
-                "/" +
-                products[0].colors[0]?.idMod +
-                "/" +
-                products[0].sizes[0]
-              ).toLowerCase()
-            : null
-        )
-      }
+      onClick={() => nav("/" + tagArray[0])}
     >
       {products ? (
         <>

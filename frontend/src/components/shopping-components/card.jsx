@@ -89,7 +89,7 @@ const Card = ({
                 sku + "-" + colors[cardColor].idMod
               }`}
               alt={name}
-              onClick={() => nav(stringURL)}
+              onClick={() => nav(stringURL + `/${colors[0].idMod}`)}
               loading="lazy"
               className="w-full select-none object-cover aspect-[4/5] cursor-pointer"
             />
@@ -132,22 +132,22 @@ const Card = ({
             </>
           )}
         </div>
-        <div className="px-2 relative z-[10] bg-inherit h-full py-2">
-          <a href={stringURL} className="font-semibold text-base">
+        <div className="px-2 relative z-0 bg-inherit h-full py-2">
+          <a href={stringURL} className="font-medium text-base">
             {name}
           </a>
           <p className="text-gray-500 text-sm">{type}</p>
           <p className="text-gray-500 text-sm">{numPatterns} Patterns</p>
           <div className="flex flex-row items-center gap-2">
-            <p className="font-semibold text-lg">${finalPrice}</p>
+            <p className="font-medium text-lg">${finalPrice}</p>
             {discount !== 0 && (
-              <p className="font-semibold text-md line-through text-gray-500">
+              <p className="font-medium text-md line-through text-gray-500">
                 ${initialPrice}
               </p>
             )}
           </div>
           {discount !== 0 && (
-            <p className="font-semibold text-lg text-errorFalse">
+            <p className="font-medium text-lg text-errorFalse">
               {discount}% off
             </p>
           )}

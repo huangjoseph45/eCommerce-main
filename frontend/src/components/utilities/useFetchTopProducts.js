@@ -4,8 +4,14 @@ const useFetchTopProducts = () => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState(null);
 
-  const getProducts = async ({ enableTest, tagArray, numProductsPerTag }) => {
+  const getProducts = async ({
+    enableTest,
+    tagArray,
+    numProductsPerTag,
+    strictSelection = true,
+  }) => {
     try {
+      console.log(tagArray);
       const then = Date.now();
       setLoading(true);
       const response = await fetch(
@@ -20,6 +26,7 @@ const useFetchTopProducts = () => {
             test: enableTest,
             tagArray: tagArray,
             numProductsPerTag: numProductsPerTag,
+            strict: strictSelection,
           }),
         }
       );
