@@ -12,7 +12,7 @@ const SectionLink = ({ element, setShow }) => {
   return (
     <>
       <motion.div
-        className="w-fit  cursor-pointer"
+        className="w-fit   lg:py-4"
         onHoverStart={() => {
           if (window.innerWidth > 1024) setShowDropdown(true);
           clearTimeout(timeoutRef.current);
@@ -24,13 +24,13 @@ const SectionLink = ({ element, setShow }) => {
           if (window.innerWidth > 1024) setShow(false);
         }}
       >
-        <div className="relative w-full p-2 my-2 lg:p-0  lg:m-0">
+        <div className="relative w-full p-2 lg:my-2 lg:p-0  lg:m-0 cursor-pointer">
           {" "}
           <h2
             className="capitalize select-none list-none "
             onClick={() => {
               if (window.innerWidth > 1024)
-                nav(`${CLIENT_PATH}/${encodeURIComponent(element.slug)}`);
+                nav(`/${encodeURIComponent(element.slug)}`);
               else {
                 setShowDropdown(true);
               }

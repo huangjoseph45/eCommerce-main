@@ -43,7 +43,78 @@ const HomePage = () => {
         </AnimatePresence>
         <LandingSection />
         <FeaturedSection />
-        <div className="h-screen"></div>
+        <Footer></Footer>{" "}
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => {
+            if (showHeader) {
+              window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: "smooth",
+              });
+            }
+          }}
+          className={`fixed   p-[.8rem] left-1/2 -translate-x-1/2 bottom-4  rounded-full w-10 h-10 flex items-center justify-center ${
+            showHeader ? "bg-bgBase2 rotate-180" : "bg-none"
+          } transition-all duration-200`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14.691"
+            height="23.01"
+            viewBox="0 0 14.691 23.01"
+          >
+            <g
+              id="Component_22_9"
+              data-name="Component 22 – 9"
+              transform="translate(0.36)"
+            >
+              <g
+                id="Group_26167"
+                data-name="Group 26167"
+                transform="translate(13.972) rotate(90)"
+              >
+                <line
+                  id="Line_1234"
+                  data-name="Line 1234"
+                  x2="22.465"
+                  transform="translate(0 6.986)"
+                  fill="none"
+                  stroke={`${showHeader ? "#000" : "#fff"}`}
+                  strokeWidth="1"
+                ></line>
+                <g
+                  id="Group_25960"
+                  data-name="Group 25960"
+                  transform="translate(15.421)"
+                >
+                  <line
+                    id="Line_1235"
+                    data-name="Line 1235"
+                    x2="7.242"
+                    y2="7.01"
+                    fill="none"
+                    stroke={`${showHeader ? "#000" : "#fff"}`}
+                    strokeWidth="1"
+                  ></line>
+                  <line
+                    id="Line_1236"
+                    data-name="Line 1236"
+                    y1="6.962"
+                    x2="7.242"
+                    transform="translate(0 7.01)"
+                    fill="none"
+                    stroke={`${showHeader ? "#000" : "#fff"}`}
+                    strokeWidth="1"
+                  ></line>
+                </g>
+              </g>
+            </g>
+          </svg>
+        </motion.button>
       </div>
     </>
   );

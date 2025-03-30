@@ -15,7 +15,6 @@ import Logo from "./header-components/logo";
 const formVariants = {
   first: {
     x: "-50%",
-    scale: 0,
     opacity: 0,
   },
   show: {
@@ -30,7 +29,6 @@ const formVariants = {
     },
   },
   leave: {
-    scale: 0,
     opacity: 0,
     transition: {
       type: "tween",
@@ -137,7 +135,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
               >
                 <path
                   stroke="currentColor"
-                  strokeWidth="1.5"
+                  strokeWidth="1"
                   d="M18.973 5.027L5.028 18.972m0-13.945l13.944 13.945"
                 ></path>
               </svg>
@@ -147,7 +145,6 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
               setModeSignIn={setModeSignIn}
               isModeSignIn={isModeSignIn}
             />
-            <hr className="w-full border-t border-bgSecondary mb-4" />
             <input
               type="text"
               name="email"
@@ -184,7 +181,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
                 }`}
               />
               <div
-                className="h-6 w-6 absolute top-1/2 left-full -translate-y-1/2 translate-x-1/3 flex justify-center items-center rounded-full bg-gray-300 cursor-pointer hover:bg-gray-400 transition-all duration-200"
+                className="h-6 w-6 absolute top-1/2 left-full -translate-y-1/2 translate-x-1/3 flex justify-center items-center rounded-full bg-bgExtraSecondaryLight cursor-pointer text-textLight hover:bg-bgSecondaryLight transition-all duration-200"
                 onMouseEnter={() => setShowTooltip(true)}
                 onMouseLeave={() => setShowTooltip(false)}
               >
@@ -193,9 +190,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
               <AnimatePresence>
                 {showTooltip && (
                   <motion.p
-                    className={`absolute w-full border bg-gray-300 p-2 left-0 -translate-x-1/2 ${
-                      isModeSignIn ? "top-[12rem]" : "top-[16rem]"
-                    } lg:left-[105%] lg:top-[3rem] lg:translate-x-[1rem] flex justify-center items-center`}
+                    className={`absolute w-full bg-bgExtraSecondaryLight text-textLight p-2 flex justify-center items-center -right-[2rem] rounded-sm `}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -292,7 +287,7 @@ export default LoginModal;
 
 function SelectSignIn({ setModeSignIn, isModeSignIn }) {
   return (
-    <div className="flex flex-1 whitespace-normal w-[full]">
+    <div className="flex flex-1 whitespace-normal w-[full] mb-2 font-medium">
       <p
         onClick={() => setModeSignIn(true)}
         className={`cursor-pointer w-1/2 m-auto text-left text-2xl ${
