@@ -29,7 +29,7 @@ const SectionDropdown = ({ showDropdown, section, setShowDropdown }) => {
             document.body
           )}
           <motion.div
-            className="absolute lg:py-[.875rem] bg-bgBase2 px-2 origin-top w-screen top-full   left-0 flex flex-col"
+            className="absolute lg:py-[.875rem] bg-bgBase2 px-4 origin-top w-screen top-full   left-0 flex flex-col"
             initial={{ scaleY: 0, opacity: 0 }}
             animate={{ scaleY: 1, opacity: 1 }}
             exit={{ scaleY: 0, opacity: 0 }}

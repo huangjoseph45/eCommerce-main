@@ -31,7 +31,7 @@ const Sidebar = ({ sections, visible, setShowLogin, showLogin }) => {
 
   return (
     <>
-      <div>
+      <div className="h-full my-auto">
         <div
           className={`flex items-center justify-center cursor-pointer size-8 md:size-8 mt-1 hover:bg-slate-500 hover:bg-opacity-25 p-6 rounded-full lg:hidden  `}
           title={showSidebar ? "Close" : "Menu"}
@@ -114,7 +114,7 @@ const Sidebar = ({ sections, visible, setShowLogin, showLogin }) => {
                         : ` Welcome, User`}
                     </div>
                   ) : (
-                    <div className="mt-10 flex flex-col gap-2 pb-4 w-[20rem]">
+                    <div className="mt-10 flex flex-col gap-2 w-[12rem]">
                       <p> Become a Member or Login Today</p>
                       <div className="flex flex-row gap-2">
                         <button

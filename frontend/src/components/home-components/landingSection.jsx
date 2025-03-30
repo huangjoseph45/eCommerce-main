@@ -6,9 +6,6 @@ import LoginModal from "../loginModal";
 const LandingSection = () => {
   const { loggedIn } = useAuth();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   return (

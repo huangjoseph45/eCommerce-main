@@ -152,8 +152,8 @@ const Header = ({
         onMouseLeave={mouseLeave}
         variants={opacityVariants}
       >
-        <div className="flex flex-row items-end h-fit my-auto gap-12 justify-between lg:justify-start  w-full">
-          <div className="z-[10] lg:hidden gap-3 sm:gap-4 w-fit justify-center items-center flex ">
+        <div className="flex flex-row items-end h-full my-auto gap-12 justify-between lg:justify-start  w-full">
+          <div className="h-full z-[10] lg:hidden gap-3 sm:gap-4 w-fit justify-center items-center flex ">
             <Sidebar
               sections={sectionResults}
               visible={isVisible}
@@ -161,17 +161,24 @@ const Header = ({
               showLogin={showLogin}
             />
           </div>
-          <div className="z-0 absolute left-1/2 -translate-x-1/2  top-1/2 -translate-y-1/2 lg:translate-x-0 lg:translate-y-0 lg:static h-[2rem] ">
+          <div className="z-0 absolute left-1/2 -translate-x-1/2  top-1/2 -translate-y-1/2 lg:translate-x-0 lg:-translate-y-0 lg:my-auto lg:static h-[2rem] ">
             <Logo />
           </div>
 
-          <div className="lg:hidden gap-1 sm:gap-4 w-fit justify-center items-center flex">
-            <Cart />
-            <ProfileButton />
-          </div>
-
-          {sectionResults && <HeaderTabs sections={sectionResults} />}
+          {sectionResults && (
+            <ul className="h-full flex items-center justify-center">
+              <HeaderTabs sections={sectionResults} />
+            </ul>
+          )}
         </div>
+
+        {/* Small Screen Buttons */}
+        <div className="lg:hidden gap-1 sm:gap-4 w-fit justify-center items-center flex">
+          <Cart />
+          <ProfileButton showLogin={showLogin} setShowLogin={setShowLogin} />
+        </div>
+
+        {/* Large Screen Buttons */}
         <div className="hidden lg:flex gap-3 sm:gap-4 w-fit items-center ">
           {" "}
           <SearchButton setSearch={setIsSearching} />

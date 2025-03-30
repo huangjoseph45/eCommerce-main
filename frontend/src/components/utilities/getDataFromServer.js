@@ -1,6 +1,7 @@
 // getDataFromServer.js
 import _ from "lodash";
 import { useContext, useEffect, useState, useCallback } from "react";
+import useLogout from "./useLogout";
 
 // const getDataFromServer = async ({ setUserInfo = null, userInfo }) => {
 //   try {
@@ -34,6 +35,7 @@ const useFetchServerData = (options = {}) => {
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState(null);
   const [isError, setIsError] = useState(false);
+  const [loading, result, tryLogout] = useLogout();
 
   const getDataFunc = async (queries, auth) => {
     if (!auth) {
@@ -57,6 +59,9 @@ const useFetchServerData = (options = {}) => {
       if (!response.ok) {
         setLoading(false);
         console.error(response);
+        if (response.status === 401) {
+          let rem = document.cookie.remove("sessionId");
+        }
         throw new Error(`Network response was not ok: ${response.statusText}`);
       }
 

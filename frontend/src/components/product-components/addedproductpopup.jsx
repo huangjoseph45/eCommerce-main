@@ -65,7 +65,8 @@ const ProductPopup = ({
           }}
           transition={{
             type: "spring",
-            mass: 0.5,
+            stiffness: 200,
+            mass: 0.2,
           }}
           className={`fixed -top-[1rem] bg-bgBase shadow-md  cursor-pointer pt-[8rem] p-3 rounded-b-xl px-6 w-full md:w-[20rem] z-20 `}
         >

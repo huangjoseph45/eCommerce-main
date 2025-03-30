@@ -54,7 +54,7 @@ const ProductInfo = ({
   return (
     <div className="p-6 mx-auto flex flex-col justify-start xl:h-fit w-full xl:w-1/2 mt-2">
       <h1 className="text-3xl font-semibold ">
-        {loading ? (
+        {loading && !product ? (
           <div className="h-[2rem]">
             <SquigglyText />{" "}
           </div>
@@ -63,7 +63,7 @@ const ProductInfo = ({
         )}
       </h1>
       <p className="text-base text-slate-500 pb-3  w-fit">
-        {loading ? (
+        {loading && !product ? (
           <div className="h-[2rem]">
             <SquigglyText />
           </div>
@@ -72,7 +72,7 @@ const ProductInfo = ({
         )}
       </p>
       <div className="pb-4 w-full">
-        {loading ? (
+        {loading && !product ? (
           <div className="h-[3rem] w-12">
             <SquigglyText />
           </div>
@@ -96,7 +96,7 @@ const ProductInfo = ({
       </div>
 
       <div className="flex flex-col pb-4 gap-1">
-        {loading ? (
+        {loading && !product ? (
           <>
             <div className="w-24 h-[3rem]">
               <SquigglyText />
@@ -116,7 +116,7 @@ const ProductInfo = ({
           </>
         )}
       </div>
-      {loading ? (
+      {loading && !product ? (
         <>
           {" "}
           <div className="w-[4rem] h-[1.5rem] mb-2">
@@ -129,7 +129,7 @@ const ProductInfo = ({
       ) : (
         <SizesDropdown product={product} urlSize={urlSize} />
       )}
-      {loading ? (
+      {loading && !product ? (
         <>
           <div className="w-full h-[3rem] mb-8">
             <SquigglyText />
