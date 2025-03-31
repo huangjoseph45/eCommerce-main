@@ -17,6 +17,13 @@ const testColorSchema = new mongoose.Schema(
       required: [true, "Color modifier ID is required"],
       trim: true,
     },
+    numImages: {
+      type: Number,
+      required: true,
+      default: 0,
+      min: [0, "Can't have negative images"],
+      max: [10, "Cannot exceed max number of images"],
+    },
   },
   { _id: false }
 );

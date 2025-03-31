@@ -17,7 +17,7 @@ const ProductPage = () => {
   const nav = useNavigate();
   const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
   const [loading, setLoading] = useState(true);
-
+  console.log(product);
   const fetchProduct = async () => {
     setLoading(true);
     const returnedProduct = await returnBaseProduct(productId, enableTest);
@@ -46,7 +46,7 @@ const ProductPage = () => {
   return (
     <>
       <Header></Header>
-      <div className="w-full md:w-[95%] mx-auto *:h-fit overflow-x-hidden">
+      <div className="w-full md:w-[95%] mx-auto *:h-fit overflow-x-hidden ">
         {loading ||
         (productInfo &&
           product &&
@@ -54,7 +54,7 @@ const ProductPage = () => {
           product.productName &&
           product.sku) ? (
           <ProductInfoContext.Provider value={{ productInfo, setProductInfo }}>
-            <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-2  md:w-full xl:w-4/5 m-auto h-fit overflow-visible">
+            <div className=" flex flex-col md:flex-row justify-center gap-4 md:gap-2  md:w-full xl:w-[90%] m-auto h-fit overflow-visible md:mt-4">
               <ProductImage
                 product={product}
                 productColor={color}

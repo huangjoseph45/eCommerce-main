@@ -150,13 +150,14 @@ const Sidebar = ({ sections, visible, setShowLogin, showLogin }) => {
                       })}
                   </ul>
                   <div className="h-full flex-shrink flex gap-3 sm:gap-4 items-end justify-between w-full box-border left-0 px-8 pb-1">
-                    <SearchButton setSearch={setIsSearching} />
-                    <Cart />
+                    {" "}
                     <ProfileButton
                       setShowLogin={setShowLogin}
                       showLogin={showLogin}
                       setShowSidebar={setShowSidebar}
-                    />
+                    />{" "}
+                    <Cart />
+                    <SearchButton setSearch={setIsSearching} />
                   </div>
                   <SearchBar
                     isSearching={isSearching}

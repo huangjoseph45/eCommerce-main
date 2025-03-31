@@ -95,12 +95,12 @@ const SearchBar = ({
             transition={{
               duration: 0.15,
             }}
-            className="-top-[4rem] lg:top-0 fixed left-0 lg:left-1/2 w-screen lg:w-full flex justify-center p-2 h-[120vh] lg:h-[25vh] min-h-[13rem] bg-bgBase z-40"
+            className="-top-[4rem] lg:top-0 fixed left-0 lg:left-1/2 w-screen lg:w-full flex justify-center p-2 h-[120vh] lg:h-[30vh] min-h-[13rem] bg-bgBase z-40"
           >
-            <div className="absolute top-4 left-0 p-4 h-[4rem] ">
+            <div className="absolute top-4 left-0 h-12 mt-4 p-2 ml-2">
               <Logo />
             </div>
-            <div className="absolute top-[5rem] lg:top-4 w-full flex items-center px-4 lg:justify-center mt-4 h-12">
+            <div className=" absolute top-[5rem] lg:top-4 w-full flex items-center px-4 lg:justify-center mt-4 h-12">
               <div className="relative">
                 <button
                   className="absolute left-0 top-1/2 -translate-y-1/2 h-full box-border cursor-pointer aspect-square rounded-md  bg-bgSecondary/5 text-textHollow flex items-center justify-center"
@@ -141,7 +141,7 @@ const SearchBar = ({
                 onClick={checkHideBar}
               />
             </div>
-            <div className="flex flex-col w-full lg:ml-0 mt-[10rem] lg:mt-[4rem] px-2 ">
+            <div className="flex flex-col w-full lg:ml-0 mt-[10rem] lg:mt-[5rem] px-2">
               <h1 className="text-lg">Your Searches</h1>
               <ul className="grid grid-rows-2 grid-flow-col gap-2 w-fit">
                 {pastSearches &&

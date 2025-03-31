@@ -51,6 +51,7 @@ const returnProduct = async (sku, enableTest = false) => {
       type,
       tags,
       clicks,
+
       color: colorObj,
       imageLink,
       discount,
@@ -105,6 +106,7 @@ const returnBaseProduct = async (sku, enableTest = false) => {
       price,
       productName,
       sizes,
+
       tags,
       clicks,
       type,

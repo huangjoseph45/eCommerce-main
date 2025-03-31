@@ -34,7 +34,7 @@ const AdditionalProducts = ({ tags, ignoreSKUList }) => {
   return (
     <div className="md:mt-16 mx-4 lg:mx-6">
       <h1 className="text-2xl py-2">You Might Also Like</h1>
-      <ul className="flex flex-row gap-2 overflow-x-scroll px-2 scrollbar-hide">
+      <ul className="flex flex-row gap-2 overflow-x-scroll scrollbar-hide">
         {filteredProducts && filteredProducts.length > 0 ? (
           filteredProducts.map((product) => {
             const { initialPrice, finalPrice } = parsePrice(
@@ -47,8 +47,6 @@ const AdditionalProducts = ({ tags, ignoreSKUList }) => {
             ).toLowerCase()}/${encodeURIComponent(product.sku)}/${
               product.colors[0].idMod
             }`;
-
-            console.log(product);
 
             return (
               <div
