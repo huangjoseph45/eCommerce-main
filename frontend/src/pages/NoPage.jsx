@@ -19,13 +19,16 @@ const NoPage = () => {
     <>
       <Header> </Header>{" "}
       {timer <= 0 ? (
-        <a
-          className="text-6xl flex items-center justify-center h-[20rem]"
-          href="/"
-          rel="noopener noreferrer"
-        >
-          <p>404 Page Not Found</p>
-        </a>
+        <div className=" flex flex-col items-center justify-center h-[20rem] my-12 w-[90%] mx-auto rounded-3xl bg-bgBase3 gap-8">
+          <p className="text-5xl font-medium">404 Page Not Found</p>{" "}
+          <a
+            className="cursor-pointer text-2xl outline outline-bgSecondary hover:text-textLight transition-all duration-150 px-4 py-2 rounded-full hover:bg-bgSecondary"
+            href="/"
+            rel="noopener noreferrer"
+          >
+            Return to Home Page
+          </a>
+        </div>
       ) : (
         <div className="top-[3rem] grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 w-full px-8 relative">
           <CardPlaceHolder key={1} />

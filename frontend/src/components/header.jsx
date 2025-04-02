@@ -148,8 +148,8 @@ const Header = ({
         } top-0 h-[3.75rem] ${
           isVisible ? "bg-bgBase2 text-textDark" : "bg-none text-textLight"
         }  flex px-2 flex-row justify-between w-full z-40 m-0 transition-all duration-300`}
-        onMouseEnter={mouseEnter}
-        onMouseLeave={mouseLeave}
+        onHoverStart={mouseEnter}
+        onHoverEnd={mouseLeave}
         variants={opacityVariants}
       >
         <div className="flex flex-row items-end h-full my-auto gap-12 justify-between lg:justify-start  w-full">

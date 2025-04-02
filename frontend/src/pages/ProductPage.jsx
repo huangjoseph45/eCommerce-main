@@ -14,10 +14,9 @@ const ProductPage = () => {
   const { productName, productId, color, size } = useParams();
   const params = useParams();
   const [product, setProduct] = useState(null);
-  const nav = useNavigate();
   const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
+  console.log("TEST: " + import.meta.env.VITE_ENABLE_TEST);
   const [loading, setLoading] = useState(true);
-  console.log(product);
   const fetchProduct = async () => {
     setLoading(true);
     const returnedProduct = await returnBaseProduct(productId, enableTest);

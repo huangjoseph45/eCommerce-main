@@ -7,13 +7,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const CLIENT_PATH = import.meta.env.VITE_CLIENT_PATH;
 
 const SectionDropdown = ({ showDropdown, section, setShowDropdown }) => {
-  console.log(section);
-
   return (
     <AnimatePresence>
       {showDropdown && window.innerWidth > 1024 ? (
         <>
-          {createPortal(
+          {/* {createPortal(
             <motion.div
               className="fixed w-screen h-screen bg-bgBlack/5 backdrop-blur-sm left-0 top-0"
               initial={{ opacity: 0 }}
@@ -21,12 +19,12 @@ const SectionDropdown = ({ showDropdown, section, setShowDropdown }) => {
               exit={{ opacity: 0 }}
             ></motion.div>,
             document.body
-          )}
+          )} */}
           <motion.div
-            className="absolute lg:pt-[.875rem] bg-bgBase2 px-4 origin-top w-screen top-full   left-0 flex flex-col pb-6"
-            initial={{ scaleY: 0, opacity: 0 }}
-            animate={{ scaleY: 1, opacity: 1 }}
-            exit={{ scaleY: 0, opacity: 0 }}
+            className="absolute lg:pt-[.875rem] bg-bgBase2 px-4 origin-top  top-[105%] min-w-[32rem] flex flex-col pb-6 rounded-lg"
+            initial={{ top: "80%", opacity: 0, scale: 0.85 }}
+            animate={{ top: "105%", opacity: 1, scale: 1 }}
+            exit={{ top: "80%", opacity: 0, scale: 0.85 }}
             transition={{
               duration: 0.2,
               type: "spring",

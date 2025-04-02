@@ -13,7 +13,7 @@ const verifyAdmin = (req, res, next) => {
 
 const verifySession = (req, res, next) => {
   if (!req.session || !req.session.user || !req.session.user) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ message: "Unauthorized", status: 401 });
   }
   next();
 };

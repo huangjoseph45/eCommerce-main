@@ -11,8 +11,6 @@ const HomePage = () => {
   const timeoutId = useRef(null);
   const [showHeader, setShowHeader] = useState(false);
 
-  console.log(window.innerWidth);
-
   const onScroll = useCallback(() => {
     setShowHeader((prev) => {
       return window.scrollY > minYOffsetHeader !== prev
@@ -20,6 +18,7 @@ const HomePage = () => {
         : prev;
     });
   }, [showHeader]);
+
   useEffect(() => {
     window.addEventListener("scroll", onScroll);
     setShowHeader(window.scrollY > minYOffsetHeader);

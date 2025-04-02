@@ -26,9 +26,9 @@ const HeaderTabs = ({ sections, headerRef }) => {
   const sectionElements = sections ? SectionLinks(sections) : null;
 
   return (
-    <div className="hidden lg:flex flex-row w-fit h-fit gap-2 lg:gap-6 xl:gap-8 2xl:gap-10 text-lg">
+    <ul className="hidden lg:flex flex-row w-fit h-fit  text-lg">
       {sectionElements}
-    </div>
+    </ul>
   );
 };
 export default HeaderTabs;

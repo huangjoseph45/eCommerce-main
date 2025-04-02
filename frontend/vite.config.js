@@ -1,21 +1,15 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import tailwindcss from "tailwindcss";
-import dotenv from "dotenv";
-import path from "path";
+import { loadEnv } from "vite";
 
-// Load .env file from the parent directory
-dotenv.config({ path: path.resolve(__dirname, "../.env") });
-
-export default defineConfig({
-  plugins: [react()],
-  css: {
-    postcss: {
-      plugins: [tailwindcss()],
+export default defineConfig(({ mode }) => {
+  return {
+    plugins: [react()],
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "src"),
+      },
     },
-  },
-  // Optional: Accessing process.env variables manually (if needed)
-  define: {
-    "process.env": process.env,
-  },
+    define: {
+      "process.env.MY_PUBLIC_VAR": JSON.stringify(env.MY_PUBLIC_VAR),
+    },
+  };
 });

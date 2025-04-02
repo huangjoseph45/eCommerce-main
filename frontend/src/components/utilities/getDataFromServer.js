@@ -55,18 +55,15 @@ const useFetchServerData = (options = {}) => {
           body: JSON.stringify(queries) || null,
         }
       );
-
-      if (!response.ok) {
+      const res = await response.json();
+      if (!response.ok && res.status !== 401) {
         setLoading(false);
-        console.error(response);
-        if (response.status === 401) {
-          let rem = document.cookie.remove("sessionId");
-        }
+        console.log(response);
+        console.log(res);
         throw new Error(`Network response was not ok: ${response.statusText}`);
       }
 
-      const new_data = await response.json();
-      setData(new_data);
+      setData(res);
     } catch (error) {
       setIsError(true);
       console.error("Failed to fetch data from server:", error);

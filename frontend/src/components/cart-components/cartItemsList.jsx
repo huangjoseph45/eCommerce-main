@@ -76,7 +76,7 @@ const CartItemList = ({
               <div className="w-[24rem] mx-auto">
                 {" "}
                 <Button
-                  buttonFunc={() => nav("/")}
+                  buttonFunc={() => nav("/s")}
                   buttonText={"Continue Shopping"}
                 />
               </div>

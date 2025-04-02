@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 const SectionLink = ({ element, setShow }) => {
   const [showDropdown, setShowDropdown] = useState(false);
-  const timeoutRef = useRef();
   const nav = useNavigate();
   const CLIENT_PATH = import.meta.env.VITE_CLIENT_PATH;
 
@@ -15,7 +14,6 @@ const SectionLink = ({ element, setShow }) => {
         className="w-fit   lg:py-4"
         onHoverStart={() => {
           if (window.innerWidth > 1024) setShowDropdown(true);
-          clearTimeout(timeoutRef.current);
         }}
         onHoverEnd={() => {
           if (window.innerWidth > 1024) setShowDropdown(false);
@@ -24,10 +22,10 @@ const SectionLink = ({ element, setShow }) => {
           if (window.innerWidth > 1024) setShow(false);
         }}
       >
-        <div className="relative w-full p-2 lg:my-2 lg:p-0 lg:px-0  lg:m-0 cursor-pointer">
+        <div className="relative w-full p-2 lg:my-2 lg:p-0 lg:m-0 cursor-pointer  px-2 lg:px-6 xl:px-8 2xl:px-10">
           {" "}
           <h2
-            className="capitalize select-none list-none "
+            className="capitalize select-none list-none w-fit relative"
             onClick={() => {
               if (window.innerWidth > 1024)
                 nav(`/${encodeURIComponent(element.slug)}`);
@@ -36,24 +34,24 @@ const SectionLink = ({ element, setShow }) => {
               }
             }}
           >
-            {element.sectionTitle}
+            {element.sectionTitle}{" "}
+            <AnimatePresence>
+              {showDropdown ? (
+                <motion.div
+                  className="bg-textDark h-[2px] absolute w-full origin-left"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  exit={{ scaleX: 0 }}
+                  transition={{
+                    duration: 0.2,
+                    type: "spring",
+                    stiffness: 200,
+                    mass: 0.15,
+                  }}
+                ></motion.div>
+              ) : null}
+            </AnimatePresence>
           </h2>{" "}
-          <AnimatePresence>
-            {showDropdown ? (
-              <motion.div
-                className="bg-textDark h-[2px] absolute w-full origin-left"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                exit={{ scaleX: 0 }}
-                transition={{
-                  duration: 0.2,
-                  type: "spring",
-                  stiffness: 200,
-                  mass: 0.15,
-                }}
-              ></motion.div>
-            ) : null}
-          </AnimatePresence>
         </div>
 
         <SectionDropdown
