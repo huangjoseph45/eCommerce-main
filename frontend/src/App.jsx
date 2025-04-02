@@ -17,23 +17,19 @@ import CartPage from "./pages/CartPage";
 import SuccessPage from "./pages/SuccessPage";
 import HomePage from "./pages/HomePage";
 
-// const product = {
-//   sku: "SKU-4",
-//   colors: [
-//     { colorName: "Dark Blue", colorCode: "#30364e", idMod: "dbl" },
-//     { colorName: "Seafoam", colorCode: "#73a899", idMod: "sfm" },
-//     { colorName: "Tan", colorCode: "#9c8d7b", idMod: "tan" },
-//     { colorName: "White", colorCode: "#eaeaea", idMod: "whi" },
-//   ],
-//   description:
-//     "We've brought back these 6-inch-inseam shorts from our archives and updated them with a comfortable drawstring waist and a touch of stretch.",
-//   discount: 0,
-//   price: 89.5,
-//   productName: "6-Inch Polo Prepster Stretch Chino Short",
-//   sizes: ["XS", "S", "M", "L", "XL"],
-//   tags: ["new", "men"],
-//   type: "Men's Clothing",
-// };
+const product = {
+  sku: "SKU-5",
+  colors: [
+    { colorName: "Black", colorCode: "#000000", idMod: "bla", numImages: 3 },
+  ],
+  description: `The Classic Hoodie is made from heavy 380gsm core fleece to provide ideal comfort and structure. The signature "Essentials Fear of God" soft-touch logo is branded across the back. Details include an double-layer hoodie, rib-knit cuffs, waist-hem, and a kangaroo pocket. An updated Fear of God Essentials translucent rubberized label is stitched on the hood and cuff. `,
+  discount: 0,
+  price: 89.5,
+  productName: "Essentials Classic Hoodie",
+  sizes: ["XS", "S", "M", "L", "XL"],
+  tags: ["new", "men", "hoodies"],
+  type: "Men's Clothing",
+};
 
 function App() {
   const [sections, setSections] = useState([]);
@@ -47,6 +43,8 @@ function App() {
 
   useEffect(() => {
     const endpoint = `${import.meta.env.VITE_PATH}/users/auth`;
+
+    // createProduct(product, false);
 
     const handleAuth = async () => {
       const response = await fetch(endpoint, {

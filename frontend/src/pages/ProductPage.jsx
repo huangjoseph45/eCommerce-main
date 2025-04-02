@@ -15,7 +15,6 @@ const ProductPage = () => {
   const params = useParams();
   const [product, setProduct] = useState(null);
   const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
-  console.log("TEST: " + import.meta.env.VITE_ENABLE_TEST);
   const [loading, setLoading] = useState(true);
   const fetchProduct = async () => {
     setLoading(true);

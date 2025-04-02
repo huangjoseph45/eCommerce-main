@@ -7,7 +7,6 @@ const useCreateProduct = () => {
 
   const createProduct = async (productData, enableTest) => {
     const path = `${import.meta.env.VITE_PATH}/products/create-product`;
-    console.log(productData);
     if (
       !(
         productData &&

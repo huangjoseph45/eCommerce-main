@@ -4,11 +4,9 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import LandingSection from "../components/home-components/landingSection.jsx";
 import FeaturedSection from "../components/home-components/featuredSection.jsx";
-
-const minYOffsetHeader = 100;
+const minYOffsetHeader = 150;
 
 const HomePage = () => {
-  const timeoutId = useRef(null);
   const [showHeader, setShowHeader] = useState(false);
 
   const onScroll = useCallback(() => {
@@ -27,17 +25,12 @@ const HomePage = () => {
       window.removeEventListener("scroll", onScroll);
     };
   }, [onScroll]);
-
-  useEffect(() => {
-    console.log(showHeader);
-  }, [showHeader]);
-
   return (
     <>
       <div className="relative">
         <AnimatePresence>
           <motion.div className="fixed top-0 w-full p-0  flex flex-col z-10">
-            <Header showBackground={showHeader} />
+            <Header alternateTransparent={true} />
           </motion.div>
         </AnimatePresence>
         <LandingSection />

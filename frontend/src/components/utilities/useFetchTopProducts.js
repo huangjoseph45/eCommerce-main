@@ -11,7 +11,6 @@ const useFetchTopProducts = () => {
     strictSelection = true,
   }) => {
     try {
-      console.log(tagArray);
       const then = Date.now();
       setLoading(true);
       const response = await fetch(

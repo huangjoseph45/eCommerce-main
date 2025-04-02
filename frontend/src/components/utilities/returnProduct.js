@@ -74,9 +74,6 @@ const returnBaseProduct = async (sku, enableTest = false) => {
     import.meta.env.VITE_PATH
   }/products/fetch-product/${sku}/${enableTest}`;
   try {
-    console.log(fetchURL);
-    console.log(enableTest);
-
     const response = await fetch(fetchURL, {
       method: "GET",
       credentials: "include",

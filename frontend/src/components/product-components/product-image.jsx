@@ -28,12 +28,12 @@ const ProductImage = ({ product, productColor = null, loading = false }) => {
 
   return (
     <div
-      className={` mx-auto lg:mx-0 flex flex-col-reverse lg:flex-row w-fit md:w-full ${
+      className={` mx-auto lg:mx-0 flex flex-col-reverse lg:flex-row w-full md:w-[55%] lg:w-full justify-center items-center ${
         numImages > 0 ? "xl:w-[55%]" : "xl:w-fit"
       } gap-2 lg:gap-4  mx-auto`}
     >
       {product && product.colors && numImages ? (
-        <ul className="h-32 snap-x snap-mandatory  lg:h-full lg:w-32 flex-shrink-0 flex flex-row lg:flex-col overflow-x-scroll scrollbar-hide">
+        <ul className="h-32 snap-x snap-mandatory w-full  sm:w-full  lg:h-full lg:w-32 flex-shrink-0 flex flex-row items-start lg:flex-col overflow-scroll scrollbar-hide">
           {Array(numImages)
             .fill(0)
             .map((num, index) => {
@@ -51,12 +51,14 @@ const ProductImage = ({ product, productColor = null, loading = false }) => {
                   onClick={() => {
                     setImgSrc(src);
                   }}
-                  className={`snap-center flex-shrink-0 w-28 h-28  lg:h-32 lg:w-32 cursor-pointer content-border rounded-sm p-1`}
+                  className={`snap-center flex-shrink-0 w-28 h-28  lg:h-32 lg:w-32 cursor-pointer content-border rounded-sm ${
+                    index !== 0 && index !== numImages - 1 ? "p-1" : "py-1"
+                  } ${index == 0 ? "pr-1" : index == numImages - 1 && "pl-1"}`}
                 >
                   <img
                     src={src}
                     alt=""
-                    className={`aspect-square object-cover  border-bgSecondary  rounded-sm ${
+                    className={`w-full h-full aspect-square object-cover  border-bgSecondary  rounded-sm ${
                       imgSrc === src ? "border-2" : "hover:border"
                     }`}
                   />
@@ -65,7 +67,7 @@ const ProductImage = ({ product, productColor = null, loading = false }) => {
             })}
         </ul>
       ) : null}
-      <div className="sm:w-full w-[35rem]">
+      <div className="w-full">
         {loading && !imgSrc ? (
           <div className="object-cover rounded-b-md h-full object-top mx-auto animate-pulseBg opacity-40"></div>
         ) : (

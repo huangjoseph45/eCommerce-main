@@ -13,7 +13,6 @@ const IntersectionObject = ({
   const cursorIncrement = parseInt(import.meta.env.VITE_CURSOR_INCREMENT);
   const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
   const observerRef = useRef();
-  const intersectingState = useRef(false);
   const oldProducts = useRef();
   const [isAtEnd, setIsAtEnd] = useState(false);
   const [isLoading, nextProducts, refetchProducts] = useFetchProducts();
@@ -30,11 +29,9 @@ const IntersectionObject = ({
         if (entry.isIntersecting) {
           if (loading) return;
           oldProducts.current = products;
-          intersectingState.current = true;
           setCursor((prevCursor) => prevCursor + parseInt(cursorIncrement));
           obs.unobserve(entry.target);
         } else {
-          intersectingState.current = false;
           setIsAtEnd(false);
         }
       });
@@ -53,7 +50,7 @@ const IntersectionObject = ({
       }
       observer.disconnect();
     };
-  });
+  }, [loading, products, cursorIncrement]);
 
   useEffect(() => {
     if (!nextProducts) return;

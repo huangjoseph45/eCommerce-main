@@ -21,10 +21,10 @@ const SectionDropdown = ({ showDropdown, section, setShowDropdown }) => {
             document.body
           )} */}
           <motion.div
-            className="absolute lg:pt-[.875rem] bg-bgBase2 px-4 origin-top  top-[105%] min-w-[32rem] flex flex-col pb-6 rounded-lg"
-            initial={{ top: "80%", opacity: 0, scale: 0.85 }}
-            animate={{ top: "105%", opacity: 1, scale: 1 }}
-            exit={{ top: "80%", opacity: 0, scale: 0.85 }}
+            className="absolute lg:pt-[.875rem] bg-bgBase2 px-4 origin-top  top-[105%] min-w-[32rem] flex flex-col pb-6 rounded-lg shadow-xl"
+            initial={{ top: "85%", opacity: 0 }}
+            animate={{ top: "85%", opacity: 1 }}
+            exit={{ top: "85%", opacity: 0 }}
             transition={{
               duration: 0.2,
               type: "spring",

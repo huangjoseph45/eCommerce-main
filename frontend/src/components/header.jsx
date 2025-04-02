@@ -6,7 +6,7 @@ import Cart from "./header-components/cart";
 import ProfileButton from "./header-components/profile-button";
 import Sidebar from "./header-components/sidebar";
 import { useLocation } from "react-router-dom";
-import { useState, useRef, useEffect, useContext } from "react";
+import { useState, useRef, useEffect, useContext, useCallback } from "react";
 import { motion } from "framer-motion";
 import useAuth from "./utilities/useAuth";
 import useFetchServerData from "./utilities/getDataFromServer";
@@ -21,13 +21,15 @@ const opacityVariants = {
   hidden: { opacity: 0 },
 };
 
+const minYOffsetHeader = 40;
+
 const Header = ({
-  showBackground = true,
   screen = "regular",
   showLoginModal = false,
   setShowLoginModal = null,
+  alternateTransparent = false,
 }) => {
-  const [isVisible, setVisible] = useState(showBackground);
+  const [alternateDisplay, setAlternateDisplay] = useState();
   const [isSearching, setIsSearching] = useState(false);
   const { loggedIn } = useAuth();
   const location = useLocation();
@@ -41,10 +43,28 @@ const Header = ({
   ] = useFetchSections();
   const [showLogin, setShowLogin] = useState(showLoginModal);
   const { isLoading, data, refetch } = useFetchServerData();
+  const [showHeader, setShowHeader] = useState(false);
+
+  const onScroll = useCallback(() => {
+    setShowHeader((prev) => {
+      return window.scrollY > minYOffsetHeader !== prev
+        ? window.scrollY > minYOffsetHeader
+        : prev;
+    });
+  }, [showHeader]);
 
   useEffect(() => {
-    setVisible(showBackground);
-  }, [showBackground]);
+    window.addEventListener("scroll", onScroll);
+    setAlternateDisplay(window.scrollY > minYOffsetHeader);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [onScroll]);
+
+  useEffect(() => {
+    console.log(showHeader);
+  }, [showHeader]);
 
   useEffect(() => {
     const resizeEvent = () => {
@@ -97,15 +117,15 @@ const Header = ({
   }, [sectionResults]);
 
   const mouseEnter = () => {
-    if (!isVisible) {
-      setVisible(true);
+    if (!alternateDisplay) {
+      setAlternateDisplay(true);
     }
     clearTimeout(timeoutRef.current);
   };
 
   const mouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
-      setVisible(showBackground || false);
+      setAlternateDisplay(false);
     }, 50);
   };
 
@@ -145,29 +165,35 @@ const Header = ({
       <motion.div
         className={`opacity-1 ${
           screen === "home" ? "sticky" : "sticky"
-        } top-0 h-[3.75rem] ${
-          isVisible ? "bg-bgBase2 text-textDark" : "bg-none text-textLight"
-        }  flex px-2 flex-row justify-between w-full z-40 m-0 transition-all duration-300`}
-        onHoverStart={mouseEnter}
-        onHoverEnd={mouseLeave}
+        } top-0 h-[3.75rem] text-textDark ${
+          alternateDisplay
+            ? "bg-bgBase2/90 shadow-lg"
+            : alternateTransparent && "bg-bgBase/0 b text-textLight"
+        }  flex px-2 flex-row justify-between w-full z-40 m-0 transition-all duration-300 py-8`}
         variants={opacityVariants}
       >
+        {alternateDisplay && (
+          <div className="w-full h-full absolute  top-0 left-0  backdrop-blur-sm"></div>
+        )}
         <div className="flex flex-row items-end h-full my-auto gap-12 justify-between lg:justify-start  w-full">
           <div className="h-full z-[10] lg:hidden gap-3 sm:gap-4 w-fit justify-center items-center flex ">
             <Sidebar
               sections={sectionResults}
-              visible={isVisible}
+              visible={alternateDisplay}
               setShowLogin={setShowLogin}
               showLogin={showLogin}
             />
           </div>
-          <div className="z-0 absolute left-1/2 -translate-x-1/2  top-1/2 -translate-y-1/2 lg:translate-x-0 lg:-translate-y-0 lg:my-auto lg:static h-[2rem] ">
+          <div className="z-0 absolute left-1/2 -translate-x-1/2  top-1/2 -translate-y-1/2 lg:translate-x-0  lg:my-auto lg:static h-[2.5rem] ">
             <Logo />
           </div>
 
           {sectionResults && (
             <ul className="h-full flex items-center justify-center">
-              <HeaderTabs sections={sectionResults} />
+              <HeaderTabs
+                sections={sectionResults}
+                underlineBlack={alternateDisplay || !alternateTransparent}
+              />
             </ul>
           )}
         </div>
@@ -179,7 +205,7 @@ const Header = ({
         </div>
 
         {/* Large Screen Buttons */}
-        <div className="hidden lg:flex gap-3 sm:gap-4 w-fit items-center ">
+        <div className="hidden lg:flex gap-3 sm:gap-4 w-fit items-center z-10 ">
           {" "}
           <SearchButton setSearch={setIsSearching} />
           <Cart />
@@ -189,7 +215,7 @@ const Header = ({
         <SearchBar
           isSearching={isSearching}
           setIsSearching={setIsSearching}
-          setHeaderVisible={setVisible}
+          setHeaderVisible={setAlternateDisplay}
         />
       </motion.div>
     </>

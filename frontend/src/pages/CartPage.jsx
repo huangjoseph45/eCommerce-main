@@ -74,7 +74,12 @@ const CartPage = () => {
       <div className="mx-auto">
         {" "}
         {aggregateTags && aggregateTags.length > 0 ? (
-          <AdditionalProducts tags={aggregateTags} ignoreSKUList={[]} />
+          <AdditionalProducts
+            tags={aggregateTags}
+            ignoreSKUList={cart.map(
+              (item) => item.sku.split("-")[0] + "-" + item.sku.split("-")[1]
+            )}
+          />
         ) : (
           <AdditionalProducts tags={[""]} ignoreSKUList={[]} />
         )}

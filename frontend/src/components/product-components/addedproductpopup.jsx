@@ -29,14 +29,12 @@ const ProductPopup = ({
     const handleResize = () => {
       setIsDesktop(window.innerWidth > 768);
     };
-    console.log();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [isDesktop]);
 
   const productPrice = parsePrice(product?.price, product?.discount);
   const nav = useNavigate();
-  console.log(isDesktop);
 
   return createPortal(
     <AnimatePresence>

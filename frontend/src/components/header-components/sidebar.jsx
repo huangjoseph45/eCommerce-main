@@ -21,7 +21,7 @@ const Sidebar = ({ sections, visible, setShowLogin, showLogin }) => {
   const { loggedIn } = useAuth();
   const { userInfo } = useContext(ProductContext);
   const [cart, setCart] = useState();
-  const sectionElements = SectionLinks(sections, setShowSidebar);
+  const sectionElements = SectionLinks({ sections, setShowSidebar });
   useSideBarToggle({ setShowSidebar, isSearching, showSidebar });
 
   useEffect(() => {
@@ -31,9 +31,9 @@ const Sidebar = ({ sections, visible, setShowLogin, showLogin }) => {
 
   return (
     <>
-      <div className="h-full my-auto">
+      <div className="top-0 relative flex items-center justify-center h-8 w-8 ml-2">
         <div
-          className={`flex items-center justify-center cursor-pointer size-8 md:size-8 mt-1 hover:bg-slate-500 hover:bg-opacity-25 p-6 rounded-full lg:hidden  `}
+          className={`flex items-center justify-center cursor-pointer w-8 h-8 mt-1 hover:bg-slate-500 hover:bg-opacity-25 p-6 rounded-full lg:hidden  `}
           title={showSidebar ? "Close" : "Menu"}
           onClick={() => {
             setShowSidebar(!showSidebar);

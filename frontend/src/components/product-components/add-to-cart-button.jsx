@@ -1,4 +1,4 @@
-import { useContext, useCallback, useState, useEffect } from "react";
+import { useContext, useCallback, useState, useEffect, useRef } from "react";
 import { ProductInfoContext } from "../utilities/ContextManager";
 import { ProductContext } from "../utilities/ContextManager";
 import isEmpty from "../utilities/isEmpty";
@@ -7,6 +7,7 @@ import Button from "../button";
 import ProductPopup from "./addedproductpopup";
 import useAuth from "../utilities/useAuth";
 import LoginModal from "../loginModal";
+import { motion, AnimatePresence } from "motion/react";
 
 const AddToCart = ({ product }) => {
   const { productInfo } = useContext(ProductInfoContext);
@@ -17,8 +18,43 @@ const AddToCart = ({ product }) => {
   });
   const { loggedIn } = useAuth();
   const [showLogin, setShowLogin] = useState(false);
+  const [showFixedButton, setShowFixedButton] = useState(true);
+  const observerRef = useRef();
 
   const [popupProduct, setPopupProduct] = useState();
+
+  useEffect(() => {
+    if (!observerRef.current) return;
+
+    const observerOptions = {
+      threshold: 0.7,
+    };
+
+    const observerCallback = (entries, obs) => {
+      entries.forEach((entry) => {
+        console.log(entry);
+        if (entry.isIntersecting) {
+          setShowFixedButton(false);
+        } else {
+          setShowFixedButton(true);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      observerCallback,
+      observerOptions
+    );
+
+    observer.observe(observerRef.current);
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+      observer.disconnect();
+    };
+  }, []);
 
   const addToCartFunction = useCallback(() => {
     if (!loggedIn) {
@@ -70,11 +106,43 @@ const AddToCart = ({ product }) => {
         productInfo={popupProduct?.productInfo}
         addToCartFunction={addToCartFunction}
       />
-      <Button
-        buttonFunc={addToCartFunction}
-        invert={false}
-        buttonText={"Add to Cart"}
-      />
+      <div className="" ref={observerRef}>
+        <Button
+          buttonFunc={addToCartFunction}
+          invert={false}
+          buttonText={"Add to Cart"}
+        />
+      </div>
+      <AnimatePresence>
+        {showFixedButton && (
+          <motion.div
+            initial={{ y: "100%", opacity: 0 }}
+            animate={{ y: "0%", opacity: 1 }}
+            exit={{ y: "100%", opacity: 0 }}
+            transition={{
+              type: "spring",
+              stiffness: 150,
+              mass: 0.2,
+            }}
+            className="fixed bottom-0 w-full flex flex-row gap-0 md:hidden left-0 flex flex-col"
+          >
+            <div className="">
+              <button className="w-1/2 bg-bgBase h-12 hover:bg-bgBase3">
+                Size:
+              </button>
+              <button className="w-1/2 bg-bgBase h-12 hover:bg-bgBase3">
+                Color:
+              </button>
+            </div>
+            <button
+              className="w-full h-16   flex justify-center items-center text-xl bg-bgSecondary hover:bg-bgSecondaryLight transition-colors duration-150 text-textLight "
+              onClick={addToCartFunction}
+            >
+              Add to Cart
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

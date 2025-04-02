@@ -52,7 +52,7 @@ const ProductInfo = ({
   ));
 
   return (
-    <div className="px-4 mx-auto flex flex-col justify-start xl:h-fit w-full xl:w-1/2">
+    <div className="px-4 mx-auto flex flex-col justify-start xl:h-fit w-full lg:w-1/2 md:w-[40%] xl:w-[35%] relative ">
       <h1 className="text-3xl font-semibold ">
         {loading && !product ? (
           <div className="h-[2rem]">
@@ -141,7 +141,6 @@ const ProductInfo = ({
         </>
       ) : (
         <>
-          {" "}
           <AddToCart product={product} />
           <p className="mt-8 w-[90%] mb-12">{product?.description}</p>
         </>

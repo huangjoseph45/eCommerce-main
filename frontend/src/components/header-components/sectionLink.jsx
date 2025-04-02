@@ -3,9 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import SectionDropdown from "./sectionDropdown";
 import { useNavigate } from "react-router-dom";
 
-const SectionLink = ({ element, setShow }) => {
+const SectionLink = ({ element, setShow, underlineBlack }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const nav = useNavigate();
+  const timeoutId = useRef(null);
   const CLIENT_PATH = import.meta.env.VITE_CLIENT_PATH;
 
   return (
@@ -13,16 +14,19 @@ const SectionLink = ({ element, setShow }) => {
       <motion.div
         className="w-fit   lg:py-4"
         onHoverStart={() => {
-          if (window.innerWidth > 1024) setShowDropdown(true);
+          timeoutId.current = setTimeout(() => {
+            if (window.innerWidth > 1024) setShowDropdown(true);
+          }, 100);
         }}
         onHoverEnd={() => {
           if (window.innerWidth > 1024) setShowDropdown(false);
+          clearTimeout(timeoutId.current);
         }}
         onClick={() => {
           if (window.innerWidth > 1024) setShow(false);
         }}
       >
-        <div className="relative w-full p-2 lg:my-2 lg:p-0 lg:m-0 cursor-pointer  px-2 lg:px-6 xl:px-8 2xl:px-10">
+        <div className="relative w-full p-2 lg:my-2 lg:p-0 lg:m-0 cursor-pointer  px-2 lg:px-4">
           {" "}
           <h2
             className="capitalize select-none list-none w-fit relative"
@@ -38,7 +42,9 @@ const SectionLink = ({ element, setShow }) => {
             <AnimatePresence>
               {showDropdown ? (
                 <motion.div
-                  className="bg-textDark h-[2px] absolute w-full origin-left"
+                  className={`${
+                    underlineBlack ? "bg-textDark" : "bg-textLight"
+                  } h-[2px] absolute w-full origin-left`}
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
                   exit={{ scaleX: 0 }}

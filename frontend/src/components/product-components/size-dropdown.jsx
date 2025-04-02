@@ -82,7 +82,7 @@ const SizesDropdown = ({
       <motion.li
         {...item}
         key={size}
-        className="list-none cursor-pointer hover:text-textLight hover:bg-slate-700 text-textDark text-left p-2 rounded-md pl-4 min-w-[10rem] w-full uppercase select-none"
+        className="list-none cursor-pointer hover:text-textLight hover:bg-slate-700 text-textDark text-left p-2 rounded-sm pl-4 min-w-[10rem] w-full uppercase select-none"
         onClick={() => selectSize(size)}
       >
         {size}
@@ -99,7 +99,7 @@ const SizesDropdown = ({
       >
         <div
           onClick={showFunc}
-          className="handle group flex items-center justify-center bg-bgBase w-fit m-auto px-4 py-2 cursor-pointer hover:bg-bgSecondaryLight box-border outline outline-1 border-bgSecondaryLight rounded-md"
+          className="handle group flex items-center justify-center bg-bgBase w-fit m-auto px-4 py-2 cursor-pointer hover:bg-bgSecondaryLight box-border outline outline-1 border-bgSecondaryLight rounded-sm"
         >
           <p
             className={`text-lg text-textDark group-hover:text-textLight select-none transition-all duration-300 ${
@@ -116,7 +116,7 @@ const SizesDropdown = ({
               initial="closed"
               animate={showElement ? "open" : "closed"}
               exit={"closed"}
-              className="mt-2 flex bg-bgBase items-center m-auto flex-col gap-2 border border-textDark rounded-md w-fit p-1 absolute top-full left-0 z-10 overflow-scroll max-h-[12rem]"
+              className="mt-2 flex bg-bgBase items-center m-auto flex-col gap-2 border border-textDark rounded-sm w-fit p-1 absolute top-full left-0 z-10 overflow-scroll max-h-[12rem]"
             >
               {sizes}
             </motion.div>

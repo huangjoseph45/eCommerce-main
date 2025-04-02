@@ -1,6 +1,6 @@
 import SectionLinks from "./sectionlinks";
 
-const HeaderTabs = ({ sections, headerRef }) => {
+const HeaderTabs = ({ sections, headerRef, underlineBlack }) => {
   // const sections = [
   //   {
   //     categoryName: "New Arrivals",
@@ -23,7 +23,9 @@ const HeaderTabs = ({ sections, headerRef }) => {
   //     id: 3,
   //   },
   // ];
-  const sectionElements = sections ? SectionLinks(sections) : null;
+  const sectionElements = sections
+    ? SectionLinks({ sections, underlineBlack })
+    : null;
 
   return (
     <ul className="hidden lg:flex flex-row w-fit h-fit  text-lg">

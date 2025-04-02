@@ -23,13 +23,14 @@ const Card = ({
   const nav = useNavigate();
   const { initialPrice, finalPrice } = parsePrice(price, discount);
   const [cardColor, setCardColor] = useState(0);
-  const numImages = Array.isArray(colors) ? colors.length : 1;
 
   const [isHovering, setHovering] = useState(false);
 
   const checkHover = (event) => {
-    const isHovering = event.currentTarget.matches(":hover");
-    setHovering(isHovering);
+    if (window.innerWidth > 1024) {
+      const isHovering = event.currentTarget.matches(":hover");
+      setHovering(isHovering);
+    }
   };
 
   const colorBoxes =
