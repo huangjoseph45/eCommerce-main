@@ -19,7 +19,6 @@ function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
 
   const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
   const fetchQuery = useRef();
-
   useEffect(() => {
     setCursor(0);
     window.scroll(0, 0);
@@ -27,7 +26,13 @@ function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
 
   useEffect(() => {
     if (cursor === 0) return;
-    refetchProducts(fetchQuery.current, sortingInfo, enableTest, cursor);
+    refetchProducts(
+      fetchQuery.current,
+      sortingInfo,
+      enableTest,
+      cursor,
+      isSearch
+    );
   }, [cursor]);
 
   useEffect(() => {
@@ -39,7 +44,13 @@ function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
       if (subsection) {
         fetchQuery.current = [...fetchQuery.current, subsection];
       }
-      refetchProducts(fetchQuery.current, sortingInfo, enableTest, cursor);
+      refetchProducts(
+        fetchQuery.current,
+        sortingInfo,
+        enableTest,
+        cursor,
+        isSearch
+      );
       setLoading(true);
     }
 
@@ -60,7 +71,14 @@ function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
     } else {
       setDisplayName("New Arrivals");
     }
-  }, [categoryName, categoryId, JSON.stringify(sortingInfo), searchParams]);
+  }, [
+    categoryName,
+    categoryId,
+    JSON.stringify(sortingInfo),
+    searchParams,
+    tags,
+    subsection,
+  ]);
 
   useEffect(() => {
     if (!isLoading) setLoading(false);
@@ -104,6 +122,7 @@ function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
           sortingInfo={sortingInfo}
           cursor={cursor}
           fetchQuery={fetchQuery.current}
+          isSearch={isSearch}
         />
       )}
 

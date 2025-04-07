@@ -60,8 +60,8 @@ const CartItem = memo(
             initial={"closed"}
             animate={isVisible ? "visible" : "hidden"}
             exit={"hidden"}
-            className="relative list-none h-fit flex w-full lg:max-w-[25rem] transition-shadow duration-150 hover:shadow-lg"
-            whileHover={{ y: -2, scale: 1.01 }}
+            className="relative list-none h-fit flex w-full lg:max-w-[35rem] transition-shadow duration-150 hover:shadow-lg"
+            whileHover={{ y: -0.5, scale: 1.005 }}
             transition={{
               type: "spring",
               stiffness: 600,
@@ -88,18 +88,18 @@ const CartItem = memo(
               </div>
 
               <div
-                className={`p-2 w-full h-full flex flex-col lg:gap-1 ${
+                className={`p-2 w-full h-full flex flex-col ${
                   !sidebar ? "pt-2" : "text-sm"
                 }`}
               >
                 <div className="flex flex-row w-full justify-between relative">
                   <a
                     onClick={() => nav("/" + stringURL)}
-                    className="text-base sm:text-lg font-semibold cursor-pointer"
+                    className="text-base sm:text-lg font-semibold cursor-pointer h-fit"
                   >
                     {productName}
                   </a>
-                  <div className="right-0 flex flex-col items-end ml-2">
+                  <div className="w-[7rem] right-0 flex flex-col items-end">
                     {discount && discount > 0 ? (
                       <p className="text-gray-700 line-through">
                         ${price.toFixed(2)}
@@ -107,7 +107,11 @@ const CartItem = memo(
                     ) : (
                       ""
                     )}
-                    <p className="text-textDark">
+                    <p
+                      className={`text-textDark absolute ${
+                        discount && discount > 0 ? "mt-6" : ""
+                      }`}
+                    >
                       ${(price * (1 - discount / 100)).toFixed(2)}
                     </p>{" "}
                   </div>

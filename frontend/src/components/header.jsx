@@ -168,7 +168,7 @@ const Header = ({
         } top-0 h-[3.75rem] text-textDark ${
           alternateDisplay
             ? "bg-bgBase2/90 shadow-lg"
-            : alternateTransparent && "bg-bgBase/0 b text-textLight"
+            : alternateTransparent && "bg-bgBase/0 text-textLight"
         }  flex px-2 flex-row justify-between w-full z-40 m-0 transition-all duration-300 py-8`}
         variants={opacityVariants}
       >

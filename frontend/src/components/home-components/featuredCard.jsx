@@ -12,8 +12,6 @@ const FeaturedCard = ({ section, index }) => {
 
   useEffect(() => {
     if (section) {
-      console.log(section.tags);
-
       getProducts({
         enableTest: enableTest,
         tagArray: section.tags,
@@ -32,7 +30,6 @@ const FeaturedCard = ({ section, index }) => {
   }, [middleElement.current]);
 
   useEffect(() => {
-    console.log(products);
     if (products && products.length > 0) {
       console.log(products[0].colors);
       setImgSrc(
@@ -47,7 +44,7 @@ const FeaturedCard = ({ section, index }) => {
     <div
       ref={middleElement}
       className="flex flex-col cursor-pointer"
-      onClick={() => nav("/" + section.sectionTitle)}
+      onClick={() => nav("/" + section.slug)}
     >
       {products ? (
         <>

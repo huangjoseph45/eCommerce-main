@@ -12,6 +12,7 @@ import { AnimatePresence, motion } from "motion/react";
 import OrderHistory from "./order-history";
 import VerifiedTag from "./verifiedTag";
 import InputBox from "../inputbox";
+import { debounce } from "lodash";
 
 const ProfileContent = ({
   currentSection,
@@ -25,6 +26,7 @@ const ProfileContent = ({
   const [isChanged, setIsChanged] = useState(false);
   const [clonedInfo, setClonedInfo] = useState(fetchedUserData);
   const [alteredData, setAlteredData] = useState({});
+  const [show, setShow] = useState(true);
 
   const countries = useRef(useMemo(() => Country.getAllCountries(), []));
   const [states, setStates] = useState(() => State.getAllStates());
@@ -52,6 +54,18 @@ const ProfileContent = ({
   useEffect(() => {
     setClonedInfo(fetchedUserData);
   }, [fetchedUserData]);
+
+  const resizeFunc = debounce(() => {
+    setShow(!showProfileHeaders || window.innerWidth > 1024);
+  }, 100);
+
+  useEffect(() => {
+    setShow(!showProfileHeaders || window.innerWidth > 1024);
+
+    window.addEventListener("resize", resizeFunc);
+
+    return () => window.removeEventListener("resize", resizeFunc);
+  }, [showProfileHeaders]);
 
   const saveFunc = () => {
     setIsChanged(false);
@@ -178,8 +192,13 @@ const ProfileContent = ({
   return (
     <div className="flex flex-col w-3/4 lg:w-1/2 mx-auto lg:mx-0 pl-2">
       {!showProfileHeaders && (
-        <button
-          className="left-2 top-[6.75rem] w-fit  aspect-square  absolute rounded-full p-1 hover:bg-gray-100 transition-all duration-200"
+        <motion.button
+          initial={{
+            opacity: 0,
+          }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, ease: "easeIn" }}
+          className=" -translate-x-[150%] aspect-square  absolute rounded-full p-1 hover:bg-gray-100 transition-all duration-200"
           onClick={() => setShowProfileHeaders(true)}
         >
           <svg
@@ -197,18 +216,44 @@ const ProfileContent = ({
               d="M15.525 18.966L8.558 12l6.967-6.967"
             ></path>
           </svg>
-        </button>
+        </motion.button>
       )}
-      <h1 className="text-2xl mb-6">{currentSection ? currentSection : ""}</h1>
-      <ul
-        className={` flex flex-col gap-4 min-h-[20rem] relative ${
-          currentSection !== "Order History"
-            ? " max-w-[30rem]"
-            : "max-w-[55rem]"
-        }`}
-      >
-        {currentSection !== "Order History" ? fields : <OrderHistory />}
-      </ul>
+      <AnimatePresence>
+        {show && (
+          <motion.div
+            className=""
+            initial={{
+              x: `${window.innerWidth < 1024 ? "-100%" : "0"}`,
+              opacity: 0,
+            }}
+            animate={{ x: "0", opacity: 1 }}
+            exit={{
+              x: `${window.innerWidth < 1024 ? "-100%" : "0"}`,
+              opacity: 1,
+            }}
+            transition={{ duration: 0.3, type: "tween" }}
+          >
+            <h1 className="text-2xl mb-6">
+              {currentSection?.name ? currentSection.name : ""}
+            </h1>
+
+            <ul
+              className={` flex flex-col gap-4 min-h-[20rem] relative ${
+                currentSection?.name !== "Order History"
+                  ? " max-w-[30rem]"
+                  : "max-w-[55rem]"
+              }`}
+            >
+              {currentSection?.name !== "Order History" ? (
+                fields
+              ) : (
+                <OrderHistory />
+              )}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <AnimatePresence>
         {isChanged && (
           <motion.div

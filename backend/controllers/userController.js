@@ -55,7 +55,7 @@ const createSession = ({ req, res, user, remember = false }) => {
   if (remember) {
     req.session.cookie.maxAge = 365 * 24 * 60 * 60 * 1000;
   } else if (role === "customer") {
-    req.session.cookie.maxAge = 7 * 24 * 60 * 60 * 1000;
+    req.session.cookie.maxAge = 2 * 24 * 60 * 60 * 1000;
   } else {
     req.session.cookie.maxAge = 2 * 60 * 60 * 1000;
   }

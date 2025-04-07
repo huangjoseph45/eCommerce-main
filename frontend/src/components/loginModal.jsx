@@ -16,6 +16,7 @@ const formVariants = {
   first: {
     x: "-50%",
     opacity: 0,
+    scale: 1.1,
   },
   show: {
     x: "-50%",
@@ -24,16 +25,13 @@ const formVariants = {
     transition: {
       type: "spring",
       stiffness: 500,
-      damping: 20,
+      damping: 15,
       mass: 0.4,
     },
   },
   leave: {
+    scale: 1.1,
     opacity: 0,
-    transition: {
-      type: "tween",
-      duration: 0.15,
-    },
   },
 };
 

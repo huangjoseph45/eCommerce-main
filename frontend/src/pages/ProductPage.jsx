@@ -6,7 +6,7 @@ import ProductInfo from "../components/product-components/product-info";
 import { ProductInfoContext } from "../components/utilities/ContextManager";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { returnBaseProduct } from "../components/utilities/returnProduct";
+import returnProduct from "../components/utilities/returnProduct";
 import AdditionalProducts from "../components/additionalProducts";
 
 const ProductPage = () => {
@@ -18,7 +18,7 @@ const ProductPage = () => {
   const [loading, setLoading] = useState(true);
   const fetchProduct = async () => {
     setLoading(true);
-    const returnedProduct = await returnBaseProduct(productId, enableTest);
+    const returnedProduct = await returnProduct(productId, enableTest);
     setProduct(returnedProduct);
     setLoading(false);
   };

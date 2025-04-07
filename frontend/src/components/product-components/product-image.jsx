@@ -16,8 +16,8 @@ const ProductImage = ({ product, productColor = null, loading = false }) => {
         }`;
         setImgSrc(src);
         const numImg =
-          product.colors.find((color) => color.idMod === productColor)
-            .numImages || 0;
+          product?.colors?.find((color) => color.idMod === productColor)
+            ?.numImages || 0;
         setNumImages(numImg);
       } catch (error) {
         console.error("Error constructing image URL:", error);
@@ -28,12 +28,12 @@ const ProductImage = ({ product, productColor = null, loading = false }) => {
 
   return (
     <div
-      className={` mx-auto lg:mx-0 flex flex-col-reverse lg:flex-row w-full md:w-[55%] lg:w-full justify-center items-center ${
+      className={` mx-auto lg:mx-0 flex flex-col-reverse lg:flex-row w-full md:w-[55%] justify-center items-center ${
         numImages > 0 ? "xl:w-[55%]" : "xl:w-fit"
       } gap-2 lg:gap-4  mx-auto`}
     >
       {product && product.colors && numImages ? (
-        <ul className="h-32 snap-x snap-mandatory w-full  sm:w-full  lg:h-full lg:w-32 flex-shrink-0 flex flex-row items-start lg:flex-col overflow-scroll scrollbar-hide">
+        <ul className="xs:px-4 md:px-0 mx-0 h-32 snap-x snap-mandatory w-full  sm:w-full  lg:h-full lg:w-32 flex-shrink-0 flex flex-row items-start lg:flex-col overflow-scroll scrollbar-hide">
           {Array(numImages)
             .fill(0)
             .map((num, index) => {
@@ -66,8 +66,10 @@ const ProductImage = ({ product, productColor = null, loading = false }) => {
               );
             })}
         </ul>
-      ) : null}
-      <div className="w-full">
+      ) : (
+        <div className="h-32 snap-x snap-mandatory w-full  sm:w-full  lg:h-full lg:w-40 flex-shrink-0 flex flex-row items-start lg:flex-col overflow-scroll scrollbar-hide"></div>
+      )}
+      <div className="w-full md:w-[26rem] lg:w-[32rem]">
         {loading && !imgSrc ? (
           <div className="object-cover rounded-b-md h-full object-top mx-auto animate-pulseBg opacity-40"></div>
         ) : (

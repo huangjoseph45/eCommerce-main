@@ -53,13 +53,14 @@ const SuccessPage = () => {
         ) : orderData && orderData[0] ? (
           <>
             <div className="flex flex-col md:flex-row justify-between my-4 text-xs lg:text-base gap-1">
-              {" "}
-              <div className="flex flex-col justify-between p-4 border rounded-md shadow-md gap-2 md:w-[70%]">
+              <div className="flex flex-col justify-between p-4 border rounded-md shadow-md gap-2 w-full ">
                 <ShippingDetails orderData={orderData[0]} />
 
                 {orderData &&
                   orderData[0] &&
                   orderData[0].productInfo.map((product, index) => {
+                    console.log(product);
+
                     const imageLink = `https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
                       product.sku.toUpperCase() + "-" + product.color.idMod
                     }`;
@@ -67,7 +68,9 @@ const SuccessPage = () => {
                       "p/" +
                       encodeURIComponent(product.name.replace(/ /g, "-")) +
                       "/" +
-                      product.sku
+                      product.sku +
+                      "/" +
+                      product.color.idMod
                     ).toLowerCase();
 
                     return (
@@ -108,7 +111,7 @@ const SuccessPage = () => {
                     );
                   })}
               </div>
-              <div className="flex flex-col p-4 py-6 border rounded-md shadow-md gap-2 md:w-[30%]">
+              <div className="flex flex-col p-4 py-6 border rounded-md shadow-md md:w-fit">
                 <OrderDetails orderData={orderData[0]} />
                 Total: ${(displayPrice / 100).toFixed(2)}
               </div>

@@ -9,6 +9,7 @@ const IntersectionObject = ({
   cursor,
   fetchQuery,
   filter,
+  isSearch,
 }) => {
   const cursorIncrement = parseInt(import.meta.env.VITE_CURSOR_INCREMENT);
   const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
@@ -16,7 +17,6 @@ const IntersectionObject = ({
   const oldProducts = useRef();
   const [isAtEnd, setIsAtEnd] = useState(false);
   const [isLoading, nextProducts, refetchProducts] = useFetchProducts();
-
   useEffect(() => {
     if (!observerRef.current) return;
 
@@ -71,7 +71,8 @@ const IntersectionObject = ({
       fetchQuery,
       sortingInfo,
       enableTest,
-      cursor + cursorIncrement
+      cursor + cursorIncrement,
+      isSearch
     );
   }, [cursor]);
 

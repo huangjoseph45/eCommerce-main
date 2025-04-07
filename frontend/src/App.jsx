@@ -16,6 +16,7 @@ import ProfilePage from "./pages/ProfilePage";
 import CartPage from "./pages/CartPage";
 import SuccessPage from "./pages/SuccessPage";
 import HomePage from "./pages/HomePage";
+import AdminPage from "./pages/AdminPage";
 
 const product = {
   sku: "SKU-5",
@@ -40,6 +41,15 @@ function App() {
   const [userInfo, setUserInfo] = useState({});
 
   const productLinks = useRef();
+
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const handleLoad = () => setIsLoaded(true);
+    window.addEventListener("load", handleLoad);
+
+    return () => window.removeEventListener("load", handleLoad);
+  }, []);
 
   useEffect(() => {
     const endpoint = `${import.meta.env.VITE_PATH}/users/auth`;
@@ -95,43 +105,47 @@ function App() {
         <ProductContext.Provider
           value={{ userInfo, setUserInfo, sections, setSections }}
         >
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/s/" element={<Shopping />} />
-              <Route path="/new" element={<Shopping />} />
+          <div className={isLoaded ? "block" : "hidden"}>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/s/" element={<Shopping />} />
+                <Route path="/new" element={<Shopping />} />
 
-              <Route path="*" element={<NoPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/cart" element={<CartPage />} />
-              <Route path="/order" element={<SuccessPage />} />
-              <Route path="/search" element={<Shopping isSearch={true} />} />
-              <Route
-                path="/p/:productName/:productId/:color?/:size?"
-                element={<ProductPage />}
-              />
+                <Route path="*" element={<NoPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/dev" element={<AdminPage />} />
 
-              {productLinks.current}
-              {sections &&
-                sections.map((category, index) => {
-                  return (
-                    <Route
-                      key={`category-${index}`}
-                      path={`/${encodeURIComponent(
-                        category.slug
-                      )}/:subsection?`}
-                      element={
-                        <Shopping
-                          categoryName={category.sectionTitle}
-                          categoryId={category._id}
-                          tags={category.tags}
-                        />
-                      }
-                    />
-                  );
-                })}
-            </Routes>
-          </BrowserRouter>
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/order" element={<SuccessPage />} />
+                <Route path="/search" element={<Shopping isSearch={true} />} />
+                <Route
+                  path="/p/:productName/:productId/:color?/:size?"
+                  element={<ProductPage />}
+                />
+
+                {productLinks.current}
+                {sections &&
+                  sections.map((category, index) => {
+                    return (
+                      <Route
+                        key={`category-${index}`}
+                        path={`/${encodeURIComponent(
+                          category.slug
+                        )}/:subsection?`}
+                        element={
+                          <Shopping
+                            categoryName={category.sectionTitle}
+                            categoryId={category._id}
+                            tags={category.tags}
+                          />
+                        }
+                      />
+                    );
+                  })}
+              </Routes>
+            </BrowserRouter>
+          </div>
         </ProductContext.Provider>
       </AuthProvider>
     </>

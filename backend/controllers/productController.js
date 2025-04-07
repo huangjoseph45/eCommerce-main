@@ -133,7 +133,7 @@ const fetchProduct = async (req, res) => {
 };
 
 const fetchCategory = async (req, res) => {
-  const { tags, filter, cursor, test } = req.body;
+  const { tags, filter, cursor, test, isSearch } = req.body;
   const cursorIncrement = parseInt(process.env.VITE_CURSOR_INCREMENT);
 
   let numItems = cursor + cursorIncrement || cursorIncrement;
@@ -180,9 +180,7 @@ const fetchCategory = async (req, res) => {
   };
 
   try {
-    const joinedTags = tags && !tags.includes("*") ? tags.join("|") : "";
-    const regexPattern = tags.map((tag) => new RegExp(tag, "i"));
-    console.log(tags);
+    console.log(tags.join("|"));
 
     const products = await (useTestProducts ? TestProduct : Product).aggregate([
       {
@@ -202,9 +200,29 @@ const fetchCategory = async (req, res) => {
               $or: [
                 {
                   tags: {
-                    $all: tags.map((tag) => new RegExp(tag, "i")), // Using regular expression for loose match
+                    $all: tags.map((tag) => new RegExp(tag, "i")),
                   },
                 },
+                ...(isSearch
+                  ? [
+                      {
+                        $or: [
+                          {
+                            productName: {
+                              $regex: tags.join("|"),
+                              $options: "i",
+                            },
+                          },
+                          {
+                            description: {
+                              $regex: tags.join("|"),
+                              $options: "i",
+                            },
+                          },
+                        ],
+                      },
+                    ]
+                  : []),
               ],
             },
             filterQuery,
@@ -214,6 +232,17 @@ const fetchCategory = async (req, res) => {
       sortQuery,
       { $limit: numItems },
     ]);
+
+    console.log({
+      productName: {
+        $regex: tags.join("|"),
+        $options: "i",
+      },
+      description: {
+        $regex: tags.join("|"),
+        $options: "i",
+      },
+    });
 
     return res.status(200).json({ products });
   } catch (error) {

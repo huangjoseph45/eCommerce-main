@@ -31,7 +31,7 @@ export default {
 
     extend: {
       fontFamily: {
-        afacad: ["Afacad Flux", "sans-serif"],
+        encode: ["Encode Sans", "sans-serif"],
       },
       keyframes: {
         pulseBg: {

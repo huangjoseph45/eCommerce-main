@@ -32,7 +32,7 @@ const AdditionalProducts = ({ tags, ignoreSKUList }) => {
   }, [products]);
 
   return (
-    <div className="md:mt-16 mx-4 lg:mx-6">
+    <div className="md:mt-24 mx-4 lg:mx-6">
       <h1 className="text-2xl py-2">You Might Also Like</h1>
       <ul className="flex flex-row gap-2 overflow-x-scroll scrollbar-hide">
         {filteredProducts && filteredProducts.length > 0 ? (
@@ -52,7 +52,7 @@ const AdditionalProducts = ({ tags, ignoreSKUList }) => {
               <div
                 onClick={() => nav(stringURL)}
                 key={product._id}
-                className="flex-shrink-0 mb-4 cursor-pointer w-[12rem] md:w-[14rem] lg:w-[18rem] xl:w-[22rem]"
+                className="flex-shrink-0 mb-4 cursor-pointer w-[10rem] md:w-[12rem] lg:w-[14rem] xl:w-[16rem]"
               >
                 <img
                   src={`https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
@@ -61,21 +61,25 @@ const AdditionalProducts = ({ tags, ignoreSKUList }) => {
                   alt=""
                   className="aspect-square object-cover w-full "
                 />
-                <h2 className="mt-3 text-lg  leading-tight">
+                <h2 className="mt-3 text-sm md:text-md leading-tight">
                   {product.productName}
                 </h2>
-                <h3 className="text-textHollow ">{product.type}</h3>
+                <h3 className="text-xs md:text-sm text-textHollow ">
+                  {product.type}
+                </h3>
 
                 <div className="flex flex-row items-center gap-2">
-                  <p className="font-semibold text-lg">${finalPrice}</p>
+                  <p className="font-semibold text-xs md:text-sm">
+                    ${finalPrice}
+                  </p>
                   {product.discount !== 0 && (
-                    <p className="font-semibold text-md line-through text-gray-500">
+                    <p className="font-semibold text-xs md:text-sm line-through text-gray-500">
                       ${initialPrice}
                     </p>
                   )}
                 </div>
                 {product.discount !== 0 && (
-                  <p className="font-medium text-lg text-errorFalse">
+                  <p className="font-medium text-xs md:text-sm text-bgTertiary">
                     {product.discount}% off
                   </p>
                 )}

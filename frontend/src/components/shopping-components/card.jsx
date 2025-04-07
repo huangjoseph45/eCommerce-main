@@ -27,7 +27,7 @@ const Card = ({
   const [isHovering, setHovering] = useState(false);
 
   const checkHover = (event) => {
-    if (window.innerWidth > 1024) {
+    if (window.innerWidth > 1024 && colors.length > 1) {
       const isHovering = event.currentTarget.matches(":hover");
       setHovering(isHovering);
     }
@@ -148,7 +148,7 @@ const Card = ({
             )}
           </div>
           {discount !== 0 && (
-            <p className="font-medium text-lg text-errorFalse">
+            <p className="font-medium text-lg text-bgTertiary">
               {discount}% off
             </p>
           )}

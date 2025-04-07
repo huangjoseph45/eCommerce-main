@@ -1,5 +1,5 @@
 import parsePrice from "../utilities/parsePrice";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import AddToCart from "./add-to-cart-button";
 import SizesDropdown from "./size-dropdown";
 import { ProductInfoContext } from "../utilities/ContextManager";
@@ -14,23 +14,34 @@ const ProductInfo = ({
 }) => {
   const nav = useNavigate();
   const { setProductInfo } = useContext(ProductInfoContext);
+  const [highlightSize, setHighlightSize] = useState(false);
   const { initialPrice, finalPrice } = parsePrice(
     product?.price,
     product?.discount
   );
-  const [currentColor, setCurrentColor] = useState();
+  const sizeRef = useRef();
 
   useEffect(() => {
     const newColorInfo = product?.colors.find(
       (colorL) => colorL.idMod === productColor
     );
-    if (newColorInfo && newColorInfo !== currentColor) {
+    if (newColorInfo) {
       setProductInfo((prevInfo) => ({
         ...prevInfo,
         colorInfo: newColorInfo,
       }));
     }
-  }, [currentColor, product?.colors]);
+  }, [product?.colors, productColor]);
+
+  const scrollToSize = () => {
+    console.log("clciked");
+    sizeRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
+    });
+    setHighlightSize(true);
+  };
 
   const colorBoxes = product?.colors.map((color) => (
     <div
@@ -52,7 +63,7 @@ const ProductInfo = ({
   ));
 
   return (
-    <div className="px-4 mx-auto flex flex-col justify-start xl:h-fit w-full lg:w-1/2 md:w-[40%] xl:w-[35%] relative ">
+    <div className="px-4 mx-auto flex flex-col justify-start xl:h-fit w-full lg:w-1/2 md:w-[40%] relative ">
       <h1 className="text-3xl font-semibold ">
         {loading && !product ? (
           <div className="h-[2rem]">
@@ -62,15 +73,13 @@ const ProductInfo = ({
           product?.productName
         )}
       </h1>
-      <p className="text-base text-slate-500 pb-3  w-fit">
-        {loading && !product ? (
-          <div className="h-[2rem]">
-            <SquigglyText />
-          </div>
-        ) : (
-          product?.type
-        )}
-      </p>
+      {loading && !product ? (
+        <div className="text-base text-slate-500 pb-3  w-fit h-[2rem]">
+          <SquigglyText />
+        </div>
+      ) : (
+        product?.type
+      )}
       <div className="pb-4 w-full">
         {loading && !product ? (
           <div className="h-[3rem] w-12">
@@ -87,7 +96,7 @@ const ProductInfo = ({
               )}
             </div>
             {product?.discount !== 0 && (
-              <p className="font-semibold text-base text-green-600">
+              <p className="font-semibold text-base text-bgTertiary">
                 {product?.discount}% off
               </p>
             )}
@@ -110,7 +119,12 @@ const ProductInfo = ({
           <>
             <div className="flex flex-row gap-1 capitalize">
               <p>Color:</p>
-              <p>{currentColor}</p>
+              <p>
+                {
+                  product?.colors?.find((color) => color.idMod === productColor)
+                    ?.colorName
+                }
+              </p>
             </div>
             <div className="flex flex-row gap-6 lg:gap-4">{colorBoxes}</div>
           </>
@@ -127,7 +141,14 @@ const ProductInfo = ({
           </div>
         </>
       ) : (
-        <SizesDropdown product={product} urlSize={urlSize} />
+        <div ref={sizeRef}>
+          <SizesDropdown
+            product={product}
+            urlSize={urlSize}
+            highlightSize={highlightSize}
+            setHighlightSize={setHighlightSize}
+          />
+        </div>
       )}
       {loading && !product ? (
         <>
@@ -141,7 +162,7 @@ const ProductInfo = ({
         </>
       ) : (
         <>
-          <AddToCart product={product} />
+          <AddToCart product={product} scrollToSize={scrollToSize} />
           <p className="mt-8 w-[90%] mb-12">{product?.description}</p>
         </>
       )}

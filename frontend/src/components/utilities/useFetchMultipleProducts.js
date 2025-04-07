@@ -8,9 +8,12 @@ const useFetchProducts = () => {
     tags,
     filter = null,
     enableTest = false,
-    cursor = 0
+    cursor = 0,
+    isSearch = false
   ) => {
     try {
+      console.log(isSearch);
+
       const then = Date.now();
       setLoading(true);
       const response = await fetch(
@@ -29,22 +32,12 @@ const useFetchProducts = () => {
               sort: filter.sort,
               prices: filter.prices,
             },
+            isSearch: isSearch,
           }),
         }
       );
       const data = await response.json();
       let products = data.products;
-      // if (Array.isArray(products) && products.length > 0) {
-      //   products = products.sort((a, b) => {
-      //     const { newest, lowToHigh, highToLow } = filter?.sort || {};
-
-      //     if (newest) return sortProducts(a, b, "newest");
-      //     if (lowToHigh) return sortProducts(a, b, "lowToHigh");
-      //     if (highToLow) return sortProducts(a, b, "highToLow");
-
-      //     return sortProducts(a, b, "newest");
-      //   });
-      // }
       setTimeout(() => {
         setProducts(products);
         setLoading(false);
@@ -55,27 +48,17 @@ const useFetchProducts = () => {
     }
   };
 
-  const refetchProducts = async (tag, filter = null, enableTest, cursor) => {
-    getProducts(tag, filter, enableTest, cursor);
+  const refetchProducts = async (
+    tag,
+    filter = null,
+    enableTest,
+    cursor,
+    isSearch
+  ) => {
+    getProducts(tag, filter, enableTest, cursor, isSearch);
   };
 
   return [isLoading, products, refetchProducts];
 };
 
 export default useFetchProducts;
-
-const sortProducts = (a, b, sortType) => {
-  const compareIds = (a, b) => a._id.localeCompare(b._id);
-  const aTime = new Date(a.createdAt).getTime();
-  const bTime = new Date(b.createdAt).getTime();
-
-  if (sortType === "newest") {
-    return bTime - aTime || compareIds(a, b);
-  } else if (sortType === "highToLow") {
-    return a.price - b.price || compareIds(a, b);
-  } else if (sortType === "lowToHigh") {
-    return b.price - a.price || compareIds(a, b);
-  }
-
-  return compareIds(a, b); // default sort by _id
-};

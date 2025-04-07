@@ -71,8 +71,7 @@ const CartPage = () => {
         </div>{" "}
         <CartSummary products={products} loading={isLoading} cart={cart} />
       </div>
-      <div className="mx-auto">
-        {" "}
+      <div className="mx-auto mt-24">
         {aggregateTags && aggregateTags.length > 0 ? (
           <AdditionalProducts
             tags={aggregateTags}

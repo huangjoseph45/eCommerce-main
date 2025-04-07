@@ -35,6 +35,8 @@ const SizesDropdown = ({
   product,
   defaultSelector = "Select",
   urlSize = null,
+  highlightSize,
+  setHighlightSize,
 }) => {
   const nav = useNavigate();
   const [showElement, setShowElement] = useState(false);
@@ -71,6 +73,7 @@ const SizesDropdown = ({
     };
   }, [urlSize]);
   const selectSize = (size) => {
+    setHighlightSize(false);
     nav(
       `/p/${product?.productName}/${product?.sku}/${productInfo.colorInfo.idMod}/${size}`
     );
@@ -92,14 +95,20 @@ const SizesDropdown = ({
 
   return (
     <>
-      <p className="text-base mb-1">Size:</p>
+      <p className={`text-base mb-1 ${highlightSize ? "text-red-500" : ""}`}>
+        Size:
+      </p>
       <div
         className="flex flex-col  items-center justify-center w-fit relative mb-6"
         ref={dropdownRef}
       >
         <div
           onClick={showFunc}
-          className="handle group flex items-center justify-center bg-bgBase w-fit m-auto px-4 py-2 cursor-pointer hover:bg-bgSecondaryLight box-border outline outline-1 border-bgSecondaryLight rounded-sm"
+          className={`handle group flex items-center justify-center bg-bgBase w-fit m-auto px-4 py-2 cursor-pointer hover:bg-bgSecondaryLight box-border border border-1 border-bgSecondaryLight rounded-sm ${
+            highlightSize
+              ? "outline outline-red-500 outline-offset-[3px] rounded-sm"
+              : ""
+          }`}
         >
           <p
             className={`text-lg text-textDark group-hover:text-textLight select-none transition-all duration-300 ${

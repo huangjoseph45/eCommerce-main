@@ -9,7 +9,7 @@ import useAuth from "../utilities/useAuth";
 import LoginModal from "../loginModal";
 import { motion, AnimatePresence } from "motion/react";
 
-const AddToCart = ({ product }) => {
+const AddToCart = ({ product, scrollToSize }) => {
   const { productInfo } = useContext(ProductInfoContext);
   const { userInfo, setUserInfo } = useContext(ProductContext);
   const [showPopup, setShowPopup] = useState(false);
@@ -81,6 +81,8 @@ const AddToCart = ({ product }) => {
       refetch({ cart: updatedCart });
       setPopupProduct({ product: product, productInfo: productInfo });
       setShowPopup(true);
+    } else {
+      scrollToSize();
     }
   }, [productInfo, setUserInfo, userInfo]);
 
@@ -126,14 +128,6 @@ const AddToCart = ({ product }) => {
             }}
             className="fixed bottom-0 w-full flex flex-row gap-0 md:hidden left-0 flex flex-col"
           >
-            <div className="">
-              <button className="w-1/2 bg-bgBase h-12 hover:bg-bgBase3">
-                Size:
-              </button>
-              <button className="w-1/2 bg-bgBase h-12 hover:bg-bgBase3">
-                Color:
-              </button>
-            </div>
             <button
               className="w-full h-16   flex justify-center items-center text-xl bg-bgSecondary hover:bg-bgSecondaryLight transition-colors duration-150 text-textLight "
               onClick={addToCartFunction}

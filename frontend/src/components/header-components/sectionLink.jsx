@@ -8,11 +8,10 @@ const SectionLink = ({ element, setShow, underlineBlack }) => {
   const nav = useNavigate();
   const timeoutId = useRef(null);
   const CLIENT_PATH = import.meta.env.VITE_CLIENT_PATH;
-
   return (
     <>
       <motion.div
-        className="w-fit   lg:py-4"
+        className="w-fit "
         onHoverStart={() => {
           timeoutId.current = setTimeout(() => {
             if (window.innerWidth > 1024) setShowDropdown(true);
@@ -26,7 +25,7 @@ const SectionLink = ({ element, setShow, underlineBlack }) => {
           if (window.innerWidth > 1024) setShow(false);
         }}
       >
-        <div className="relative w-full p-2 lg:my-2 lg:p-0 lg:m-0 cursor-pointer  px-2 lg:px-4">
+        <div className=" text-base relative w-full p-2 lg:my-4 lg:p-0 lg:m-0 cursor-pointer  px-2 lg:px-4 h-full">
           {" "}
           <h2
             className="capitalize select-none list-none w-fit relative"
