@@ -1,4 +1,18 @@
-const ArrayGrid = ({ arrayLabel, itemArray, setProduct, product, setter }) => {
+const ArrayGrid = ({
+  arrayLabel,
+  itemArray,
+  setProduct,
+  product,
+  field,
+  setFormData,
+  formData,
+}) => {
+  const onChange = (e, field, idx) => {
+    const newArray = [...formData[field]]; // <-- clone the array
+    newArray[idx] = e.target.value;
+    setFormData({ ...formData, [field]: newArray });
+  };
+
   return (
     <>
       <h2>{arrayLabel}:</h2>
@@ -7,8 +21,9 @@ const ArrayGrid = ({ arrayLabel, itemArray, setProduct, product, setter }) => {
           <input
             type="text"
             defaultValue={item}
-            key={item + index}
+            key={index}
             className="w-[12rem] p-1 bg-bgBase2 outline"
+            onChange={(e) => onChange(e, field, index)}
           />
         ))}
         <button
@@ -16,7 +31,7 @@ const ArrayGrid = ({ arrayLabel, itemArray, setProduct, product, setter }) => {
           onClick={() => {
             setProduct({
               ...product,
-              [setter]: [...product[setter], ""],
+              [field]: [...product[field], ""],
             });
           }}
         >

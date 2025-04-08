@@ -12,14 +12,29 @@ const ColorRow = ({
   const [showImagesGrid, setShowImagesGrid] = useState(false);
   const [shownImage, setShownImage] = useState(null);
   const [optimisticImages, setOptimisticImages] = useState(0);
+  const [currColor, setCurrColor] = useState(null);
+
+  useEffect(() => {
+    if (colorObj) setCurrColor(colorObj?.idMod);
+  }, [colorObj]);
 
   const colorIndex =
-    product?.colors?.find((color) => color.idMod === colorObj.idMod)
-      ?.numImages || 0;
+    product?.colors?.find((color) => color.idMod === currColor)?.numImages || 0;
 
   useEffect(() => {
     setOptimisticImages(colorObj?.numImages || 0);
   }, [product, colorObj]);
+
+  const onChange = (e, field) => {
+    setProduct({
+      ...product,
+      colors: product.colors.map((color) =>
+        color.idMod === currColor
+          ? { ...color, [field]: e.target.value }
+          : color
+      ),
+    });
+  };
 
   return (
     <>
@@ -28,28 +43,44 @@ const ColorRow = ({
           type="text"
           defaultValue={colorObj.colorName}
           className="w-[8rem] lg:w-[8rem] p-1 bg-bgBase2 outline"
+          onChange={(e) => onChange(e, "colorName")}
         />
         <input
           type="text"
           defaultValue={colorObj.colorCode}
           maxLength={7}
           className="w-[8rem] lg:w-[8rem] p-1 bg-bgBase2 outline"
+          onChange={(e) => onChange(e, "colorCode")}
         />{" "}
         <input
           type="text"
-          defaultValue={colorObj.idMod}
+          defaultValue={currColor ? currColor : colorObj.idMod}
           className="w-[8rem] lg:w-[8rem] p-1 bg-bgBase2 outline"
           maxLength={3}
+          onChange={(e) => onChange(e, "colorName")}
         />
-        <button
-          onClick={() => setShowImagesGrid(!showImagesGrid)}
-          className="w-[8rem] lg:w-[8rem] p-1 bg-bgBase outline flex items-center justify-center gap-1"
+        {/* <button
+          onClick={() =>
+            setShowImagesGrid(
+              !showImagesGrid &&
+                currColor?.length > 0 &&
+                colorObj.colorCode?.length > 0 &&
+                colorObj.colorName?.length > 0
+            )
+          }
+          className={`w-[8rem] lg:w-[8rem] p-1  ${
+            currColor?.length > 0 &&
+            colorObj.colorCode?.length > 0 &&
+            colorObj.colorName?.length > 0
+              ? "bg-bgBase"
+              : "bg-errorTrue"
+          } outline flex items-center justify-center gap-1`}
         >
           <p className="rotate-180">&#x5e;</p>
           Images
-        </button>
+        </button> */}
       </div>
-      {showImagesGrid && (
+      {/* {showImagesGrid && (
         <ul className="grid grid-cols-4">
           {Array.from({
             length: optimisticImages,
@@ -60,7 +91,7 @@ const ColorRow = ({
               setShownImage={setShownImage}
               colorIndex={colorIndex}
               product={product}
-              colorObj={colorObj}
+              colorObj={currColor}
               newImages={newImages}
               setNewImages={setNewImages}
             />
@@ -74,8 +105,8 @@ const ColorRow = ({
             +
           </div>
         </ul>
-      )}
-      {shownImage !== null &&
+      )} */}
+      {/* {shownImage !== null &&
         createPortal(
           <>
             <div
@@ -93,7 +124,7 @@ const ColorRow = ({
             </div>
           </>,
           document.body
-        )}
+        )} */}
     </>
   );
 };

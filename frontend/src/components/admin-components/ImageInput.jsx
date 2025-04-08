@@ -4,7 +4,7 @@ const ImageInput = ({
   index,
   setShownImage,
   colorIndex,
-  colorObj,
+  currColor,
   product,
   newImages,
   setNewImages,
@@ -17,14 +17,14 @@ const ImageInput = ({
     if (file) {
       setNewImages([
         ...newImages,
-        { image: file, product: product.sku, color: colorObj.idMod },
+        { image: file, product: product.sku, color: currColor },
       ]);
     }
   };
 
   return (
     <>
-      {index >= (colorObj.numImages || 0) ? (
+      {/* {index >= (colorObj.numImages || 0) ? (
         <div
           className={`w-[8rem] lg:w-[8rem] p-1 ${
             !fileSelected ? "bg-errorTrue" : "bg-errorFalse"
@@ -50,7 +50,7 @@ const ImageInput = ({
         >
           Show Image {index}
         </div>
-      )}
+      )} */}
     </>
   );
 };
