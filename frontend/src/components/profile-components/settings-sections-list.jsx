@@ -21,6 +21,7 @@ const SettingsSectionsList = ({ sections, setSection }) => {
     useContext(ShowProfileContext);
   const [show, setShow] = useState(false);
   const [loading, result, tryLogout] = useLogout();
+  const [hasMounted, setHasMounted] = useState(false);
 
   const checkSize = debounce(() => {
     const windowWidth = window.innerWidth;
@@ -35,7 +36,7 @@ const SettingsSectionsList = ({ sections, setSection }) => {
 
   useEffect(() => {
     window.addEventListener("resize", checkSize);
-
+    setHasMounted(true);
     return () => {
       window.removeEventListener("resize", checkSize);
     };
@@ -105,15 +106,25 @@ const SettingsSectionsList = ({ sections, setSection }) => {
       <AnimatePresence>
         {showProfileHeaders && (
           <motion.div
-            initial={{
-              opacity: 0.5,
-              scale: 1,
-              x: `${window.innerWidth < 1024 ? "100%" : "0"}`,
+            initial={
+              hasMounted
+                ? {
+                    opacity: 0.5,
+                    scale: 1,
+                    x: `${window.innerWidth < 1024 ? "100%" : "0"}`,
 
-              transition: {
-                delay: 0.5,
-              },
-            }}
+                    transition: {
+                      delay: 0.5,
+                    },
+                  }
+                : {
+                    x: "0%",
+
+                    opacity: 1,
+
+                    scale: 1,
+                  }
+            }
             animate={{
               x: "0%",
 

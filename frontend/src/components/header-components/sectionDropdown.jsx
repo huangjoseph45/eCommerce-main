@@ -22,9 +22,9 @@ const SectionDropdown = ({ showDropdown, section, setShowDropdown }) => {
           )} */}
           <motion.div
             className="absolute lg:pt-[.875rem] bg-bgBase2 px-4 origin-top  top-[105%] min-w-[32rem] flex flex-col pb-6 rounded-lg shadow-xl"
-            initial={{ top: "105%", opacity: 0 }}
-            animate={{ top: "105%", opacity: 1 }}
-            exit={{ top: "105%", opacity: 0 }}
+            initial={{ top: "105%", opacity: 0, scale: 0 }}
+            animate={{ top: "105%", opacity: 1, scale: 1 }}
+            exit={{ top: "105%", opacity: 0, scale: 0 }}
             transition={{
               duration: 0.2,
               type: "spring",

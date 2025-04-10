@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const SectionLink = ({ element, setShow, underlineBlack }) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showHighlight, setShowHighlight] = useState(false);
   const nav = useNavigate();
   const timeoutId = useRef(null);
   const CLIENT_PATH = import.meta.env.VITE_CLIENT_PATH;
@@ -13,13 +14,15 @@ const SectionLink = ({ element, setShow, underlineBlack }) => {
       <motion.div
         className="w-fit "
         onHoverStart={() => {
+          setShowHighlight(true);
           timeoutId.current = setTimeout(() => {
             if (window.innerWidth > 1024) setShowDropdown(true);
-          }, 100);
+          }, 250);
         }}
         onHoverEnd={() => {
           if (window.innerWidth > 1024) setShowDropdown(false);
           clearTimeout(timeoutId.current);
+          setShowHighlight(false);
         }}
         onClick={() => {
           if (window.innerWidth > 1024) setShow(false);
@@ -34,12 +37,13 @@ const SectionLink = ({ element, setShow, underlineBlack }) => {
                 nav(`/${encodeURIComponent(element.slug)}`);
               else {
                 setShowDropdown(true);
+                setShowHighlight(false);
               }
             }}
           >
             {element.sectionTitle}{" "}
             <AnimatePresence>
-              {showDropdown ? (
+              {showHighlight ? (
                 <motion.div
                   className={`${
                     underlineBlack ? "bg-textDark" : "bg-textLight"
@@ -48,10 +52,10 @@ const SectionLink = ({ element, setShow, underlineBlack }) => {
                   animate={{ scaleX: 1 }}
                   exit={{ scaleX: 0 }}
                   transition={{
-                    duration: 0.2,
-                    type: "spring",
-                    stiffness: 200,
-                    mass: 0.15,
+                    duration: 0.25,
+                    // type: "spring",
+                    // stiffness: 200,
+                    // mass: 0.15,
                   }}
                 ></motion.div>
               ) : null}
