@@ -1,8 +1,15 @@
 import ColorRow from "./ColorRow";
 
-const ColorGrid = ({ product, setProduct, newImages, setNewImages }) => {
+const ColorGrid = ({ product, setProduct, imageCreationState }) => {
   return (
-    <>
+    <div className="my-4 relative w-fit">
+      <div
+        className={
+          imageCreationState
+            ? "absolute w-full outline outline-8 outline-bgBlack/15 h-full bg-bgBlack/15"
+            : "hidden"
+        }
+      ></div>
       <h2>Colors:</h2>
       <ul className="flex flex-col lg:grid-cols-3 w-fit">
         <div className="flex flex-rowborder">
@@ -15,13 +22,13 @@ const ColorGrid = ({ product, setProduct, newImages, setNewImages }) => {
               .sort((a, b) => a.colorName > b.colorName)
               .map((color, index) => {
                 return (
-                  <div key={color.idMod + index}>
+                  <div key={index}>
                     <ColorRow
                       colorObj={color}
                       product={product}
                       setProduct={setProduct}
-                      newImages={newImages}
-                      setNewImages={setNewImages}
+                      index={index}
+                      imageCreationState={imageCreationState}
                     />
                   </div>
                 );
@@ -30,19 +37,20 @@ const ColorGrid = ({ product, setProduct, newImages, setNewImages }) => {
         <button
           className="mt-4 w-[8rem] lg:w-[8rem] bg-bgExtraSecondaryLight hover:bg-bgExtraSecondaryLight/80 text-textLight p-2"
           onClick={() => {
-            setProduct({
-              ...product,
-              colors: [
-                ...product.colors,
-                { colorName: "", colorCode: "#", idMod: "" },
-              ],
-            });
+            if (!imageCreationState)
+              setProduct({
+                ...product,
+                colors: [
+                  ...product.colors,
+                  { colorName: "", colorCode: "#", idMod: "", numImages: 0 },
+                ],
+              });
           }}
         >
           +
         </button>
       </ul>
-    </>
+    </div>
   );
 };
 

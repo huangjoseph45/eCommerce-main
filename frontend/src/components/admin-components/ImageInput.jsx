@@ -1,57 +1,55 @@
-import { useState, useEffect } from "react";
+import { useRef, useState } from "react";
 
-const ImageInput = ({
-  index,
-  setShownImage,
-  colorIndex,
-  currColor,
-  product,
-  newImages,
-  setNewImages,
-}) => {
-  const [fileSelected, setFileSelected] = useState(false);
+const ImageInput = ({ fileArray, setFileArray, color, index }) => {
+  const inputRef = useRef();
+  const [containsFile, setContainsFile] = useState(false);
+
+  const handleButtonClick = () => {
+    inputRef.current.click();
+  };
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setFileSelected(!!file); // true if file exists
-    if (file) {
-      setNewImages([
-        ...newImages,
-        { image: file, product: product.sku, color: currColor },
+    const imageData = Array.from(e.target.files)[0];
+
+    setContainsFile(true);
+
+    const files = [...fileArray];
+    const existingFile = files.find(
+      (file) => file.idMod === color.idMod && file.index === index
+    );
+    console.log(imageData);
+    if (existingFile) {
+      existingFile["data"] = imageData; // Replace existing file data with the new FormData
+      setFileArray(files);
+    } else {
+      setFileArray([
+        ...fileArray,
+        { idMod: color.idMod, index: index, data: imageData },
       ]);
     }
+
+    // Clear the file input value after the file has been processed
+    e.target.value = null;
   };
 
   return (
-    <>
-      {/* {index >= (colorObj.numImages || 0) ? (
-        <div
-          className={`w-[8rem] lg:w-[8rem] p-1 ${
-            !fileSelected ? "bg-errorTrue" : "bg-errorFalse"
-          } text-textLight outline-bgBlack outline cursor-pointer`}
-        >
-          <label htmlFor={`file-input-${index}`} className="cursor-pointer">
-            {!fileSelected ? <p>Input Image</p> : <p>File Selected</p>}
-          </label>
-          <input
-            onChange={handleFileChange}
-            className="hidden"
-            name={`file-input-${index}`}
-            type="file"
-            id={`file-input-${index}`}
-            accept="image/png, image/jpeg, image/webp"
-          />
-        </div>
-      ) : (
-        <div
-          key={`color-image-${index}`}
-          onClick={() => setShownImage(index)}
-          className="w-[8rem] lg:w-[8rem] p-1 bg-bgTertiary text-textLight outline-bgBlack outline cursor-pointer"
-        >
-          Show Image {index}
-        </div>
-      )} */}
-    </>
+    <li
+      className={`mb-2 w-full outline p-2 ${
+        containsFile ? "bg-errorFalse" : "bg-errorTrue"
+      }`}
+    >
+      <button type="button" onClick={handleButtonClick}>
+        Add Image
+      </button>
+
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/png, image/jpeg, image/webp"
+        className="hidden"
+        onChange={handleFileChange}
+      />
+    </li>
   );
 };
 

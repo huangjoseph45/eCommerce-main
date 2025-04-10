@@ -73,16 +73,6 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: [true, "Product type is required"],
       trim: true,
-      enum: {
-        values: [
-          "Men's Clothing",
-          "Women's Clothing",
-          "Accessories",
-          "Footwear",
-          "Others",
-        ],
-        message: "{VALUE} is not a valid product type",
-      },
     },
     price: {
       type: Number,
@@ -118,7 +108,7 @@ const productSchema = new mongoose.Schema(
     sizes: {
       type: [String],
       enum: {
-        values: ["XS", "S", "M", "L", "XL", "XXL"],
+        values: ["3XS", "XXS", "XS", "S", "M", "L", "XL", "XXL", "3XL"],
         message: "{VALUE} is not a valid size",
       },
       default: ["M"], // Default size if none provided

@@ -2,10 +2,14 @@ const MONGO_URI = process.env.MONGO_URI;
 const { Product, StripeProduct, Discount } = require("../models/Products");
 const { TestProduct, StripeTestProduct } = require("../models/TestProducts.js");
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
+const fs = require("fs");
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 
 const useTestProducts = false;
 
 const createProduct = async (req, res) => {
+  let { productData, test, allowModification, newImages } = req.body;
+
   let {
     productName,
     type,
@@ -16,40 +20,131 @@ const createProduct = async (req, res) => {
     sizes,
     description,
     tags,
-    test,
-  } = req.body;
+  } = productData;
 
   if (
     typeof productName !== "string" ||
     typeof type !== "string" ||
-    typeof price !== "number" ||
+    !isNumeric(price) ||
     typeof sku !== "string" ||
     !Array.isArray(tags) ||
-    typeof discount !== "number" ||
+    !isNumeric(discount) ||
     !Array.isArray(colors) ||
     !Array.isArray(sizes) ||
     typeof description !== "string"
   ) {
+    console.log(Array.isArray(colors));
     console.error("Invalid Input");
     return res.status(400).send("Invalid input");
   }
+  sku = sku.toUpperCase();
+  const idMods = colors.map((c) => c.idMod).sort();
+  const isValidColors = colors.every(
+    (c) =>
+      c.idMod &&
+      c.colorName &&
+      c.colorCode?.length === 7 &&
+      idMods.indexOf(c.idMod) === idMods.lastIndexOf(c.idMod)
+  );
+  if (!isValidColors) {
+    return res.status(400).json({ error: "Color field is invalid" });
+  }
+  const hasDuplicates = (arr) =>
+    arr.some((val, i) => !val?.length || arr.indexOf(val) !== i);
 
-  sizes = sizes.map((size) => size.toUpperCase());
+  if (hasDuplicates(sizes)) {
+    return res.status(400).json({ error: "Size field is invalid" });
+  }
+
+  if (hasDuplicates(tags)) {
+    return res.status(400).json({ error: "Tag field is invalid" });
+  }
 
   try {
     let existingProduct = await (useTestProducts
       ? TestProduct
       : Product
     ).findOne({ sku });
+    if (!existingProduct || allowModification) {
+      // const s3 = new AWS.S3();
 
-    if (!existingProduct) {
+      const s3 = new S3Client({
+        region: process.env.REGION || "us-east-2", // e.g., "us-east-1"
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY,
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+        },
+      });
+
+      for (const image of newImages) {
+        if (!image.fileName || !image.fileData) {
+          return res.status(400).json({ error: "Invalid Image Fields" });
+        }
+        // const params = {
+        //   Bucket: process.env.S3_BUCKET_NAME, // your S3 bucket name
+        //   Key: `${sku}-${image.idMod}-${image.index}`,
+        //   Body: image.fileData, // The file content
+        //   ACL: "public-read",
+        // };
+      }
+      const uploadFiles = async (files) => {
+        const uploadPromises = files.map((file, index) => {
+          const fileBuffer = Buffer.from(file.fileData, "base64");
+
+          return new Promise(async (resolve, reject) => {
+            const uploadParams = {
+              Bucket: process.env.S3_BUCKET_NAME,
+              Key: `${sku}-${file.idMod}${
+                file.index === 0 ? "" : `-${file.index}`
+              }`,
+              Body: fileBuffer,
+              ACL: "public-read",
+              ContentType: "image/jpeg",
+            };
+
+            try {
+              const result = await s3.send(new PutObjectCommand(uploadParams));
+              resolve(result);
+            } catch (err) {
+              reject(err);
+            }
+          });
+        });
+
+        try {
+          await Promise.all(uploadPromises);
+          console.log("All files uploaded successfully!");
+          return true;
+        } catch (err) {
+          console.error("Error uploading one or more files:", err);
+          return false;
+        }
+      };
+
+      const s3UploadFileRes = await uploadFiles(newImages);
+      if (!s3UploadFileRes) {
+        return res.status(400).json({ error: "Error uploading files to S3" });
+      }
+
+      newImages.forEach((obj) => {
+        let matchIndex = colors.findIndex((color) => color.idMod === obj.idMod);
+        if (matchIndex !== -1) {
+          colors[matchIndex] = {
+            ...colors[matchIndex],
+            numImages:
+              (!isNaN(colors[matchIndex].numImages)
+                ? colors[matchIndex].numImages
+                : 0) + 1,
+          };
+        }
+      });
+
       const stripeProduct = await stripe.products.create({
         name: productName,
         description: description,
         metadata: { sku },
         active: true,
       });
-
       const stripePrice = await stripe.prices.create({
         product: stripeProduct.id,
         unit_amount: Math.round(price * 100), // Stripe expects price in cents
@@ -90,10 +185,10 @@ const createProduct = async (req, res) => {
         },
         { upsert: true, new: true, runValidators: true }
       );
-
+      console.log(description);
       return res.status(201).json({ newProduct, newStripeProduct });
     } else {
-      return res.status(400).json({ message: "Product already exists" });
+      return res.status(400).json({ error: "Product already exists" });
     }
   } catch (error) {
     console.error("ERROR WITH PRODUCT CREATION: ", error);
@@ -331,3 +426,11 @@ module.exports = {
   createDiscount,
   fetchTopProducts,
 };
+
+function isNumeric(str) {
+  if (typeof str != "string") return false; // we only process strings!
+  return (
+    !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+    !isNaN(parseFloat(str))
+  ); // ...and ensure strings of whitespace fail
+}

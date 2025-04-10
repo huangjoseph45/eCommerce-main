@@ -4,14 +4,19 @@ import useCreateProduct from "../utilities/useCreateProduct";
 import ArrayGrid from "./arrayGrid";
 import SingleInput from "./singleInput";
 import ColorGrid from "./colorGrid";
+import ImageGrid from "./ImageGrid";
 
 const EditProduct = ({ productFunction, product, setProduct }) => {
-  const { loadingProductsCreation, errorMessage, newProduct, createProduct } =
-    useCreateProduct();
-
-  const [newImages, setNewImages] = useState([]);
-  const [error, setErrorMessage] = useState("");
+  const {
+    loadingProductsCreation,
+    errorMessage,
+    newProduct,
+    createProduct,
+    setErrorMessage,
+  } = useCreateProduct();
+  const [imageCreationState, setImageCreationState] = useState(false);
   const [formData, setFormData] = useState(null);
+  const [fileArray, setFileArray] = useState([]);
 
   useEffect(() => {
     setFormData({
@@ -27,54 +32,35 @@ const EditProduct = ({ productFunction, product, setProduct }) => {
       tags: product?.tags || [""],
       type: product?.type || "",
     });
+    console.log("ISTHISIT");
   }, [product]);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (product?.sku) {
-      const isFormOk =
-        Object.entries(formData)?.filter((entry) => {
-          if (entry[0] === "colors") {
-            const checkColors = entry[1].filter((color) => {
-              console.log(color.colorCode.length);
-              return (
-                !color.idMod ||
-                !color.colorName ||
-                color.colorCode?.length !== 7
-              );
-            });
-            return checkColors.length > 0;
-          }
-          if (entry[0] === "sizes" || entry[0] === "tags") {
-            const checkArrays = entry[1].filter((arrayItem) => {
-              return !arrayItem || arrayItem.length === 0;
-            });
-            return checkArrays.length > 0;
-          }
-          return !entry[1] || entry[1].length === 0;
-        }).length === 0;
-
-      if (!isFormOk) {
-        setErrorMessage("Missing Fields");
-      }
-      console.log(isFormOk);
-    } else {
+  const handleSubmit = async () => {
+    if (productFunction === 0 && (product?.sku || formData?.sku)) {
+      alert("create");
+      createProduct(formData, false, false, fileArray);
+    } else if (productFunction === 1 && product?.sku) {
+      createProduct(formData, false, true, fileArray);
+    } else if (productFunction === 2 && product?.sku) {
+      return;
+    } else if (productFunction !== 0) {
       const found = await returnProduct(formData.sku);
       setProduct(found);
     }
   };
 
   useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+    setErrorMessage("");
+  }, [productFunction]);
 
   const onChange = (e, field) => {
+    console.log(formData);
+
     setFormData({ ...formData, [field]: e.target.value });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="">
+    <div className="">
       <div className="p-2">
         <h1 className="font-medium">
           {productFunction === 0
@@ -157,24 +143,63 @@ const EditProduct = ({ productFunction, product, setProduct }) => {
                   <ColorGrid
                     product={formData}
                     setProduct={setFormData}
-                    newImages={newImages}
-                    setNewImages={setNewImages}
-                  />
+                    imageCreationState={imageCreationState}
+                  />{" "}
+                  {!imageCreationState ? (
+                    <div className="flex flex-row gap-4 items-center">
+                      <button
+                        className="p-2 outline hover:bg-bgBlack/10"
+                        onClick={() => {
+                          const colors = formData.colors.filter(
+                            (color) =>
+                              color.idMod && color.colorName && color.colorCode
+                          );
+                          setFormData({ ...formData, colors: colors });
+
+                          setImageCreationState(true);
+                        }}
+                      >
+                        Add Images
+                      </button>
+                      <p>
+                        Do this after finishing colors. Note: images are
+                        separated by products AND color
+                      </p>
+                    </div>
+                  ) : (
+                    <ImageGrid
+                      colors={formData.colors}
+                      formData={formData}
+                      setFormData={setFormData}
+                      fileArray={fileArray}
+                      setFileArray={setFileArray}
+                      sku={formData?.sku}
+                    />
+                  )}
                 </>
               )}
             </>
           )}
         </ul>
       </div>
-      <button type="submit" className="outline p-2 mx-4 mb-2 hover:bg-gray-200">
+
+      <button
+        onClick={() => handleSubmit()}
+        className="outline p-2 mx-4 mb-2 hover:bg-gray-200"
+      >
         {product?.sku ? "Next" : "Find Product"}
       </button>
 
-      {error?.length > 0 && <p className="text-errorTrue">*{error}</p>}
-      <p className="text-textHollow">
-        Note: you cannot go back after pressing next
-      </p>
-    </form>
+      {errorMessage?.length > 0 && (
+        <p className="text-errorTrue">*{errorMessage}</p>
+      )}
+
+      {product?.sku && (
+        <p className="text-textHollow">
+          Note: you cannot go back after pressing next
+        </p>
+      )}
+    </div>
   );
 };
 

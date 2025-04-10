@@ -5,7 +5,12 @@ const useCreateProduct = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [newProduct, setNewProduct] = useState(null);
 
-  const createProduct = async (productData, enableTest) => {
+  const createProduct = async (
+    productData,
+    enableTest = false,
+    allowModification = false,
+    newImages
+  ) => {
     const path = `${import.meta.env.VITE_PATH}/products/create-product`;
     if (
       !(
@@ -25,25 +30,42 @@ const useCreateProduct = () => {
       console.error("error creating product");
       return;
     }
-
-    productData["test"] = enableTest;
+    console.log(newImages);
     try {
+      const imageArray = await Promise.all(
+        newImages.map(async (formData) => {
+          const file = formData.data;
+          if (!file) {
+            throw new Error("No file found in FormData");
+          }
+          console.log(formData);
+          const base64Data = await fileToBase64(file);
+          return {
+            fileName: file.name,
+            fileData: base64Data,
+            idMod: formData.idMod,
+            index: formData.index,
+          };
+        })
+      );
       const response = await fetch(path, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(productData),
+        body: JSON.stringify({
+          productData,
+          enableTest,
+          allowModification,
+          newImages: imageArray,
+        }),
       });
       if (!response.ok) {
-        setErrorMessage("Product Creation Response was not OK");
-        console.error("failed to create product");
         const data = await response.json();
-        console.log(data);
+        setErrorMessage("Error: " + data.message);
         return;
       }
 
       const data = await response.json();
-      console.log(data);
       setNewProduct(data.newProduct);
     } catch (e) {
       console.error("Failed to create product: " + e);
@@ -51,7 +73,13 @@ const useCreateProduct = () => {
     }
   };
 
-  return { loadingProductsCreation, errorMessage, newProduct, createProduct };
+  return {
+    loadingProductsCreation,
+    errorMessage,
+    newProduct,
+    createProduct,
+    setErrorMessage,
+  };
 };
 
 const useCreateTestProducts = () => {
@@ -93,6 +121,15 @@ const useCreateTestProducts = () => {
 
   return { createTestProducts };
 };
+
+async function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result.split(",")[1]); // Remove data URL prefix
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
 
 export default useCreateProduct;
 export { useCreateTestProducts };

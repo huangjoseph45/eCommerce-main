@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import ImageInput from "./ImageInput";
+import ImageInput from "./ImageGrid";
 
 const ColorRow = ({
   colorObj,
   product,
   setProduct,
-  newImages,
-  setNewImages,
+  index,
+  imageCreationState,
 }) => {
   const [showImagesGrid, setShowImagesGrid] = useState(false);
   const [shownImage, setShownImage] = useState(null);
@@ -26,14 +26,14 @@ const ColorRow = ({
   }, [product, colorObj]);
 
   const onChange = (e, field) => {
-    setProduct({
-      ...product,
-      colors: product.colors.map((color) =>
-        color.idMod === currColor
-          ? { ...color, [field]: e.target.value }
-          : color
-      ),
-    });
+    if (!imageCreationState) {
+      const colors = product.colors;
+      colors[index] = { ...colors[index], [field]: e.target.value };
+      setProduct({
+        ...product,
+        colors: colors,
+      });
+    }
   };
 
   return (
@@ -57,7 +57,7 @@ const ColorRow = ({
           defaultValue={currColor ? currColor : colorObj.idMod}
           className="w-[8rem] lg:w-[8rem] p-1 bg-bgBase2 outline"
           maxLength={3}
-          onChange={(e) => onChange(e, "colorName")}
+          onChange={(e) => onChange(e, "idMod")}
         />
         {/* <button
           onClick={() =>
