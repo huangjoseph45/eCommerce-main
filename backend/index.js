@@ -14,7 +14,7 @@ const contentRoutes = require("./routes/contentRoutes.js");
 
 const app = express();
 const MONGO_URI = process.env.MONGO_URI;
-const SECRET = process.env.SECRET;
+const SESSION_SALT_SECRET = process.env.SECRET;
 const PROD = process.env.PROD?.toLowerCase() === "true";
 
 mongoose
@@ -37,7 +37,7 @@ app.use(
   session({
     store: MongoStore.create({ mongoUrl: MONGO_URI }),
     name: "sessionId",
-    secret: SECRET,
+    secret: SESSION_SALT_SECRET,
     resave: false,
     saveUninitialized: false,
     rolling: true,
