@@ -2,7 +2,6 @@ const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
 const express = require("express");
-const { createProxyMiddleware } = require("http-proxy-middleware");
 const cors = require("cors"); // Import the CORS middleware
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
@@ -24,17 +23,6 @@ mongoose
   .connect(MONGO_URI)
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err.message));
-
-if (process.env.PROD) {
-  app.use(
-    "/api",
-    createProxyMiddleware({
-      target: "https://ecommerce-main-s1rb.onrender.com",
-      changeOrigin: true,
-      secure: true,
-    })
-  );
-}
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));

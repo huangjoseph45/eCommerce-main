@@ -1,30 +1,31 @@
 import { useEffect, useState } from "react";
 import { AuthContext } from "./ContextManager";
+import { useSearchParams } from "react-router-dom";
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setIsLoggedIn] = useState(getCookie("sessionId") !== null);
+  const [loggedIn, setIsLoggedIn] = useState();
 
   useEffect(() => {
-    const checkCookie = () => {
-      const hasSession = getCookie("sessionId") !== null;
-      setIsLoggedIn(hasSession);
+    const endpoint = `${import.meta.env.VITE_PATH}/users/auth-status`;
+    console.log(endpoint);
+    const handleAuth = async () => {
+      const response = await fetch(endpoint, {
+        method: "GET",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      console.log(data);
+      setIsLoggedIn(data.hasSession);
     };
-
-    const interval = setInterval(checkCookie, 3000);
-
-    return () => clearInterval(interval); // Cleanup on unmount
-  }, []);
+    handleAuth();
+  }, [window.location]);
 
   return (
     <AuthContext.Provider value={{ loggedIn, setIsLoggedIn }}>
       {children}
     </AuthContext.Provider>
   );
-};
-
-const getCookie = (name) => {
-  const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
-  return match ? match[2] : null;
 };
 
 export default AuthProvider;

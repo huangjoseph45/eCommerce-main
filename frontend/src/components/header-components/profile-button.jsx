@@ -8,7 +8,6 @@ const ProfileButton = ({ showLogin, setShowLogin, setShowSidebar }) => {
     if (!loggedIn) {
       console.log(setShowLogin);
       setShowLogin(!showLogin);
-      console.log(setShowSidebar);
       if (setShowSidebar) {
         setShowSidebar(false);
       }

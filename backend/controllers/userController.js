@@ -133,17 +133,18 @@ const checkUser = async (req, res) => {
   }
 };
 
-const authCheck = async (req, res) => {
-  if (req.session) {
-    const user = await User.find({ _id: req.session.user.id });
-    req.session.save();
-    return res.status(200).send({
-      hasSession: true,
-    });
-  } else {
-    return res
-      .status(400)
-      .send({ msg: "No session started.", hasSession: false });
+const checkUserStatus = async (req, res) => {
+  try {
+    if (req.session) {
+      return res.status(200).send({ hasSession: true, msg: "User found." });
+    } else {
+      return res
+        .status(200)
+        .send({ msg: "No session started.", hasSession: false });
+    }
+  } catch (error) {
+    console.error("Error checking user session:", error);
+    return res.status(500).send({ msg: "Server error", hasSession: false });
   }
 };
 
@@ -410,5 +411,5 @@ module.exports = {
   handleLogout,
   handleDataUpdate,
   updateSensitiveData,
-  authCheck,
+  checkUserStatus,
 };

@@ -52,21 +52,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const endpoint = `${import.meta.env.VITE_PATH}/users/auth`;
-
-    // createProduct(product, false);
-
-    const handleAuth = async () => {
-      const response = await fetch(endpoint, {
-        method: "GET",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-      });
-    };
-    handleAuth();
-  }, []);
-
-  useEffect(() => {
     tryCreateSection({
       sectionTitle: "Hot Releases",
       tags: [""],

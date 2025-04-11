@@ -42,7 +42,6 @@ const useFetchServerData = (options = {}) => {
       throw new Error(`User is not authorized`);
     }
     setLoading(true);
-
     try {
       const response = await fetch(
         `${import.meta.env.VITE_PATH}/users/fetch-data`,

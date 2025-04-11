@@ -226,12 +226,14 @@ const ProfilePage = () => {
       });
     }
 
-    if (!loggedIn) {
-      nav("/");
-    }
-
     return () => window.removeEventListener("resize", checkWindowWidth);
   }, []);
+
+  useEffect(() => {
+    if (loggedIn === false) {
+      nav("/");
+    }
+  }, [loggedIn]);
 
   useEffect(() => {
     if (data && data.email) {
