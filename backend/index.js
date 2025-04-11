@@ -45,7 +45,7 @@ app.use(
     saveUninitialized: false,
     rolling: true,
     cookie: {
-      domain: PROD ? ".imagine-collective.tech" : "",
+      domain: PROD ? "imagine-collective.tech" : "",
       sameSite: PROD ? "none" : false,
       secure: PROD,
       maxAge: 1000 * 60 * 60 * 36, // 36 hours
