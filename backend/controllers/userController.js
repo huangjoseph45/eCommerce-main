@@ -77,6 +77,10 @@ const createSession = ({ req, res, user, remember = false }) => {
 const checkUser = async (req, res) => {
   try {
     const { email, password, remember } = req.body;
+    console.log("LOGIN ATTEMPT");
+    console.log("EMAIL: " + email);
+    console.log("PASSWORD: " + password);
+    console.log("REMEMBER: " + remember);
 
     // Validate required fields
     if (
