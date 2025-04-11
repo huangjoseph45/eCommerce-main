@@ -39,7 +39,7 @@ const Card = ({
       return (
         <>
           <div
-            key={color.colorCode + sku}
+            key={color.colorCode + sku + index}
             className={`w-6 h-6 lg:w-8 lg:h-8 outline outline-1 outline-bgSecondary hover:outline-blue-400 cursor-pointer  hover:scale-[110%] transition-all shadow-md duration-250 rounded-full ${
               cardColor === index &&
               "outline-blue-500 outline-[.15rem] flex-shrink-0"

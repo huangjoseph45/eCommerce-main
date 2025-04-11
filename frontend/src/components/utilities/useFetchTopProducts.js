@@ -10,6 +10,7 @@ const useFetchTopProducts = () => {
     numProductsPerTag,
     strictSelection = true,
   }) => {
+    console.log(import.meta.env.VITE_PATH);
     try {
       const then = Date.now();
       setLoading(true);
