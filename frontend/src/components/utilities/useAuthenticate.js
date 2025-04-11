@@ -76,7 +76,7 @@ const useAuthenticate = ({
     }
     setTimeout(() => {
       setIsLoading(false);
-      window.location.reload();
+      // window.location.reload();
     }, 1000);
   };
 
