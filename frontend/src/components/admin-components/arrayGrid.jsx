@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import ArrayItem from "./arrayItem";
+
 const ArrayGrid = ({
   arrayLabel,
   itemArray,
@@ -7,6 +10,20 @@ const ArrayGrid = ({
   setFormData,
   formData,
 }) => {
+  const deleteFunc = (index) => {
+    console.log(index);
+    const arrayItem = formData[field][index];
+    const newArray = [...formData[field]].filter((item) => item !== arrayItem);
+    console.log(arrayItem);
+
+    console.log(newArray);
+    setFormData({ ...formData, [field]: newArray });
+  };
+
+  useEffect(() => {
+    console.log(itemArray);
+  }, [itemArray]);
+
   const onChange = (e, field, idx) => {
     const newArray = [...formData[field]]; // <-- clone the array
     newArray[idx] = e.target.value;
@@ -17,15 +34,18 @@ const ArrayGrid = ({
     <>
       <h2>{arrayLabel}:</h2>
       <ul className="grid grid-cols-2 lg:grid-cols-3 w-fit gap-2">
-        {itemArray.map((item, index) => (
-          <input
-            type="text"
-            defaultValue={item}
-            key={index}
-            className="w-[12rem] p-1 bg-bgBase2 outline"
-            onChange={(e) => onChange(e, field, index)}
-          />
-        ))}
+        {itemArray.map((item, index) => {
+          return (
+            <ArrayItem
+              key={index}
+              item={item}
+              field={field}
+              onChange={onChange}
+              index={index}
+              deleteFunc={deleteFunc}
+            />
+          );
+        })}
         <button
           className="w-[12rem] bg-bgExtraSecondaryLight hover:bg-bgExtraSecondaryLight/80 text-textLight p-2"
           onClick={() => {

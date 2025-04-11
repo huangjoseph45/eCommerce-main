@@ -1,4 +1,4 @@
-import ColorRow from "./ColorRow";
+import ColorRow from "./colorRow";
 
 const ColorGrid = ({ product, setProduct, imageCreationState }) => {
   return (
