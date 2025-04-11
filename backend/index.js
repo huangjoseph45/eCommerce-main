@@ -13,6 +13,8 @@ const paymentRoutes = require("./routes/paymentRoutes.js");
 const contentRoutes = require("./routes/contentRoutes.js");
 
 const app = express();
+app.set("trust proxy", 1);
+
 const MONGO_URI = process.env.MONGO_URI;
 const SESSION_SALT_SECRET = process.env.SECRET;
 const PROD = process.env.PROD?.toLowerCase() === "true";

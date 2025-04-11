@@ -9,6 +9,13 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 export default defineConfig({
   plugins: [react()],
+  proxy: {
+    "/api": {
+      target: "https://ecommerce-main-s1rb.onrender.com",
+      changeOrigin: true,
+      secure: true,
+    },
+  },
   css: {
     postcss: {
       plugins: [tailwindcss()],
