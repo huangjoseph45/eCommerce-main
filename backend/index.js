@@ -30,6 +30,7 @@ app.use(
   cors({
     origin: process.env.VITE_CLIENT_PATH,
     credentials: true,
+    exposedHeaders: ["set-cookie"],
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
