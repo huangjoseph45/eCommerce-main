@@ -9,7 +9,7 @@ const Logo = ({ invert = false }) => {
       {/* <h2 className="select-none text-2xl">Imagine</h2>
       <h2 className="select-none text-2xl">Collective</h2> */}
       <img
-        src="https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/logo-text"
+        src="https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/logo-textDark"
         alt=""
         className={`object-cover object-center ${invert && "invert"}`}
       />
