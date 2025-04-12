@@ -56,10 +56,6 @@ const FeaturedWindow = () => {
     if (sectionResults) fetchProducts();
   }, [sectionResults]);
 
-  useEffect(() => {
-    console.log(chosenProducts);
-  }, [chosenProducts]);
-
   return (
     <div
       className="w-screen h-fit py-6 sm:px-8 flex flex-row  overflow-x-scroll  snap-x snap-mandatory sm:gap-6 overflow-y-visible scrollbar-hide mx-auto"
