@@ -37,7 +37,6 @@ const EditProduct = ({ productFunction, product, setProduct }) => {
 
   const handleSubmit = async () => {
     if (productFunction === 0 && (product?.sku || formData?.sku)) {
-      alert("create");
       createProduct(formData, false, false, fileArray);
     } else if (productFunction === 1 && product?.sku) {
       createProduct(formData, false, true, fileArray);

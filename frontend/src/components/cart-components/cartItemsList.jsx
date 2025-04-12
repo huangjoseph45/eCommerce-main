@@ -68,7 +68,7 @@ const CartItemList = ({
                 );
               })}
             </>
-          ) : !loading && (userInfo?.cart?.length == 0 || cart.length == 0) ? (
+          ) : !loading && userInfo?.cart?.length == 0 && cart.length == 0 ? (
             <>
               <h1 className=" text-3xl mx-auto mt-16 mb-4">
                 Your cart is empty.

@@ -11,7 +11,7 @@ const endpointSecret =
   "whsec_532019e6b33b8f33f4ca608a9c36356acb076993c972768d6fc5e4b7499206d8";
 
 const handleCheckout = async (req, res) => {
-  const { products } = req.body;
+  const { products, seoValue } = req.body;
   const userId = req.session.user.userId;
   let customerId;
   let customer;
@@ -80,7 +80,11 @@ const handleCheckout = async (req, res) => {
     //gather data
     const lineItems = await Promise.all(
       products.map(async (product) => {
-        const foundProduct = await Product.findOne({ sku: product.sku });
+        const foundProduct = await Product.findOneAndUpdate(
+          { sku: { $regex: `^${sku}$`, $options: "i" } },
+          { $inc: { clicks: seoValue } },
+          { new: true }
+        );
         const foundDiscount = await Discount.findOne({
           code: product.promoCode?.toUpperCase(),
         });

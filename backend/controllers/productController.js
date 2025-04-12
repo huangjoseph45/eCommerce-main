@@ -199,7 +199,8 @@ const createProduct = async (req, res) => {
 };
 
 const fetchProduct = async (req, res) => {
-  let { skuComplete, test } = req.params;
+  let { skuComplete, test, seoValue } = req.params;
+  if (!seoValue) seoValue = 1;
 
   if (!skuComplete) {
     return res.status(400).json({ message: "Missing SKU" });
@@ -214,7 +215,7 @@ const fetchProduct = async (req, res) => {
       : Product
     ).findOneAndUpdate(
       { sku: { $regex: `^${sku}$`, $options: "i" } },
-      { $inc: { clicks: 1 } },
+      { $inc: { clicks: seoValue } },
       { new: true }
     );
 
@@ -346,7 +347,6 @@ const fetchCategory = async (req, res) => {
   }
 };
 
-// In progress
 // Fetches top products for a set of tags. Chooses the product with most clicks that also abides by the tags filter
 const fetchTopProducts = async (req, res) => {
   const { test, tagArray, numProductsPerTag, strict } = req.body;

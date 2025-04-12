@@ -17,7 +17,7 @@ router.post(
   createProduct
 );
 router.get(
-  "/fetch-product/:skuComplete/:test?",
+  "/fetch-product/:skuComplete/:test?/:seoValue?",
   express.json({ type: "application/json" }),
   fetchProduct
 );

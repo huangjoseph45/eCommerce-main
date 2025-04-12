@@ -11,7 +11,7 @@ const useHandleCheckout = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ products }),
+        body: JSON.stringify({ products, seoValue: 10 }),
       });
 
       if (!response.ok) {
