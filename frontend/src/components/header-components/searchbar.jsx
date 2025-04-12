@@ -97,7 +97,7 @@ const SearchBar = ({
             }}
             className="-top-[4rem] lg:top-0 fixed left-0 lg:left-1/2 w-screen lg:w-full flex justify-center p-2 h-[120vh] lg:h-[15rem] bg-bgBase z-40"
           >
-            <div className="absolute top-4 left-0 h-12 mt-4 p-2 ml-2">
+            <div className="absolute top-4 left-0 h-12 mt-4 p-2 ml-2 hidden lg:block">
               <Logo />
             </div>
             <div className=" absolute top-[5rem] lg:top-4 w-full flex items-center px-4 lg:justify-center mt-4 h-12">
