@@ -348,9 +348,10 @@ const fetchCategory = async (req, res) => {
 };
 
 const updateProductSEOValue = async (req, res) => {
-  if (req.origin !== process.env.VITE_CLIENT_PATH) {
+  if (req.headers.origin !== process.env.VITE_CLIENT_PATH) {
     return res.status(400).json({ message: "Invalid Origin" });
   }
+
   let { sku, SEOValue } = req.params;
 
   if (!SEOValue || SEOValue < 1) SEOValue = 1;
@@ -366,6 +367,7 @@ const updateProductSEOValue = async (req, res) => {
       { $inc: { clicks: SEOValue } },
       { new: true }
     );
+    console.log(foundProduct);
     return res.status(200);
   } catch (error) {
     console.error(error);

@@ -81,6 +81,7 @@ const checkUser = async (req, res) => {
     console.log("EMAIL: " + email);
     console.log("PASSWORD: " + password);
     console.log("REMEMBER: " + remember);
+    console.log("IP: " + req.ip);
 
     // Validate required fields
     if (
