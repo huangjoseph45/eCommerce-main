@@ -25,6 +25,12 @@ const HomePage = () => {
       window.removeEventListener("scroll", onScroll);
     };
   }, [onScroll]);
+
+  useEffect(() => {
+    console.log(window.scrollY);
+    setShowHeader(window.scrollY > minYOffsetHeader);
+  }, []);
+
   return (
     <>
       <div className="relative">

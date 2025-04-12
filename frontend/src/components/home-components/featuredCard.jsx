@@ -10,9 +10,6 @@ const FeaturedCard = ({ section, index, thisProduct }) => {
 
   useEffect(() => {
     if (index === 1 && middleElement.current) {
-      middleElement.current.scrollIntoView({
-        inline: "center",
-      });
       window.scrollTo(0, 0);
     }
   }, [middleElement.current]);
