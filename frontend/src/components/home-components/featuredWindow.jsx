@@ -15,28 +15,43 @@ const FeaturedWindow = () => {
   ] = useFetchSections();
 
   useEffect(() => {
-    tryFetchSections();
+    const storedSections =
+      JSON.parse(sessionStorage.getItem("sections")) || null;
+    if (!storedSections) tryFetchSections();
+    else {
+      setSectionResults(storedSections);
+    }
   }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
       let tempProducts = [];
-      for (const section of sectionResults) {
-        let found = false;
-        const fetchedProducts = await getProducts({
-          enableTest: false,
-          tagArray: section.tags,
-          numProductsPerTag: sectionResults.length,
-        });
-        for (const product of fetchedProducts) {
-          if (!found && !tempProducts.find((c) => c.sku === product.sku)) {
-            found = true;
-            tempProducts = [...tempProducts, product];
-            break;
+      const storedProducts =
+        JSON.parse(sessionStorage.getItem("featuredSectionProducts")) || null;
+      if (!storedProducts || storedProducts.length === 0) {
+        for (const section of sectionResults) {
+          let found = false;
+          const fetchedProducts = await getProducts({
+            enableTest: false,
+            tagArray: section.tags,
+            numProductsPerTag: sectionResults.length,
+          });
+          for (const product of fetchedProducts) {
+            if (!found && !tempProducts.find((c) => c.sku === product.sku)) {
+              found = true;
+              tempProducts = [...tempProducts, product];
+              break;
+            }
           }
         }
+        sessionStorage.setItem(
+          "featuredSectionProducts",
+          JSON.stringify(tempProducts)
+        );
+        setChosenProducts(tempProducts);
+      } else {
+        setChosenProducts(storedProducts);
       }
-      setChosenProducts(tempProducts);
     };
     if (sectionResults) fetchProducts();
   }, [sectionResults]);
