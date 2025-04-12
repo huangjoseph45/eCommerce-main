@@ -207,27 +207,13 @@ const ProfilePage = () => {
   ];
 
   useEffect(() => {
-    const checkWindowWidth = debounce(() => {
-      const windowWidth = window.innerWidth;
-      if (windowWidth >= 1024) {
-        if (currentSection !== 0) setCurrentSection(0);
-      } else {
-        setCurrentSection(0);
-      }
-    }, 100);
-
-    checkWindowWidth();
-    window.addEventListener("resize", checkWindowWidth);
-
     if (!data) {
       refetch({
         queries: fetchFields,
         auth: { loggedIn },
       });
     }
-
-    return () => window.removeEventListener("resize", checkWindowWidth);
-  }, []);
+  }, [data]);
 
   useEffect(() => {
     if (loggedIn === false) {
