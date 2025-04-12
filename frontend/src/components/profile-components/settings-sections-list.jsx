@@ -1,12 +1,7 @@
-import { useContext, useEffect, useState } from "react";
-import debounce from "lodash.debounce";
+import { useContext, useEffect, useState, useRef } from "react";
 import { ShowProfileContext } from "../utilities/ContextManager";
-import { AnimatePresence, m } from "motion/react";
-import { motion, delay, frame } from "motion/react";
-import Button from "../button";
+import { AnimatePresence, motion } from "motion/react";
 import useLogout from "../utilities/useLogout";
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const sectionItem = {
   variants: {
@@ -22,17 +17,21 @@ const SettingsSectionsList = ({ sections, setSection }) => {
   const [show, setShow] = useState(false);
   const [loading, result, tryLogout] = useLogout();
   const [hasMounted, setHasMounted] = useState(false);
+  const prevWidth = useRef(window.innerWidth);
 
-  const checkSize = debounce(() => {
+  const checkSize = () => {
     const windowWidth = window.innerWidth;
-    if (windowWidth >= 1024) {
-      document.body.style.overflow = "scroll";
-      setShowProfileHeaders(true);
-    } else {
-      window.scrollTo(0, 0);
-      document.body.style.overflow = "hidden";
+    if (windowWidth > 50 + prevWidth || windowWidth < prevWidth - 50) {
+      prevWidth.current = window.innerWidth;
+      if (windowWidth >= 1024) {
+        document.body.style.overflow = "scroll";
+        setShowProfileHeaders(true);
+      } else {
+        window.scrollTo(0, 0);
+        document.body.style.overflow = "hidden";
+      }
     }
-  }, 100);
+  };
 
   useEffect(() => {
     window.addEventListener("resize", checkSize);
