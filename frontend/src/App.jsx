@@ -3,11 +3,6 @@ import { useState, useEffect, useRef, useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { ProductContext } from "./components/utilities/ContextManager";
-import useCreateProduct, {
-  useCreateTestProducts,
-} from "./components/utilities/useCreateProduct";
-import useFetchProducts from "./components/utilities/useFetchMultipleProducts";
-import { useCreateSections } from "./components/utilities/useSectionFunctions";
 import AuthProvider from "./components/utilities/AuthProvider";
 import Shopping from "./pages/Shopping";
 import NoPage from "./pages/NoPage";
@@ -34,32 +29,10 @@ const product = {
 
 function App() {
   const [sections, setSections] = useState([]);
-  const [isCreateSectionsLoading, tryCreateSection] = useCreateSections();
-  const { loadingProductsCreation, errorMessage, newProduct, createProduct } =
-    useCreateProduct();
-  const { createTestProducts } = useCreateTestProducts();
+
   const [userInfo, setUserInfo] = useState({});
 
   const productLinks = useRef();
-
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    const handleLoad = () => setIsLoaded(true);
-    window.addEventListener("load", handleLoad);
-
-    return () => window.removeEventListener("load", handleLoad);
-  }, []);
-
-  useEffect(() => {
-    tryCreateSection({
-      sectionTitle: "Hot Releases",
-      tags: [""],
-      imageURL:
-        "https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/SKU-1-nav",
-      subsections: [{ name: "New" }, { name: "Men" }, { name: "Women" }],
-    });
-  }, []);
 
   // useEffect(() => {
   //   if (products && Array.isArray(products))
@@ -90,47 +63,45 @@ function App() {
         <ProductContext.Provider
           value={{ userInfo, setUserInfo, sections, setSections }}
         >
-          <div className={isLoaded ? "block" : "hidden"}>
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/s/" element={<Shopping />} />
-                <Route path="/new" element={<Shopping />} />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/s/" element={<Shopping />} />
+              <Route path="/new" element={<Shopping />} />
 
-                <Route path="*" element={<NoPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
-                <Route path="/dev" element={<AdminPage />} />
+              <Route path="*" element={<NoPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/dev" element={<AdminPage />} />
 
-                <Route path="/cart" element={<CartPage />} />
-                <Route path="/order" element={<SuccessPage />} />
-                <Route path="/search" element={<Shopping isSearch={true} />} />
-                <Route
-                  path="/p/:productName/:productId/:color?/:size?"
-                  element={<ProductPage />}
-                />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/order" element={<SuccessPage />} />
+              <Route path="/search" element={<Shopping isSearch={true} />} />
+              <Route
+                path="/p/:productName/:productId/:color?/:size?"
+                element={<ProductPage />}
+              />
 
-                {productLinks.current}
-                {sections &&
-                  sections.map((category, index) => {
-                    return (
-                      <Route
-                        key={`category-${index}`}
-                        path={`/${encodeURIComponent(
-                          category.slug
-                        )}/:subsection?`}
-                        element={
-                          <Shopping
-                            categoryName={category.sectionTitle}
-                            categoryId={category._id}
-                            tags={category.tags}
-                          />
-                        }
-                      />
-                    );
-                  })}
-              </Routes>
-            </BrowserRouter>
-          </div>
+              {productLinks.current}
+              {sections &&
+                sections.map((category, index) => {
+                  return (
+                    <Route
+                      key={`category-${index}`}
+                      path={`/${encodeURIComponent(
+                        category.slug
+                      )}/:subsection?`}
+                      element={
+                        <Shopping
+                          categoryName={category.sectionTitle}
+                          categoryId={category._id}
+                          tags={category.tags}
+                        />
+                      }
+                    />
+                  );
+                })}
+            </Routes>
+          </BrowserRouter>
         </ProductContext.Provider>
       </AuthProvider>
     </>
