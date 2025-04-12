@@ -29,7 +29,7 @@ const Header = ({
   setShowLoginModal = null,
   alternateTransparent = false,
 }) => {
-  const [alternateDisplay, setAlternateDisplay] = useState();
+  const [alternateDisplay, setAlternateDisplay] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const { loggedIn } = useAuth();
   const location = useLocation();
@@ -46,7 +46,7 @@ const Header = ({
   const [showHeader, setShowHeader] = useState(false);
 
   const onScroll = useCallback(() => {
-    setShowHeader((prev) => {
+    setAlternateDisplay((prev) => {
       return window.scrollY > minYOffsetHeader !== prev
         ? window.scrollY > minYOffsetHeader
         : prev;
@@ -54,36 +54,16 @@ const Header = ({
   }, [showHeader]);
 
   useEffect(() => {
-    window.addEventListener("scroll", onScroll);
     setAlternateDisplay(window.scrollY > minYOffsetHeader);
-
+    window.addEventListener("scroll", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
   }, [onScroll]);
 
   useEffect(() => {
-    console.log(showHeader);
-  }, [showHeader]);
-
-  useEffect(() => {
-    const resizeEvent = () => {
-      if (window.innerWidth < 1024) {
-        mouseEnter();
-      } else {
-        mouseLeave();
-      }
-    };
-
-    resizeEvent();
-
-    window.addEventListener("resize", resizeEvent);
-
-    return () => {
-      clearTimeout(timeoutRef.current);
-      window.removeEventListener("resize", resizeEvent);
-    };
-  }, [location.pathname]);
+    console.log(alternateDisplay);
+  }, [alternateDisplay]);
 
   useEffect(() => {
     if (!data && isEmpty(userInfo)) {
@@ -115,19 +95,6 @@ const Header = ({
       sessionStorage.setItem("sections", JSON.stringify(sectionResults));
     }
   }, [sectionResults]);
-
-  const mouseEnter = () => {
-    if (!alternateDisplay) {
-      setAlternateDisplay(true);
-    }
-    clearTimeout(timeoutRef.current);
-  };
-
-  const mouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setAlternateDisplay(false);
-    }, 50);
-  };
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {

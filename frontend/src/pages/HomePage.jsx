@@ -7,24 +7,24 @@ import FeaturedSection from "../components/home-components/featuredSection.jsx";
 const minYOffsetHeader = 150;
 
 const HomePage = () => {
-  const [showHeader, setShowHeader] = useState(false);
-
-  const onScroll = useCallback(() => {
-    setShowHeader((prev) => {
-      return window.scrollY > minYOffsetHeader !== prev
-        ? window.scrollY > minYOffsetHeader
-        : prev;
-    });
-  }, [showHeader]);
+  const [showHeader, setShowHeader] = useState(
+    window.scrollY > minYOffsetHeader
+  );
 
   useEffect(() => {
+    const onScroll = () => {
+      setShowHeader((prev) => {
+        return window.scrollY > minYOffsetHeader !== prev
+          ? window.scrollY > minYOffsetHeader
+          : prev;
+      });
+    };
     window.addEventListener("scroll", onScroll);
-    setShowHeader(window.scrollY > minYOffsetHeader);
 
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, [onScroll]);
+  }, []);
 
   return (
     <>

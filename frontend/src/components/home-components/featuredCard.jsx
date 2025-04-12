@@ -9,12 +9,6 @@ const FeaturedCard = ({ section, index, thisProduct }) => {
   const middleElement = useRef(null);
 
   useEffect(() => {
-    if (index === 1 && middleElement.current) {
-      window.scrollTo(0, 0);
-    }
-  }, [middleElement.current]);
-
-  useEffect(() => {
     if (thisProduct) {
       setImgSrc(
         `https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
