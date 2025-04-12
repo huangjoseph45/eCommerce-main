@@ -62,10 +62,6 @@ const Header = ({
   }, [onScroll]);
 
   useEffect(() => {
-    console.log(alternateDisplay);
-  }, [alternateDisplay]);
-
-  useEffect(() => {
     if (!data && isEmpty(userInfo)) {
       refetch({
         queries: ["cart", "firstName"],

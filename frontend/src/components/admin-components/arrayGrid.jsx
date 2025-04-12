@@ -11,18 +11,11 @@ const ArrayGrid = ({
   formData,
 }) => {
   const deleteFunc = (index) => {
-    console.log(index);
     const arrayItem = formData[field][index];
     const newArray = [...formData[field]].filter((item) => item !== arrayItem);
-    console.log(arrayItem);
 
-    console.log(newArray);
     setFormData({ ...formData, [field]: newArray });
   };
-
-  useEffect(() => {
-    console.log(itemArray);
-  }, [itemArray]);
 
   const onChange = (e, field, idx) => {
     const newArray = [...formData[field]]; // <-- clone the array

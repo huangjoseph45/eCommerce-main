@@ -28,11 +28,9 @@ const SearchBar = ({
     if (value.trim()) {
       let searchesList = pastSearches;
       if (!searchesList.includes(value.trim())) {
-        console.log("not includes");
         searchesList = [...pastSearches, value];
       }
       if (searchesList.length > 10) {
-        console.log(pastSearches.slice(0, 10));
         searchesList = searchesList.slice(-10);
       }
       setPastSearches(searchesList);

@@ -38,7 +38,6 @@ const useLogout = () => {
   };
 
   const tryLogout = () => {
-    console.log("Initiating logout...");
     handleLogout();
   };
 

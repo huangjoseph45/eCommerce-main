@@ -30,7 +30,6 @@ const useCreateProduct = () => {
       console.error("error creating product");
       return;
     }
-    console.log(newImages);
     try {
       const imageArray = await Promise.all(
         newImages.map(async (formData) => {
@@ -38,7 +37,6 @@ const useCreateProduct = () => {
           if (!file) {
             throw new Error("No file found in FormData");
           }
-          console.log(formData);
           const base64Data = await fileToBase64(file);
           return {
             fileName: file.name,
@@ -89,10 +87,6 @@ const useCreateTestProducts = () => {
   const createTestProducts = async (number) => {
     try {
       for (let i = 1; i <= number; i++) {
-        console.log("running");
-
-        // Adjusted to include the "number" value
-        console.log(i);
         const product = {
           sku: `SKU-${i}`,
           colors: [
@@ -112,7 +106,6 @@ const useCreateTestProducts = () => {
         };
 
         const res = await createProduct(product, true);
-        console.log(res);
       }
     } catch (e) {
       console.error("Failed to create product: " + e);

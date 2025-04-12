@@ -34,7 +34,6 @@ const ProductInfo = ({
   }, [product?.colors, productColor]);
 
   const scrollToSize = () => {
-    console.log("clciked");
     sizeRef.current.scrollIntoView({
       behavior: "smooth",
       block: "center",

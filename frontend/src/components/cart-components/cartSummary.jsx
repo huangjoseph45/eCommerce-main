@@ -25,7 +25,6 @@ const CartSummary = ({ products, loading = true, cart }) => {
   const tId = useRef();
 
   const handleKeyDown = (e) => {
-    console.log(e.key);
     if (e.key === "Enter") applyDiscount();
   };
 
@@ -43,7 +42,6 @@ const CartSummary = ({ products, loading = true, cart }) => {
         }
       );
       if (!response.ok || response.status === 204) {
-        console.log(response);
         setDiscountStatus({
           message: "Promo Code is not available",
           show: true,
@@ -108,12 +106,6 @@ const CartSummary = ({ products, loading = true, cart }) => {
       setSubtotalCost(cost.toFixed(2));
     }
   }, [products, JSON.stringify(userInfo)]);
-  console.log(
-    loggedIn &&
-      ((cart && cart.length > 0) ||
-        (userInfo.cart && userInfo.cart.length > 0)) &&
-      !loading
-  );
 
   return (
     <div

@@ -13,7 +13,6 @@ const createSection = async (req, res) => {
       !Array.isArray(sectionInfo.tags) ||
       (sectionInfo.subsections && sectionInfo.subsections.length === 0)
     ) {
-      console.log("could not create section");
       return res
         .status(400)
         .json({ error: "Body must be formatted correctly" });
@@ -29,7 +28,6 @@ const createSection = async (req, res) => {
           subsection.slug = subsection.name.split(" ").join("-");
         }
       });
-      console.log(validateSubsections);
       if (!validateSubsections) {
         return res
           .status(400)
@@ -74,7 +72,6 @@ const fetchSections = async (req, res) => {
             { _id: section._id },
             { $set: { slug: slugVal } }
           );
-          console.log(section);
           return { ...section, slug: slugVal };
         }
 

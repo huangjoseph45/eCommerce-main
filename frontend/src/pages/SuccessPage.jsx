@@ -59,8 +59,6 @@ const SuccessPage = () => {
                 {orderData &&
                   orderData[0] &&
                   orderData[0].productInfo.map((product, index) => {
-                    console.log(product);
-
                     const imageLink = `https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
                       product.sku.toUpperCase() + "-" + product.color.idMod
                     }`;

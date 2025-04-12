@@ -45,7 +45,6 @@ const CheckoutButton = ({ cart, products, promoCode = null }) => {
             quantity: cartItem.quantity,
           };
 
-          console.log(returnObject);
           return returnObject;
         } catch (error) {
           console.error(error);

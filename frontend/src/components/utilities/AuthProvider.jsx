@@ -7,7 +7,6 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const endpoint = `${import.meta.env.VITE_PATH}/users/auth-status`;
-    console.log(endpoint);
     const handleAuth = async () => {
       const response = await fetch(endpoint, {
         method: "GET",
@@ -15,7 +14,6 @@ const AuthProvider = ({ children }) => {
         headers: { "Content-Type": "application/json" },
       });
       const data = await response.json();
-      console.log(data);
       setIsLoggedIn(data.hasSession);
     };
     handleAuth();

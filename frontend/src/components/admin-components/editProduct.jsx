@@ -32,7 +32,6 @@ const EditProduct = ({ productFunction, product, setProduct }) => {
       tags: product?.tags || [""],
       type: product?.type || "",
     });
-    console.log("ISTHISIT");
   }, [product]);
 
   const handleSubmit = async () => {
@@ -53,8 +52,6 @@ const EditProduct = ({ productFunction, product, setProduct }) => {
   }, [productFunction]);
 
   const onChange = (e, field) => {
-    console.log(formData);
-
     setFormData({ ...formData, [field]: e.target.value });
   };
 

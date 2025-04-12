@@ -34,7 +34,6 @@ const AddToCart = ({ product, scrollToSize }) => {
 
     const observerCallback = (entries, obs) => {
       entries.forEach((entry) => {
-        console.log(entry);
         if (entry.isIntersecting) {
           setShowFixedButton(false);
         } else {

@@ -17,7 +17,6 @@ const ImageInput = ({ fileArray, setFileArray, color, index }) => {
     const existingFile = files.find(
       (file) => file.idMod === color.idMod && file.index === index
     );
-    console.log(imageData);
     if (existingFile) {
       existingFile["data"] = imageData; // Replace existing file data with the new FormData
       setFileArray(files);

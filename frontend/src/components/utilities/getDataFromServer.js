@@ -57,10 +57,6 @@ const useFetchServerData = (options = {}) => {
       const res = await response.json();
       if (!response.ok) {
         setLoading(false);
-        console.log(res);
-        console.log(document.cookie);
-        document.cookie =
-          "sessionId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         throw new Error(`Network response was not ok: ${response.statusText}`);
       }
 

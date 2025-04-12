@@ -89,7 +89,6 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
             console.warn("Encountered a non-string element:", query);
             return false;
           }
-          console.log(query);
           return element.toLowerCase().includes(query.toLowerCase());
         })
       );

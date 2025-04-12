@@ -14,8 +14,6 @@ const ImageGrid = ({
     setTempColors(colors);
   }, [colors]);
 
-  console.log(fileArray);
-
   return (
     <ul className="grid grid-cols-4 w-fit gap-4">
       {tempColors &&

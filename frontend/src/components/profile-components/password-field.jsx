@@ -58,7 +58,6 @@ const PasswordField = () => {
       }
 
       data = await response.json();
-      console.log("Update Successful:", data);
       setMessage(data.message);
       setIsSelected(false);
       resetField();

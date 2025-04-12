@@ -15,7 +15,6 @@ const useHandleCheckout = () => {
       });
 
       if (!response.ok) {
-        console.log(response);
         return;
       }
 
@@ -28,7 +27,6 @@ const useHandleCheckout = () => {
   };
 
   const initiateCheckout = async (products) => {
-    console.log(products);
     const res = await handleCheckout(products);
     setLoading(false);
   };

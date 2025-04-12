@@ -6,7 +6,6 @@ const ProfileButton = ({ showLogin, setShowLogin, setShowSidebar }) => {
 
   const clickedFunc = () => {
     if (!loggedIn) {
-      console.log(setShowLogin);
       setShowLogin(!showLogin);
       if (setShowSidebar) {
         setShowSidebar(false);

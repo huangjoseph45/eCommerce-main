@@ -237,7 +237,6 @@ const webhook = async (req, res) => {
         try {
           const session = event.data.object;
           const paymentIntentId = session.payment_intent;
-          console.log(session);
           const shippingDetails = session.shipping_details;
           const paymentIntent = await stripe.paymentIntents.retrieve(
             paymentIntentId
@@ -263,7 +262,6 @@ const webhook = async (req, res) => {
               },
             }
           );
-          console.log(updateOrder);
           break;
         } catch (error) {
           console.log(error);

@@ -33,7 +33,6 @@ const createProduct = async (req, res) => {
     !Array.isArray(sizes) ||
     typeof description !== "string"
   ) {
-    console.log(Array.isArray(colors));
     console.error("Invalid Input");
     return res.status(400).send("Invalid input");
   }
