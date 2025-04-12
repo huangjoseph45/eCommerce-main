@@ -185,7 +185,7 @@ const Header = ({
             />
           </div>
           <div className="z-0 absolute left-1/2 -translate-x-1/2  top-1/2 -translate-y-1/2 lg:translate-x-0  lg:my-auto lg:static h-[2.5rem] ">
-            <Logo />
+            <Logo invert={alternateTransparent && !alternateDisplay} />
           </div>
 
           {sectionResults && (

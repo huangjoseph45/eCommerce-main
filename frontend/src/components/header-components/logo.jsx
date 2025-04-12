@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const Logo = () => {
+const Logo = ({ invert = false }) => {
   return (
     <Link
       to="/"
@@ -9,9 +9,9 @@ const Logo = () => {
       {/* <h2 className="select-none text-2xl">Imagine</h2>
       <h2 className="select-none text-2xl">Collective</h2> */}
       <img
-        src="https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/logo-textonly"
+        src="https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/logo-text"
         alt=""
-        className="object-contain"
+        className={`object-cover object-center ${invert && "invert"}`}
       />
     </Link>
   );
