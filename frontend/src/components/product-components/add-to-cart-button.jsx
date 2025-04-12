@@ -8,6 +8,7 @@ import ProductPopup from "./addedproductpopup";
 import useAuth from "../utilities/useAuth";
 import LoginModal from "../loginModal";
 import { motion, AnimatePresence } from "motion/react";
+import useUpdateSEO from "../utilities/useUpdateSEO";
 
 const AddToCart = ({ product, scrollToSize }) => {
   const { productInfo } = useContext(ProductInfoContext);
@@ -19,6 +20,7 @@ const AddToCart = ({ product, scrollToSize }) => {
   const { loggedIn } = useAuth();
   const [showLogin, setShowLogin] = useState(false);
   const [showFixedButton, setShowFixedButton] = useState(true);
+  const [loading, updateSEO] = useUpdateSEO();
   const observerRef = useRef();
 
   const [popupProduct, setPopupProduct] = useState();
@@ -76,6 +78,8 @@ const AddToCart = ({ product, scrollToSize }) => {
                 ? { ...item, quantity: item.quantity + 1 }
                 : item
             );
+
+      updateSEO({ sku: product.sku, SEOValue: 5 });
 
       setUserInfo({ ...userInfo, cart: updatedCart });
       refetch({ cart: updatedCart });

@@ -210,7 +210,7 @@ const fetchProduct = async (req, res) => {
     const [first, second] = skuComplete.split("-");
     const sku = `${first}-${second}`;
 
-    let product = await (useTestProducts
+    const product = await (useTestProducts
       ? TestProduct
       : Product
     ).findOneAndUpdate(
@@ -347,6 +347,34 @@ const fetchCategory = async (req, res) => {
   }
 };
 
+const updateProductSEOValue = async (req, res) => {
+  if (req.origin !== process.env.VITE_CLIENT_PATH) {
+    return res.status(400).json({ message: "Invalid Origin" });
+  }
+  let { sku, SEOValue } = req.params;
+
+  if (!SEOValue || SEOValue < 1) SEOValue = 1;
+  try {
+    if (!sku) {
+      return res.status(400).json({ message: "Missing product sku" });
+    }
+    const foundProduct = await (useTestProducts
+      ? TestProduct
+      : Product
+    ).findOneAndUpdate(
+      { sku: { $regex: `^${sku}$`, $options: "i" } },
+      { $inc: { clicks: SEOValue } },
+      { new: true }
+    );
+    return res.status(200);
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: error, message: "Failed to update seo values" });
+  }
+};
+
 // Fetches top products for a set of tags. Chooses the product with most clicks that also abides by the tags filter
 const fetchTopProducts = async (req, res) => {
   const { test, tagArray, numProductsPerTag, strict } = req.body;
@@ -425,6 +453,7 @@ module.exports = {
   findPromo,
   createDiscount,
   fetchTopProducts,
+  updateProductSEOValue,
 };
 
 function isNumeric(str) {

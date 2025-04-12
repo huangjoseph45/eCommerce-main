@@ -8,6 +8,7 @@ const {
   findPromo,
   createDiscount,
   fetchTopProducts,
+  updateProductSEOValue,
 } = require("../controllers/productController.js");
 
 router.post(
@@ -16,6 +17,9 @@ router.post(
   verifyAdmin,
   createProduct
 );
+
+router.get("/update-seo/:sku/:SEOValue?", updateProductSEOValue);
+
 router.get(
   "/fetch-product/:skuComplete/:test?/:seoValue?",
   express.json({ type: "application/json" }),
