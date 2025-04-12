@@ -190,7 +190,7 @@ const OrderHistory = () => {
               </li>
             );
           })
-        ) : isLoading ? (
+        ) : !isLoading ? (
           <p className="loader absolute top-1/3 left-1/2 -translate-x-1/2"></p>
         ) : (
           <p>No Orders Found</p>
