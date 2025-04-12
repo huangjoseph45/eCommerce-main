@@ -36,6 +36,7 @@ const useFetchTopProducts = () => {
         setProducts(data.foundProducts);
         setLoading(false);
       }, Math.random() * 500 + 200 - (Date.now() - then) || 0);
+      return data.foundProducts;
     } catch (e) {
       console.error(e);
       setLoading(false);
