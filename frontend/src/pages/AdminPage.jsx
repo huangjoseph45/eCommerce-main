@@ -60,7 +60,7 @@ const AdminPage = () => {
   return (
     <div className="p-8">
       <h1 className="text-2xl mb-2">Admin Page</h1>
-      {showDevPag && authValues.hasSession && authValues.role === "admin" ? (
+      {showDevPage && authValues.hasSession && authValues.role === "admin" ? (
         <div className="flex flex-row">
           <div className="w-[10rem] flex-shrink-0 mx-auto ">
             <h2 className="text-xl">Functions</h2>

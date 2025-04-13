@@ -11,6 +11,7 @@ const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const paymentRoutes = require("./routes/paymentRoutes.js");
 const contentRoutes = require("./routes/contentRoutes.js");
+const mediaRoutes = require("./routes/mediaRoutes.js");
 
 const app = express();
 app.set("trust proxy", 1);
@@ -58,6 +59,7 @@ app.use("/api/stripe", paymentRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/content", contentRoutes);
+app.use("/api/media", mediaRoutes);
 
 app.use("/", (req, res) => {
   res.send("Welcome");

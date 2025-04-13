@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const SocialGroup = ({ text, icon, href, hiColor }) => {
   return (
     <a
-      className={`group text-textDark flex gap-1 items-center justify-center w-fit hover:text-${hiColor} transition-all duration-200`}
+      className={`group  flex gap-1 items-center justify-center w-fit hover:text-${hiColor} transition-all duration-200`}
       href={href}
       rel="noopener noreferrer"
       target="_blank"
