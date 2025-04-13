@@ -12,6 +12,12 @@ import CartPage from "./pages/CartPage";
 import SuccessPage from "./pages/SuccessPage";
 import HomePage from "./pages/HomePage";
 import AdminPage from "./pages/AdminPage";
+import AboutPage from "./pages/FooterPages/AboutPage";
+import ContactPage from "./pages/FooterPages/ContactPage";
+import FAQPage from "./pages/FooterPages/FAQPage";
+import FeedbackPage from "./pages/FooterPages/FeedbackPage";
+import PrivacyPolicyPage from "./pages/FooterPages/PrivacyPolicyPage";
+import TermsPage from "./pages/FooterPages/TermsPage";
 
 const product = {
   sku: "SKU-5",
@@ -81,12 +87,20 @@ function App() {
                 element={<ProductPage />}
               />
 
+              {/* Footer Page */}
+              <Route path="/faq" element={<FAQPage />} />
+              <Route path="/feedback" element={<FeedbackPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/privacy" element={<PrivacyPolicyPage />} />
+
               {productLinks.current}
               {sections &&
                 sections.map((category, index) => {
                   return (
                     <Route
-                      key={`category-${index}`}
+                      key={`category-${index}s`}
                       path={`/${encodeURIComponent(
                         category.slug
                       )}/:subsection?`}

@@ -129,7 +129,7 @@ const AddToCart = ({ product, scrollToSize }) => {
               stiffness: 150,
               mass: 0.2,
             }}
-            className="fixed bottom-0 w-full flex flex-row gap-0 md:hidden left-0 flex flex-col"
+            className="fixed bottom-0 w-full flex  gap-0 md:hidden left-0 z-[100]"
           >
             <button
               className="w-full h-16   flex justify-center items-center text-xl bg-bgSecondary hover:bg-bgSecondaryLight transition-colors duration-150 text-textLight "
