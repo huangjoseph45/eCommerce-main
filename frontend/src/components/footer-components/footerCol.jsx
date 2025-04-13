@@ -1,12 +1,19 @@
-import { useCallback, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
 const FooterCol = ({ children, colName }) => {
   const [show, setShow] = useState(false);
+  const prevWidth = useRef(window.innerWidth);
 
   useEffect(() => {
     const resizeFunc = () => {
-      setShow(window.innerWidth > 640 ? true : false);
+      if (
+        window.innerWidth - 25 > prevWidth.current ||
+        window.innerWidth + 25 < prevWidth.current
+      ) {
+        (prevWidth.current = window), innerWidth;
+        setShow(window.innerWidth > 640 ? true : false);
+      }
     };
     resizeFunc();
     window.addEventListener("resize", resizeFunc);
