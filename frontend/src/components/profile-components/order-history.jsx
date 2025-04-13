@@ -113,7 +113,7 @@ const OrderHistory = () => {
                         initial={{ opacity: 0.95, height: 0, top: 0 }}
                         animate={{
                           opacity: 1,
-                          height: "100%",
+                          height: "auto",
                           overflow: "hidden",
                         }}
                         exit={{ opacity: 0.95, height: 0 }}
