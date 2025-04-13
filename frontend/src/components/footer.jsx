@@ -7,7 +7,7 @@ import FooterCol from "./footer-components/footerCol";
 const Footer = () => {
   return (
     <div className=" text-textLight  bg-bgDarkLight w-full">
-      <div className="relative mx-auto w-full min-h-[17.5rem] h-fit pt-[4rem] pb-[4rem] mt-[4rem] flex flex-col sm:flex-row justify-around items-start">
+      <div className="relative mx-auto w-full h-fit pt-[4rem] pb-[2rem] sm:pb-0 mt-[4rem] flex flex-col sm:flex-row justify-around items-start">
         <div className="hidden md:block left-8 md:w-36 lg:w-48 top-[4rem]">
           <Logo invert={true} full={true} />
         </div>

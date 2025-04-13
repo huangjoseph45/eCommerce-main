@@ -10,7 +10,7 @@ const MailingListInput = () => {
     setEmail(e.target.value);
   };
   return (
-    <div className="absolute sm:static left-1/3 top-[4rem] border-l pl-6 lg:pl-8 h-[10rem] flex flex-col items-start">
+    <div className="absolute sm:static left-1/3 top-[4rem] border-l pl-6 lg:pl-8 h-[6rem] flex flex-col items-start">
       <h2 className="mb-2">Stay in the loop</h2>
       <div className="flex">
         <input
