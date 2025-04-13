@@ -15,7 +15,7 @@ const FooterCol = ({ children, colName }) => {
   }, []);
 
   return (
-    <div className="flex flex-col sm:border-l pl-6 lg:pl-8 w-fit sm:mb-8 pb-4">
+    <div className="flex flex-col pl-6 lg:pl-8 w-fit sm:mb-8 pb-4">
       <div className="mb-4 relative w-fit">
         <div
           className="flex flex-row items-center  "
