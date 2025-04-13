@@ -6,6 +6,10 @@ import { useNavigate } from "react-router-dom";
 const AdminPage = () => {
   const [currentFunction, setCurrentFunction] = useState();
   const nav = useNavigate();
+  const [authValues, setAuthValues] = useState({
+    hasSession: false,
+    role: null,
+  });
   const [foundData, setFoundData] = useState({
     sku: "",
     colors: [{ colorName: "", idMod: "", colorCode: "", numImages: 0 }],
@@ -27,6 +31,7 @@ const AdminPage = () => {
         headers: { "Content-Type": "application/json" },
       });
       const data = await response.json();
+      setAuthValues(data);
       if (!data.hasSession || data.role !== "admin") {
         nav("/");
       }
@@ -55,7 +60,7 @@ const AdminPage = () => {
   return (
     <div className="p-8">
       <h1 className="text-2xl mb-2">Admin Page</h1>
-      {showDevPage ? (
+      {showDevPag && authValues.hasSession && authValues.role === "admin" ? (
         <div className="flex flex-row">
           <div className="w-[10rem] flex-shrink-0 mx-auto ">
             <h2 className="text-xl">Functions</h2>
