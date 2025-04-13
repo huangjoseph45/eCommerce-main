@@ -42,7 +42,6 @@ const Footer = () => {
           <Logo invert={true} full={true} />
         </div>
         {footerCols.map((col) => {
-          console.log(col);
           return (
             <FooterCol key={col.colName} colName={col.colName}>
               {col.colItems.map((item) => {

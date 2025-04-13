@@ -7,7 +7,6 @@ const FooterCol = ({ children, colName }) => {
 
   useEffect(() => {
     const resizeFunc = () => {
-      console.log(prevWidth.current);
       if (
         window.innerWidth - 25 > prevWidth.current ||
         window.innerWidth + 25 < prevWidth.current
