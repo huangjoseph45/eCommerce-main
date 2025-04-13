@@ -17,10 +17,10 @@ const MailingListInput = () => {
           type="email"
           onChange={(e) => onChange(e)}
           placeholder="Enter Email Address"
-          className="rounded-r-none h-12 first-line:mb-2 p-2 rounded bg-bgDark border border-gray-700 text-sm sm:text-base w-[12rem] sm:w-[15rem]"
+          className="rounded-r-none h-12 first-line:mb-2 p-2 rounded bg-bgDark border border-gray-700 text-sm sm:text-base w-[11rem] sm:w-[13rem] md:w-[14rem] lg:w-[15rem]"
         />
         <button
-          className="flex items-center justify-center rounded-l-none relative w-[4rem] h-12 p-2 bg-primary text-white rounded cursor-pointer bg-bgTertiary hover:bg-bgTertiary/75"
+          className="flex items-center justify-center rounded-l-none relative w-[2.5rem] md:w-[3rem] h-12 p-2 bg-primary text-white rounded cursor-pointer bg-bgTertiary hover:bg-bgTertiary/75"
           onClick={() => addToMailing({ email })}
         >
           {loading ? (
