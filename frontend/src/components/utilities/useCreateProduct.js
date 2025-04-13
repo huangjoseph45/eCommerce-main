@@ -106,6 +106,7 @@ const useCreateTestProducts = () => {
         };
 
         const res = await createProduct(product, true);
+        console.log(await res.json());
       }
     } catch (e) {
       console.error("Failed to create product: " + e);

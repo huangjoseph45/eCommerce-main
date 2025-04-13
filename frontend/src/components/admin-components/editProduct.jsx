@@ -16,6 +16,7 @@ const EditProduct = ({ productFunction, product, setProduct }) => {
   } = useCreateProduct();
   const [imageCreationState, setImageCreationState] = useState(false);
   const [formData, setFormData] = useState(null);
+  const [confirmationField, setConfirmationField] = useState();
   const [fileArray, setFileArray] = useState([]);
 
   useEffect(() => {
@@ -39,7 +40,11 @@ const EditProduct = ({ productFunction, product, setProduct }) => {
       createProduct(formData, false, false, fileArray);
     } else if (productFunction === 1 && product?.sku) {
       createProduct(formData, false, true, fileArray);
-    } else if (productFunction === 2 && product?.sku) {
+    } else if (
+      productFunction === 2 &&
+      product?.sku &&
+      confirmationField.toLowerCase() === "delete"
+    ) {
       return;
     } else if (productFunction !== 0) {
       const found = await returnProduct(formData.sku);
@@ -48,15 +53,23 @@ const EditProduct = ({ productFunction, product, setProduct }) => {
   };
 
   useEffect(() => {
+    if (newProduct) window.location.reload();
+  }, [newProduct]);
+
+  useEffect(() => {
     setErrorMessage("");
   }, [productFunction]);
 
   const onChange = (e, field) => {
-    setFormData({ ...formData, [field]: e.target.value });
+    if (field === "delete") {
+      setConfirmationField(e.target.value);
+    } else {
+      setFormData({ ...formData, [field]: e.target.value });
+    }
   };
 
   return (
-    <div className="">
+    <div className="border relative">
       <div className="p-2">
         <h1 className="font-medium">
           {productFunction === 0
@@ -178,12 +191,26 @@ const EditProduct = ({ productFunction, product, setProduct }) => {
           )}
         </ul>
       </div>
-
+      {productFunction === 2 && product.productName && (
+        <>
+          <div className="top-0 w-full h-[88%] bg-bgBlack/10 absolute "></div>
+          <div className="mx-4 mb-4 mt-12 flex flex-col gap-2">
+            <label htmlFor="sku">Confirm Deletion:</label>
+            <input
+              placeholder={'Type "Delete" to Confirm'}
+              name="sku"
+              type="text"
+              className="rounded-sm bg-bgBase2 outline p-1 w-[12rem]"
+              onChange={(e) => onChange(e, "delete")}
+            />
+          </div>
+        </>
+      )}
       <button
         onClick={() => handleSubmit()}
         className="outline p-2 mx-4 mb-2 hover:bg-gray-200"
       >
-        {product?.sku ? "Next" : "Find Product"}
+        {product?.sku ? "Submit" : "Find Product"}
       </button>
 
       {errorMessage?.length > 0 && (

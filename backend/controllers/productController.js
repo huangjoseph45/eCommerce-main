@@ -25,14 +25,25 @@ const createProduct = async (req, res) => {
   if (
     typeof productName !== "string" ||
     typeof type !== "string" ||
-    !isNumeric(price) ||
+    isNaN(price) ||
     typeof sku !== "string" ||
     !Array.isArray(tags) ||
-    !isNumeric(discount) ||
+    isNaN(discount) ||
     !Array.isArray(colors) ||
     !Array.isArray(sizes) ||
     typeof description !== "string"
   ) {
+    console.error();
+
+    console.error(typeof productName !== "string");
+    console.error(typeof type !== "string");
+    console.error(!isNumeric(price));
+    console.error(typeof sku !== "string");
+    console.error(!Array.isArray(tags));
+    console.error(!isNumeric(discount));
+    console.error(!Array.isArray(colors));
+    console.error(!Array.isArray(sizes));
+    console.error(typeof description !== "string");
     console.error("Invalid Input");
     return res.status(400).send("Invalid input");
   }

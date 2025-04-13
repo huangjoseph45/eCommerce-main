@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import EditProduct from "../components/admin-components/editProduct";
+import { AuthContext } from "../components/utilities/ContextManager";
+import { useNavigate } from "react-router-dom";
 
 const AdminPage = () => {
   const [currentFunction, setCurrentFunction] = useState();
+  const nav = useNavigate();
   const [foundData, setFoundData] = useState({
     sku: "",
     colors: [{ colorName: "", idMod: "", colorCode: "", numImages: 0 }],
@@ -15,6 +18,21 @@ const AdminPage = () => {
     type: "",
   });
   const [showDevPage, setShowDevPage] = useState(true);
+  useEffect(() => {
+    const endpoint = `${import.meta.env.VITE_PATH}/users/auth-status`;
+    const handleAuth = async () => {
+      const response = await fetch(endpoint, {
+        method: "GET",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      if (!data.hasSession || data.role !== "admin") {
+        nav("/");
+      }
+    };
+    handleAuth();
+  }, [window.location]);
 
   const resizeFunc = () => {
     setShowDevPage(window.innerWidth > 1024);

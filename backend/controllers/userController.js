@@ -137,7 +137,13 @@ const checkUser = async (req, res) => {
 const checkUserStatus = async (req, res) => {
   try {
     if (req.session) {
-      return res.status(200).send({ hasSession: true, msg: "User found." });
+      return res
+        .status(200)
+        .send({
+          hasSession: true,
+          msg: "User found.",
+          role: req.session.user.role,
+        });
     } else {
       return res
         .status(200)
