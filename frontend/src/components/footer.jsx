@@ -24,6 +24,7 @@ const footerCols = [
         component: (
           <SocialGroup
             text="Instagram"
+            key="Instagram"
             icon={faInstagram}
             href="https://www.instagram.com/imagine_collectiive/"
             hiColor="amber-400"

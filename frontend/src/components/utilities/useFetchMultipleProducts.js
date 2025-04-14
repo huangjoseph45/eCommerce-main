@@ -12,8 +12,6 @@ const useFetchProducts = () => {
     isSearch = false
   ) => {
     try {
-      console.log(isSearch);
-
       const then = Date.now();
       setLoading(true);
       const response = await fetch(

@@ -15,7 +15,6 @@ router.post("/signin", express.json({ type: "application/json" }), checkUser);
 
 router.get(
   "/auth-status",
-  verifySession,
   express.json({ type: "application/json" }),
   checkUserStatus
 );

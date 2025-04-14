@@ -14,7 +14,6 @@ const useAuthenticate = ({
   const [loading, result, tryLogout] = useLogout();
   const [errorMessage, setErrorMessage] = useState("");
   const url = `${import.meta.env.VITE_PATH}/users`;
-  const { setIsLoggedIn } = useContext(AuthContext);
 
   const handleAuthenticate = async (event) => {
     setIsLoading(true);
@@ -65,7 +64,7 @@ const useAuthenticate = ({
           errorMessage: "Invalid Email or Password",
         }));
         setErrorMessage("Invalid Email or Password");
-        setIsLoggedIn(true);
+        return;
       }
     } catch (error) {
       setErrorState((prev) => ({

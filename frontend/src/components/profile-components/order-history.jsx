@@ -191,9 +191,12 @@ const OrderHistory = () => {
             );
           })
         ) : !isLoading ? (
-          <p className="loader absolute top-1/3 left-1/2 -translate-x-1/2"></p>
-        ) : (
           <p>No Orders Found</p>
+        ) : (
+          <div className=" absolute top-1/3 left-1/2 -translate-x-1/2">
+            {" "}
+            <p className="loader "></p>
+          </div>
         )}
       </motion.ul>
     </AnimatePresence>

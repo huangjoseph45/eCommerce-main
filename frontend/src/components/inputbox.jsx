@@ -1,14 +1,13 @@
-import SquigglyText from "./cart-components/squigglyText";
-
 const InputBox = ({
   children,
   isEmpty = false,
   changeFunc,
   maxLength = 999,
+  userData,
 }) => {
   return (
     <>
-      {!isEmpty && !children ? (
+      {!isEmpty && !children && !userData?.email ? (
         <div className="mx-auto loader border border-textDark border-[2px] h-4 w-4 absolute left-4"></div>
       ) : null}
 

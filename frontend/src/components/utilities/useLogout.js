@@ -26,6 +26,7 @@ const useLogout = () => {
 
       setResult(true);
       setUserInfo({});
+      sessionStorage.removeItem("name");
       nav("/");
     } catch (error) {
       setResult(false);

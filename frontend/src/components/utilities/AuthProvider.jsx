@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { AuthContext } from "./ContextManager";
-import { useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setIsLoggedIn] = useState();
   const [role, setRole] = useState();
+  const location = useLocation();
 
   useEffect(() => {
     const endpoint = `${import.meta.env.VITE_PATH}/users/auth-status`;
@@ -19,7 +20,7 @@ const AuthProvider = ({ children }) => {
       setRole(data.role);
     };
     handleAuth();
-  }, [window.location]);
+  }, [location]);
 
   return (
     <AuthContext.Provider value={{ loggedIn, setIsLoggedIn, role }}>

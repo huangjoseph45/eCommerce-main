@@ -12,15 +12,14 @@ const useUpdateServerData = ({ dataToUpdate = {} }) => {
     if (!data || isEmpty(data)) return;
     try {
       setLoading(true);
-      console.log(data);
       const res = await fetch(`${import.meta.env.VITE_PATH}/users/update`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-
-      if (!res.ok) setErrorCode(await res.json());
+      const responseJSON = await res.json();
+      if (!res.ok) setErrorCode(responseJSON);
 
       setResponse(res);
     } catch (error) {

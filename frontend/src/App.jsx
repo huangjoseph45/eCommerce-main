@@ -65,11 +65,12 @@ function App() {
 
   return (
     <>
-      <AuthProvider>
-        <ProductContext.Provider
-          value={{ userInfo, setUserInfo, sections, setSections }}
-        >
-          <BrowserRouter>
+      {" "}
+      <BrowserRouter>
+        <AuthProvider>
+          <ProductContext.Provider
+            value={{ userInfo, setUserInfo, sections, setSections }}
+          >
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/s/" element={<Shopping />} />
@@ -115,9 +116,9 @@ function App() {
                   );
                 })}
             </Routes>
-          </BrowserRouter>
-        </ProductContext.Provider>
-      </AuthProvider>
+          </ProductContext.Provider>
+        </AuthProvider>{" "}
+      </BrowserRouter>
     </>
   );
 }

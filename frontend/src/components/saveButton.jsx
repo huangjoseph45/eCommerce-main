@@ -1,8 +1,11 @@
 import { useContext, useEffect } from "react";
 import { ProductContext } from "./utilities/ContextManager";
 import useUpdateServerData from "./utilities/updateServerData";
+import validateEmail from "./utilities/validateEmail";
+import { isEmpty } from "lodash";
+import { data } from "react-router-dom";
 
-const SaveButton = ({ dataToSave, saveFunc, emailAddress }) => {
+const SaveButton = ({ dataToSave, saveFunc }) => {
   const { isLoading, response, errorCode, refetch, setErrorCode } =
     useUpdateServerData({
       dataToUpdate: null,
@@ -10,8 +13,12 @@ const SaveButton = ({ dataToSave, saveFunc, emailAddress }) => {
 
   const saveData = async () => {
     try {
-      if (!dataToSave.email) {
-        dataToSave.email = emailAddress;
+      if (
+        Object.prototype.hasOwnProperty.call(dataToSave, "email") &&
+        (!validateEmail(dataToSave.email) || isEmpty(dataToSave.email))
+      ) {
+        setErrorCode({ message: "Email address is invalid" });
+        return;
       }
       refetch(dataToSave);
     } catch (error) {

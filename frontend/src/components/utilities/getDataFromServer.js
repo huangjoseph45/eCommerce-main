@@ -1,7 +1,8 @@
 // getDataFromServer.js
 import _ from "lodash";
-import { useContext, useEffect, useState, useCallback } from "react";
+import { useContext, useEffect, useState } from "react";
 import useLogout from "./useLogout";
+import { AuthContext } from "./ContextManager";
 
 // const getDataFromServer = async ({ setUserInfo = null, userInfo }) => {
 //   try {
@@ -35,12 +36,10 @@ const useFetchServerData = (options = {}) => {
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState(null);
   const [isError, setIsError] = useState(false);
-  const [loading, result, tryLogout] = useLogout();
+  const { loggedIn } = useContext(AuthContext);
 
-  const getDataFunc = async (queries, auth) => {
-    if (!auth) {
-      throw new Error(`User is not authorized`);
-    }
+  const getDataFunc = async (queries) => {
+    if (!loggedIn) return;
     setLoading(true);
     try {
       const response = await fetch(
@@ -57,7 +56,7 @@ const useFetchServerData = (options = {}) => {
       const res = await response.json();
       if (!response.ok) {
         setLoading(false);
-        throw new Error(`Network response was not ok: ${response.statusText}`);
+        return;
       }
 
       setData(res);
@@ -69,8 +68,12 @@ const useFetchServerData = (options = {}) => {
     setLoading(false);
   };
 
+  useEffect(() => {
+    refetch({ queries: [] });
+  }, [loggedIn]);
+
   const refetch = ({ queries, auth }) => {
-    getDataFunc(queries, auth);
+    getDataFunc(queries);
   };
 
   return { isLoading, data, setData, isError, refetch };

@@ -98,7 +98,7 @@ const checkUser = async (req, res) => {
     // Find user by email
 
     const user = await findUserByEmail(email, res);
-    if (!user) return;
+    if (!user) return res.status(401).json({ message: "Invalid credentials" });
 
     // Compare passwords
     const isMatch = await ComparePassword(password, user.password);
@@ -136,14 +136,12 @@ const checkUser = async (req, res) => {
 
 const checkUserStatus = async (req, res) => {
   try {
-    if (req.session) {
-      return res
-        .status(200)
-        .send({
-          hasSession: true,
-          msg: "User found.",
-          role: req.session.user.role,
-        });
+    if (req?.session?.user) {
+      return res.status(200).send({
+        hasSession: true,
+        msg: "User found.",
+        role: req.session.user.role,
+      });
     } else {
       return res
         .status(200)
@@ -297,7 +295,8 @@ const handleDataUpdate = async (req, res) => {
       return res.status(400).json({ message: "Empty Package" });
     }
 
-    const { firstName, lastName, cart, age, address, phoneNumber } = req.body;
+    const { email, firstName, lastName, cart, age, address, phoneNumber } =
+      req.body;
 
     if (address?.zipCode && String(address.zipCode).length !== 5) {
       return res.status(400).json({ message: "Zipcode Invalid" });
@@ -310,6 +309,8 @@ const handleDataUpdate = async (req, res) => {
     }
 
     const update = {
+      ...(email !== undefined && { email }),
+
       ...(firstName !== undefined && { firstName }),
       ...(lastName !== undefined && { lastName }),
       ...(cart !== undefined && { cart }),

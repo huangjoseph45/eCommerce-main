@@ -164,6 +164,7 @@ const ProfileContent = ({
           <InputBox
             changeFunc={(e) => editfetchedUserData(e, field)}
             maxLength={fieldName === "zipCode" ? 5 : 50}
+            userData={fetchedUserData}
           >
             {textValue}
           </InputBox>
@@ -269,11 +270,7 @@ const ProfileContent = ({
             }}
             className="mt-4 w-fit mx-2"
           >
-            <SaveButton
-              dataToSave={alteredData}
-              saveFunc={saveFunc}
-              emailAddress={clonedInfo.email}
-            />
+            <SaveButton dataToSave={alteredData} saveFunc={saveFunc} />
           </motion.div>
         )}
       </AnimatePresence>
