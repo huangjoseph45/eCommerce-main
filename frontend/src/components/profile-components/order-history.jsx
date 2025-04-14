@@ -102,10 +102,10 @@ const OrderHistory = () => {
                         )}
                       </div>
                     </div>
-                    <p className="lg:whitespace-nowrap capitalize flex flex-col lg:flex-row">
+                    <div className="lg:whitespace-nowrap capitalize flex flex-col lg:flex-row">
                       <p>{shippingInfo.address.line1},&nbsp;</p>
                       <p> {shippingInfo.address.city} </p>
-                    </p>
+                    </div>
                   </div>{" "}
                   <AnimatePresence>
                     {showPurchases[index] === true && productInfo && (

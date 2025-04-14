@@ -262,7 +262,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
 
             <button
               type="submit"
-              className="bg-bgSecondary text-textLight w-full p-4 text-sm hover:bg-bgSecondaryLight hover:scale-[102.5%] transition-all duration-300"
+              className="bg-bgSecondary text-textLight w-full p-4 text-sm hover:bg-bgSecondaryLight hover:scale-[102.5%] transition-all duration-300 h-[3.5rem]"
             >
               {isModeSignIn ? (
                 isLoading ? (

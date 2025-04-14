@@ -15,19 +15,22 @@ import InputBox from "../inputbox";
 import { debounce } from "lodash";
 import AdditionalProducts from "../additionalProducts";
 
+const yOffset = "0";
+
 const ProfileContent = ({
   currentSection,
   fieldData,
   fetchedUserData,
   isLoading,
+  showContent,
+  setShowContent,
 }) => {
-  const { showProfileHeaders, setShowProfileHeaders } =
+  const { showProfileHeaders, setShowContentProfileHeaders } =
     useContext(ShowProfileContext);
 
   const [isChanged, setIsChanged] = useState(false);
   const [clonedInfo, setClonedInfo] = useState(fetchedUserData);
   const [alteredData, setAlteredData] = useState({});
-  const [show, setShow] = useState(true);
 
   const countries = useRef(useMemo(() => Country.getAllCountries(), []));
   const [states, setStates] = useState(() => State.getAllStates());
@@ -57,11 +60,11 @@ const ProfileContent = ({
   }, [fetchedUserData]);
 
   const resizeFunc = debounce(() => {
-    setShow(!showProfileHeaders || window.innerWidth > 1024);
+    setShowContent(!showProfileHeaders || window.innerWidth > 1024);
   }, 100);
 
   useEffect(() => {
-    setShow(!showProfileHeaders || window.innerWidth > 1024);
+    setShowContent(!showProfileHeaders || window.innerWidth > 1024);
 
     window.addEventListener("resize", resizeFunc);
 
@@ -192,90 +195,109 @@ const ProfileContent = ({
   });
 
   return (
-    <div className="flex flex-col w-3/4 lg:w-1/2 mx-auto lg:mx-0 pl-2">
-      {!showProfileHeaders && (
-        <motion.button
-          initial={{
-            opacity: 0,
-          }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, ease: "easeIn" }}
-          className=" -translate-x-[150%] aspect-square  absolute rounded-full p-1 hover:bg-gray-100 transition-all duration-200"
-          onClick={() => setShowProfileHeaders(true)}
-        >
-          <svg
-            aria-hidden="true"
-            focusable="false"
-            viewBox="0 0 24 24"
-            role="img"
-            width="24px"
-            height="24px"
-            fill="none"
-          >
-            <path
-              stroke="currentColor"
-              strokeWidth="1.5"
-              d="M15.525 18.966L8.558 12l6.967-6.967"
-            ></path>
-          </svg>
-        </motion.button>
-      )}
-      <AnimatePresence>
-        {show && (
+    <AnimatePresence>
+      {showContent && (
+        <>
           <motion.div
-            className=""
             initial={{
-              x: `${window.innerWidth < 1024 ? "-100%" : "0"}`,
+              y: `${window.innerWidth < 1024 ? "150%" : "0"}`,
               opacity: 0,
             }}
-            animate={{ x: "0", opacity: 1 }}
+            animate={{ y: "0", opacity: 1 }}
             exit={{
-              x: `${window.innerWidth < 1024 ? "-100%" : "0"}`,
+              y: `${window.innerWidth < 1024 ? "150%" : "0"}`,
               opacity: 1,
             }}
-            transition={{ duration: 0.3, type: "tween" }}
-          >
-            <h1 className="text-2xl mb-6">
-              {currentSection?.name ? currentSection.name : ""}
-            </h1>
-
-            <ul
-              className={` flex flex-col gap-4 min-h-[20rem] relative ${
-                currentSection?.name !== "Order History"
-                  ? " max-w-[30rem]"
-                  : "max-w-[55rem]"
-              }`}
-            >
-              {currentSection?.name !== "Order History" ? (
-                fields
-              ) : (
-                <OrderHistory />
-              )}
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {isChanged && (
-          <motion.div
-            initial={{ opacity: 0.7, scale: 0.6, zIndex: 10 }}
-            animate={{ opacity: 1, scale: 1, zIndex: 10 }}
-            exit={{ opacity: 0.7, scale: 0 }}
             transition={{
-              duration: 0.1,
-              type: "spring",
-              stiffness: 400,
-              damping: 20,
-              mass: 0.4,
+              duration: 0.2,
             }}
-            className="mt-4 w-fit mx-2"
+            className="w-screen h-screen absolute left-0 top-0 bg-bgBlack/15 z-[5] lg:hidden"
+          ></motion.div>{" "}
+          <motion.div
+            className="z-[50] bg-bgBase flex flex-col w-full lg:w-1/2 mx-auto lg:mx-0 pl-2 h-full absolute top-0 pt-16 lg:static lg:z-[10]"
+            initial={{
+              y: `${window.innerWidth < 1024 ? "150%" : "0"}`,
+              opacity: 0,
+            }}
+            animate={{ y: "0", opacity: 1 }}
+            exit={{
+              y: `${window.innerWidth < 1024 ? "150%" : "0"}`,
+              opacity: 1,
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 150,
+              mass: 0.5,
+              damping: 20,
+            }}
           >
-            <SaveButton dataToSave={alteredData} saveFunc={saveFunc} />
+            <motion.button
+              initial={{
+                opacity: 0,
+              }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, ease: "easeIn" }}
+              className={`aspect-square  absolute rounded-full hover:bg-gray-100 transition-all duration-200 left-4 h-[2rem] w-[2rem] -rotate-90`}
+              onClick={() => setShowContent(false)}
+            >
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                viewBox="0 0 24 24"
+                role="img"
+                width="28px"
+                height="28px"
+                fill="none"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  d="M15.525 18.966L8.558 12l6.967-6.967"
+                ></path>
+              </svg>
+            </motion.button>
+            <div className={`w-3/4 mx-auto mt-[[${yOffset}]]`}>
+              <h1 className="text-2xl mb-6">
+                {currentSection?.name ? currentSection.name : ""}
+              </h1>
+
+              <ul
+                className={` flex flex-col gap-4 min-h-[20rem] relative ${
+                  currentSection?.name !== "Order History"
+                    ? " max-w-[30rem]"
+                    : "max-w-[55rem]"
+                }`}
+              >
+                {currentSection?.name !== "Order History" ? (
+                  fields
+                ) : (
+                  <OrderHistory />
+                )}
+              </ul>
+            </div>
+            <AnimatePresence>
+              {isChanged && (
+                <motion.div
+                  initial={{ opacity: 0.7, scale: 0.6, zIndex: 10 }}
+                  animate={{ opacity: 1, scale: 1, zIndex: 10 }}
+                  exit={{ opacity: 0.7, scale: 0 }}
+                  transition={{
+                    duration: 0.1,
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 20,
+                    mass: 0.4,
+                  }}
+                  className="mt-4 w-fit mx-2"
+                >
+                  <SaveButton dataToSave={alteredData} saveFunc={saveFunc} />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+        </>
+      )}
+    </AnimatePresence>
   );
 };
 

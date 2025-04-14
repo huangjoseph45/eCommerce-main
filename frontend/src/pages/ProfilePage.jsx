@@ -28,6 +28,7 @@ const ProfilePage = () => {
   ];
 
   const { isLoading, data, refetch } = useFetchServerData();
+  const [showContent, setShowContent] = useState(true);
 
   const nav = useNavigate();
 
@@ -237,12 +238,16 @@ const ProfilePage = () => {
         <SettingsSectionsList
           sections={settingSections}
           setSection={setCurrentSection}
+          showContent={showContent}
+          setShowContent={setShowContent}
         />
         <ProfileContent
           currentSection={settingSections[currentSection]}
           fieldData={sectionData[currentSection]}
           fetchedUserData={userInfo}
           isLoading={isLoading}
+          showContent={showContent}
+          setShowContent={setShowContent}
         />
       </div>
       <Footer />
