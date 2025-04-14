@@ -10,7 +10,7 @@ const MailingListInput = () => {
     setEmail(e.target.value);
   };
   return (
-    <div className="absolute sm:static left-1/3 top-[2rem] sm:top-[4rem] pl-6 lg:pl-8 h-[6rem] flex flex-col items-start mr-2">
+    <div className="absolute sm:static right-4 top-[2rem] sm:top-[4rem] pl-6 lg:pl-8 h-[6rem] flex flex-col items-start mr-2">
       <h2 className="mb-2">Stay in the loop</h2>
       <div className="flex">
         <input
@@ -36,7 +36,7 @@ const MailingListInput = () => {
                 <path
                   fill="none"
                   stroke="#000000"
-                  strokeWidth="2"
+                  strokeWidth="1"
                   d="M6,12.4 L18,12.4 M12.6,7 L18,12.4 L12.6,17.8"
                 />
                 <script xmlns="" />
