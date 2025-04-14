@@ -32,6 +32,8 @@ const returnProduct = async (sku, enableTest = false) => {
       credentials: "include",
       headers: { "Content-Type": "application/json" },
     });
+    const data = await response.json();
+    if (!data) return;
 
     const {
       createdAt,
@@ -47,7 +49,7 @@ const returnProduct = async (sku, enableTest = false) => {
       colors,
       stripePriceId,
       stripeProductId,
-    } = await response.json();
+    } = data;
     const imageLink = `https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
       sku + "-" + color
     }`;

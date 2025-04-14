@@ -9,7 +9,15 @@ const {
   createDiscount,
   fetchTopProducts,
   updateProductSEOValue,
+  deleteProduct,
 } = require("../controllers/productController.js");
+
+router.get(
+  "/delete-product/:sku",
+  express.json({ type: "application/json" }),
+  verifyAdmin,
+  deleteProduct
+);
 
 router.post(
   "/create-product",

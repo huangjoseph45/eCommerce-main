@@ -5,6 +5,7 @@ import ArrayGrid from "./arrayGrid";
 import SingleInput from "./singleInput";
 import ColorGrid from "./colorGrid";
 import ImageGrid from "./ImageGrid";
+import useDeleteProduct from "../utilities/useDeleteProduct";
 
 const EditProduct = ({ productFunction, product, setProduct }) => {
   const {
@@ -14,10 +15,12 @@ const EditProduct = ({ productFunction, product, setProduct }) => {
     createProduct,
     setErrorMessage,
   } = useCreateProduct();
+  const { error, loading, deleteProduct } = useDeleteProduct();
   const [imageCreationState, setImageCreationState] = useState(false);
   const [formData, setFormData] = useState(null);
   const [confirmationField, setConfirmationField] = useState();
   const [fileArray, setFileArray] = useState([]);
+  const [deletionResult, setDeletionResult] = useState(false);
 
   useEffect(() => {
     setFormData({
@@ -45,16 +48,20 @@ const EditProduct = ({ productFunction, product, setProduct }) => {
       product?.sku &&
       confirmationField.toLowerCase() === "delete"
     ) {
+      setDeletionResult(await deleteProduct(formData.sku));
       return;
     } else if (productFunction !== 0) {
       const found = await returnProduct(formData.sku);
-      setProduct(found);
+      if (found) setProduct(found);
+      else {
+        setErrorMessage("Product could not be found");
+      }
     }
   };
 
   useEffect(() => {
-    if (newProduct) window.location.reload();
-  }, [newProduct]);
+    if (newProduct || deletionResult) window.location.reload();
+  }, [newProduct, deletionResult]);
 
   useEffect(() => {
     setErrorMessage("");
@@ -191,9 +198,9 @@ const EditProduct = ({ productFunction, product, setProduct }) => {
           )}
         </ul>
       </div>
-      {productFunction === 2 && product.productName && (
+      {productFunction === 2 && product?.productName && (
         <>
-          <div className="top-0 w-full h-[88%] bg-bgBlack/10 absolute "></div>
+          <div className="top-0 w-full h-[86%] bg-bgBlack/10 absolute "></div>
           <div className="mx-4 mb-4 mt-12 flex flex-col gap-2">
             <label htmlFor="sku">Confirm Deletion:</label>
             <input
@@ -213,8 +220,8 @@ const EditProduct = ({ productFunction, product, setProduct }) => {
         {product?.sku ? "Submit" : "Find Product"}
       </button>
 
-      {errorMessage?.length > 0 && (
-        <p className="text-errorTrue">*{errorMessage}</p>
+      {(errorMessage?.length > 0 || error?.length > 0) && (
+        <p className="text-errorTrue">*{errorMessage ? errorMessage : error}</p>
       )}
 
       {product?.sku && (

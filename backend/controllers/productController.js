@@ -3,9 +3,84 @@ const { Product, StripeProduct, Discount } = require("../models/Products");
 const { TestProduct, StripeTestProduct } = require("../models/TestProducts.js");
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 const fs = require("fs");
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} = require("@aws-sdk/client-s3");
 
 const useTestProducts = false;
+
+const deleteProduct = async (req, res) => {
+  const { sku } = req.params;
+  try {
+    const existingProduct = await Product.findOne({ sku });
+    if (!existingProduct?.sku) {
+      return res
+        .status(400)
+        .json({ message: "Product to delete could not be found" });
+    }
+    const s3 = new S3Client({
+      region: process.env.REGION || "us-east-2",
+      credentials: {
+        accessKeyId: process.env.S3_ACCESS_KEY,
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+      },
+    });
+
+    const deleteFiles = async (product) => {
+      const uploadPromises = product?.colors.map((color) => {
+        Array.from({
+          length: color.numImages,
+        }).map((index) => {
+          return new Promise(async (resolve, reject) => {
+            const uploadParams = {
+              Bucket: process.env.S3_BUCKET_NAME,
+              Key: `${product.sku}-${color.idMod}${
+                index === 0 ? "" : `-${index}`
+              }`,
+              ACL: "public-read",
+              ContentType: "image/jpeg",
+            };
+
+            try {
+              const result = await s3.send(
+                new DeleteObjectCommand(uploadParams)
+              );
+              resolve(result);
+            } catch (err) {
+              reject(err);
+            }
+          });
+        });
+      });
+
+      try {
+        await Promise.all(uploadPromises);
+        console.log("All files deleted successfully!");
+        return true;
+      } catch (err) {
+        console.error("Error deleted one or more files:", err);
+        return false;
+      }
+    };
+    deleteFiles(existingProduct);
+
+    const s3DeleteFiles = await deleteFiles(existingProduct);
+    if (!s3DeleteFiles) {
+      return res.status(500).json({ error: "Error deleting files from S3" });
+    }
+
+    const deletedProductDocument = await Product.deleteOne({ sku: sku });
+    if (deletedProductDocument.deletedCount < 1) {
+      return res.status(500).json({ error: "Failed to delete from mongoDB" });
+    }
+    return res.status(200).json({ message: "Documents deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: error });
+  }
+};
 
 const createProduct = async (req, res) => {
   let { productData, test, allowModification, newImages } = req.body;
@@ -133,7 +208,7 @@ const createProduct = async (req, res) => {
 
       const s3UploadFileRes = await uploadFiles(newImages);
       if (!s3UploadFileRes) {
-        return res.status(400).json({ error: "Error uploading files to S3" });
+        return res.status(500).json({ error: "Error uploading files to S3" });
       }
 
       newImages.forEach((obj) => {
@@ -466,6 +541,7 @@ module.exports = {
   createDiscount,
   fetchTopProducts,
   updateProductSEOValue,
+  deleteProduct,
 };
 
 function isNumeric(str) {
