@@ -50,11 +50,17 @@ const SettingsSectionsList = ({ sections, setSection }) => {
       setShow(true);
     }, 10);
 
-    document.body.style.overflow =
-      window.innerWidth < 1024 && showProfileHeaders ? "hidden" : "scroll";
+    const resizeFunc = () => {
+      document.body.style.overflow =
+        window.innerWidth < 1024 && showProfileHeaders ? "hidden" : "scroll";
+    };
+    resizeFunc();
+
+    window.addEventListener("resize", resizeFunc);
 
     return () => {
       clearTimeout(timer);
+      window.removeEventListener("resize", resizeFunc);
     };
   }, [showProfileHeaders]);
 
@@ -63,7 +69,7 @@ const SettingsSectionsList = ({ sections, setSection }) => {
       <motion.li
         key={section.svg + index}
         {...sectionItem}
-        className="list-none cursor-pointer h-14 transition-all duration-100 flex items-center justify-between  text-center lg:text-left w-full lg:hover:underline"
+        className="list-none cursor-pointer h-14 transition-all duration-100 flex items-center justify-between   text-left w-full lg:hover:underline"
         onClick={() => {
           setSection(index);
           if (window.innerWidth < 1024) {
@@ -135,7 +141,7 @@ const SettingsSectionsList = ({ sections, setSection }) => {
               x: `${window.innerWidth < 1024 ? "100%" : "0"}`,
             }}
             transition={{ duration: 0.3, type: "tween" }}
-            className="flex flex-col w-full lg:w-[16rem]  mr-12 p-4 mt-28 lg:mt-[4rem] absolute bg-bgBase lg:bg-none lg:static top-[0rem] overscroll-contain items-center lg:items-start z-30 h-full lg:h-fit lg:ml-6 lg:border-r lg:border-r-1 lg:justify-start lg:text-lg text-base sm:text-lg md:text-xl"
+            className="flex flex-col w-full lg:w-[16rem]  mr-12 p-4 mt-28 lg:mt-[4rem] absolute bg-bgBase lg:bg-none lg:static top-[0rem] overscroll-contain items-center lg:items-start z-30 h-full lg:h-fit lg:ml-6 lg:border-r lg:border-r-1 lg:justify-start lg:text-lg text-base sm:text-lg md:text-xl flex-shrink-0"
           >
             <div className="w-[95%] sm:w-[85%]">
               {" "}

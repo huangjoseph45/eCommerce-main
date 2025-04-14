@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const numProductsPerTag = 10;
 
-const AdditionalProducts = ({ tags, ignoreSKUList }) => {
+const AdditionalProducts = ({ tags = [], ignoreSKUList }) => {
   const nav = useNavigate();
   const [loading, products, getProducts] = useFetchTopProducts();
   const [filteredProducts, setFilteredProducts] = useState(null);

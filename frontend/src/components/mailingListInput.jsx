@@ -10,14 +10,14 @@ const MailingListInput = () => {
     setEmail(e.target.value);
   };
   return (
-    <div className="absolute sm:static left-1/3 top-[2rem] sm:top-[4rem] pl-6 lg:pl-8 h-[6rem] flex flex-col items-start">
+    <div className="absolute sm:static left-1/3 top-[2rem] sm:top-[4rem] pl-6 lg:pl-8 h-[6rem] flex flex-col items-start mr-2">
       <h2 className="mb-2">Stay in the loop</h2>
       <div className="flex">
         <input
           type="email"
           onChange={(e) => onChange(e)}
           placeholder="Enter Email Address"
-          className="rounded-r-none h-12 first-line:mb-2 p-2 rounded bg-bgDark border border-gray-700 text-sm sm:text-base w-[11rem] sm:w-[13rem] md:w-[14rem] lg:w-[15rem]"
+          className="rounded-r-none h-12 first-line:mb-2 p-2 rounded bg-bgDark border border-gray-700 text-sm sm:text-base w-full sm:w-[13rem] md:w-[14rem] lg:w-[15rem]"
         />
         <button
           className="flex items-center justify-center rounded-l-none relative w-[2.5rem] md:w-[3rem] h-12 p-2 bg-primary text-white rounded cursor-pointer bg-bgTertiary hover:bg-bgTertiary/75"

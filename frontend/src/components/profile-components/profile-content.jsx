@@ -13,6 +13,7 @@ import OrderHistory from "./order-history";
 import VerifiedTag from "./verifiedTag";
 import InputBox from "../inputbox";
 import { debounce } from "lodash";
+import AdditionalProducts from "../additionalProducts";
 
 const ProfileContent = ({
   currentSection,

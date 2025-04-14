@@ -264,13 +264,17 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
               type="submit"
               className="bg-bgSecondary text-textLight w-full p-4 text-sm hover:bg-bgSecondaryLight hover:scale-[102.5%] transition-all duration-300"
             >
-              {isModeSignIn
-                ? isLoading
-                  ? "Signing In..."
-                  : "Sign In"
-                : isLoading
-                ? "Creating Account..."
-                : "Create Account"}
+              {isModeSignIn ? (
+                isLoading ? (
+                  <p className="w-6 mx-auto border-textLight loader border-[2px]"></p>
+                ) : (
+                  "Sign In"
+                )
+              ) : isLoading ? (
+                <p className="w-6 mx-auto border-textLight loader border-[2px]"></p>
+              ) : (
+                "Create Account"
+              )}
             </button>
             {renderErrorMessage(errorState.isError, errorMessage, "isError")}
           </motion.form>
@@ -300,7 +304,7 @@ function SelectSignIn({ setModeSignIn, isModeSignIn }) {
           !isModeSignIn ? "text-bgSecondary" : "text-gray-400"
         }`}
       >
-        New Account
+        Register
       </p>
     </div>
   );
