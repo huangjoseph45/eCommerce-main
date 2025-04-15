@@ -3,8 +3,10 @@ import Footer from "../components/footer.jsx";
 import { AnimatePresence, motion } from "motion/react";
 import LandingSection from "../components/home-components/landingSection.jsx";
 import FeaturedSection from "../components/home-components/featuredSection.jsx";
+import { useRef } from "react";
 
 const HomePage = () => {
+  const featuredSectionRef = useRef();
   return (
     <>
       <div className="relative">
@@ -13,8 +15,8 @@ const HomePage = () => {
             <Header alternateTransparent={true} />
           </motion.div>
         </AnimatePresence>
-        <LandingSection />
-        <FeaturedSection />
+        <LandingSection featuredSectionRef={featuredSectionRef} />
+        <FeaturedSection elRef={featuredSectionRef} />
         <Footer></Footer>{" "}
       </div>
     </>

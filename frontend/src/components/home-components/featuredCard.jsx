@@ -9,7 +9,6 @@ const FeaturedCard = ({ section, index, thisProduct }) => {
   const [imgSrc, setImgSrc] = useState(null);
   const middleElement = useRef(null);
   const [isHovering, setHovering] = useState(false);
-  console.log(section);
 
   useEffect(() => {
     if (thisProduct) {
@@ -31,7 +30,12 @@ const FeaturedCard = ({ section, index, thisProduct }) => {
             <h1 className="absolute z-20 text-textLight capitalize p-2 text-4xl top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2">
               {section.sectionTitle}
             </h1>
-            <div className="relative h-full w-full hover:scale-105 duration-300 transition-all">
+            <motion.div
+              className="relative h-full w-full hover:scale-105"
+              initial={{ scale: 1 }}
+              animate={isHovering ? { scale: 1.05 } : { scale: 1 }}
+              transition={{ ease: "easeInOut" }}
+            >
               <img
                 src={imgSrc ? imgSrc : null}
                 alt=""
@@ -41,10 +45,10 @@ const FeaturedCard = ({ section, index, thisProduct }) => {
                 {" "}
                 {isHovering && (
                   <motion.button
-                    initial={{ scale: 0, left: "50%", translateX: "-50%" }}
+                    initial={{ scale: 0.4, left: "50%", translateX: "-50%" }}
                     animate={{ scale: 1, left: "50%" }}
                     exit={{ scale: 0, left: "50%" }}
-                    transition={{ type: "spring", stiffness: 200, mass: 0.3 }}
+                    transition={{ type: "spring", stiffness: 200, mass: 0.2 }}
                     className="outline z-10 border bottom-[4rem] absolute p-2 px-8 rounded-sm bg-bgBase hover:bg-bgBase3"
                     onClick={() => nav("/" + section.slug)}
                   >
@@ -54,7 +58,7 @@ const FeaturedCard = ({ section, index, thisProduct }) => {
               </AnimatePresence>
 
               <span className="absolute top-0  left-0 bg-[#362709]/15 w-full h-full"></span>
-            </div>
+            </motion.div>
           </motion.div>
         </>
       ) : (

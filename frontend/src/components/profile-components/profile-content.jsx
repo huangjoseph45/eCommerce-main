@@ -161,7 +161,7 @@ const ProfileContent = ({
               !clonedInfo?.verifiedPhone)) && (
             <VerifiedTag tagName={label || fieldName} />
           )}
-          <label className="absolute -top-2 left-[.9rem] bg-bgBase px-1 text-xs flex gap-[0.1rem]">
+          <label className="text-textHollow absolute -top-2 left-[.9rem] bg-bgBase px-1 text-xs flex gap-[0.1rem]">
             {regularText}
             {isRequired && <span className="text-errorTrue">*</span>}
           </label>
@@ -214,7 +214,7 @@ const ProfileContent = ({
             className="w-screen h-screen absolute left-0 top-0 bg-bgBlack/15 z-[5] lg:hidden"
           ></motion.div>{" "}
           <motion.div
-            className="z-[50] bg-bgBase flex flex-col w-full lg:w-1/2 mx-auto lg:mx-0 pl-2 h-full absolute top-0 pt-16 lg:static lg:z-[10]"
+            className="z-[50] bg-bgBase flex flex-col w-full lg:w-1/2 mx-auto lg:mx-0 pl-2 min-h-[80vh] absolute top-0 pt-16 lg:static lg:z-[10]"
             initial={{
               y: `${window.innerWidth < 1024 ? "150%" : "0"}`,
               opacity: 0,
@@ -262,7 +262,7 @@ const ProfileContent = ({
               </h1>
 
               <ul
-                className={` flex flex-col gap-4 min-h-[20rem] relative ${
+                className={` flex flex-col gap-9 min-h-[20rem] relative ${
                   currentSection?.name !== "Order History"
                     ? " max-w-[30rem]"
                     : "max-w-[55rem]"

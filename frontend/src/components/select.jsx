@@ -113,7 +113,7 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
 
   return (
     <>
-      <label className="absolute -top-2 left-[.9rem] bg-bgBase px-1 text-xs flex gap-[0.1rem]">
+      <label className="absolute -top-2 left-[.9rem] bg-bgBase px-1 text-xs flex gap-[0.1rem] text-textHollow">
         {label} {field.isRequired && <p className="text-errorTrue">*</p>}
       </label>
       <div
@@ -151,7 +151,7 @@ const Select = ({ options, selectedValue, onSelect, field }) => {
           value={query}
           onFocus={() => setShowElements(true)}
           onChange={(e) => changeInput(e)}
-          className="outline outline-1 outline-gray-600 p-3 rounded-md w-full cursor-pointer bg-bgBase"
+          className="outline outline-textHollow p-3 rounded-md w-full cursor-pointer bg-bgBase"
         />
 
         <AnimatePresence>

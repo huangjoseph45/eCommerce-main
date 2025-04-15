@@ -1,11 +1,9 @@
 import FeaturedWindow from "./featuredWindow";
 
-const FeaturedSection = () => {
+const FeaturedSection = ({ elRef }) => {
   return (
-    <div className="">
-      <div className="flex flex-col text-center my-2">
-        <FeaturedWindow />
-      </div>
+    <div className="flex flex-col text-center my-2" ref={elRef}>
+      <FeaturedWindow />
     </div>
   );
 };

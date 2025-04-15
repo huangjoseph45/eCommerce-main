@@ -14,7 +14,7 @@ const InputBox = ({
       <input
         type="text"
         defaultValue={!isEmpty ? children : ""}
-        className="outline outline-gray-600 p-3 rounded-lg w-full bg-bgBase"
+        className="outline outline-textHollow p-3 rounded-lg w-full bg-bgBase"
         onChange={changeFunc}
         maxLength={maxLength}
       />

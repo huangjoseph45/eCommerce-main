@@ -478,12 +478,18 @@ const fetchTopProducts = async (req, res) => {
         $match: strict
           ? {
               $and: tagArray.map((tag) => ({
-                tags: { $regex: tag, $options: "i" },
+                tags: {
+                  $regex: tag.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+                  $options: "i",
+                },
               })),
             }
           : {
               $or: tagArray.map((tag) => ({
-                tags: { $regex: tag, $options: "i" },
+                tags: {
+                  $regex: tag.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+                  $options: "i",
+                },
               })),
             },
       },
