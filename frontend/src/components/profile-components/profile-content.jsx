@@ -14,6 +14,7 @@ import VerifiedTag from "./verifiedTag";
 import InputBox from "../inputbox";
 import { debounce } from "lodash";
 import AdditionalProducts from "../additionalProducts";
+import { createPortal } from "react-dom";
 
 const yOffset = "0";
 
@@ -212,9 +213,9 @@ const ProfileContent = ({
               duration: 0.2,
             }}
             className="w-screen h-screen absolute left-0 top-0 bg-bgBlack/15 z-[5] lg:hidden"
-          ></motion.div>{" "}
+          ></motion.div>
+
           <motion.div
-            className="z-[50] bg-bgBase flex flex-col w-full lg:w-1/2 mx-auto lg:mx-0 pl-2 h-screen lg:h-full lg:min-h-[75vh] absolute top-0 pt-16 lg:static lg:z-[10]"
             initial={{
               y: `${window.innerWidth < 1024 ? "150%" : "0"}`,
               opacity: 0,
@@ -230,70 +231,73 @@ const ProfileContent = ({
               mass: 0.5,
               damping: 20,
             }}
+            className="z-[50] bg-bgBase flex flex-col w-full lg:w-1/2 mx-auto lg:mx-0 pl-2 min-h-full h-fit lg:h-fit lg:min-h-[75vh] absolute top-0 pt-16 lg:static lg:z-[10] pb-12"
           >
-            <motion.button
-              initial={{
-                opacity: 0,
-              }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, ease: "easeIn" }}
-              className={`aspect-square  absolute rounded-full hover:bg-gray-100 transition-all duration-200 left-4 h-[2rem] w-[2rem] -rotate-90`}
-              onClick={() => setShowContent(false)}
-            >
-              <svg
-                aria-hidden="true"
-                focusable="false"
-                viewBox="0 0 24 24"
-                role="img"
-                width="28px"
-                height="28px"
-                fill="none"
+            <div className="h-fit">
+              <motion.button
+                initial={{
+                  opacity: 0,
+                }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, ease: "easeIn" }}
+                className={`aspect-square  absolute rounded-full hover:bg-gray-100 transition-all duration-200 left-4 h-[2rem] w-[2rem] -rotate-90`}
+                onClick={() => setShowContent(false)}
               >
-                <path
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  d="M15.525 18.966L8.558 12l6.967-6.967"
-                ></path>
-              </svg>
-            </motion.button>
-            <div className={`w-3/4 mx-auto mt-[[${yOffset}]]`}>
-              <h1 className="text-2xl mb-6">
-                {currentSection?.name ? currentSection.name : ""}
-              </h1>
-
-              <ul
-                className={` flex flex-col gap-9 min-h-[20rem] relative ${
-                  currentSection?.name !== "Order History"
-                    ? " max-w-[30rem]"
-                    : "max-w-[55rem]"
-                }`}
-              >
-                {currentSection?.name !== "Order History" ? (
-                  fields
-                ) : (
-                  <OrderHistory />
-                )}
-              </ul>
-            </div>
-            <AnimatePresence>
-              {isChanged && (
-                <motion.div
-                  initial={{ opacity: 0.7, scale: 0.6, zIndex: 10 }}
-                  animate={{ opacity: 1, scale: 1, zIndex: 10 }}
-                  exit={{ opacity: 0.7, scale: 0 }}
-                  transition={{
-                    duration: 0.1,
-                    type: "spring",
-                    stiffness: 400,
-                    damping: 20,
-                    mass: 0.4,
-                  }}
-                  className="mt-4 w-fit mx-2"
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                  role="img"
+                  width="28px"
+                  height="28px"
+                  fill="none"
                 >
-                  <SaveButton dataToSave={alteredData} saveFunc={saveFunc} />
-                </motion.div>
-              )}
-            </AnimatePresence>
+                  <path
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    d="M15.525 18.966L8.558 12l6.967-6.967"
+                  ></path>
+                </svg>
+              </motion.button>
+              <div className={`w-3/4 mx-auto mt-[[${yOffset}]]`}>
+                <h1 className="text-2xl mb-6">
+                  {currentSection?.name ? currentSection.name : ""}
+                </h1>
+
+                <ul
+                  className={` flex flex-col gap-9 min-h-[20rem] relative ${
+                    currentSection?.name !== "Order History"
+                      ? " max-w-[30rem]"
+                      : "max-w-[55rem]"
+                  }`}
+                >
+                  {currentSection?.name !== "Order History" ? (
+                    fields
+                  ) : (
+                    <OrderHistory />
+                  )}
+                </ul>
+              </div>
+              <AnimatePresence>
+                {isChanged && (
+                  <motion.div
+                    initial={{ opacity: 0.7, scale: 0.6, zIndex: 10 }}
+                    animate={{ opacity: 1, scale: 1, zIndex: 10 }}
+                    exit={{ opacity: 0.7, scale: 0 }}
+                    transition={{
+                      duration: 0.1,
+                      type: "spring",
+                      stiffness: 400,
+                      damping: 20,
+                      mass: 0.4,
+                    }}
+                    className="mt-4 w-fit mx-2"
+                  >
+                    <SaveButton dataToSave={alteredData} saveFunc={saveFunc} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </motion.div>
         </>
       )}

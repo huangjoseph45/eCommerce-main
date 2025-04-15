@@ -232,25 +232,27 @@ const ProfilePage = () => {
     <ShowProfileContext.Provider
       value={{ showProfileHeaders, setShowProfileHeaders }}
     >
-      {" "}
-      <Header></Header>
-      <div className="flex flex-row pt-4  lg:border-t-0 border-t-black">
-        <SettingsSectionsList
-          sections={settingSections}
-          setSection={setCurrentSection}
-          showContent={showContent}
-          setShowContent={setShowContent}
-        />
-        <ProfileContent
-          currentSection={settingSections[currentSection]}
-          fieldData={sectionData[currentSection]}
-          fetchedUserData={userInfo}
-          isLoading={isLoading}
-          showContent={showContent}
-          setShowContent={setShowContent}
-        />
+      <div className="relative min-h-screen">
+        {" "}
+        <Header></Header>
+        <div className="flex flex-row pt-4  lg:border-t-0 border-t-black">
+          <SettingsSectionsList
+            sections={settingSections}
+            setSection={setCurrentSection}
+            showContent={showContent}
+            setShowContent={setShowContent}
+          />
+          <ProfileContent
+            currentSection={settingSections[currentSection]}
+            fieldData={sectionData[currentSection]}
+            fetchedUserData={userInfo}
+            isLoading={isLoading}
+            showContent={showContent}
+            setShowContent={setShowContent}
+          />
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </ShowProfileContext.Provider>
   );
 };

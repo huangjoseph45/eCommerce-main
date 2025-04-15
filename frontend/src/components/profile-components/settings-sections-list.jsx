@@ -123,7 +123,7 @@ const SettingsSectionsList = ({
             x: `${window.innerWidth < 1024 ? "100%" : "0"}`,
           }}
           transition={{ duration: 0.3, type: "tween" }}
-          className="z-[5] flex flex-col w-full lg:w-[16rem]  mr-12 p-4 mb-12 lg:mb-0 lg:mt-[4rem] bg-bgBase lg:bg-none lg:static top-[0rem] overscroll-contain items-center lg:items-start lg:z-30 h-full lg:h-fit lg:ml-6 lg:border-r lg:border-r-1 lg:justify-start lg:text-lg text-base sm:text-lg md:text-xl flex-shrink-0"
+          className="z-[5] flex flex-col w-full lg:w-[16rem]  mr-12 p-4 mb-24 lg:mb-0 lg:mt-[4rem] bg-bgBase lg:bg-none lg:static top-[0rem] overscroll-contain items-center lg:items-start lg:z-30 h-full lg:h-fit lg:ml-6 lg:border-r lg:border-r-1 lg:justify-start lg:text-lg text-base sm:text-lg md:text-xl flex-shrink-0"
         >
           <div className="w-[95%] sm:w-[85%]">
             {" "}
