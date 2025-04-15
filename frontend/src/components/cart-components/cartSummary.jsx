@@ -88,7 +88,7 @@ const CartSummary = ({ products, loading = true, cart }) => {
   }, [subtotalCost, discount.amount]);
 
   useEffect(() => {
-    if (userInfo && userInfo !== undefined && userInfo.cart && products) {
+    if (userInfo?.cart && products) {
       let cost = 0;
       userInfo.cart.forEach((item) => {
         const sku = item.sku
@@ -100,7 +100,8 @@ const CartSummary = ({ products, loading = true, cart }) => {
           return productSKU === cartSKU;
         });
         if (product) {
-          cost += item.quantity * product.price * (1 - product.discount / 100);
+          cost +=
+            item.quantity * product?.price * (1 - product?.discount / 100);
         }
       });
       setSubtotalCost(cost.toFixed(2));
@@ -117,7 +118,7 @@ const CartSummary = ({ products, loading = true, cart }) => {
     >
       {(loggedIn &&
         ((cart && cart.length > 0) ||
-          (userInfo.cart && userInfo.cart.length > 0))) ||
+          (userInfo?.cart && userInfo.cart.length > 0))) ||
       loading ? (
         <>
           <h1 className="font-semibold text-lg">Summary</h1>
@@ -129,7 +130,7 @@ const CartSummary = ({ products, loading = true, cart }) => {
             <FontAwesomeIcon
               icon={faChevronDown}
               className={`transition-all duration-200 ${
-                discount.show && "rotate-180 "
+                discount?.show && "rotate-180 "
               }`}
             />
           </button>
