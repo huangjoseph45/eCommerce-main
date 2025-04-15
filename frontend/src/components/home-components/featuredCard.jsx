@@ -14,6 +14,7 @@ const FeaturedCard = ({
   const nav = useNavigate();
   const [imgSrc, setImgSrc] = useState(null);
   const middleElement = useRef(null);
+  const [isSmallScreen, setSmallScreen] = useState(false);
 
   useEffect(() => {
     if (thisProduct) {
@@ -24,7 +25,10 @@ const FeaturedCard = ({
 
     const resizeFunc = () => {
       if (window.innerWidth < 1024) {
-        setHovering();
+        setHovering(true);
+        setSmallScreen(true);
+      } else {
+        setSmallScreen(false);
       }
     };
     window.addEventListener("resize", resizeFunc);
@@ -67,7 +71,7 @@ const FeaturedCard = ({
               />
               <AnimatePresence>
                 {" "}
-                {isHovering === index && (
+                {(isHovering === index || isSmallScreen) && (
                   <motion.button
                     initial={{ scale: 0.4, left: "50%", translateX: "-50%" }}
                     animate={{ scale: 1, left: "50%" }}
