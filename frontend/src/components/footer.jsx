@@ -37,10 +37,10 @@ const footerCols = [
 
 const Footer = () => {
   return (
-    <div className="z-0 text-textLight  bg-bgDarkLight w-full">
+    <div className="z-0 text-textDarl  bg-bgBase w-full">
       <div className="relative mx-auto w-full h-fit  pt-[2rem] md:pt-[3rem] pb-[2rem] sm:pb-0 mt-[2rem] md:mt-[4rem] flex flex-col sm:flex-row justify-around items-start">
         <div className="hidden md:block left-8 md:w-36 lg:w-48 top-[4rem]">
-          <Logo invert={true} full={true} />
+          <Logo invert={false} full={true} />
         </div>
         {footerCols.map((col) => {
           return (
