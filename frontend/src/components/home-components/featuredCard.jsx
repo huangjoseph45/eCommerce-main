@@ -3,12 +3,17 @@ import CardPlaceHolder from "../shopping-components/cardPlaceholder";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 
-const FeaturedCard = ({ section, index, thisProduct }) => {
+const FeaturedCard = ({
+  section,
+  index,
+  thisProduct,
+  isHovering,
+  setHovering,
+}) => {
   const enableTest = import.meta.env.VITE_ENABLE_TEST === "1";
   const nav = useNavigate();
   const [imgSrc, setImgSrc] = useState(null);
   const middleElement = useRef(null);
-  const [isHovering, setHovering] = useState(false);
 
   useEffect(() => {
     if (thisProduct) {
@@ -16,6 +21,18 @@ const FeaturedCard = ({ section, index, thisProduct }) => {
         `https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${section.imageURLExtension}`
       );
     }
+
+    const resizeFunc = () => {
+      if (window.innerWidth < 1024) {
+        setHovering();
+      }
+    };
+    window.addEventListener("resize", resizeFunc);
+    resizeFunc();
+
+    return () => {
+      window.removeEventListener("resize", resizeFunc);
+    };
   }, [thisProduct]);
 
   return (
@@ -24,8 +41,15 @@ const FeaturedCard = ({ section, index, thisProduct }) => {
         <>
           <motion.div
             className="relative w-screen h-screen sm:h-[48rem] sm:w-[32rem] lg:h-[36rem] lg:w-[24rem]flex-shrink-0 rounded-sm snap-center overflow-hidden  hover:shadow-lg transition-all duration-200 "
-            onHoverStart={() => setHovering(true)}
-            onHoverEnd={() => setHovering(false)}
+            onHoverStart={() => {
+              if (window.innerWidth > 1024) setHovering(index);
+            }}
+            onHoverEnd={() => {
+              if (window.innerWidth > 1024) setHovering();
+            }}
+            onClick={() => {
+              if (window.innerWidth < 1024) setHovering(index);
+            }}
           >
             <h1 className="absolute z-20 text-textLight capitalize p-2 text-4xl top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2">
               {section.sectionTitle}
@@ -33,7 +57,7 @@ const FeaturedCard = ({ section, index, thisProduct }) => {
             <motion.div
               className="relative h-full w-full hover:scale-105"
               initial={{ scale: 1 }}
-              animate={isHovering ? { scale: 1.05 } : { scale: 1 }}
+              animate={isHovering === index ? { scale: 1.05 } : { scale: 1 }}
               transition={{ ease: "easeInOut" }}
             >
               <img
@@ -43,7 +67,7 @@ const FeaturedCard = ({ section, index, thisProduct }) => {
               />
               <AnimatePresence>
                 {" "}
-                {isHovering && (
+                {isHovering === index && (
                   <motion.button
                     initial={{ scale: 0.4, left: "50%", translateX: "-50%" }}
                     animate={{ scale: 1, left: "50%" }}

@@ -6,6 +6,8 @@ import useFetchTopProducts from "../utilities/useFetchTopProducts";
 const FeaturedWindow = () => {
   // const featuredTags = [["men"], ["women"], ["Children"]];
   const [loading, products, getProducts] = useFetchTopProducts();
+  const [isHovering, setHovering] = useState(false);
+
   const [chosenProducts, setChosenProducts] = useState([]);
   const [
     isFetchingSectionsLoading,
@@ -70,6 +72,8 @@ const FeaturedWindow = () => {
                 section={section}
                 index={index}
                 thisProduct={chosenProducts[index]}
+                isHovering={isHovering}
+                setHovering={setHovering}
               />
             );
           })

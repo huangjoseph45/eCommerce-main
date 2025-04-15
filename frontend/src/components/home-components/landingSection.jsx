@@ -11,14 +11,30 @@ const LandingSection = ({ featuredSectionRef }) => {
 
   const [showLoginModal, setShowLoginModal] = useState(false);
 
+  useEffect(() => {
+    const resizeFunc = () => {
+      if (window.innerWidth < 1024) {
+        setHoverState(true);
+      }
+    };
+    window.addEventListener("resize", resizeFunc);
+    resizeFunc();
+
+    return () => {
+      window.removeEventListener("resize", resizeFunc);
+    };
+  }, []);
+
   return (
     <motion.div
       className={`text-4xl md:text-5xl lg:text-6xl xl:text-7xl items-center min-h-[40rem] h-[70vh] justify-center flex  border relative before:content-[''] before:h-full before:w-full before:bg-bgBlack/15 border-none text-bgBase2 overflow-hidden  before:absolute before:opacity-0 hover:before:opacity-100 before:transition-all before:duration-300 
 `}
       onHoverStart={() => {
-        setHoverState(true);
+        if (window.innerWidth > 1024) setHoverState(true);
       }}
-      onHoverEnd={() => setHoverState(false)}
+      onHoverEnd={() => {
+        if (window.innerWidth > 1024) setHoverState(false);
+      }}
     >
       <LoginModal showLogin={showLoginModal} setShowLogin={setShowLoginModal} />
       <img
@@ -28,6 +44,7 @@ const LandingSection = ({ featuredSectionRef }) => {
       />
       <div className="absolute top-[38%] flex flex-col items-center justify-center gap-4">
         <motion.a
+          initial={{ translateY: "0", scale: 1, opacity: 0 }}
           animate={
             hoverState
               ? { translateY: "-25px", scale: 1.1, opacity: 1 }
@@ -46,6 +63,7 @@ const LandingSection = ({ featuredSectionRef }) => {
           {hoverState && (
             <motion.div
               className="text-xl font-extralight flex items-center justify-center flex-col hover:text-bgTertiary transition-colors duration-200"
+              initial={{ translateY: "0", scale: 1, opacity: 0 }}
               animate={
                 hoverState
                   ? { translateY: "-35px", scale: 1.01, opacity: 1 }
