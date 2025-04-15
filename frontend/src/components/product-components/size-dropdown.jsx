@@ -104,7 +104,7 @@ const SizesDropdown = ({
       >
         <div
           onClick={showFunc}
-          className={`handle group flex items-center justify-center bg-bgBase w-fit m-auto px-4 py-2 cursor-pointer hover:bg-bgSecondaryLight box-border border border-1 border-bgSecondaryLight rounded-sm ${
+          className={`drop-shadow-md handle group flex items-center justify-center bg-bgBase w-fit m-auto px-4 py-2 cursor-pointer hover:bg-bgSecondaryLight box-border border border-1 border-bgSecondaryLight rounded-sm ${
             highlightSize
               ? "outline outline-red-500 outline-offset-[3px] rounded-sm"
               : ""

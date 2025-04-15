@@ -55,7 +55,7 @@ const FeaturedCard = ({
               if (window.innerWidth < 1024) setHovering(index);
             }}
           >
-            <h1 className="absolute z-20 text-textLight capitalize p-2 text-4xl top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <h1 className="absolute z-[5] text-textLight capitalize p-2 text-4xl top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2">
               {section.sectionTitle}
             </h1>
             <motion.div
@@ -77,7 +77,7 @@ const FeaturedCard = ({
                     animate={{ scale: 1, left: "50%" }}
                     exit={{ scale: 0, left: "50%" }}
                     transition={{ type: "spring", stiffness: 200, mass: 0.2 }}
-                    className="outline z-10 border bottom-[4rem] absolute p-2 px-8 rounded-sm bg-bgBase hover:bg-bgBase3"
+                    className=" z-[5]  bottom-[4rem] absolute p-2 px-8 rounded-sm bg-bgBase hover:bg-bgBase3 shadow-lg border border-b-[.2rem] border-r-[.2rem] border-gray-300 "
                     onClick={() => nav("/" + section.slug)}
                   >
                     Shop Now

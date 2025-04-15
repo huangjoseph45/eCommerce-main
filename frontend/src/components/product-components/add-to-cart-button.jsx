@@ -114,7 +114,7 @@ const AddToCart = ({ product, scrollToSize }) => {
       <div className="" ref={observerRef}>
         <Button
           buttonFunc={addToCartFunction}
-          invert={false}
+          invert={true}
           buttonText={"Add to Cart"}
         />
       </div>
