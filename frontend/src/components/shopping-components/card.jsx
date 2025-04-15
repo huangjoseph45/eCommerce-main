@@ -85,15 +85,17 @@ const Card = ({
           onMouseLeave={() => setHovering(false)}
         >
           {colors && (
-            <img
-              src={`https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
-                sku + "-" + colors[cardColor].idMod
-              }`}
-              alt={name}
-              onClick={() => nav(stringURL + `/${colors[0].idMod}`)}
-              loading="lazy"
-              className="w-full select-none object-cover aspect-[4/5] cursor-pointer"
-            />
+            <div className="w-full overflow-hidden ">
+              <img
+                src={`https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
+                  sku + "-" + colors[cardColor].idMod
+                }`}
+                alt={name}
+                onClick={() => nav(stringURL + `/${colors[0].idMod}`)}
+                loading="lazy"
+                className="w-full select-none object-cover aspect-[4/5] cursor-pointer hover:scale-105 transition-all duration-200"
+              />
+            </div>
           )}
 
           <AnimatePresence>
