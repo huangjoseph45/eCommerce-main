@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useAddToMailing from "./utilities/useAddToMailing";
+import InputBox from "./inputbox";
 
 const MailingListInput = () => {
   const [email, setEmail] = useState();
@@ -18,10 +19,11 @@ const MailingListInput = () => {
           type="email"
           onChange={(e) => onChange(e)}
           placeholder="Enter Email Address"
-          className="rounded-r-none h-12 first-line:mb-2 p-2 rounded bg-bgBase2 border  text-sm sm:text-base w-full sm:w-[13rem] md:w-[14rem] lg:w-[15rem]"
+          className="rounded-r-none h-12 first-line:mb-2 p-2 rounded bg-bgBase2 border  text-sm sm:text-base w-full sm:w-[13rem] md:w-[14rem] lg:w-[15rem] focus:outline-none"
+          autoComplete="email"
         />
         <button
-          className="flex items-center justify-center rounded-l-none relative w-[2.5rem] md:w-[3rem] h-12 p-2 bg-primary text-white rounded cursor-pointer bg-bgTertiary hover:bg-bgTertiary/75"
+          className="flex items-center justify-center rounded-l-none relative w-[2.5rem] md:w-[3rem] h-12 p-2 bg-primary text-textLight rounded cursor-pointer bg-bgSecondaryLight hover:bg-bgExtraSecondaryLight"
           onClick={() => addToMailing({ email })}
         >
           {loading ? (
@@ -36,7 +38,7 @@ const MailingListInput = () => {
               >
                 <path
                   fill="none"
-                  stroke="#000000"
+                  stroke="#ffffff"
                   strokeWidth="1"
                   d="M6,12.4 L18,12.4 M12.6,7 L18,12.4 L12.6,17.8"
                 />
