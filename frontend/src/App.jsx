@@ -77,7 +77,10 @@ function App() {
               <Route path="/new" element={<Shopping />} />
 
               <Route path="*" element={<NoPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
+              <Route
+                path="/profile/:profileSection?"
+                element={<ProfilePage />}
+              />
               <Route path="/dev" element={<AdminPage />} />
 
               <Route path="/cart" element={<CartPage />} />

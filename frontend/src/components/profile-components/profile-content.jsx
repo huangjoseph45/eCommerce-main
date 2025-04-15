@@ -1,8 +1,5 @@
 import { useContext, useEffect, useState, useMemo, useRef } from "react";
-import {
-  ProductContext,
-  ShowProfileContext,
-} from "../utilities/ContextManager";
+
 import parseCamelCase from "../utilities/parseCamelCase";
 import SaveButton from "../saveButton";
 import PasswordField from "./password-field";
@@ -12,9 +9,8 @@ import { AnimatePresence, motion } from "motion/react";
 import OrderHistory from "./order-history";
 import VerifiedTag from "./verifiedTag";
 import InputBox from "../inputbox";
-import { debounce } from "lodash";
-import AdditionalProducts from "../additionalProducts";
-import { createPortal } from "react-dom";
+
+import { useNavigate } from "react-router-dom";
 
 const yOffset = "0";
 
@@ -24,15 +20,11 @@ const ProfileContent = ({
   fetchedUserData,
   isLoading,
   showContent,
-  setShowContent,
 }) => {
-  const { showProfileHeaders, setShowContentProfileHeaders } =
-    useContext(ShowProfileContext);
-
   const [isChanged, setIsChanged] = useState(false);
   const [clonedInfo, setClonedInfo] = useState(fetchedUserData);
   const [alteredData, setAlteredData] = useState({});
-
+  const nav = useNavigate();
   const countries = useRef(useMemo(() => Country.getAllCountries(), []));
   const [states, setStates] = useState(() => State.getAllStates());
 
@@ -59,18 +51,6 @@ const ProfileContent = ({
   useEffect(() => {
     setClonedInfo(fetchedUserData);
   }, [fetchedUserData]);
-
-  const resizeFunc = debounce(() => {
-    setShowContent(!showProfileHeaders || window.innerWidth > 1024);
-  }, 100);
-
-  useEffect(() => {
-    setShowContent(!showProfileHeaders || window.innerWidth > 1024);
-
-    window.addEventListener("resize", resizeFunc);
-
-    return () => window.removeEventListener("resize", resizeFunc);
-  }, [showProfileHeaders]);
 
   const saveFunc = () => {
     setIsChanged(false);
@@ -241,7 +221,7 @@ const ProfileContent = ({
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, ease: "easeIn" }}
                 className={`aspect-square  absolute rounded-full hover:bg-gray-100 transition-all duration-200 left-4 h-[2rem] w-[2rem] -rotate-90`}
-                onClick={() => setShowContent(false)}
+                onClick={() => nav(`/profile`)}
               >
                 <svg
                   aria-hidden="true"

@@ -2,6 +2,7 @@ import { useContext, useEffect, useState, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import useLogout from "../utilities/useLogout";
 import AdditionalProducts from "../additionalProducts";
+import { useNavigate } from "react-router-dom";
 
 const sectionItem = {
   variants: {
@@ -11,16 +12,9 @@ const sectionItem = {
   transition: { duration: 0.2 },
 };
 
-const SettingsSectionsList = ({
-  sections,
-  setSection,
-  showContent,
-  setShowContent,
-}) => {
-  const [show, setShow] = useState(false);
+const SettingsSectionsList = ({ sections, setSection, showContent }) => {
   const [loading, result, tryLogout] = useLogout();
-  const [hasMounted, setHasMounted] = useState(false);
-  const prevWidth = useRef(window.innerWidth);
+  const nav = useNavigate();
 
   // const checkSize = () => {
   //   const windowWidth = window.innerWidth;
@@ -54,10 +48,9 @@ const SettingsSectionsList = ({
         {...sectionItem}
         className="list-none cursor-pointer h-14 transition-all duration-100 flex items-center justify-between   text-left w-full lg:hover:underline"
         onClick={() => {
+          nav(`/profile/${section.slug}`);
+
           setSection(index);
-          if (window.innerWidth < 1024) {
-            setShowContent(true);
-          }
         }}
       >
         <div className="flex flex-row gap-2 items-center">
@@ -93,25 +86,13 @@ const SettingsSectionsList = ({
     <>
       <AnimatePresence>
         <motion.div
-          initial={
-            hasMounted
-              ? {
-                  opacity: 0.5,
-                  scale: 1,
-                  x: `${window.innerWidth < 1024 ? "100%" : "0"}`,
+          initial={{
+            x: "0%",
 
-                  transition: {
-                    delay: 0.5,
-                  },
-                }
-              : {
-                  x: "0%",
+            opacity: 1,
 
-                  opacity: 1,
-
-                  scale: 1,
-                }
-          }
+            scale: 1,
+          }}
           animate={{
             x: "0%",
 

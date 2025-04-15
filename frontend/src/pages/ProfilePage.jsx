@@ -1,16 +1,15 @@
 import ProfileContent from "../components/profile-components/profile-content.jsx";
-import { useEffect, useState } from "react";
-
+import { useEffect, useState, useRef } from "react";
+import { useParams } from "react-router-dom";
 import Header from "../components/header.jsx";
 import SettingsSectionsList from "../components/profile-components/settings-sections-list.jsx";
-import debounce from "lodash.debounce";
 import { useNavigate } from "react-router-dom";
-import { ShowProfileContext } from "../components/utilities/ContextManager.js";
 import Footer from "../components/footer.jsx";
 import useFetchServerData from "../components/utilities/getDataFromServer.js";
 import useAuth from "../components/utilities/useAuth.jsx";
+import { debounce } from "lodash";
+
 const ProfilePage = () => {
-  const [showProfileHeaders, setShowProfileHeaders] = useState(true);
   const [currentSection, setCurrentSection] = useState(0);
   const [userInfo, setUserInfo] = useState();
   const { loggedIn } = useAuth();
@@ -29,6 +28,46 @@ const ProfilePage = () => {
 
   const { isLoading, data, refetch } = useFetchServerData();
   const [showContent, setShowContent] = useState(true);
+  const { profileSection } = useParams();
+  const prevWidth = useRef(window.innerWidth);
+
+  useEffect(() => {
+    if (window.innerWidth > 1024) {
+      nav("/profile/account");
+    } else if (!profileSection) {
+      setShowContent(false);
+      return;
+    }
+    let idx;
+    const foundSection = settingSections.find((section, index) => {
+      idx = index;
+
+      return section.slug.toLowerCase() === profileSection?.toLowerCase();
+    });
+    if (foundSection) {
+      setCurrentSection(idx);
+      setShowContent(true);
+    }
+
+    const resizeFunc = () => {
+      if (
+        window.innerWidth < 1024 &&
+        (window.innerWidth > prevWidth.current + 50 ||
+          window.innerWidth < prevWidth.current - 50)
+      ) {
+        prevWidth.current = window.innerWidth;
+      } else if (window.innerWidth > 1024) {
+        if (currentSection === null || currentSection === undefined) {
+          nav("/profile/account");
+        } else if (settingSections[currentSection].slug !== foundSection) {
+          nav("/profile/" + settingSections[currentSection].slug);
+        }
+      }
+    };
+    resizeFunc();
+    window.addEventListener("resize", resizeFunc);
+    return () => window.removeEventListener("resize", resizeFunc);
+  }, [profileSection]);
 
   const nav = useNavigate();
 
@@ -56,6 +95,7 @@ const ProfilePage = () => {
           <script xmlns="" />
         </svg>
       ),
+      slug: "account",
     },
     {
       name: "Communication Preferences",
@@ -96,6 +136,7 @@ const ProfilePage = () => {
           <script xmlns="" />
         </svg>
       ),
+      slug: "communication",
     },
     {
       name: "Order History",
@@ -114,6 +155,7 @@ const ProfilePage = () => {
           <script xmlns="" />
         </svg>
       ),
+      slug: "order",
     },
     {
       name: "Delivery Addresses",
@@ -135,6 +177,7 @@ const ProfilePage = () => {
           <script xmlns="" />
         </svg>
       ),
+      slug: "address",
     },
   ];
 
@@ -229,31 +272,25 @@ const ProfilePage = () => {
   }, [data]);
 
   return (
-    <ShowProfileContext.Provider
-      value={{ showProfileHeaders, setShowProfileHeaders }}
-    >
-      <div className="relative min-h-screen">
-        {" "}
-        <Header></Header>
-        <div className="flex flex-row pt-4  lg:border-t-0 border-t-black">
-          <SettingsSectionsList
-            sections={settingSections}
-            setSection={setCurrentSection}
-            showContent={showContent}
-            setShowContent={setShowContent}
-          />
-          <ProfileContent
-            currentSection={settingSections[currentSection]}
-            fieldData={sectionData[currentSection]}
-            fetchedUserData={userInfo}
-            isLoading={isLoading}
-            showContent={showContent}
-            setShowContent={setShowContent}
-          />
-        </div>
-        <Footer />
+    <div className="relative min-h-screen">
+      {" "}
+      <Header></Header>
+      <div className="flex flex-row pt-4  lg:border-t-0 border-t-black">
+        <SettingsSectionsList
+          sections={settingSections}
+          setSection={setCurrentSection}
+          showContent={showContent}
+        />
+        <ProfileContent
+          currentSection={settingSections[currentSection]}
+          fieldData={sectionData[currentSection]}
+          fetchedUserData={userInfo}
+          isLoading={isLoading}
+          showContent={showContent}
+        />
       </div>
-    </ShowProfileContext.Provider>
+      <Footer />
+    </div>
   );
 };
 
