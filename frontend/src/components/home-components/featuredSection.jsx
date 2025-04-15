@@ -3,7 +3,7 @@ import FeaturedWindow from "./featuredWindow";
 const FeaturedSection = () => {
   return (
     <div className="">
-      <div className="flex flex-col text-center ">
+      <div className="flex flex-col text-center my-2">
         <FeaturedWindow />
       </div>
     </div>

@@ -21,6 +21,7 @@ const useFetchSections = () => {
         return;
       }
       const fetchedSections = await response.json();
+
       setSectionResults(fetchedSections.returnSections);
       setFetchingSectionsLoading(false);
     } catch (error) {

@@ -286,7 +286,6 @@ const createProduct = async (req, res) => {
 const fetchProduct = async (req, res) => {
   let { skuComplete, test, seoValue } = req.params;
   if (!seoValue) seoValue = 1;
-
   if (!skuComplete) {
     return res.status(400).json({ message: "Missing SKU" });
   }

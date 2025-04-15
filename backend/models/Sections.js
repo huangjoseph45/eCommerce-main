@@ -16,6 +16,13 @@ const SectionSchema = new mongoose.Schema(
       required: true,
       set: (tags) => tags.map((tag) => tag.toLowerCase()),
     },
+    imageURLExtension: {
+      type: String,
+      default: "",
+      trim: true,
+      lowercase: true,
+      unique: true,
+    },
     description: {
       type: String,
       trim: true,

@@ -89,22 +89,34 @@ const EditProduct = ({ productFunction, product, setProduct }) => {
         </h1>
         <ul className="flex-col flex gap-3 p-2">
           <div className="flex flex-row gap-2 items-center">
-            <label htmlFor="sku">SKU:</label>
-            <input
-              name="sku"
-              type="text"
-              className="rounded-sm bg-bgBase2 outline p-1"
-              onChange={(e) => onChange(e, "sku")}
-            />
+            {!formData.productName ? (
+              <>
+                <label htmlFor="sku">SKU:</label>{" "}
+                <input
+                  name="sku"
+                  type="text"
+                  className="rounded-sm bg-bgBase2 outline p-1"
+                  onChange={(e) => {
+                    if (!formData.productName) onChange(e, "sku");
+                  }}
+                />
+              </>
+            ) : (
+              <p>SKU: {formData.sku}</p>
+            )}
           </div>
           {(productFunction === 0 || product?.sku) && (
             <>
-              <SingleInput
-                label={"Product Name"}
-                product={product}
-                field={"productName"}
-                changeFunc={onChange}
-              />
+              {productFunction === 0 ? (
+                <SingleInput
+                  label={"Product Name"}
+                  product={product}
+                  field={"productName"}
+                  changeFunc={onChange}
+                />
+              ) : (
+                <p>Product Name: {formData.productName}</p>
+              )}
               <SingleInput
                 label={"General Category"}
                 product={product}
