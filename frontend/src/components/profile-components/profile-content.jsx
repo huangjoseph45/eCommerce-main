@@ -214,7 +214,7 @@ const ProfileContent = ({
             className="w-screen h-screen absolute left-0 top-0 bg-bgBlack/15 z-[5] lg:hidden"
           ></motion.div>{" "}
           <motion.div
-            className="z-[50] bg-bgBase flex flex-col w-full lg:w-1/2 mx-auto lg:mx-0 pl-2 min-h-[80vh] absolute top-0 pt-16 lg:static lg:z-[10]"
+            className="z-[50] bg-bgBase flex flex-col w-full lg:w-1/2 mx-auto lg:mx-0 pl-2 h-screen lg:h-full lg:min-h-[75vh] absolute top-0 pt-16 lg:static lg:z-[10]"
             initial={{
               y: `${window.innerWidth < 1024 ? "150%" : "0"}`,
               opacity: 0,
