@@ -7,17 +7,22 @@ import { useNavigate } from "react-router-dom";
 
 const menu = {
   closed: {
-    scale: 0,
+    width: 0,
+    padding: 0,
+    border: "0px solid oklch(92.2% 0 0)",
     transition: {
-      delay: 0.15,
+      duration: 0.2,
+      ease: "easeInOut",
+      damping: 20,
     },
   },
   open: {
-    scale: 1,
+    width: "auto",
+    padding: ".25rem",
+    border: "1px solid oklch(92.2% 0 0)",
     transition: {
-      type: "spring",
-      duration: 0.4,
-      delayChildren: 0.15,
+      duration: 0.2,
+      ease: "easeInOut",
       staggerChildren: 0.05,
     },
   },
@@ -25,7 +30,7 @@ const menu = {
 
 const item = {
   variants: {
-    closed: { x: -16, opacity: 0 },
+    closed: { x: -4, opacity: 0 },
     open: { x: 0, opacity: 1 },
   },
   transition: { opacity: { duration: 0.2 } },
@@ -85,7 +90,7 @@ const SizesDropdown = ({
       <motion.li
         {...item}
         key={size}
-        className="list-none cursor-pointer hover:text-textLight hover:bg-slate-700 text-textDark text-left p-2 rounded-sm pl-4 min-w-[10rem] w-full uppercase select-none"
+        className="snap-center list-none cursor-pointer hover:bg-slate-100 text-textDark text-center p-2 rounded-sm  w-[3rem] uppercase select-none"
         onClick={() => selectSize(size)}
       >
         {size}
@@ -104,14 +109,14 @@ const SizesDropdown = ({
       >
         <div
           onClick={showFunc}
-          className={`drop-shadow-md handle group flex items-center justify-center bg-bgBase w-fit m-auto px-4 py-2 cursor-pointer hover:bg-bgSecondaryLight box-border border border-1 border-bgSecondaryLight rounded-sm ${
+          className={`drop-shadow-md handle group flex items-center justify-center bg-bgBase w-fit m-auto px-4 py-2 cursor-pointer hover:bg-bgSecondaryLight box-border border rounded-sm ${
             highlightSize
               ? "outline outline-red-500 outline-offset-[3px] rounded-sm"
               : ""
           }`}
         >
           <p
-            className={`text-lg text-textDark group-hover:text-textLight select-none transition-all duration-300 ${
+            className={` text-lg text-textDark group-hover:text-textLight select-none transition-all duration-300 ${
               selected !== defaultSelector && "uppercase"
             }`}
           >
@@ -120,15 +125,15 @@ const SizesDropdown = ({
         </div>
         <AnimatePresence>
           {showElement && (
-            <motion.div
+            <motion.ul
               variants={menu}
               initial="closed"
-              animate={showElement ? "open" : "closed"}
+              animate={"open"}
               exit={"closed"}
-              className="mt-2 flex bg-bgBase items-center m-auto flex-col gap-2 border border-textDark rounded-sm w-fit p-1 absolute top-full left-0 z-10 overflow-scroll max-h-[12rem]"
+              className="flex bg-bgBase items-center m-auto flex-row gap-2 shadow-md rounded-sm w-fit p-1 absolute top-0 left-full translate-x-4 z-10 overflow-scroll h-full snap-mandatory snap-y scrollbar-hide"
             >
               {sizes}
-            </motion.div>
+            </motion.ul>
           )}
         </AnimatePresence>
       </div>

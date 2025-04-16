@@ -64,7 +64,7 @@ const FeaturedWindow = () => {
       style={{ scrollBehavior: "auto" }}
     >
       {" "}
-      {sectionResults
+      {false
         ? sectionResults.map((section, index) => {
             return (
               <FeaturedCard
@@ -77,7 +77,11 @@ const FeaturedWindow = () => {
               />
             );
           })
-        : null}
+        : Array.from({
+            length: 3,
+          }).map((v, index) => {
+            return <FeaturedCard key={index} />;
+          })}
     </div>
   );
 };

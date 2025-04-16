@@ -21,7 +21,7 @@ const SectionDropdown = ({ showDropdown, section, setShowDropdown }) => {
             document.body
           )} */}
           <motion.ul
-            className="absolute lg:pt-[.875rem] bg-bgBase2 px-4 origin-top  top-[105%] min-w-[8rem] flex flex-col pb-6 rounded-lg shadow-xl gap-2"
+            className="border absolute bg-bgBase3  origin-top  top-[105%] min-w-[8rem] flex flex-col rounded-md shadow-md p-1"
             initial={{ top: "105%", opacity: 0, scaleY: 0 }}
             animate={{ top: "105%", opacity: 1, scaleY: 1 }}
             exit={{ top: "105%", opacity: 0, scaleY: 0 }}
@@ -40,7 +40,7 @@ const SectionDropdown = ({ showDropdown, section, setShowDropdown }) => {
                       section.slug
                     )}/${encodeURIComponent(subsection.slug)}`}
                     key={section._id + subsection.slug + subsection.name}
-                    className="text-textHollow hover:text-textDark w-fit capitalize text-base"
+                    className="text-textHollow hover:text-textDark w-full capitalize text-base hover:bg-bgBase px-4 py-2 rounded-md"
                   >
                     {subsection.name}
                   </a>
