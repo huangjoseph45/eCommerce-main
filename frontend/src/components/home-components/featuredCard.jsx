@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "motion/react";
 const FeaturedCard = ({
   section,
   index,
-  thisProduct,
+  thisProduct = null,
   isHovering,
   setHovering,
 }) => {
@@ -24,6 +24,7 @@ const FeaturedCard = ({
     }
 
     const resizeFunc = () => {
+      if (!thisProduct) return;
       if (window.innerWidth < 1024) {
         setHovering(true);
         setSmallScreen(true);

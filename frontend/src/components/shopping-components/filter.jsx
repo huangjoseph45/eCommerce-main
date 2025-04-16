@@ -75,7 +75,7 @@ const Filter = ({ sortingInfo, setSortingInfo }) => {
   }, [showFilters, filter]);
 
   return (
-    <div className="lg:sticky lg:top-[4rem]">
+    <div className="lg:sticky lg:top-[4rem] ml-8">
       {showFilterButton && (
         <button
           className="flex gap-1 cursor-pointer py-1 border rounded-full shadow-md focus:outline focus:outline-black hover:bg-bgBlack/15 transition-all duration-200 px-2"
@@ -115,7 +115,7 @@ const Filter = ({ sortingInfo, setSortingInfo }) => {
               className={`${
                 showFilterButton
                   ? "min-w-[20rem] right-0 z-50 p-4 h-[100vh] fixed top-0 pr-[4.5rem]"
-                  : " w-[12rem] left-0  h-fit"
+                  : " w-[14rem] left-0  h-fit"
               } bg-bgBase py-8 flex flex-col gap-6 `}
             >
               {showFilterButton && (

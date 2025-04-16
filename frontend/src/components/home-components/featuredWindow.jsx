@@ -64,7 +64,7 @@ const FeaturedWindow = () => {
       style={{ scrollBehavior: "auto" }}
     >
       {" "}
-      {false
+      {sectionResults
         ? sectionResults.map((section, index) => {
             return (
               <FeaturedCard

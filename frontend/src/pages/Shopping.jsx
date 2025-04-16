@@ -99,14 +99,14 @@ function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
               </p>
             </div>
           ) : (
-            displayName
+            <p className="ml-8 mt-8">{displayName}</p>
           )}
         </div>
         <h2 className="capitalize lg:px-4 px-8 pb-2 lg:pb-4 text-xl text-textHollow/65">
           {subsection}
         </h2>
         <div className="flex lg:flex-row flex-col">
-          <div className="px-8 lg:pl-4  w-fit relative mb-2">
+          <div className="lg:pl-4  w-fit relative mb-2">
             <Filter sortingInfo={sortingInfo} setSortingInfo={setSortingInfo} />
           </div>
           <div className="flex flex-col w-full">
