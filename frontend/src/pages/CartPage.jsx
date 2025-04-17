@@ -22,15 +22,10 @@ const CartPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const timer = setTimeout(() => {
-      setLoading(loading);
-    }, 1500);
-
-    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    if (loading == false) {
+    if (loading == false && (userInfo?._id || !loggedIn)) {
       setTimeout(() => {
         setLoading(false);
       }, 200);
@@ -38,7 +33,8 @@ const CartPage = () => {
   }, [loading]);
 
   useEffect(() => {
-    if (userInfo && userInfo.cart) setCart(userInfo.cart);
+    console.log(userInfo);
+    if (userInfo?.cart) setCart(userInfo.cart);
   }, [JSON.stringify(userInfo)]);
 
   useEffect(() => {

@@ -230,6 +230,7 @@ const fetchData = async (req, res) => {
       "orders",
       "verifiedEmail",
       "verifiedPhone",
+      "_id",
     ];
 
     let matched;

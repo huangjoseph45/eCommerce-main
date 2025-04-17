@@ -64,7 +64,7 @@ const Header = ({
   useEffect(() => {
     if (!data && isEmpty(userInfo)) {
       refetch({
-        queries: ["cart", "firstName"],
+        queries: ["cart", "firstName", "_id"],
         auth: { loggedIn },
       });
     }
