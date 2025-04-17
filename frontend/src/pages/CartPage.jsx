@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import {
@@ -10,7 +10,6 @@ import CartSummary from "../components/cart-components/cartSummary";
 import useProductsForCart from "../components/utilities/getProductsForCart";
 import useAuth from "../components/utilities/useAuth";
 import AdditionalProducts from "../components/additionalProducts";
-import useFetchServerData from "../components/utilities/getDataFromServer";
 
 const CartPage = () => {
   const { loggedIn } = useAuth();
@@ -20,40 +19,33 @@ const CartPage = () => {
   const [compLoading, setLoading] = useState(loggedIn);
   const [aggregateTags, setAggregateTags] = useState([]);
   const [loading, products, fetchProducts] = useProductsForCart();
-  const { isLoading, data, setData, isError, refetch } = useFetchServerData();
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    const timer = setTimeout(() => {
+      setLoading(loading);
+    }, 1500);
+
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    if (loading == false && isLoading == false) {
+    if (loading == false) {
       setTimeout(() => {
         setLoading(false);
-      }, 500);
+      }, 200);
     }
   }, [loading]);
 
   useEffect(() => {
     if (userInfo && userInfo.cart) setCart(userInfo.cart);
-    else {
-      refetch({ queries: ["cart"] });
-    }
   }, [JSON.stringify(userInfo)]);
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  useEffect(() => {
-    if (JSON.stringify(data?.cart) !== JSON.stringify(userInfo?.cart)) {
-      setUserInfo((prevUserInfo) => {
-        return { ...prevUserInfo, cart: data?.cart };
-      });
-    }
     if (cart) {
       fetchProducts({ cart });
     }
-  }, [cart, data]);
+  }, [cart]);
 
   useEffect(() => {
     if (!loading && products && products.length > 0) {
