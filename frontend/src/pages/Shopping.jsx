@@ -99,7 +99,7 @@ function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
               </p>
             </div>
           ) : (
-            <p className="ml-8 mt-8">{displayName}</p>
+            <p className="lg:ml-8 mt-8">{displayName}</p>
           )}
         </div>
         <h2 className="capitalize lg:px-4 px-8 pb-2 lg:pb-4 text-xl text-textHollow/65">
