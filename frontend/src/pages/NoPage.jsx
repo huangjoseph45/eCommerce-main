@@ -20,7 +20,7 @@ const NoPage = () => {
       <Header> </Header>{" "}
       {timer <= 0 ? (
         <div className=" flex flex-col items-center justify-center h-[20rem] my-12 w-[90%] mx-auto rounded-3xl bg-bgBase3 gap-8">
-          <p className="text-5xl font-medium">404 Page Not Found</p>{" "}
+          <p className="text-5xl font-medium px-4">404 Page Not Found</p>{" "}
           <a
             className="cursor-pointer text-lg outline outline-bgSecondary hover:text-textLight transition-all duration-150 px-4 py-2 rounded-full hover:bg-bgSecondary"
             href="/"

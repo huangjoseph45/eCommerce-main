@@ -27,7 +27,7 @@ const CardGrid = ({ isLoading, products }) => {
           isLoading || (products && products.length > 0 && products[0].sku)
             ? "grid grid-cols-2 md:grid-cols-3"
             : null
-        } gap-4 w-full px-8 relative medium`}
+        } gap-4 w-full px-8 relative medium min-h-[50vh]`}
       >
         {isLoading ? (
           <>
