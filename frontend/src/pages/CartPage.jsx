@@ -25,6 +25,7 @@ const CartPage = () => {
 
   useEffect(() => {
     if (loading == false) {
+      console.log(userInfo);
       setTimeout(() => {
         setLoading(false);
       }, 300);
