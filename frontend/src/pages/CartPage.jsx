@@ -29,7 +29,7 @@ const CartPage = () => {
     if (loading == false && isLoading == false) {
       setTimeout(() => {
         setLoading(false);
-      }, 300);
+      }, 500);
     }
   }, [loading]);
 
