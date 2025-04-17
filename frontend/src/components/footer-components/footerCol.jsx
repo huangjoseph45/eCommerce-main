@@ -50,7 +50,7 @@ const FooterCol = ({ children, colName }) => {
                 <path
                   id="Vector"
                   d="M11 9L14 12L11 15"
-                  stroke="#ffffff"
+                  stroke="#000000"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
