@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const menu = {
   closed: {
+    height: 0,
     width: 0,
     padding: 0,
     border: "0px solid oklch(92.2% 0 0)",
@@ -17,6 +18,7 @@ const menu = {
     },
   },
   open: {
+    height: "auto",
     width: "auto",
     padding: ".25rem",
     border: "1px solid oklch(92.2% 0 0)",
@@ -104,12 +106,12 @@ const SizesDropdown = ({
         Size:
       </p>
       <div
-        className="flex flex-col  items-center justify-center w-fit relative mb-6"
+        className="flex flex-col items-start justify-start w-fit relative mb-6"
         ref={dropdownRef}
       >
         <div
           onClick={showFunc}
-          className={`drop-shadow-md handle group flex items-center justify-center bg-bgBase w-fit m-auto px-4 py-2 cursor-pointer hover:bg-bgSecondaryLight box-border border rounded-sm ${
+          className={`drop-shadow-md handle group flex items-center justify-center bg-bgBase w-fit px-4 py-2 cursor-pointer hover:bg-bgSecondaryLight box-border border rounded-sm ${
             highlightSize
               ? "outline outline-red-500 outline-offset-[3px] rounded-sm"
               : ""
@@ -130,7 +132,7 @@ const SizesDropdown = ({
               initial="closed"
               animate={"open"}
               exit={"closed"}
-              className="flex bg-bgBase items-center m-auto flex-row gap-2 shadow-md rounded-sm w-fit p-1 absolute top-0 left-full translate-x-4 z-10 overflow-scroll h-full snap-mandatory snap-y scrollbar-hide"
+              className="origin-top-left grid grid-cols-3 grid-flow-row bg-bgBase items-center gap-2 shadow-md rounded-sm w-fit p-1 z-10  h-full snap-mandatory snap-y scrollbar-hide"
             >
               {sizes}
             </motion.ul>
