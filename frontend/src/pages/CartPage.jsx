@@ -41,6 +41,10 @@ const CartPage = () => {
   }, [JSON.stringify(userInfo)]);
 
   useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  useEffect(() => {
     if (JSON.stringify(data?.cart) !== JSON.stringify(userInfo?.cart)) {
       setUserInfo((prevUserInfo) => {
         return { ...prevUserInfo, cart: data?.cart };
