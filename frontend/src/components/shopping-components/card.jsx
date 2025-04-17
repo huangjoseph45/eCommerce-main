@@ -23,11 +23,11 @@ const Card = ({
   const nav = useNavigate();
   const { initialPrice, finalPrice } = parsePrice(price, discount);
   const [cardColor, setCardColor] = useState(0);
-
+  const [imgIndex, setImgIndex] = useState(0);
   const [isHovering, setHovering] = useState(false);
 
   const checkHover = (event) => {
-    if (window.innerWidth > 1024 && colors.length > 1) {
+    if (window.innerWidth > 1024 && colors[cardColor].numImages > 1) {
       const isHovering = event.currentTarget.matches(":hover");
       setHovering(isHovering);
     }
@@ -47,6 +47,7 @@ const Card = ({
             style={{ backgroundColor: color.colorCode }}
             onMouseEnter={() => {
               setCardColor(index);
+              setImgIndex(0);
             }}
             onClick={() => nav(`${stringURL}/${color.idMod}`)}
           ></div>
@@ -60,15 +61,15 @@ const Card = ({
     return `/p/${encodedName}/${sku}`.toLowerCase();
   }, [name, sku]);
 
-  const modifyCardColor = (incrementor) => {
-    let newColor = cardColor + incrementor;
-    if (newColor >= colors.length) {
-      newColor = 0;
+  const modifyCardColorIndex = (incrementor) => {
+    let index = imgIndex + incrementor;
+    if (index >= colors[cardColor].numImages) {
+      index = 0;
     }
-    if (newColor < 0) {
-      newColor = colors.length - 1;
+    if (index < 0) {
+      index = colors[cardColor].numImages - 1;
     }
-    setCardColor(newColor);
+    setImgIndex(index);
   };
 
   return (
@@ -89,7 +90,7 @@ const Card = ({
               <img
                 src={`https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
                   sku + "-" + colors[cardColor].idMod
-                }`}
+                }${imgIndex === 0 ? "" : "-" + imgIndex}`}
                 alt={name}
                 onClick={() => nav(stringURL + `/${colors[0].idMod}`)}
                 loading="lazy"
@@ -122,13 +123,13 @@ const Card = ({
             <>
               <span
                 className="absolute inset-y-1/2 left-2  w-4 h-4 p-4 rounded-full flex items-center justify-center hover:bg-bgBlack/5 shadow-md  transition-colors duration-[0.4s] filter: bg-blur-sm cursor-pointer"
-                onClick={() => modifyCardColor(-1)}
+                onClick={() => modifyCardColorIndex(-1)}
               >
                 <FontAwesomeIcon icon={faChevronLeft} />
               </span>
               <span
                 className="absolute inset-y-1/2 right-2  w-4 h-4 p-4 rounded-full flex items-center justify-center hover:bg-bgBlack/5 shadow-md transition-colors duration-[0.4s] filter: bg-blur-sm cursor-pointer"
-                onClick={() => modifyCardColor(1)}
+                onClick={() => modifyCardColorIndex(1)}
               >
                 <FontAwesomeIcon icon={faChevronRight} />
               </span>
