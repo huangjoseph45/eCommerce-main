@@ -68,7 +68,7 @@ const FooterCol = ({ children, colName }) => {
             initial={{ height: 0 }}
             animate={{ height: "auto" }}
             exit={{ height: 0 }}
-            transition={{ type: "spring" }}
+            transition={{ type: "spring", stiffness: 200, mass: 0.3 }}
             className="gap-2 flex flex-col overflow-hidden"
           >
             {children}
