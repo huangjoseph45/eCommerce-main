@@ -53,12 +53,12 @@ const useFetchServerData = (options = {}) => {
           body: JSON.stringify(queries) || null,
         }
       );
+
       const res = await response.json();
       if (!response.ok) {
         setLoading(false);
         return;
       }
-
       setData(res);
     } catch (error) {
       setIsError(true);
@@ -72,7 +72,7 @@ const useFetchServerData = (options = {}) => {
     refetch({ queries: [] });
   }, [loggedIn]);
 
-  const refetch = ({ queries, auth }) => {
+  const refetch = ({ queries }) => {
     getDataFunc(queries);
   };
 

@@ -10,22 +10,23 @@ import CartSummary from "../components/cart-components/cartSummary";
 import useProductsForCart from "../components/utilities/getProductsForCart";
 import useAuth from "../components/utilities/useAuth";
 import AdditionalProducts from "../components/additionalProducts";
+import useFetchServerData from "../components/utilities/getDataFromServer";
 
 const CartPage = () => {
   const { loggedIn } = useAuth();
   const [error, setError] = useState(null);
   const [cart, setCart] = useState([]);
-  const { userInfo } = useContext(ProductContext);
-  const [isLoading, setLoading] = useState(loggedIn);
+  const { userInfo, setUserInfo } = useContext(ProductContext);
+  const [compLoading, setLoading] = useState(loggedIn);
   const [aggregateTags, setAggregateTags] = useState([]);
   const [loading, products, fetchProducts] = useProductsForCart();
+  const { isLoading, data, setData, isError, refetch } = useFetchServerData();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
-    if (loading == false) {
-      console.log(userInfo);
+    if (loading == false && isLoading == false) {
       setTimeout(() => {
         setLoading(false);
       }, 300);
@@ -34,13 +35,21 @@ const CartPage = () => {
 
   useEffect(() => {
     if (userInfo && userInfo.cart) setCart(userInfo.cart);
+    else {
+      refetch({ queries: ["cart"] });
+    }
   }, [JSON.stringify(userInfo)]);
 
   useEffect(() => {
+    if (JSON.stringify(data?.cart) !== JSON.stringify(userInfo?.cart)) {
+      setUserInfo((prevUserInfo) => {
+        return { ...prevUserInfo, cart: data?.cart };
+      });
+    }
     if (cart) {
       fetchProducts({ cart });
     }
-  }, [cart]);
+  }, [cart, data]);
 
   useEffect(() => {
     if (!loading && products && products.length > 0) {
@@ -65,12 +74,12 @@ const CartPage = () => {
             cart={cart}
             setCart={setCart}
             products={products}
-            loading={isLoading}
+            loading={compLoading}
             error={error}
             userInfo={userInfo}
           />
         </div>{" "}
-        <CartSummary products={products} loading={isLoading} cart={cart} />
+        <CartSummary products={products} loading={compLoading} cart={cart} />
       </div>
       <div className="mx-auto mt-24">
         {aggregateTags && aggregateTags.length > 0 ? (

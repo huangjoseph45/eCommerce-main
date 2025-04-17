@@ -24,15 +24,11 @@ const CartItemList = ({
     refetch({ cart: [] });
   };
 
-  if (error) {
-    return <p>{error}</p>;
-  }
-
   return (
     <ul className="flex flex-col items-center mx-auto min-w-[20rem] w-full max-w-[30rem]">
       <ul className="flex flex-col gap-2 h-fit w-full">
         {!loading ? (
-          products && products.length > 0 ? (
+          products?.length > 0 ? (
             <>
               <h1 className="text-2xl my-2 mt-4 flex items-center self-start">
                 Bag
