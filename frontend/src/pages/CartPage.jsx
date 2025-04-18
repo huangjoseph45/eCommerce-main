@@ -27,7 +27,6 @@ const CartPage = () => {
   }, [loggedIn]);
 
   useEffect(() => {
-    console.log(loggedIn);
     setTimeout(() => {
       if (
         (loading == false && isLoading == false) ||
@@ -43,7 +42,6 @@ const CartPage = () => {
   }, [JSON.stringify(userInfo)]);
 
   useEffect(() => {
-    console.log(data);
     if (data && JSON.stringify(data?.cart) !== JSON.stringify(cart)) {
       setCart(data?.cart);
       fetchProducts({ cart: data?.cart });

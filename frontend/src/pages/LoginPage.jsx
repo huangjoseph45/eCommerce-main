@@ -141,7 +141,6 @@ const LoginPage = () => {
         <div
           className="flex w-fit p-1 justify-center items-center gap-2 mb-4 "
           onClick={() => {
-            console.log("clicked");
             setChecked(!checked);
           }}
         >

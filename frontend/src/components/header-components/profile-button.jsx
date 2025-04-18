@@ -5,7 +5,6 @@ const ProfileButton = ({ showLogin, setShowLogin, setShowSidebar }) => {
   const { loggedIn } = useAuth();
 
   const clickedFunc = () => {
-    console.log(loggedIn);
     if (!loggedIn) {
       setShowLogin(!showLogin);
       if (setShowSidebar) {
