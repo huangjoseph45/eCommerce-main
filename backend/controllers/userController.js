@@ -233,6 +233,8 @@ const fetchData = async (req, res) => {
       "_id",
     ];
 
+    console.log(queries);
+
     let matched;
     if (queries && Array.isArray(queries) && queries.length > 0) {
       const validMatchedQueries = queries.filter((query) =>

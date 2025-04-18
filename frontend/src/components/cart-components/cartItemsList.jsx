@@ -4,6 +4,8 @@ import LoadingCart from "./loadingCart";
 import useUpdateServerData from "../utilities/updateServerData";
 import Button from "../button";
 import { useNavigate } from "react-router-dom";
+import LoginModal from "../loginModal";
+import useAuth from "../utilities/useAuth";
 
 const CartItemList = ({
   userInfo,
@@ -17,6 +19,8 @@ const CartItemList = ({
     dataToUpdate: null,
   });
   const nav = useNavigate();
+  const { loggedIn } = useAuth();
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const purgeCart = () => {
     setCart(null);
@@ -68,15 +72,37 @@ const CartItemList = ({
             (!userInfo?.cart || userInfo?.cart?.length == 0) &&
             (!cart || cart.length == 0) ? (
             <>
-              <h1 className=" text-3xl mx-auto mt-16 mb-4">
+              <h1 className=" text-3xl mx-auto mt-24 mb-4">
                 Your cart is empty.
               </h1>
-              <div className="w-[24rem] mx-auto">
-                {" "}
+              <LoginModal
+                showLogin={showLoginModal}
+                setShowLogin={setShowLoginModal}
+              />
+
+              <div className="w-[18rem] mx-auto h-[20vh]">
                 <Button
                   buttonFunc={() => nav("/s")}
                   buttonText={"Continue Shopping"}
                 />
+                {!loggedIn && (
+                  <div className="flex flex-row w-full justify-center gap-4 mt-2">
+                    <button
+                      onClick={() => {
+                        setShowLoginModal("login");
+                      }}
+                      className="text-xl bg-bgSecondary w-1/2 text-bgBase3 px-4 py-2 rounded-md hover:outline hover:outline-2 outline-bgTertiary"
+                    >
+                      Sign In
+                    </button>
+                    <button
+                      onClick={() => setShowLoginModal("create")}
+                      className="text-xl bg-bgTertiary w-1/2 text-bgBase3 px-4 py-2 rounded-md hover:outline hover:outline-2 outline-bgSecondary"
+                    >
+                      Join Us
+                    </button>
+                  </div>
+                )}
               </div>
             </>
           ) : (

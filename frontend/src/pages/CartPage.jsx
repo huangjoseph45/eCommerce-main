@@ -10,6 +10,7 @@ import CartSummary from "../components/cart-components/cartSummary";
 import useProductsForCart from "../components/utilities/getProductsForCart";
 import useAuth from "../components/utilities/useAuth";
 import AdditionalProducts from "../components/additionalProducts";
+import useFetchServerData from "../components/utilities/getDataFromServer";
 
 const CartPage = () => {
   const { loggedIn } = useAuth();
@@ -19,29 +20,32 @@ const CartPage = () => {
   const [compLoading, setLoading] = useState(loggedIn);
   const [aggregateTags, setAggregateTags] = useState([]);
   const [loading, products, fetchProducts] = useProductsForCart();
+  const { isLoading, data, setData, isError, refetch } = useFetchServerData();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
-    if (loading == false && (userInfo?._id || !loggedIn)) {
+    if (loading == false && isLoading == false) {
       setTimeout(() => {
         setLoading(false);
       }, 200);
     }
-  }, [loading]);
+  }, [loading, isLoading]);
 
   useEffect(() => {
-    console.log(userInfo);
-    if (userInfo?.cart) setCart(userInfo.cart);
+    refetch({
+      queries: ["cart"],
+    });
   }, [JSON.stringify(userInfo)]);
 
   useEffect(() => {
-    if (cart) {
-      fetchProducts({ cart });
+    if (data?.cart) {
+      fetchProducts({ cart: data?.cart });
+      setCart(data?.cart);
     }
-  }, [cart]);
+  }, [data]);
 
   useEffect(() => {
     if (!loading && products && products.length > 0) {

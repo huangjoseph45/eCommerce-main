@@ -90,7 +90,7 @@ function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
       <div className="w-full mx-auto bg-bgBase lg:pr-[2rem]">
         <div className="lg:px-4 px-8 text-3xl capitalize pt-2">
           {isSearch ? (
-            <div className="flex flex-col w-fit">
+            <div className="flex flex-col w-fit lg:ml-8 ">
               {" "}
               <p className="text-base">Search results for </p>
               <p className="text-3xl">
@@ -102,7 +102,7 @@ function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
             <p className="lg:ml-8 mt-8">{displayName}</p>
           )}
         </div>
-        <h2 className="capitalize lg:px-4 px-8 pb-2 lg:pb-4 text-xl text-textHollow/65">
+        <h2 className="capitalize lg:px-4 lg:ml-8 px-8 pb-2 lg:pb-4 text-xl text-textHollow/65">
           {subsection}
         </h2>
         <div className="flex lg:flex-row flex-col">

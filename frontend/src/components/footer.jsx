@@ -77,7 +77,13 @@ const Footer = () => {
             Made with &hearts;
           </a>
           &nbsp;by&nbsp;
-          <p className="text-bgTertiary">Joseph Huang</p>
+          <a
+            className="text-bgTertiary hover:underline"
+            href="https://www.linkedin.com/in/josephbhuang"
+            target="_blank"
+          >
+            Joseph Huang
+          </a>
         </div>
       </div>
     </div>
