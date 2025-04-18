@@ -13,42 +13,42 @@ import AdditionalProducts from "../components/additionalProducts";
 import useFetchServerData from "../components/utilities/getDataFromServer";
 
 const CartPage = () => {
-  const { loggedIn } = useAuth();
+  const { loggedIn, awaitingAuth } = useAuth();
   const [error, setError] = useState(null);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState();
   const { userInfo, setUserInfo } = useContext(ProductContext);
-  const [compLoading, setLoading] = useState(loggedIn);
+  const [compLoading, setLoading] = useState(true);
   const [aggregateTags, setAggregateTags] = useState([]);
   const [loading, products, fetchProducts] = useProductsForCart();
   const { isLoading, data, setData, isError, refetch } = useFetchServerData();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [loggedIn]);
 
   useEffect(() => {
-    if (loading == false && isLoading == false) {
-      setTimeout(() => {
+    console.log(userInfo?._id || !loggedIn);
+    setTimeout(() => {
+      if ((!loading && !isLoading) || (!awaitingAuth && !loggedIn)) {
         setLoading(false);
-      }, 200);
-    }
-  }, [loading, isLoading]);
+      }
+    }, 200);
+  }, [loading, loggedIn]);
 
   useEffect(() => {
-    refetch({
-      queries: ["cart"],
-    });
+    refetch({ queries: ["cart"] });
   }, [JSON.stringify(userInfo)]);
 
   useEffect(() => {
-    if (data?.cart) {
-      fetchProducts({ cart: data?.cart });
+    console.log(data);
+    if (data && JSON.stringify(data?.cart) !== JSON.stringify(cart)) {
       setCart(data?.cart);
+      fetchProducts({ cart: data?.cart });
     }
-  }, [data]);
+  }, [data, cart]);
 
   useEffect(() => {
-    if (!loading && products && products.length > 0) {
+    if (!loading && products?.length > 0) {
       let filteredTags = [];
       products.forEach((product) => {
         product.tags.forEach((tag) => {

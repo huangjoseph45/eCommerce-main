@@ -68,6 +68,10 @@ const useFetchServerData = (options = {}) => {
     setLoading(false);
   };
 
+  useEffect(() => {
+    refetch({ queries: [] });
+  }, [loggedIn]);
+
   const refetch = ({ queries }) => {
     getDataFunc(queries);
   };
