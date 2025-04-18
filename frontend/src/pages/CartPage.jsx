@@ -27,7 +27,7 @@ const CartPage = () => {
   }, [loggedIn]);
 
   useEffect(() => {
-    console.log(userInfo?._id || !loggedIn);
+    console.log(loggedIn);
     setTimeout(() => {
       if (
         (loading == false && isLoading == false) ||
