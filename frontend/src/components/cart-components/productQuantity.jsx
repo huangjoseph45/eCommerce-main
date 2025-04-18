@@ -69,12 +69,10 @@ const ProductQuantity = ({ quantity, sku, deleteFunc }) => {
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
+    const updatedCart = userInfo.cart.filter((item) => item.sku !== sku);
+    await refetch({ cart: updatedCart });
     setUserInfo((prevUserInfo) => {
-      const updatedCart = prevUserInfo.cart.filter((item) => item.sku !== sku);
-
-      refetch({ cart: updatedCart });
-
       return { ...prevUserInfo, cart: updatedCart };
     });
 

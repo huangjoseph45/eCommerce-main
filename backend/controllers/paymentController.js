@@ -81,7 +81,7 @@ const handleCheckout = async (req, res) => {
     const lineItems = await Promise.all(
       products.map(async (product) => {
         const foundProduct = await Product.findOneAndUpdate(
-          { sku: { $regex: `^${sku}$`, $options: "i" } },
+          { sku: { $regex: `^${product?.sku}$`, $options: "i" } },
           { $inc: { clicks: seoValue } },
           { new: true }
         );

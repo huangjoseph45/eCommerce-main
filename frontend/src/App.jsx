@@ -40,29 +40,6 @@ function App() {
 
   const productLinks = useRef();
 
-  // useEffect(() => {
-  //   if (products && Array.isArray(products))
-  //     productLinks.current = products.map((product) => {
-  //       const stringURL = (
-  //         "p/" +
-  //         encodeURIComponent(product.productName.replace(/ /g, "-")) +
-  //         "/" +
-  //         product.sku
-  //       ).toLowerCase();
-
-  //       return (
-  //         <Route
-  //           key={product.sku}
-  //           path={`/${stringURL}`}
-  //           element={<ProductPage product={product} />}
-  //         />
-  //       );
-  //     });
-  //   else {
-  //     refetchProducts("");
-  //   }
-  // }, [products]);
-
   return (
     <>
       {" "}
