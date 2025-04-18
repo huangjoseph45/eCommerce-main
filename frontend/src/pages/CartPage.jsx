@@ -16,7 +16,7 @@ const CartPage = () => {
   const { loggedIn, awaitingAuth } = useAuth();
   const [error, setError] = useState(null);
   const [cart, setCart] = useState();
-  const { userInfo, setUserInfo } = useContext(ProductContext);
+  const { userInfo } = useContext(ProductContext);
   const [compLoading, setLoading] = useState(true);
   const [aggregateTags, setAggregateTags] = useState([]);
   const [loading, products, fetchProducts] = useProductsForCart();
@@ -29,7 +29,10 @@ const CartPage = () => {
   useEffect(() => {
     console.log(userInfo?._id || !loggedIn);
     setTimeout(() => {
-      if ((!loading && !isLoading) || (!awaitingAuth && !loggedIn)) {
+      if (
+        (loading == false && isLoading == false) ||
+        (!awaitingAuth && loggedIn == false)
+      ) {
         setLoading(false);
       }
     }, 200);

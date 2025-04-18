@@ -3,7 +3,7 @@ import { AuthContext } from "./ContextManager";
 import { useLocation } from "react-router-dom";
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setIsLoggedIn] = useState(false);
+  const [loggedIn, setIsLoggedIn] = useState(undefined);
   const [role, setRole] = useState();
   const [awaitingAuth, setAwaitingAuth] = useState(false);
   const location = useLocation();

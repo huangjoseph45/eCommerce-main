@@ -12,7 +12,7 @@ import { debounce } from "lodash";
 const ProfilePage = () => {
   const [currentSection, setCurrentSection] = useState(0);
   const [userInfo, setUserInfo] = useState();
-  const { loggedIn } = useAuth();
+  const { awaitingAuth, loggedIn } = useAuth();
   const fetchFields = [
     "email",
     "firstName",
@@ -260,7 +260,7 @@ const ProfilePage = () => {
   }, [data]);
 
   useEffect(() => {
-    if (loggedIn === false) {
+    if (!awaitingAuth && loggedIn === false) {
       nav("/");
     }
   }, [loggedIn]);
