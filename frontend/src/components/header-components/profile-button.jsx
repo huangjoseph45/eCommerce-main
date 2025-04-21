@@ -20,7 +20,7 @@ const ProfileButton = ({ showLogin, setShowLogin, setShowSidebar }) => {
         animate={{ scale: 1 }}
         exit={{ scale: 0 }}
         transition={{ type: "spring", stiffness: 400, damping: 20, mass: 0.5 }}
-        className="relative aspect-square rounded-full cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 p-2 hover:text-bgTertiary"
+        className="relative aspect-square rounded-full cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 p-2 hover:text-bgTertiary size-12 2xl:size-[4.5rem]"
         href={loggedIn ? "/profile" : undefined} // Properly conditionally set href
         onClick={clickedFunc}
       >
@@ -29,12 +29,9 @@ const ProfileButton = ({ showLogin, setShowLogin, setShowSidebar }) => {
           focusable="false"
           viewBox="0 0 48 48"
           role="img"
-          width="32px"
-          height="32px"
           fill="none"
           title="Profile"
-          onClick={clickedFunc}
-          className=""
+          className="w-full h-full"
         >
           <path
             stroke="currentColor"

@@ -23,10 +23,10 @@ const FilterItem = ({
       className="cursor-pointer flex items-center justify-between gap-1 px-2 p-1 w-full hover:bg-bgSecondary/15 rounded-sm"
       onClick={() => filterFunc({ group, filterId, type })}
     >
-      <p className="text-base flex">{filterName}</p>
+      <p className="text-base lg:text-base 2xl:text-xl flex">{filterName}</p>
 
       <div
-        className={`outline outline-bgExtraSecondaryLight aspect-square size-[0rem] flex items-center justify-center p-[0.4rem] ${
+        className={`outline outline-bgExtraSecondaryLight outline-[1px] aspect-square size-[0rem] flex items-center justify-center p-[10px] ${
           type === "single" ? "rounded-full" : "rounded-sm"
         }`}
       >
@@ -38,7 +38,7 @@ const FilterItem = ({
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
               transition={{ duration: 0.3, type: "spring" }}
-              className={`bg-bgExtraSecondaryLight aspect-square flex items-center justify-center p-[.35rem] ${
+              className={`bg-bgExtraSecondaryLight aspect-square flex items-center justify-center p-[8px] ${
                 type === "single" ? "rounded-full" : "rounded-sm"
               }`}
             ></motion.div>

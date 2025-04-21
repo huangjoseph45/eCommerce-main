@@ -10,7 +10,7 @@ const SearchButton = ({ setSearch }) => {
         transition={{ type: "spring", stiffness: 400, damping: 20, mass: 0.5 }}
         title="Search"
         onClick={() => setSearch(true)}
-        className="cursor-pointer aspect-square  hover:bg-slate-500 hover:bg-opacity-25 p-2 rounded-full hover:text-bgTertiary"
+        className="cursor-pointer aspect-square  hover:bg-slate-500 hover:bg-opacity-25 p-2 rounded-full hover:text-bgTertiary size-12 2xl:size-[4.5rem]"
       >
         {" "}
         <svg
@@ -18,9 +18,8 @@ const SearchButton = ({ setSearch }) => {
           focusable="false"
           viewBox="0 0 24 24"
           role="img"
-          width="32px"
-          height="32px"
           fill="none"
+          className="w-full h-full"
         >
           <path
             stroke="currentColor"

@@ -28,7 +28,7 @@ const SectionLink = ({ element, setShow, underlineBlack }) => {
           if (window.innerWidth > 1024) setShow(false);
         }}
       >
-        <div className=" text-base relative w-full p-2 lg:my-4 lg:p-0 lg:m-0 cursor-pointer  px-2 lg:px-4 h-full">
+        <div className="text-base 2xl:text-2xl relative w-full p-2 lg:my-4 lg:p-0 lg:m-0 cursor-pointer  px-2 lg:px-4 h-full">
           {" "}
           <h2
             className="capitalize select-none list-none w-fit relative"

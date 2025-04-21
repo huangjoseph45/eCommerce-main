@@ -109,7 +109,7 @@ const Header = ({
       <LoginModal showLogin={showLogin} setShowLogin={setShowLogin} />
 
       {loggedIn && userInfo && (
-        <div className="bg-bgSecondaryLight text-textLight p-2 text-xs  justify-end px-4 flex flex-row w-full relative z-40">
+        <div className="bg-bgSecondaryLight text-textLight p-2 text-xs  justify-end px-4 flex flex-row w-full relative z-40 ">
           <div className="">Welcome Back,&nbsp;</div>
           <a
             href="/profile"
@@ -128,18 +128,18 @@ const Header = ({
       <motion.div
         className={`opacity-1 ${
           screen === "home" ? "sticky" : "sticky"
-        } top-0 h-[3.75rem] text-textDark ${
+        } top-0 h-[3.75rem] 2xl:h-[8rem] text-textDark ${
           alternateDisplay
             ? "bg-bgBase2/90 shadow-lg"
             : alternateTransparent && "bg-bgBase/0 text-textLight"
-        }  flex px-2 flex-row justify-between w-full z-40 m-0 transition-all duration-300 py-8`}
+        }  flex px-2 flex-row justify-between w-full z-40 m-0 transition-all duration-300 `}
         variants={opacityVariants}
       >
         {alternateDisplay && (
           <div className="w-full h-full absolute  top-0 left-0  backdrop-blur-sm"></div>
         )}
-        <div className="flex flex-row items-end h-full my-auto gap-12 justify-between lg:justify-start  w-full">
-          <div className="h-full z-[10] lg:hidden gap-3 sm:gap-4 w-fit justify-center items-center flex ">
+        <div className=" flex flex-row items-end my-auto gap-12 justify-between lg:justify-start  w-full">
+          <div className="h-full z-[10] lg:hidden gap-3 sm:gap-4 w-fit justify-center items-center flex">
             <Sidebar
               sections={sectionResults}
               visible={alternateDisplay}
@@ -147,7 +147,7 @@ const Header = ({
               showLogin={showLogin}
             />
           </div>
-          <div className="z-0 absolute left-1/2 -translate-x-1/2  top-1/2 -translate-y-1/2 lg:translate-x-0  lg:my-auto lg:static h-[2.5rem] ">
+          <div className="z-0 absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 lg:translate-x-0 lg:my-auto lg:static lg:translate-y-0  h-[2.5rem] 2xl:h-[4rem] lg:ml-8">
             <Logo invert={alternateTransparent && !alternateDisplay} />
           </div>
 
@@ -169,7 +169,6 @@ const Header = ({
 
         {/* Large Screen Buttons */}
         <div className="hidden lg:flex gap-3 sm:gap-4 w-fit items-center z-10 ">
-          {" "}
           <SearchButton setSearch={setIsSearching} />
           <Cart />
           <ProfileButton showLogin={showLogin} setShowLogin={setShowLogin} />

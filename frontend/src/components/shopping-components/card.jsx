@@ -75,7 +75,7 @@ const Card = ({
   return (
     sku && (
       <div
-        className={`hover:shadow-md transition-all duration-100 rounded-sm w-full h-full max-h-[45rem] flex flex-col box-border mb-2 relative hover:bg-bgBase3  ${
+        className={`hover:shadow-md transition-all duration-100 rounded-sm w-full h-full flex flex-col box-border mb-2 relative hover:bg-bgBase3  ${
           isTesting ? "bg-bgBase3" : "bg-bgBase"
         }
 `}
@@ -94,7 +94,7 @@ const Card = ({
                 alt={name}
                 onClick={() => nav(stringURL + `/${colors[0].idMod}`)}
                 loading="lazy"
-                className="w-full select-none object-cover aspect-[4/5] cursor-pointer hover:scale-105 transition-all duration-200"
+                className="w-full select-none object-cover aspect-[4/5] cursor-pointer hover:scale-105 transition-all duration-200 flex-grow-0"
               />
             </div>
           )}
@@ -136,16 +136,18 @@ const Card = ({
             </>
           )}
         </div>
-        <div className="px-2 relative z-0 bg-inherit h-full py-2">
-          <a href={stringURL} className="font-medium text-base">
+        <div className="px-2 relative z-0 bg-inherit h-full py-4">
+          <a href={stringURL} className="font-medium text-base 2xl:text-xl">
             {name}
           </a>
-          <p className="text-gray-500 text-sm">{type}</p>
-          <p className="text-gray-500 text-sm">{numPatterns} Patterns</p>
+          <p className="text-gray-500 text-sm 2xl:text-lg">{type}</p>
+          <p className="text-gray-500 text-sm 2xl:text-lg">
+            {numPatterns} Patterns
+          </p>
           <div className="flex flex-row items-center gap-2">
-            <p className="font-medium text-lg">${finalPrice}</p>
+            <p className="font-medium text-lg 2xl:text-2xl">${finalPrice}</p>
             {discount !== 0 && (
-              <p className="font-medium text-md line-through text-gray-500">
+              <p className="font-medium text-md 2xl:text-xl line-through text-gray-500">
                 ${initialPrice}
               </p>
             )}

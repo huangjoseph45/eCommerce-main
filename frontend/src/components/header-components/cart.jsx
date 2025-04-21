@@ -25,7 +25,7 @@ const Cart = () => {
       animate={{ scale: 1 }}
       exit={{ scale: 0 }}
       transition={{ type: "spring", stiffness: 400, damping: 20, mass: 0.5 }}
-      className="flex items-center justify-center hover:text-bgTertiary relative cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 rounded-full p-2  aspect-square"
+      className="flex items-center justify-center hover:text-bgTertiary relative cursor-pointer hover:bg-slate-500 hover:bg-opacity-25 rounded-full p-2  aspect-square size-12 2xl:size-[4.5rem]"
       aria-label="Cart"
       href="/cart"
     >
@@ -37,6 +37,7 @@ const Cart = () => {
         width="32px"
         height="32px"
         fill="none"
+        className="h-full w-full"
       >
         <path
           stroke="currentColor"
@@ -46,7 +47,7 @@ const Cart = () => {
       </svg>
       {numItems > 0 && (
         <span
-          className="absolute   font-semibold text-[0.6rem] flex items-center justify-center rounded-full p-2  select-none translate-y-[5%]"
+          className="absolute   font-semibold text-[0.6rem] 2xl:text-[0.8rem] flex items-center justify-center rounded-full p-2  select-none translate-y-[5%]"
           aria-label={`${numItems} items in cart`}
         >
           {numItems}

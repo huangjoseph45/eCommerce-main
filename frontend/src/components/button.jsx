@@ -11,7 +11,7 @@ const Button = ({
     <motion.button
       initial={{ scale: 1 }}
       whileTap={{ y: 5 }}
-      className={`rounded-md shadow-sm flex items-center justify-center w-full ${
+      className={`rounded-md shadow-sm flex items-center justify-center w-full h-[2rem] ${
         large ? "px-4 py-[.75rem]" : "px-2 py-[.5rem]"
       }  min-h-10 scale-110 text-base outline outline-1 transition-all duration-0.3 ${
         invert

@@ -75,7 +75,7 @@ const Filter = ({ sortingInfo, setSortingInfo }) => {
   }, [showFilters, filter]);
 
   return (
-    <div className="lg:sticky lg:top-[4rem] ml-8">
+    <div className="lg:sticky lg:top-[4rem] 2xl:top-[8rem] ml-8 lg:ml-12">
       {showFilterButton && (
         <button
           className="flex gap-1 cursor-pointer py-1 border rounded-full shadow-md focus:outline focus:outline-black hover:bg-bgBlack/15 transition-all duration-200 px-2"
@@ -115,7 +115,7 @@ const Filter = ({ sortingInfo, setSortingInfo }) => {
               className={`${
                 showFilterButton
                   ? "min-w-[20rem] right-0 z-50 p-4 h-[100vh] fixed top-0 pr-[4.5rem]"
-                  : " w-[14rem] left-0  h-fit"
+                  : " w-[12rem] left-0  h-fit"
               } bg-bgBase py-8 flex flex-col gap-6 `}
             >
               {showFilterButton && (
@@ -149,7 +149,9 @@ const Filter = ({ sortingInfo, setSortingInfo }) => {
               )}
 
               <div className="flex flex-col">
-                <h2 className="text-xl border-b-2 mb-2 w-4/5">Sort By</h2>
+                <h2 className="text-xl 2xl:text-2xl border-b-2 mb-2 w-4/5">
+                  Sort By
+                </h2>
                 <ul className="mb-6 flex flex-col items-start justify-center w-full gap-1">
                   <FilterItem
                     filterName="Newest"
@@ -176,7 +178,9 @@ const Filter = ({ sortingInfo, setSortingInfo }) => {
                     filter={filter}
                   />
                 </ul>
-                <h2 className="text-xl border-b-2 mb-2 w-4/5">Price</h2>
+                <h2 className="text-xl 2xl:text-2xl border-b-2 mb-2 w-4/5">
+                  Price
+                </h2>
                 <ul className="mb-6 flex flex-col items-start justify-center w-full gap-1">
                   <FilterItem
                     filterName="$0 - $25"

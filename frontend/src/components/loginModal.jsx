@@ -111,10 +111,10 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
             animate={"show"}
             exit={"leave"}
             onSubmit={handleSubmit}
-            className={`flex flex-col h-fit m-auto w-[100vw] max-w-[30rem]  gap-1  shadow-md p-16 rounded-lg top-[20%] z-40
+            className={`flex flex-col h-fit m-auto w-[100vw] max-w-[30rem] 2xl:max-w-[40rem]  gap-1  shadow-md p-16 rounded-lg top-[20%] z-40
        bg-bgBase left-1/2 -translate-x-1/2 fixed`}
           >
-            <div className="w-fit mx-auto mb-4 h-[3rem] ">
+            <div className="w-fit mx-auto mb-4 h-[3rem] 2xl:h-[5rem]">
               <Logo></Logo>
             </div>
             <div
@@ -147,7 +147,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
               type="text"
               name="email"
               autoComplete="account-email"
-              className={`rounded-md w-full bg-bgBase border p-3 mb-4 ${
+              className={`rounded-md w-full bg-bgBase border p-4 mb-4 2xl:text-xl ${
                 errorState.isEmailInvalid
                   ? "border-errorTrue"
                   : "border-gray-400"
@@ -164,7 +164,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
                 type={showPassword ? "text" : "password"}
                 name="password"
                 autoComplete="account-password"
-                className={`rounded-md w-full border bg-bgBase p-3  ${
+                className={`rounded-md w-full border bg-bgBase p-4  2xl:text-xl  ${
                   errorState.isPasswordInvalid
                     ? "border-errorTrue"
                     : "border-gray-400"
@@ -205,7 +205,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
                   type={showPassword ? "text" : "password"}
                   name="password2"
                   autoComplete="account-password"
-                  className={`rounded-md w-full border p-3 bg-bgBase  ${
+                  className={`rounded-md w-full border p-3 bg-bgBase  2xl:text-xl  ${
                     errorState.isPasswordInvalid
                       ? "border-errorTrue"
                       : "border-gray-400"
@@ -237,7 +237,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
                   <span className="absolute text-textLight opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-3.5 w-3.5"
+                      className="h-4 w-4"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                       stroke="currentColor"
@@ -254,7 +254,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
               </div>
               <label
                 htmlFor="remember"
-                className="cursor-pointer high select-none text-gray-700"
+                className="cursor-pointer high select-none text-gray-700 2xl:text-xl"
               >
                 Remember Me
               </label>
@@ -262,11 +262,11 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
 
             <button
               type="submit"
-              className="bg-bgSecondary text-textLight w-full p-4 text-sm hover:bg-bgSecondaryLight hover:scale-[102.5%] transition-all duration-300 h-[3.5rem]"
+              className="bg-bgSecondary text-textLight w-full p-4 2xl:p-6 2xl:h-[4.5rem] text-sm hover:bg-bgSecondaryLight hover:scale-[102.5%] transition-all duration-300 2xl:text-2xl "
             >
               {isModeSignIn ? (
                 isLoading ? (
-                  <p className="w-6 mx-auto border-textLight loader border-[2px]"></p>
+                  <p className=" w-6 mx-auto border-textLight loader border-[2px]"></p>
                 ) : (
                   "Sign In"
                 )
@@ -292,7 +292,7 @@ function SelectSignIn({ setModeSignIn, isModeSignIn }) {
     <div className="flex flex-1 whitespace-normal w-[full] mb-2 font-medium">
       <p
         onClick={() => setModeSignIn(true)}
-        className={`cursor-pointer w-1/2 m-auto text-left text-2xl ${
+        className={`cursor-pointer w-1/2 m-auto text-left text-2xl 2xl:text-3xl ${
           isModeSignIn ? "text-bgSecondary" : "text-gray-400"
         }`}
       >
@@ -300,7 +300,7 @@ function SelectSignIn({ setModeSignIn, isModeSignIn }) {
       </p>
       <p
         onClick={() => setModeSignIn(false)}
-        className={`w-fit whitespace-normal  cursor-pointer m-auto text-right text-2xl ${
+        className={`w-fit whitespace-normal  cursor-pointer m-auto text-right text-2xl 2xl:text-3xl ${
           !isModeSignIn ? "text-bgSecondary" : "text-gray-400"
         }`}
       >

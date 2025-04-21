@@ -29,7 +29,7 @@ const CartItemList = ({
   };
 
   return (
-    <ul className="flex flex-col items-center mx-auto min-w-[20rem] w-full max-w-[30rem]">
+    <ul className="flex flex-col items-center mx-auto min-w-[20rem] w-full max-w-[40rem]">
       <ul className="flex flex-col gap-2 h-fit w-full">
         {!loading ? (
           products?.length > 0 ? (

@@ -106,10 +106,10 @@ function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
           {subsection}
         </h2>
         <div className="flex lg:flex-row flex-col">
-          <div className="lg:pl-4  w-fit relative mb-2">
+          <div className="w-fit relative mb-2">
             <Filter sortingInfo={sortingInfo} setSortingInfo={setSortingInfo} />
           </div>
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col w-[80vw] 2xl:w-[85vw] h-fit">
             <CardGrid isLoading={loading} products={products} />
           </div>
         </div>

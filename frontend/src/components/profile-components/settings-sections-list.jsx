@@ -58,7 +58,7 @@ const SettingsSectionsList = ({ sections, setSection, showContent }) => {
             {" "}
             {section.svg}
           </div>
-          <h2 className="mx-[36px]"> {section.name}</h2>
+          <h2 className="mx-[36px] 2xl:text-xl"> {section.name}</h2>
         </div>
 
         <button className="lg:hidden rotate-180 rounded-full p-2">

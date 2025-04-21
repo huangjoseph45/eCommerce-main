@@ -39,100 +39,116 @@ const ProductPopup = ({
   return createPortal(
     <AnimatePresence>
       {showPopup && (
-        <motion.div
-          initial={{
-            scale: 0,
-            y: "-100%",
-            x: `${
-              isDesktop ? `${window.innerWidth - ELEMENT_SIZE_REM * 16}px` : 0
-            }`,
-          }}
-          animate={{
-            scale: 1,
-            y: "-1rem",
-            x: `${
-              isDesktop ? `${window.innerWidth - ELEMENT_SIZE_REM * 16}px` : 0
-            }`,
-          }}
-          exit={{
-            scale: 0,
-            y: "-100%",
-            x: `${
-              isDesktop ? `${window.innerWidth - ELEMENT_SIZE_REM * 16}px` : 0
-            }`,
-          }}
-          transition={{
-            type: "spring",
-            stiffness: 200,
-            mass: 0.2,
-          }}
-          className={`fixed -top-[1rem] bg-bgBase shadow-md  cursor-pointer pt-[8rem] p-3 rounded-b-xl px-6 w-full md:w-[20rem] z-20 `}
-        >
-          <div className="w-full justify-center items-center flex flex-col gap-2  mx-auto">
-            <div className="flex items-center gap-2 py-2  w-full">
-              <svg
-                aria-hidden="true"
-                className="text-errorFalse"
-                focusable="false"
-                viewBox="0 0 24 24"
-                role="img"
-                width="24px"
-                height="24px"
-                fill="none"
-              >
-                <path
-                  fill="currentColor"
-                  d="M12 1.5C6.21 1.5 1.5 6.21 1.5 12S6.21 22.5 12 22.5 22.5 17.79 22.5 12 17.79 1.5 12 1.5zm-1.06 14l-3.18-3.18 1.06-1.06 2.12 2.12 4.24-4.24 1.06 1.06-5.3 5.3z"
-                ></path>
-              </svg>
-              <p className="font-medium">Added to Bag</p>
-              <div
-                className={`cursor-pointer absolute top-[7rem] right-0 p-2 rounded-full m-4 hover:bg-bgBlack/15 transition-all duration-150`}
-                title={"Close"}
-                onClick={() => setShowPopup(false)}
-              >
+        <>
+          {" "}
+          <motion.div
+            className="w-full h-full fixed top-0 bg-bgBlack/15 left-0 md:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowPopup(false)}
+          ></motion.div>
+          <motion.div
+            initial={{
+              scale: 0,
+              translateY: "100%",
+              x: `${
+                isDesktop ? `${window.innerWidth - ELEMENT_SIZE_REM * 16}px` : 0
+              }`,
+            }}
+            animate={{
+              scale: 1,
+              translateY: "0%",
+
+              x: `${
+                isDesktop ? `${window.innerWidth - ELEMENT_SIZE_REM * 16}px` : 0
+              }`,
+            }}
+            exit={{
+              scale: 0,
+              translateY: "100%",
+
+              x: `${
+                isDesktop ? `${window.innerWidth - ELEMENT_SIZE_REM * 16}px` : 0
+              }`,
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 200,
+              mass: 0.2,
+            }}
+            className={`fixed bottom-0 bg-bgBase shadow-md  cursor-pointer  2xl:pt-[14rem] p-3 rounded-t-xl px-6 w-full md:w-[20rem] z-20 `}
+          >
+            <div className="w-full justify-center items-center flex flex-col gap-2  mx-auto">
+              <div className="flex items-center gap-2 py-2  w-full">
                 <svg
                   aria-hidden="true"
+                  className="text-errorFalse"
                   focusable="false"
                   viewBox="0 0 24 24"
                   role="img"
-                  width="28px"
-                  height="28px"
+                  width="24px"
+                  height="24px"
                   fill="none"
                 >
                   <path
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    d="M18.973 5.027L5.028 18.972m0-13.945l13.944 13.945"
+                    fill="currentColor"
+                    d="M12 1.5C6.21 1.5 1.5 6.21 1.5 12S6.21 22.5 12 22.5 22.5 17.79 22.5 12 17.79 1.5 12 1.5zm-1.06 14l-3.18-3.18 1.06-1.06 2.12 2.12 4.24-4.24 1.06 1.06-5.3 5.3z"
                   ></path>
                 </svg>
+                <p className="font-medium">Added to Bag</p>
+                <div
+                  className={`cursor-pointer absolute right-0 p-2 rounded-full m-4 hover:bg-bgBlack/15 transition-all duration-150`}
+                  title={"Close"}
+                  onClick={() => setShowPopup(false)}
+                >
+                  <svg
+                    aria-hidden="true"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                    role="img"
+                    width="28px"
+                    height="28px"
+                    fill="none"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      d="M18.973 5.027L5.028 18.972m0-13.945l13.944 13.945"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+              <div className="flex flex-row gap-2 w-full">
+                <img
+                  src={imgSrc}
+                  alt={productInfo?.sku}
+                  className="h-[6.5rem]"
+                />
+                <div className="flex flex-col gap-1 w-full">
+                  <p className="truncate w-2/3">{product?.productName}</p>
+                  <p className="text-textHollow">{product?.type}</p>
+                  <p className="text-textHollow">
+                    {productInfo?.colorInfo?.colorName ?? "error"}/
+                    {productInfo?.sizeInfo ?? "error"}
+                  </p>
+                  <p>${productPrice.finalPrice}</p>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2 w-full">
+                <Button
+                  buttonText="View Bag"
+                  buttonFunc={() => nav("/cart")}
+                ></Button>
+                <Button
+                  invert={true}
+                  buttonText="Add More"
+                  buttonFunc={addToCartFunction}
+                ></Button>
               </div>
             </div>
-            <div className="flex flex-row gap-2 w-full">
-              <img src={imgSrc} alt={productInfo?.sku} className="h-[6.5rem]" />
-              <div className="flex flex-col gap-1 w-full">
-                <p className="truncate w-2/3">{product?.productName}</p>
-                <p className="text-textHollow">{product?.type}</p>
-                <p className="text-textHollow">
-                  {productInfo?.colorInfo?.colorName ?? "error"}/
-                  {productInfo?.sizeInfo ?? "error"}
-                </p>
-                <p>${productPrice.finalPrice}</p>
-              </div>
-            </div>
-            <div className="flex flex-col gap-2 w-full">
-              <Button
-                buttonText="View Bag"
-                buttonFunc={() => nav("/cart")}
-              ></Button>
-              <Button
-                invert={true}
-                buttonText="Add More"
-                buttonFunc={addToCartFunction}
-              ></Button>
-            </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </>
       )}
     </AnimatePresence>,
     document.body
