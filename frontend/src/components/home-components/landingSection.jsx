@@ -40,7 +40,7 @@ const LandingSection = ({ featuredSectionRef }) => {
       <img
         src="https://www.ralphlauren.com/on/demandware.static/-/Library-Sites-RalphLauren_NA_Library/default/dwb54d4127/img/202501/20250123-men-polo-active-club-plp/0123_m_polo_active_club_plp_c01_img.jpg"
         alt=""
-        className={`absolute object-cover w-full h-full select-none -z-10 transition-all duration-30 `}
+        className={`absolute object-cover w-full h-full select-none -z-10 transition-opacity duration-30 `}
       />
       <div className="absolute top-[38%] flex flex-col items-center justify-center gap-4">
         <motion.a
