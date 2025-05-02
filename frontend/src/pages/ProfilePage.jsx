@@ -32,6 +32,15 @@ const ProfilePage = () => {
   const prevWidth = useRef(window.innerWidth);
 
   useEffect(() => {
+    if (window.innerWidth > 1024) {
+      nav("/profile/account");
+    } else if (!profileSection) {
+      setShowContent(false);
+      return;
+    }
+  }, []);
+
+  useEffect(() => {
     let idx;
     const foundSection = settingSections.find((section, index) => {
       idx = index;
@@ -59,12 +68,6 @@ const ProfilePage = () => {
     };
     resizeFunc();
     window.addEventListener("resize", resizeFunc);
-    if (window.innerWidth > 1024) {
-      nav("/profile/account");
-    } else if (!profileSection) {
-      setShowContent(false);
-      return;
-    }
 
     return () => window.removeEventListener("resize", resizeFunc);
   }, [profileSection]);
