@@ -1,4 +1,5 @@
 import FeaturedCard from "./featuredCard";
+import DemoBanner from "../demoBanner";
 import { useFetchSections } from "../utilities/useSectionFunctions";
 import { useEffect, useState, useRef } from "react";
 import useFetchTopProducts from "../utilities/useFetchTopProducts";
@@ -59,10 +60,12 @@ const FeaturedWindow = () => {
   }, [sectionResults]);
 
   return (
-    <div
-      className="w-screen h-fit py-6 sm:px-8 flex flex-row  overflow-x-scroll  snap-x snap-mandatory sm:gap-6 overflow-y-visible scrollbar-hide mx-auto"
-      style={{ scrollBehavior: "auto" }}
-    >
+    <>
+      <DemoBanner />
+      <div
+        className="w-screen h-fit py-6 sm:px-8 flex flex-row  overflow-x-scroll  snap-x snap-mandatory sm:gap-6 overflow-y-visible scrollbar-hide mx-auto"
+        style={{ scrollBehavior: "auto" }}
+      >
       {" "}
       {sectionResults
         ? sectionResults.map((section, index) => {
@@ -82,7 +85,8 @@ const FeaturedWindow = () => {
           }).map((v, index) => {
             return <FeaturedCard key={index} />;
           })}
-    </div>
+      </div>
+    </>
   );
 };
 

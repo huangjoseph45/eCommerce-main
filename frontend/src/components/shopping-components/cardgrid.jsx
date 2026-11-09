@@ -47,6 +47,7 @@ const CardGrid = ({ isLoading, products }) => {
                 type={product.type}
                 numPatterns={product.colors && product.colors.length}
                 discount={product.discount}
+                imageUrls={product.imageUrls}
                 product={product}
               />
             );

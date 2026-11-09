@@ -1,8 +1,25 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import {
+  demoProductsForTags,
+  demoProductsForSearch,
+  markDemoCatalog,
+  clearDemoCatalog,
+} from "../../data/demoCatalog";
 
 const useFetchProducts = () => {
   const [isLoading, setLoading] = useState(true);
   const [products, setProducts] = useState();
+
+  // Demo fallback: the products the shop grid shows when the live backend
+  // is unreachable. Search queries match against name, type, and tags.
+  const demoFallback = (tags, isSearch) => {
+    const demo = isSearch
+      ? demoProductsForSearch(tags?.[0])
+      : demoProductsForTags(tags, 8);
+    markDemoCatalog();
+    setProducts(demo);
+    setLoading(false);
+  };
 
   const getProducts = async (
     tags,
@@ -34,15 +51,23 @@ const useFetchProducts = () => {
           }),
         }
       );
+      if (
+        !response.ok ||
+        !response.headers.get("content-type")?.includes("application/json")
+      ) {
+        demoFallback(tags, isSearch);
+        return;
+      }
       const data = await response.json();
       let products = data.products;
+      clearDemoCatalog();
       setTimeout(() => {
         setProducts(products);
         setLoading(false);
       }, Math.random() * 500 + 200 - (Date.now() - then) || 0);
     } catch (e) {
-      console.error(e);
-      setLoading(false);
+      console.warn("Live backend unreachable, serving demo products:", e);
+      demoFallback(tags, isSearch);
     }
   };
 

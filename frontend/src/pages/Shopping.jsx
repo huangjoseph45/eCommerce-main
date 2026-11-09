@@ -1,5 +1,6 @@
 import Header from "../components/header";
 import Footer from "../components/footer";
+import DemoBanner from "../components/demoBanner";
 import CardGrid from "../components/shopping-components/cardgrid";
 import { useEffect, useState, useRef } from "react";
 import useFetchProducts from "../components/utilities/useFetchMultipleProducts";
@@ -87,6 +88,7 @@ function Shopping({ categoryName, categoryId, tags, isSearch = false }) {
   return (
     <>
       <Header />
+      <DemoBanner />
       <div className="w-full mx-auto bg-bgBase lg:pr-[2rem]">
         <div className="lg:px-4 px-8 text-3xl capitalize pt-2">
           {isSearch ? (

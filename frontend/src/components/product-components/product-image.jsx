@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { ProductInfoContext } from "../utilities/ContextManager";
+import { productImageUrl } from "../../data/demoCatalog";
 import { motion } from "motion/react";
 
 const ProductImage = ({ product, productColor = null, loading = false }) => {
@@ -11,10 +12,7 @@ const ProductImage = ({ product, productColor = null, loading = false }) => {
   useEffect(() => {
     if (product && productInfo) {
       try {
-        const src = `https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
-          product.sku + "-" + productColor
-        }`;
-        setImgSrc(src);
+        setImgSrc(productImageUrl(product, productColor));
         const numImg =
           product?.colors?.find((color) => color.idMod === productColor)
             ?.numImages || 0;
@@ -37,12 +35,7 @@ const ProductImage = ({ product, productColor = null, loading = false }) => {
           {Array(numImages)
             .fill(0)
             .map((num, index) => {
-              let src = `https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
-                product.sku + "-" + productColor
-              }`;
-              if (index > 0) {
-                src = `${src}-${index}`;
-              }
+              let src = productImageUrl(product, productColor, index);
               return (
                 <motion.div
                   key={src}

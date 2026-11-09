@@ -6,6 +6,7 @@ import {
   faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import parsePrice from "../utilities/parsePrice";
+import { productImageUrl } from "../../data/demoCatalog";
 import { Link, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { cubicBezier } from "motion";
@@ -18,6 +19,7 @@ const Card = ({
   numPatterns,
   colors,
   discount = 0,
+  imageUrls,
 }) => {
   const isTesting = import.meta.env.VITE_ENABLE_TEST === "1";
   const nav = useNavigate();
@@ -88,9 +90,11 @@ const Card = ({
           {colors && (
             <div className="w-full overflow-hidden ">
               <img
-                src={`https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${
-                  sku + "-" + colors[cardColor].idMod
-                }${imgIndex === 0 ? "" : "-" + imgIndex}`}
+                src={productImageUrl(
+                  { sku, imageUrls },
+                  colors[cardColor].idMod,
+                  imgIndex
+                )}
                 alt={name}
                 onClick={() => nav(stringURL + `/${colors[0].idMod}`)}
                 loading="lazy"
@@ -172,6 +176,7 @@ Card.propTypes = {
   numPatterns: PropTypes.number.isRequired,
   discount: PropTypes.number,
   numImages: PropTypes.number,
+  imageUrls: PropTypes.array,
 };
 
 export default Card;

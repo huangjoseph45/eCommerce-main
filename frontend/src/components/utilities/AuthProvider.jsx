@@ -12,15 +12,23 @@ const AuthProvider = ({ children }) => {
     setAwaitingAuth(true);
     const endpoint = `${import.meta.env.VITE_PATH}/users/auth-status`;
     const handleAuth = async () => {
-      const response = await fetch(endpoint, {
-        method: "GET",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-      });
-      const data = await response.json();
-      setIsLoggedIn(data.hasSession);
-      setRole(data.role);
-      setAwaitingAuth(false);
+      try {
+        const response = await fetch(endpoint, {
+          method: "GET",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await response.json();
+        setIsLoggedIn(data.hasSession);
+        setRole(data.role);
+      } catch {
+        // Backend unreachable: treat the visitor as logged out instead of
+        // leaving auth hanging forever (loggedIn stays undefined and
+        // awaitingAuth stays true without this).
+        setIsLoggedIn(false);
+      } finally {
+        setAwaitingAuth(false);
+      }
     };
     handleAuth();
   }, [location]);

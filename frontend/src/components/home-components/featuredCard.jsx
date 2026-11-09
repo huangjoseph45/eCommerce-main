@@ -18,8 +18,11 @@ const FeaturedCard = ({
 
   useEffect(() => {
     if (thisProduct) {
+      // Sections carry an explicit imageURL; older ones only have an S3
+      // key extension (imageURLExtension) for the product-images bucket.
       setImgSrc(
-        `https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${section.imageURLExtension}`
+        section.imageURL ||
+          `https://productimagesimaginecollective.s3.us-east-2.amazonaws.com/${section.imageURLExtension}`
       );
     }
 

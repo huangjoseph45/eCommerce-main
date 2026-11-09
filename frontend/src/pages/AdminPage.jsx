@@ -25,14 +25,19 @@ const AdminPage = () => {
   useEffect(() => {
     const endpoint = `${import.meta.env.VITE_PATH}/users/auth-status`;
     const handleAuth = async () => {
-      const response = await fetch(endpoint, {
-        method: "GET",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-      });
-      const data = await response.json();
-      setAuthValues(data);
-      if (!data.hasSession || data.role !== "admin") {
+      try {
+        const response = await fetch(endpoint, {
+          method: "GET",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await response.json();
+        setAuthValues(data);
+        if (!data.hasSession || data.role !== "admin") {
+          nav("/");
+        }
+      } catch {
+        // Backend unreachable: no admin session is possible, so leave.
         nav("/");
       }
     };

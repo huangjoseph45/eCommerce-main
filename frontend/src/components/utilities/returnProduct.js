@@ -1,4 +1,5 @@
 import isEmpty from "./isEmpty";
+import { findDemoProduct, productImageUrl } from "../../data/demoCatalog";
 
 const returnProduct = async (sku, enableTest = false) => {
   if (isEmpty(sku)) {
@@ -32,6 +33,13 @@ const returnProduct = async (sku, enableTest = false) => {
       credentials: "include",
       headers: { "Content-Type": "application/json" },
     });
+    // A down backend answers non-JSON pages, so only parse JSON bodies.
+    if (
+      !response.ok ||
+      !response.headers.get("content-type")?.includes("application/json")
+    ) {
+      throw new Error(`Product fetch failed: ${response.status}`);
+    }
     const data = await response.json();
     if (!data) return;
 
@@ -76,8 +84,23 @@ const returnProduct = async (sku, enableTest = false) => {
       stripeProductId,
     };
   } catch (error) {
-    console.error("Error fetching product from server: " + error);
-    return;
+    // Live backend unreachable: serve the matching demo product, if any,
+    // in the same shape as a fetched product.
+    const demo = findDemoProduct(sku);
+    if (!demo) {
+      console.error("Error fetching product from server: " + error);
+      return;
+    }
+    const color = sku.split("-")[2];
+    const colorObj =
+      demo.colors.find((colorItem) => colorItem.idMod === color) ||
+      demo.colors[0];
+    return {
+      ...demo,
+      size: sku.split("-")[3],
+      color: colorObj,
+      imageLink: productImageUrl(demo, colorObj.idMod),
+    };
   }
 };
 

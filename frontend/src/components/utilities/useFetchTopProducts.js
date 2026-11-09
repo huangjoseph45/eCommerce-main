@@ -1,4 +1,9 @@
 import { useState } from "react";
+import {
+  demoProductsForTags,
+  markDemoCatalog,
+  clearDemoCatalog,
+} from "../../data/demoCatalog";
 
 const useFetchTopProducts = () => {
   const [loading, setLoading] = useState(false);
@@ -29,16 +34,31 @@ const useFetchTopProducts = () => {
           }),
         }
       );
+      if (
+        !response.ok ||
+        !response.headers.get("content-type")?.includes("application/json")
+      ) {
+        const demo = demoProductsForTags(tagArray, numProductsPerTag);
+        markDemoCatalog();
+        setProducts(demo);
+        setLoading(false);
+        return demo;
+      }
       const data = await response.json();
 
+      clearDemoCatalog();
       setTimeout(() => {
         setProducts(data.foundProducts);
         setLoading(false);
       }, Math.random() * 500 + 200 - (Date.now() - then) || 0);
       return data.foundProducts;
     } catch (e) {
-      console.error(e);
+      console.warn("Live backend unreachable, serving demo products:", e);
+      const demo = demoProductsForTags(tagArray, numProductsPerTag);
+      markDemoCatalog();
+      setProducts(demo);
       setLoading(false);
+      return demo;
     }
   };
 

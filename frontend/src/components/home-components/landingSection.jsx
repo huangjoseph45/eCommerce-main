@@ -38,8 +38,8 @@ const LandingSection = ({ featuredSectionRef }) => {
     >
       <LoginModal showLogin={showLoginModal} setShowLogin={setShowLoginModal} />
       <img
-        src="https://www.ralphlauren.com/on/demandware.static/-/Library-Sites-RalphLauren_NA_Library/default/dwb54d4127/img/202501/20250123-men-polo-active-club-plp/0123_m_polo_active_club_plp_c01_img.jpg"
-        alt=""
+        src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=2400&q=80"
+        alt="Clothing hanging on a rack at Imagine Collective"
         className={`absolute object-cover w-full h-full select-none -z-10 transition-opacity duration-30 `}
       />
       <div className="absolute top-[38%] flex flex-col items-center justify-center gap-4">

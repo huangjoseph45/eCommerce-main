@@ -1,4 +1,9 @@
 import { useState } from "react";
+import {
+  demoSections,
+  markDemoCatalog,
+  clearDemoCatalog,
+} from "../../data/demoCatalog";
 
 const useFetchSections = () => {
   const [isFetchingSectionsLoading, setFetchingSectionsLoading] =
@@ -16,16 +21,30 @@ const useFetchSections = () => {
         headers: { "Content-Type": "application/json" },
       });
       if (!response.ok) {
+        // Live backend unreachable: serve the demo catalog instead of
+        // leaving the home page on loading placeholders forever.
+        setSectionResults(demoSections);
+        markDemoCatalog();
         setFetchingSectionsLoading(false);
-        console.error("Fetching sections is not ok");
+        return;
+      }
+      // A down backend (or a dev server's SPA fallback) answers non-JSON
+      // pages with a 200, so only parse the body when it is actually JSON.
+      if (!response.headers.get("content-type")?.includes("application/json")) {
+        setSectionResults(demoSections);
+        markDemoCatalog();
+        setFetchingSectionsLoading(false);
         return;
       }
       const fetchedSections = await response.json();
 
+      clearDemoCatalog();
       setSectionResults(fetchedSections.returnSections);
       setFetchingSectionsLoading(false);
     } catch (error) {
-      console.error(error);
+      console.warn("Live backend unreachable, serving demo catalog:", error);
+      setSectionResults(demoSections);
+      markDemoCatalog();
       setFetchingSectionsLoading(false);
     }
   };
